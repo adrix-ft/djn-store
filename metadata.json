@@ -1,0 +1,6 @@
+{
+  "name": "DJN Tech - Consoles, Controllers & Pre-Owned Games Store",
+  "description": "Premium gaming store for new and pre-owned consoles, official wireless controllers, and 100% tested PS4 & PS5 pre-owned games with 7-day guarantee.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
