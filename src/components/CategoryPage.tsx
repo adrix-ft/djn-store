@@ -118,16 +118,16 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
         </div>
 
         {/* Category Header Banner */}
-        <div className="bg-white dark:bg-[#111827] rounded-2xl border border-[#e5e7eb] dark:border-[#1e293b] p-6 sm:p-8 mb-8 shadow-xs">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="bg-white dark:bg-[#111827] rounded-2xl border border-[#e5e7eb] dark:border-[#1e293b] p-4 sm:p-8 mb-5 sm:mb-8 shadow-xs">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
             <div>
-              <span className="text-xs font-bold text-[#1a73e8] dark:text-[#60a5fa] uppercase tracking-wider block mb-1">
+              <span className="text-[11px] sm:text-xs font-bold text-[#1a73e8] dark:text-[#60a5fa] uppercase tracking-wider block mb-1">
                 {tag}
               </span>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111827] dark:text-white tracking-tight">
+              <h1 className="text-xl sm:text-3xl font-extrabold text-[#111827] dark:text-white tracking-tight">
                 {title}
               </h1>
-              <p className="text-xs sm:text-sm text-[#6b7280] dark:text-gray-300 mt-1.5 max-w-2xl leading-relaxed">
+              <p className="hidden sm:block text-xs sm:text-sm text-[#6b7280] dark:text-gray-300 mt-1.5 max-w-2xl leading-relaxed">
                 {subtitle}
               </p>
             </div>

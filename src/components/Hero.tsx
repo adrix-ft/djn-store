@@ -69,35 +69,37 @@ export const Hero: React.FC<HeroProps> = ({
 
   return (
     <section className="w-full bg-white dark:bg-[#0b0f17] border-b border-[#f0f2f5] dark:border-[#1e293b] transition-colors duration-200">
-      <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-16 lg:py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+      <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-16 lg:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-16 items-center">
           
-          {/* Left Column: Clean Editorial Hierarchy */}
+          {/* Left Column: Clean Minimalist Editorial Flow */}
           <div className="lg:col-span-6 flex flex-col justify-center">
             
-            {/* Tagline */}
-            <p className="text-[11px] sm:text-xs font-semibold tracking-[0.2em] text-[#9ca3af] dark:text-gray-400 uppercase mb-2 sm:mb-3">
+            {/* Tagline - desktop only to keep mobile razor minimal */}
+            <p className="hidden sm:block text-xs font-semibold tracking-[0.2em] text-[#9ca3af] dark:text-gray-400 uppercase mb-3">
               DJN Tech · Gaming Store
             </p>
 
-            {/* Headline (Line 1) */}
+            {/* Headline - Punchy & Minimal on Mobile */}
             <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#111827] dark:text-white tracking-tight leading-[1.18] sm:leading-[1.12]">
-              PlayStation 5, controllers & certified games.
+              <span className="sm:hidden">PlayStation 5 & Tested Games</span>
+              <span className="hidden sm:inline">PlayStation 5, controllers & certified games.</span>
             </h1>
 
-            {/* Subline (Line 2) */}
-            <p className="mt-2.5 sm:mt-4 text-sm sm:text-base md:text-lg text-[#6b7280] dark:text-gray-300 font-normal leading-relaxed max-w-xl">
-              Factory-sealed consoles and 100% laser-tested pre-owned discs with 7-day replacement.
+            {/* Subline - 1 clean line on mobile */}
+            <p className="mt-2 sm:mt-4 text-xs sm:text-base md:text-lg text-[#6b7280] dark:text-gray-300 font-normal leading-relaxed max-w-xl">
+              <span className="sm:hidden">Official sealed consoles & 100% laser-tested games.</span>
+              <span className="hidden sm:inline">Factory-sealed consoles and 100% laser-tested pre-owned discs with 7-day replacement.</span>
             </p>
 
-            {/* Category Switcher Tabs - Responsive with smooth scroll and zero overflow */}
-            <div className="mt-5 sm:mt-6 max-w-full overflow-x-auto no-scrollbar py-0.5">
+            {/* Category Switcher Tabs - Responsive with smooth scroll */}
+            <div className="mt-4 sm:mt-6 max-w-full overflow-x-auto no-scrollbar py-0.5">
               <div className="inline-flex items-center gap-1 sm:gap-1.5 p-1 rounded-full bg-[#f4f5f7] dark:bg-[#161f30] border border-[#eaedf0] dark:border-[#2d3748] shadow-xs">
                 {HERO_ITEMS.map((item, idx) => (
                   <button
                     key={item.id}
                     onClick={() => setActiveIndex(idx)}
-                    className={`px-3 sm:px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer select-none shrink-0 ${
+                    className={`px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-semibold whitespace-nowrap transition-all cursor-pointer select-none shrink-0 ${
                       idx === activeIndex
                         ? 'bg-white dark:bg-[#1e293b] text-[#111827] dark:text-white shadow-xs'
                         : 'text-[#6b7280] dark:text-gray-400 hover:text-[#111827] dark:hover:text-white'
@@ -110,13 +112,13 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
 
             {/* Action Buttons */}
-            <div className="mt-6 sm:mt-7 flex flex-wrap items-center gap-3 sm:gap-5">
+            <div className="mt-5 sm:mt-7 flex items-center gap-3 sm:gap-5">
               <button
                 onClick={onExploreConsoles}
-                className="px-6 sm:px-7 py-2.5 sm:py-3 bg-[#111827] dark:bg-blue-600 hover:bg-black dark:hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold rounded-full transition-all duration-200 cursor-pointer shadow-xs hover:shadow flex items-center gap-2"
+                className="px-5 sm:px-7 py-2.5 sm:py-3 bg-[#111827] dark:bg-blue-600 hover:bg-black dark:hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold rounded-full transition-all duration-200 cursor-pointer shadow-xs hover:shadow flex items-center gap-1.5 sm:gap-2"
               >
                 <span>Shop Consoles</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
 
               <button
@@ -124,16 +126,16 @@ export const Hero: React.FC<HeroProps> = ({
                 className="px-2 py-2 text-xs sm:text-sm font-semibold text-[#111827] dark:text-gray-200 hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors cursor-pointer flex items-center gap-1 group"
               >
                 <span>Browse Discs</span>
-                <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-0.5" />
               </button>
             </div>
 
-            {/* Understated Trust Note */}
-            <div className="mt-8 sm:mt-10 pt-4 sm:pt-5 border-t border-[#f3f4f6] dark:border-gray-800 flex flex-wrap items-center gap-x-3 sm:gap-x-5 gap-y-1.5 text-[11px] sm:text-xs text-[#9ca3af] dark:text-gray-400">
+            {/* Trust Note - desktop/tablet only, Marquee underneath already displays trust on mobile */}
+            <div className="hidden sm:flex mt-8 sm:mt-10 pt-4 sm:pt-5 border-t border-[#f3f4f6] dark:border-gray-800 flex-wrap items-center gap-x-3 sm:gap-x-5 gap-y-1.5 text-[11px] sm:text-xs text-[#9ca3af] dark:text-gray-400">
               <span>Free delivery over ₹1,000</span>
-              <span className="hidden xs:inline">·</span>
+              <span>·</span>
               <span>7-Day replacement</span>
-              <span className="hidden xs:inline">·</span>
+              <span>·</span>
               <span>100% Tested optical discs</span>
             </div>
 
@@ -144,7 +146,7 @@ export const Hero: React.FC<HeroProps> = ({
             
             <div
               onClick={handleProductClick}
-              className="relative w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[480px] aspect-square bg-[#f8f9fa] dark:bg-[#161f30] border border-[#eaedf0] dark:border-[#2d3748] rounded-3xl p-5 sm:p-8 flex items-center justify-center overflow-hidden cursor-pointer group transition-all duration-300 hover:shadow-xl hover:border-[#d0d5dd] dark:hover:border-gray-600"
+              className="relative w-full max-w-[280px] sm:max-w-[420px] lg:max-w-[480px] aspect-square bg-[#f8f9fa] dark:bg-[#161f30] border border-[#eaedf0] dark:border-[#2d3748] rounded-3xl p-4 sm:p-8 flex items-center justify-center overflow-hidden cursor-pointer group transition-all duration-300 hover:shadow-xl hover:border-[#d0d5dd] dark:border-gray-600"
             >
               <AnimatePresence mode="wait">
                 <motion.img

@@ -19,7 +19,7 @@ import { OrderConfirmationModal } from './components/OrderConfirmationModal';
 import { WishlistDrawer } from './components/WishlistDrawer';
 import { HomeTrustSections } from './components/HomeTrustSections';
 import { Footer } from './components/Footer';
-import { Check, Home, LayoutGrid, Heart, ShoppingBag, Sun, Moon } from 'lucide-react';
+import { Check, Home, LayoutGrid, Gamepad2, Gamepad, Disc } from 'lucide-react';
 
 export default function App() {
   const [products, setProducts] = useState<Product[]>(PRODUCTS);
@@ -401,10 +401,10 @@ export default function App() {
             <section className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
               <div className="flex items-end justify-between mb-6 pb-3 border-b border-[#e5e7eb] dark:border-[#1e293b]">
                 <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-[#111827] dark:text-white tracking-tight">
+                  <h2 className="text-lg sm:text-2xl font-bold text-[#111827] dark:text-white tracking-tight">
                     Featured Products
                   </h2>
-                  <p className="text-xs text-[#6b7280] dark:text-gray-400 mt-0.5">
+                  <p className="hidden sm:block text-xs text-[#6b7280] dark:text-gray-400 mt-0.5">
                     Popular consoles and verified gaming gear
                   </p>
                 </div>
@@ -435,10 +435,10 @@ export default function App() {
             <section className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
               <div className="flex items-end justify-between mb-6 pb-3 border-b border-[#e5e7eb] dark:border-[#1e293b]">
                 <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-[#111827] dark:text-white tracking-tight">
+                  <h2 className="text-lg sm:text-2xl font-bold text-[#111827] dark:text-white tracking-tight">
                     Trending Now
                   </h2>
-                  <p className="text-xs text-[#6b7280] dark:text-gray-400 mt-0.5">
+                  <p className="hidden sm:block text-xs text-[#6b7280] dark:text-gray-400 mt-0.5">
                     Top sellers and trending titles this week
                   </p>
                 </div>
@@ -561,70 +561,88 @@ export default function App() {
         onClose={() => setCompletedOrder(null)}
       />
 
-      {/* Sticky Mobile Bottom Navigation Bar (Ultra-responsive shopping experience) */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0b0f17]/95 backdrop-blur-md border-t border-[#e5e7eb] dark:border-[#1e293b] px-2 py-2 grid grid-cols-5 items-center justify-items-center shadow-[0_-2px_10px_rgba(0,0,0,0.05)] dark:shadow-[0_-2px_10px_rgba(0,0,0,0.4)]">
+      {/* Sticky Mobile Category & Catalog Quick Navigator (Fast 1-Thumb Browsing) */}
+      <nav aria-label="Mobile Navigation" className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0b0f17]/95 backdrop-blur-md border-t border-[#e5e7eb] dark:border-[#1e293b] px-2 py-2 grid grid-cols-5 items-center justify-items-center shadow-[0_-2px_10px_rgba(0,0,0,0.05)] dark:shadow-[0_-2px_10px_rgba(0,0,0,0.4)]">
+        {/* 1. Home */}
         <button
           onClick={handleNavigateHome}
-          className={`flex flex-col items-center gap-0.5 text-[10px] font-medium transition-colors ${
+          className={`flex flex-col items-center gap-0.5 text-[10px] transition-colors cursor-pointer ${
             currentPage === 'home'
               ? 'text-[#1a73e8] dark:text-[#60a5fa] font-bold'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              : 'text-[#6b7280] dark:text-gray-400 hover:text-[#111827] dark:hover:text-white font-medium'
           }`}
         >
-          <Home className="w-5 h-5" />
+          <Home className="w-5 h-5 stroke-[1.8]" />
           <span>Home</span>
+          {currentPage === 'home' && (
+            <span className="w-1 h-1 rounded-full bg-[#1a73e8] dark:bg-[#60a5fa]"></span>
+          )}
         </button>
 
+        {/* 2. Consoles */}
+        <button
+          onClick={() => handleNavigateCategory('consoles')}
+          className={`flex flex-col items-center gap-0.5 text-[10px] transition-colors cursor-pointer ${
+            currentPage === 'consoles'
+              ? 'text-[#1a73e8] dark:text-[#60a5fa] font-bold'
+              : 'text-[#6b7280] dark:text-gray-400 hover:text-[#111827] dark:hover:text-white font-medium'
+          }`}
+        >
+          <Gamepad2 className="w-5 h-5 stroke-[1.8]" />
+          <span>Consoles</span>
+          {currentPage === 'consoles' && (
+            <span className="w-1 h-1 rounded-full bg-[#1a73e8] dark:bg-[#60a5fa]"></span>
+          )}
+        </button>
+
+        {/* 3. Controllers */}
+        <button
+          onClick={() => handleNavigateCategory('controllers')}
+          className={`flex flex-col items-center gap-0.5 text-[10px] transition-colors cursor-pointer ${
+            currentPage === 'controllers'
+              ? 'text-[#1a73e8] dark:text-[#60a5fa] font-bold'
+              : 'text-[#6b7280] dark:text-gray-400 hover:text-[#111827] dark:hover:text-white font-medium'
+          }`}
+        >
+          <Gamepad className="w-5 h-5 stroke-[1.8]" />
+          <span>Controllers</span>
+          {currentPage === 'controllers' && (
+            <span className="w-1 h-1 rounded-full bg-[#1a73e8] dark:bg-[#60a5fa]"></span>
+          )}
+        </button>
+
+        {/* 4. Pre-Owned Games */}
+        <button
+          onClick={() => handleNavigateCategory('preowned_games')}
+          className={`flex flex-col items-center gap-0.5 text-[10px] transition-colors cursor-pointer ${
+            currentPage === 'preowned_games'
+              ? 'text-[#1a73e8] dark:text-[#60a5fa] font-bold'
+              : 'text-[#6b7280] dark:text-gray-400 hover:text-[#111827] dark:hover:text-white font-medium'
+          }`}
+        >
+          <Disc className="w-5 h-5 stroke-[1.8]" />
+          <span>Games</span>
+          {currentPage === 'preowned_games' && (
+            <span className="w-1 h-1 rounded-full bg-[#1a73e8] dark:bg-[#60a5fa]"></span>
+          )}
+        </button>
+
+        {/* 5. All / Catalog */}
         <button
           onClick={() => handleNavigateCategory('all')}
-          className={`flex flex-col items-center gap-0.5 text-[10px] font-medium transition-colors ${
-            currentPage !== 'home' && currentPage !== 'product-detail'
+          className={`flex flex-col items-center gap-0.5 text-[10px] transition-colors cursor-pointer ${
+            currentPage === 'all' || currentPage === 'accessories'
               ? 'text-[#1a73e8] dark:text-[#60a5fa] font-bold'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              : 'text-[#6b7280] dark:text-gray-400 hover:text-[#111827] dark:hover:text-white font-medium'
           }`}
         >
-          <LayoutGrid className="w-5 h-5" />
+          <LayoutGrid className="w-5 h-5 stroke-[1.8]" />
           <span>Catalog</span>
-        </button>
-
-        <button
-          onClick={() => setIsWishlistOpen(true)}
-          className="relative flex flex-col items-center gap-0.5 text-[10px] font-medium text-gray-500 dark:text-gray-400 hover:text-red-500 transition-colors"
-        >
-          <Heart className="w-5 h-5" />
-          {wishlist.length > 0 && (
-            <span className="absolute -top-1 right-1 w-4 h-4 bg-[#d0473e] text-white text-[9px] font-bold rounded-full flex items-center justify-center">
-              {wishlist.length}
-            </span>
+          {(currentPage === 'all' || currentPage === 'accessories') && (
+            <span className="w-1 h-1 rounded-full bg-[#1a73e8] dark:bg-[#60a5fa]"></span>
           )}
-          <span>Wishlist</span>
         </button>
-
-        <button
-          onClick={() => setIsCartOpen(true)}
-          className="relative flex flex-col items-center gap-0.5 text-[10px] font-medium text-gray-500 dark:text-gray-400 hover:text-blue-600 transition-colors"
-        >
-          <ShoppingBag className="w-5 h-5" />
-          {cart.length > 0 && (
-            <span className="absolute -top-1 right-0 w-4 h-4 bg-[#1a73e8] text-white text-[9px] font-bold rounded-full flex items-center justify-center">
-              {cart.reduce((a, b) => a + b.quantity, 0)}
-            </span>
-          )}
-          <span>Cart</span>
-        </button>
-
-        <button
-          onClick={handleToggleTheme}
-          className="flex flex-col items-center gap-0.5 text-[10px] font-medium text-gray-500 dark:text-gray-400 hover:text-amber-500 transition-colors"
-        >
-          {theme === 'dark' ? (
-            <Sun className="w-5 h-5 text-amber-400" />
-          ) : (
-            <Moon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-          )}
-          <span>Theme</span>
-        </button>
-      </div>
+      </nav>
 
     </div>
   );
