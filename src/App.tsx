@@ -24,17 +24,15 @@ import { Check, Home, LayoutGrid, Heart, ShoppingBag, Sun, Moon } from 'lucide-r
 export default function App() {
   const [products, setProducts] = useState<Product[]>(PRODUCTS);
 
-  // Theme Management (Light / Dark)
+  // Theme Management (Default: Light Theme)
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    const saved = localStorage.getItem('djn_theme');
+    const saved = localStorage.getItem('djn_theme_v2');
     if (saved === 'dark' || saved === 'light') return saved;
-    return typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light';
+    return 'light';
   });
 
   useEffect(() => {
-    localStorage.setItem('djn_theme', theme);
+    localStorage.setItem('djn_theme_v2', theme);
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
