@@ -248,7 +248,7 @@ export const OrderTrackingModal: React.FC<OrderTrackingModalProps> = ({
               <div className="p-3.5 rounded-xl bg-gray-50 dark:bg-[#1a2333] border border-gray-100 dark:border-gray-800 flex items-center justify-between text-xs">
                 <span className="text-gray-500 dark:text-gray-400">Need help with this order?</span>
                 <a
-                  href="https://wa.me/919999999999?text=Hi%20DJN%20Tech,%20I%20have%20a%20question%20regarding%20my%20order"
+                  href="https://wa.me/918446439374?text=Hi%20DJN%20Tech,%20I%20have%20a%20question%20regarding%20my%20order"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"

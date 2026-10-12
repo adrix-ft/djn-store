@@ -37,27 +37,27 @@ export const Footer: React.FC<FooterProps> = ({
               Contact us via WhatsApp or call for fast assistance.
             </p>
             <a
-              href="https://wa.me/919629998859"
+              href="https://wa.me/918446439374"
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-2 font-medium text-[#212121] dark:text-gray-200 hover:text-[#25d366] transition-colors"
             >
               <MessageCircle className="w-4 h-4 text-[#25d366]" />
-              <span>+91 96299 98859 (WhatsApp)</span>
+              <span>+91 84464 39374 (WhatsApp)</span>
             </a>
             <a
-              href="tel:+919629998859"
+              href="tel:+918446439374"
               className="flex items-center gap-2 font-medium text-[#212121] dark:text-gray-200 hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors"
             >
               <Phone className="w-3.5 h-3.5 text-[#1a73e8] dark:text-[#60a5fa]" />
-              <span>+91 96299 98859 (Call)</span>
+              <span>+91 84464 39374 (Call)</span>
             </a>
             <a
-              href="mailto:djntech.india@gmail.com"
+              href="mailto:djntechofficial@gmail.com"
               className="flex items-center gap-2 text-[#64748b] dark:text-gray-400 hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors"
             >
               <Mail className="w-3.5 h-3.5 text-[#1a73e8] dark:text-[#60a5fa]" />
-              <span>djntech.india@gmail.com</span>
+              <span>djntechofficial@gmail.com</span>
             </a>
           </div>
 
@@ -183,7 +183,7 @@ export const Footer: React.FC<FooterProps> = ({
             <h4 className="font-bold text-[#212121] dark:text-white text-sm">Social & Community</h4>
             <div className="flex items-center gap-2">
               <a
-                href="https://wa.me/919629998859"
+                href="https://wa.me/918446439374"
                 target="_blank"
                 rel="noreferrer"
                 className="w-8 h-8 rounded-full border border-[#e5e7eb] dark:border-gray-800 flex items-center justify-center text-[#64748b] dark:text-gray-400 hover:text-[#25d366] hover:border-[#25d366] transition-colors"
@@ -192,11 +192,11 @@ export const Footer: React.FC<FooterProps> = ({
                 <MessageCircle className="w-4 h-4" />
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/djntech/"
                 target="_blank"
                 rel="noreferrer"
                 className="w-8 h-8 rounded-full border border-[#e5e7eb] dark:border-gray-800 flex items-center justify-center text-[#64748b] dark:text-gray-400 hover:text-[#e1306c] hover:border-[#e1306c] transition-colors"
-                aria-label="Instagram"
+                aria-label="Instagram (@djntech)"
               >
                 <Instagram className="w-4 h-4" />
               </a>

@@ -497,13 +497,13 @@ export const SellConsolesPage: React.FC<SellConsolesPageProps> = ({
                 </button>
 
                 <a
-                  href={`https://wa.me/919629998859?text=${waMessage}`}
+                  href={`https://wa.me/918446439374?text=${waMessage}`}
                   target="_blank"
                   rel="noreferrer"
                   className="w-full bg-[#25d366] hover:bg-[#20ba59] text-white font-bold py-3 px-4 rounded-xl text-sm transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  <span>Sell on WhatsApp (+91 96299 98859)</span>
+                  <span>Sell on WhatsApp (+91 84464 39374)</span>
                 </a>
               </div>
 

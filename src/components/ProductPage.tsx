@@ -194,7 +194,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({
 
               {/* WhatsApp Quick Order Link */}
               <a
-                href={`https://wa.me/919629998859?text=${encodeURIComponent(
+                href={`https://wa.me/918446439374?text=${encodeURIComponent(
                   `Hi DJN Tech, I am interested in purchasing: ${product.name} (₹${product.price}). Is it available for delivery?`
                 )}`}
                 target="_blank"
@@ -202,7 +202,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                 className="w-full mt-3 py-2.5 px-4 rounded-xl font-semibold text-xs text-[#075e54] dark:text-emerald-300 bg-[#25d366]/10 dark:bg-emerald-950/30 border border-[#25d366]/30 dark:border-emerald-800 hover:bg-[#25d366]/20 transition-colors flex items-center justify-center gap-2"
               >
                 <MessageCircle className="w-4 h-4 text-[#25d366]" />
-                <span>Order via WhatsApp (+91 96299 98859)</span>
+                <span>Order via WhatsApp (+91 84464 39374)</span>
               </a>
 
             </div>

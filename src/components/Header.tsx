@@ -180,13 +180,13 @@ export const Header: React.FC<HeaderProps> = ({
           
           {/* Quick Help Link (desktop only) */}
           <a
-            href="https://wa.me/919629998859"
+            href="https://wa.me/918446439374"
             target="_blank"
             rel="noreferrer"
             className="hidden xl:flex items-center gap-1.5 text-xs text-[#4b5563] dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 px-2.5 py-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-[#1a2333] transition-colors font-medium mr-1"
           >
             <Phone className="w-3.5 h-3.5 text-emerald-500" />
-            <span>Support: +91 96299 98859</span>
+            <span>Support: +91 84464 39374</span>
           </a>
 
           {/* Mobile Search Toggle */}
@@ -516,13 +516,13 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
 
               <a
-                href="https://wa.me/919629998859"
+                href="https://wa.me/918446439374"
                 target="_blank"
                 rel="noreferrer"
                 className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-colors shadow-xs"
               >
                 <Phone className="w-3.5 h-3.5" />
-                <span>WhatsApp: +91 96299 98859</span>
+                <span>WhatsApp: +91 84464 39374</span>
               </a>
             </div>
 

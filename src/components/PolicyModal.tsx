@@ -55,7 +55,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({ type, onClose }) => {
               </div>
               <h4 className="font-bold text-[#111827] text-base mt-4">How to Claim Replacement</h4>
               <ol className="list-decimal pl-5 space-y-1.5">
-                <li>Contact our support team on WhatsApp at <strong>+91 96299 98859</strong> within 7 days of delivery.</li>
+                <li>Contact our support team on WhatsApp at <strong>+91 84464 39374</strong> within 7 days of delivery.</li>
                 <li>Share a short photo or video showing the issue along with your Order ID.</li>
                 <li>Our technician will verify and immediately initiate a reverse pickup.</li>
                 <li>Once verified, replacement is dispatched immediately or refund is credited within 24-48 hours.</li>
@@ -95,7 +95,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({ type, onClose }) => {
               </p>
               <div className="space-y-3 pt-2">
                 <a
-                  href="https://wa.me/919629998859"
+                  href="https://wa.me/918446439374"
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center gap-3 p-3.5 rounded-xl bg-[#25d366]/10 border border-[#25d366]/30 text-[#128c7e] hover:bg-[#25d366]/20 transition-colors"
@@ -103,18 +103,18 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({ type, onClose }) => {
                   <Phone className="w-5 h-5 text-[#25d366]" />
                   <div>
                     <span className="font-bold block text-sm text-[#075e54]">Chat on WhatsApp</span>
-                    <span className="text-xs text-[#128c7e]">+91 96299 98859 (Fastest Response)</span>
+                    <span className="text-xs text-[#128c7e]">+91 84464 39374 (Fastest Response)</span>
                   </div>
                 </a>
 
                 <a
-                  href="mailto:djntech.india@gmail.com"
+                  href="mailto:djntechofficial@gmail.com"
                   className="flex items-center gap-3 p-3.5 rounded-xl bg-[#f0f9ff] border border-[#bae6fd] text-[#0369a1] hover:bg-[#e0f2fe] transition-colors"
                 >
                   <Mail className="w-5 h-5 text-[#1a73e8]" />
                   <div>
                     <span className="font-bold block text-sm text-[#0c4a6e]">Email Support</span>
-                    <span className="text-xs text-[#0369a1]">djntech.india@gmail.com</span>
+                    <span className="text-xs text-[#0369a1]">djntechofficial@gmail.com</span>
                   </div>
                 </a>
               </div>
