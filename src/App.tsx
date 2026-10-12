@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { PRODUCTS } from './data/products';
-import { Product, CartItem, Category, Platform, Condition, Order, ProductReview } from './types/store';
+import { Product, CartItem, Category, Platform, Condition, Order, ProductReview, SiteConfig } from './types/store';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ProductCard } from './components/ProductCard';
@@ -21,10 +21,40 @@ import { HomeTrustSections } from './components/HomeTrustSections';
 import { Footer } from './components/Footer';
 import { SellConsolesPage } from './components/SellConsolesPage';
 import { RepairConsolePage } from './components/RepairConsolePage';
+import { AdminPanel } from './components/AdminPanel';
+import { AdminPinModal } from './components/AdminPinModal';
+import { DEFAULT_SITE_CONFIG } from './data/siteConfig';
 import { Check } from 'lucide-react';
 
 export default function App() {
-  const [products, setProducts] = useState<Product[]>(PRODUCTS);
+  const [products, setProducts] = useState<Product[]>(() => {
+    const saved = localStorage.getItem('djn_products_v5');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    return PRODUCTS;
+  });
+
+  // Dynamic Site Configuration
+  const [siteConfig, setSiteConfig] = useState<SiteConfig>(() => {
+    const saved = localStorage.getItem('djn_site_config');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    return DEFAULT_SITE_CONFIG;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('djn_site_config', JSON.stringify(siteConfig));
+  }, [siteConfig]);
 
   // Theme Management (Default: Light Theme)
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -49,7 +79,7 @@ export default function App() {
   };
 
   // Multi-page Routing State
-  const [currentPage, setCurrentPage] = useState<'home' | 'all' | Category | 'sell-consoles' | 'repair-console' | 'product-detail'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'all' | Category | 'sell-consoles' | 'repair-console' | 'product-detail' | 'admin'>('home');
   const [activeCategory, setActiveCategory] = useState<Category | 'all'>('all');
   const [selectedPlatform, setSelectedPlatform] = useState<Platform | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -61,6 +91,57 @@ export default function App() {
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [completedOrder, setCompletedOrder] = useState<Order | null>(null);
+
+  // Admin Portal & Security PIN State
+  const [isAdminPinModalOpen, setIsAdminPinModalOpen] = useState(false);
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => {
+    return localStorage.getItem('djn_admin_authenticated') === 'true';
+  });
+
+  // Tracked Orders for Admin
+  const [orders, setOrders] = useState<Order[]>(() => {
+    const saved = localStorage.getItem('djn_admin_orders');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    return [
+      {
+        id: 'DJN-84291',
+        date: '12 Oct 2026, 04:15 PM',
+        items: [
+          {
+            product: PRODUCTS[0],
+            quantity: 1,
+            selectedCondition: PRODUCTS[0].condition,
+          }
+        ],
+        subtotal: 49990,
+        discount: 0,
+        shipping: 0,
+        total: 49990,
+        customer: {
+          fullName: 'Rahul Sharma',
+          phone: '+91 84464 39374',
+          email: 'rahul.s@example.com',
+          address: 'Flat 402, Sea Green Apartments, Bandra West',
+          city: 'Mumbai',
+          state: 'Maharashtra',
+          pincode: '400050',
+          paymentMethod: 'cod',
+        },
+        status: 'Dispatched',
+        estimatedDelivery: '14 Oct 2026',
+      }
+    ];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('djn_admin_orders', JSON.stringify(orders));
+  }, [orders]);
 
   // Cart & Wishlist with localStorage persistence
   const [cart, setCart] = useState<CartItem[]>(() => {
@@ -118,6 +199,33 @@ export default function App() {
     setActiveCategory('all');
     setSelectedPlatform('all');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Admin Access Handlers
+  const handleOpenAdmin = () => {
+    if (isAdminAuthenticated) {
+      setCurrentPage('admin');
+      setSelectedProduct(null);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      setIsAdminPinModalOpen(true);
+    }
+  };
+
+  const handleAdminPinSuccess = () => {
+    setIsAdminAuthenticated(true);
+    setIsAdminPinModalOpen(false);
+    setCurrentPage('admin');
+    setSelectedProduct(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    showToast('Welcome to Store Admin Console');
+  };
+
+  const handleAdminLogout = () => {
+    setIsAdminAuthenticated(false);
+    localStorage.removeItem('djn_admin_authenticated');
+    setCurrentPage('home');
+    showToast('Admin session locked');
   };
 
   const handleNavigateCategory = (cat: Category | 'all', plat: Platform | 'all' = 'all') => {
@@ -190,9 +298,11 @@ export default function App() {
 
   // Apply Coupon
   const handleApplyCoupon = (code: string) => {
-    if (code === 'DJN10' || code === 'GAMEON') {
-      setAppliedCoupon(code);
-      showToast(`Coupon "${code}" applied successfully!`);
+    const cleanCode = code.trim().toUpperCase();
+    const targetCode = siteConfig.promoCode.trim().toUpperCase();
+    if (cleanCode === targetCode || cleanCode === 'DJN2026' || cleanCode === 'WELCOME10') {
+      setAppliedCoupon(cleanCode);
+      showToast(`Coupon "${cleanCode}" applied successfully!`);
       return true;
     }
     return false;
@@ -206,6 +316,7 @@ export default function App() {
   // Order Placement Success
   const handleOrderSuccess = (order: Order) => {
     setCompletedOrder(order);
+    setOrders((prev) => [order, ...prev]);
     setCart([]);
     setIsCheckoutOpen(false);
   };
@@ -255,45 +366,32 @@ export default function App() {
   const cartShipping = cartSubtotal >= 1000 || cartSubtotal === 0 ? 0 : 99;
   const cartTotal = Math.max(0, cartSubtotal - cartDiscount + cartShipping);
 
-  // Clean Circular Categories for Home
-  const categoryCircles = [
-    {
-      id: 'consoles' as const,
-      name: 'Consoles',
-      platform: 'all' as const,
-      imageUrl: 'https://psxgaming.com/wp-content/uploads/2025/03/game-console-300x300.png',
-    },
-    {
-      id: 'controllers' as const,
-      name: 'Controllers',
-      platform: 'all' as const,
-      imageUrl: 'https://psxgaming.com/wp-content/uploads/2025/03/joystick-300x300.png',
-    },
-    {
-      id: 'preowned_games' as const,
-      name: 'PS5 Games',
-      platform: 'PS5' as const,
-      imageUrl: 'https://psxgaming.com/wp-content/uploads/2025/03/vinyl-record-300x300.png',
-    },
-    {
-      id: 'preowned_games' as const,
-      name: 'PS4 Games',
-      platform: 'PS4' as const,
-      imageUrl: 'https://psxgaming.com/wp-content/uploads/2025/03/ps4-300x300.png',
-    },
-    {
-      id: 'preowned_games' as const,
-      name: 'XBOX Games',
-      platform: 'Xbox' as const,
-      imageUrl: 'https://psxgaming.com/wp-content/uploads/2025/03/xbox-300x300.png',
-    },
-    {
-      id: 'accessories' as const,
-      name: 'Accessories',
-      platform: 'all' as const,
-      imageUrl: 'https://psxgaming.com/wp-content/uploads/2025/03/gamepad-1-300x300.png',
-    },
-  ];
+
+
+  // Admin View Render
+  if (currentPage === 'admin') {
+    return (
+      <div className={`min-h-screen ${theme === 'dark' ? 'dark' : ''}`}>
+        <AdminPanel
+          products={products}
+          onUpdateProducts={(newProducts) => setProducts(newProducts)}
+          siteConfig={siteConfig}
+          onUpdateSiteConfig={(newConfig) => setSiteConfig(newConfig)}
+          orders={orders}
+          onUpdateOrders={(newOrders) => setOrders(newOrders)}
+          onExit={() => setCurrentPage('home')}
+          onLogout={handleAdminLogout}
+          showToast={showToast}
+        />
+        {toastMessage && (
+          <div className="fixed bottom-6 right-6 z-50 bg-[#111827] dark:bg-gray-800 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-bottom-4 duration-200 text-xs sm:text-sm font-medium border border-gray-700">
+            <Check className="w-4 h-4 text-[#10b981]" />
+            <span>{toastMessage}</span>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-[#0b0f17] text-[#212121] dark:text-gray-100 transition-colors duration-200">
@@ -330,6 +428,8 @@ export default function App() {
         onSelectProduct={handleSelectProduct}
         theme={theme}
         onToggleTheme={handleToggleTheme}
+        onOpenAdmin={handleOpenAdmin}
+        siteConfig={siteConfig}
       />
 
       {/* Main Content Area: Conditional Routing Based on currentPage */}
@@ -394,7 +494,7 @@ export default function App() {
         ) : (
 
           /* VIEW 3: FULL HOME PAGE */
-          <div className="space-y-10 sm:space-y-16 pb-12 sm:pb-16">
+          <div className="w-full flex flex-col">
             
             {/* Minimalist Hero Section with Aligned Visual Hierarchy */}
             <Hero
@@ -405,144 +505,161 @@ export default function App() {
             />
 
             {/* Infinite Running Marquee Ticker */}
-            <Marquee />
+            <Marquee announcementText={siteConfig.marqueeAnnouncement} />
 
-            {/* Categories Section - Positioned Directly under Hero & Marquee */}
-            <section className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-2">
-              <div className="text-center mb-6">
-                <p className="text-xs font-semibold tracking-wider text-[#9ca3af] dark:text-gray-400 uppercase">
-                  Explore by Category
-                </p>
-              </div>
 
-              <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 lg:gap-14">
-                {categoryCircles.map((cat, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => handleNavigateCategory(cat.id, cat.platform)}
-                    className="flex flex-col items-center group cursor-pointer"
-                  >
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full bg-[#f8f9fa] dark:bg-[#161f30] border border-[#eaedf0] dark:border-[#2d3748] group-hover:border-[#111827] dark:group-hover:border-blue-500 group-hover:shadow-md flex items-center justify-center overflow-hidden p-3.5 transition-all duration-300">
-                      <img
-                        src={cat.imageUrl}
-                        alt={cat.name}
-                        referrerPolicy="no-referrer"
-                        className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
-                        loading="lazy"
-                      />
+
+            {/* SECTION 1: Featured Products (Clean White Surface) */}
+            <section className="w-full py-10 sm:py-14 bg-white dark:bg-[#0b0f17]">
+              <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+                <div className="flex items-end justify-between mb-6 pb-3 border-b border-[#e5e7eb] dark:border-[#1e293b]">
+                  <div>
+                    <div className="inline-flex items-center gap-2 mb-1.5">
+                      <span className="w-2 h-2 rounded-full bg-blue-600 dark:bg-blue-400" />
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+                        Official Hardware & Certified Discs
+                      </span>
                     </div>
-                    <span className="text-xs sm:text-sm font-semibold text-[#4b5563] dark:text-gray-300 group-hover:text-[#111827] dark:group-hover:text-white mt-3 tracking-tight transition-colors">
-                      {cat.name}
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#111827] dark:text-white tracking-tight">
+                      Featured Products
+                    </h2>
+                    <p className="hidden sm:block text-xs text-[#6b7280] dark:text-gray-400 mt-0.5">
+                      Top-rated consoles, official controllers & bestseller games
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+                    <span className="sm:hidden text-[11px] font-medium text-gray-400 dark:text-gray-500">
+                      Swipe →
                     </span>
-                  </button>
-                ))}
-              </div>
-            </section>
-
-            {/* Featured Products Section */}
-            <section className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-              <div className="flex items-end justify-between mb-6 pb-3 border-b border-[#e5e7eb] dark:border-[#1e293b]">
-                <div>
-                  <h2 className="text-lg sm:text-2xl font-bold text-[#111827] dark:text-white tracking-tight">
-                    Featured Products
-                  </h2>
-                  <p className="hidden sm:block text-xs text-[#6b7280] dark:text-gray-400 mt-0.5">
-                    Popular consoles and verified gaming gear
-                  </p>
+                    <button
+                      onClick={() => handleNavigateCategory('all')}
+                      className="text-xs font-bold text-[#2563eb] dark:text-[#60a5fa] hover:underline cursor-pointer flex items-center gap-1"
+                    >
+                      <span>View all</span>
+                      <span>→</span>
+                    </button>
+                  </div>
                 </div>
-                <button
-                  onClick={() => handleNavigateCategory('all')}
-                  className="text-xs font-semibold text-[#2563eb] dark:text-[#60a5fa] hover:underline cursor-pointer"
-                >
-                  View all →
-                </button>
-              </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-5">
-                {featuredProducts.map((prod) => (
-                  <ProductCard
-                    key={prod.id}
-                    product={prod}
-                    onSelect={handleSelectProduct}
-                    onAddToCart={handleAddToCart}
-                    onToggleWishlist={handleToggleWishlist}
-                    isWishlisted={wishlist.some((w) => w.id === prod.id)}
-                    isInCart={cart.some((c) => c.product.id === prod.id)}
-                  />
-                ))}
-              </div>
-            </section>
-
-            {/* Trending Now Section */}
-            <section className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-              <div className="flex items-end justify-between mb-6 pb-3 border-b border-[#e5e7eb] dark:border-[#1e293b]">
-                <div>
-                  <h2 className="text-lg sm:text-2xl font-bold text-[#111827] dark:text-white tracking-tight">
-                    Trending Now
-                  </h2>
-                  <p className="hidden sm:block text-xs text-[#6b7280] dark:text-gray-400 mt-0.5">
-                    Top sellers and trending titles this week
-                  </p>
+                <div className="flex sm:grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 overflow-x-auto sm:overflow-visible no-scrollbar snap-x snap-mandatory gap-3.5 sm:gap-5 pb-3 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0">
+                  {featuredProducts.map((prod) => (
+                    <ProductCard
+                      key={prod.id}
+                      product={prod}
+                      className="w-[164px] min-w-[164px] sm:w-auto sm:min-w-0 shrink-0 sm:shrink snap-start h-full"
+                      onSelect={handleSelectProduct}
+                      onAddToCart={handleAddToCart}
+                      onToggleWishlist={handleToggleWishlist}
+                      isWishlisted={wishlist.some((w) => w.id === prod.id)}
+                      isInCart={cart.some((c) => c.product.id === prod.id)}
+                    />
+                  ))}
                 </div>
-                <button
-                  onClick={() => handleNavigateCategory('all')}
-                  className="text-xs font-semibold text-[#2563eb] dark:text-[#60a5fa] hover:underline cursor-pointer"
-                >
-                  Browse all →
-                </button>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-5">
-                {trendingProducts.map((prod) => (
-                  <ProductCard
-                    key={prod.id}
-                    product={prod}
-                    onSelect={handleSelectProduct}
-                    onAddToCart={handleAddToCart}
-                    onToggleWishlist={handleToggleWishlist}
-                    isWishlisted={wishlist.some((w) => w.id === prod.id)}
-                    isInCart={cart.some((c) => c.product.id === prod.id)}
-                  />
-                ))}
               </div>
             </section>
 
-            {/* Special Deals Section */}
-            <section className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-              <div className="flex items-end justify-between mb-6 pb-3 border-b border-[#e5e7eb] dark:border-[#1e293b]">
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-[#111827] dark:text-white tracking-tight">
-                    Special Deals
-                  </h2>
-                  <p className="text-xs text-[#6b7280] dark:text-gray-400 mt-0.5">
-                    Discounted pre-owned discs and refurbished accessories
-                  </p>
+            {/* SECTION 2: Trending Now (Contrasting Tinted Band) */}
+            <section className="w-full py-12 sm:py-16 bg-[#f4f5f8] dark:bg-[#0e1626] border-y border-[#e2e5eb] dark:border-[#1e293b]">
+              <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+                <div className="flex items-end justify-between mb-6 pb-3 border-b border-[#d8dce4] dark:border-[#223048]">
+                  <div>
+                    <div className="inline-flex items-center gap-2 mb-1.5">
+                      <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                        🔥 High Demand This Week
+                      </span>
+                    </div>
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#111827] dark:text-white tracking-tight">
+                      Trending Now
+                    </h2>
+                    <p className="hidden sm:block text-xs text-[#6b7280] dark:text-gray-400 mt-0.5">
+                      Most viewed games and high-velocity console bundles
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+                    <span className="sm:hidden text-[11px] font-medium text-gray-400 dark:text-gray-500">
+                      Swipe →
+                    </span>
+                    <button
+                      onClick={() => handleNavigateCategory('all')}
+                      className="text-xs font-bold text-[#2563eb] dark:text-[#60a5fa] hover:underline cursor-pointer flex items-center gap-1"
+                    >
+                      <span>Browse all</span>
+                      <span>→</span>
+                    </button>
+                  </div>
                 </div>
-                <button
-                  onClick={() => handleNavigateCategory('preowned_games')}
-                  className="text-xs font-semibold text-[#2563eb] dark:text-[#60a5fa] hover:underline cursor-pointer"
-                >
-                  See all deals →
-                </button>
-              </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-5">
-                {todaysDeals.map((prod) => (
-                  <ProductCard
-                    key={prod.id}
-                    product={prod}
-                    onSelect={handleSelectProduct}
-                    onAddToCart={handleAddToCart}
-                    onToggleWishlist={handleToggleWishlist}
-                    isWishlisted={wishlist.some((w) => w.id === prod.id)}
-                    isInCart={cart.some((c) => c.product.id === prod.id)}
-                  />
-                ))}
+                <div className="flex sm:grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 overflow-x-auto sm:overflow-visible no-scrollbar snap-x snap-mandatory gap-3.5 sm:gap-5 pb-3 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0">
+                  {trendingProducts.map((prod) => (
+                    <ProductCard
+                      key={prod.id}
+                      product={prod}
+                      className="w-[164px] min-w-[164px] sm:w-auto sm:min-w-0 shrink-0 sm:shrink snap-start h-full"
+                      onSelect={handleSelectProduct}
+                      onAddToCart={handleAddToCart}
+                      onToggleWishlist={handleToggleWishlist}
+                      isWishlisted={wishlist.some((w) => w.id === prod.id)}
+                      isInCart={cart.some((c) => c.product.id === prod.id)}
+                    />
+                  ))}
+                </div>
               </div>
             </section>
 
-            {/* Trust Pillars & Verified Customer Reviews ("Why Choose DJN Tech" removed) */}
-            <HomeTrustSections onShopNow={() => handleNavigateCategory('all')} />
+            {/* SECTION 3: Special Deals (Subtle Emerald/Warm Savings Surface) */}
+            <section className="w-full py-12 sm:py-16 bg-gradient-to-b from-white via-emerald-50/25 to-white dark:from-[#0b0f17] dark:via-[#09221b]/20 dark:to-[#0b0f17]">
+              <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+                <div className="flex items-end justify-between mb-6 pb-3 border-b border-emerald-200/60 dark:border-emerald-950/60">
+                  <div>
+                    <div className="inline-flex items-center gap-2 mb-1.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+                        ⚡ Biggest Price Drops · Up to 55% OFF
+                      </span>
+                    </div>
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#111827] dark:text-white tracking-tight">
+                      Special Deals
+                    </h2>
+                    <p className="hidden sm:block text-xs text-[#6b7280] dark:text-gray-400 mt-0.5">
+                      Discounted optical discs, pre-owned consoles & refurbished accessories
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+                    <span className="sm:hidden text-[11px] font-medium text-gray-400 dark:text-gray-500">
+                      Swipe →
+                    </span>
+                    <button
+                      onClick={() => handleNavigateCategory('preowned_games')}
+                      className="text-xs font-bold text-emerald-700 dark:text-emerald-400 hover:underline cursor-pointer flex items-center gap-1"
+                    >
+                      <span>See all deals</span>
+                      <span>→</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex sm:grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 overflow-x-auto sm:overflow-visible no-scrollbar snap-x snap-mandatory gap-3.5 sm:gap-5 pb-3 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0">
+                  {todaysDeals.map((prod) => (
+                    <ProductCard
+                      key={prod.id}
+                      product={prod}
+                      className="w-[164px] min-w-[164px] sm:w-auto sm:min-w-0 shrink-0 sm:shrink snap-start h-full"
+                      onSelect={handleSelectProduct}
+                      onAddToCart={handleAddToCart}
+                      onToggleWishlist={handleToggleWishlist}
+                      isWishlisted={wishlist.some((w) => w.id === prod.id)}
+                      isInCart={cart.some((c) => c.product.id === prod.id)}
+                    />
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* SECTION 4: Trust Pillars & Customer Feedback */}
+            <section className="w-full py-6 sm:py-14 lg:py-20 bg-[#f8f9fb] dark:bg-[#0c121e] border-t border-[#eaedf0] dark:border-[#1e293b]">
+              <HomeTrustSections onShopNow={() => handleNavigateCategory('all')} />
+            </section>
 
           </div>
         )}
@@ -554,12 +671,21 @@ export default function App() {
         onSelectCategory={handleNavigateCategory}
         onOpenPolicy={(type) => setActivePolicy(type)}
         onOpenCart={() => setIsCartOpen(true)}
+        onOpenAdmin={handleOpenAdmin}
+        siteConfig={siteConfig}
       />
 
       {/* Customer Policy & Information Modal */}
       <PolicyModal
         type={activePolicy}
         onClose={() => setActivePolicy(null)}
+      />
+
+      {/* Admin Security PIN Modal */}
+      <AdminPinModal
+        isOpen={isAdminPinModalOpen}
+        onClose={() => setIsAdminPinModalOpen(false)}
+        onSuccess={handleAdminPinSuccess}
       />
 
       {/* Cart Slide-Over Drawer */}
@@ -595,6 +721,7 @@ export default function App() {
         shipping={cartShipping}
         total={cartTotal}
         onOrderSuccess={handleOrderSuccess}
+        siteConfig={siteConfig}
       />
 
       {/* Order Confirmation Modal */}

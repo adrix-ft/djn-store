@@ -1,8 +1,15 @@
 import React from 'react';
 import { Truck, ShieldCheck, Disc, Star, Zap, Gamepad2, Award } from 'lucide-react';
 
-export const Marquee: React.FC = () => {
+interface MarqueeProps {
+  announcementText?: string;
+}
+
+export const Marquee: React.FC<MarqueeProps> = ({ announcementText }) => {
   const tickerItems = [
+    ...(announcementText
+      ? [{ icon: Zap, text: announcementText }]
+      : []),
     { icon: Truck, text: 'Free Delivery on Orders Above ₹1,000' },
     { icon: ShieldCheck, text: '7-Day Hassle-Free Replacement' },
     { icon: Disc, text: '100% Optical Laser-Tested Game Discs' },

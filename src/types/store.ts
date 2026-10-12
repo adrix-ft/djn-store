@@ -59,7 +59,8 @@ export interface OrderCustomerInfo {
   city: string;
   state: string;
   pincode: string;
-  paymentMethod: 'cod' | 'upi' | 'card';
+  paymentMethod: 'cod' | 'upi' | 'card' | 'razorpay';
+  paymentId?: string;
   notes?: string;
 }
 
@@ -74,6 +75,7 @@ export interface Order {
   customer: OrderCustomerInfo;
   status: 'Confirmed' | 'Dispatched' | 'Out for Delivery' | 'Delivered';
   estimatedDelivery: string;
+  paymentId?: string;
 }
 
 export interface TradeInItem {
@@ -84,3 +86,22 @@ export interface TradeInItem {
   estimatedCash: number;
   estimatedStoreCredit: number;
 }
+
+export interface SiteConfig {
+  storeName: string;
+  phone: string;
+  whatsappNumber: string;
+  email: string;
+  instagram: string;
+  supportHours: string;
+  address: string;
+  marqueeAnnouncement: string;
+  heroHeadline: string;
+  heroSubheadline: string;
+  promoCode: string;
+  promoDiscountPercent: number;
+  freeShippingThreshold: number;
+  razorpayKeyId?: string;
+  razorpayEnabled?: boolean;
+}
+

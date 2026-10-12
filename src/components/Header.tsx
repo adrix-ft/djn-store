@@ -17,9 +17,10 @@ import {
   Wrench,
   Banknote,
   Layers,
-  Home
+  Home,
+  ShieldCheck,
 } from 'lucide-react';
-import { Product, Category, Platform } from '../types/store';
+import { Product, Category, Platform, SiteConfig } from '../types/store';
 import { BrandLogo } from './BrandLogo';
 
 interface HeaderProps {
@@ -40,6 +41,8 @@ interface HeaderProps {
   onSelectProduct: (product: Product) => void;
   theme: 'light' | 'dark';
   onToggleTheme: () => void;
+  onOpenAdmin?: () => void;
+  siteConfig?: SiteConfig;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -60,6 +63,8 @@ export const Header: React.FC<HeaderProps> = ({
   onSelectProduct,
   theme,
   onToggleTheme,
+  onOpenAdmin,
+  siteConfig,
 }) => {
   const [localSearch, setLocalSearch] = useState(searchQuery);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
@@ -180,13 +185,13 @@ export const Header: React.FC<HeaderProps> = ({
           
           {/* Quick Help Link (desktop only) */}
           <a
-            href="https://wa.me/918446439374"
+            href={`https://wa.me/${siteConfig?.whatsappNumber || '918446439374'}`}
             target="_blank"
             rel="noreferrer"
             className="hidden xl:flex items-center gap-1.5 text-xs text-[#4b5563] dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 px-2.5 py-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-[#1a2333] transition-colors font-medium mr-1"
           >
             <Phone className="w-3.5 h-3.5 text-emerald-500" />
-            <span>Support: +91 84464 39374</span>
+            <span>Support: {siteConfig?.phone || '+91 84464 39374'}</span>
           </a>
 
           {/* Mobile Search Toggle */}
@@ -211,6 +216,18 @@ export const Header: React.FC<HeaderProps> = ({
               <Moon className="w-4.5 h-4.5 text-gray-700 animate-in spin-in-180 duration-300" />
             )}
           </button>
+
+          {/* Admin Dashboard Access (Desktop) */}
+          {onOpenAdmin && (
+            <button
+              onClick={onOpenAdmin}
+              title="Admin Panel (Edit Website)"
+              className="hidden md:flex p-2 text-[#424242] dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded-full hover:bg-[#f3f4f6] dark:hover:bg-[#1e293b] cursor-pointer"
+              aria-label="Admin Panel"
+            >
+              <ShieldCheck className="w-4.5 h-4.5 text-blue-600 dark:text-blue-400" />
+            </button>
+          )}
 
           {/* User Account */}
           <button
@@ -515,14 +532,32 @@ export const Header: React.FC<HeaderProps> = ({
                 </span>
               </button>
 
+              {onOpenAdmin && (
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    onOpenAdmin();
+                  }}
+                  className="w-full flex items-center justify-between py-2 px-3 rounded-lg text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+                >
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                    <span>Admin Panel</span>
+                  </div>
+                  <span className="text-[10px] bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-md font-bold">
+                    EDIT SITE
+                  </span>
+                </button>
+              )}
+
               <a
-                href="https://wa.me/918446439374"
+                href={`https://wa.me/${siteConfig?.whatsappNumber || '918446439374'}`}
                 target="_blank"
                 rel="noreferrer"
                 className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-colors shadow-xs"
               >
                 <Phone className="w-3.5 h-3.5" />
-                <span>WhatsApp: +91 84464 39374</span>
+                <span>WhatsApp: {siteConfig?.phone || '+91 84464 39374'}</span>
               </a>
             </div>
 

@@ -10,6 +10,7 @@ interface ProductCardProps {
   onToggleWishlist: (product: Product) => void;
   isWishlisted: boolean;
   isInCart: boolean;
+  className?: string;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
@@ -19,6 +20,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   onToggleWishlist,
   isWishlisted,
   isInCart,
+  className = '',
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -26,7 +28,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     <div 
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group relative flex flex-col rounded-lg bg-white dark:bg-[#111827] border border-[#e5e7eb] dark:border-[#1e293b] hover:border-[#9ca3af] dark:hover:border-gray-500 hover:shadow-md transition-all duration-200 overflow-hidden"
+      className={`group relative flex flex-col rounded-lg bg-white dark:bg-[#111827] border border-[#e5e7eb] dark:border-[#1e293b] hover:border-[#9ca3af] dark:hover:border-gray-500 hover:shadow-md transition-all duration-200 overflow-hidden ${className}`}
     >
       
       {/* Visual Product Image Container */}

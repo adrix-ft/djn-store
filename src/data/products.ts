@@ -17,7 +17,7 @@ export const PRODUCTS: Product[] = [
     inStock: true,
     stockCount: 5,
     badge: 'BESTSELLER',
-    imageUrl: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/hero-ps5-slim.png',
     features: [
       'Slimmer design with 1TB ultra-high speed internal SSD storage',
       'Ultra HD Blu-ray disc drive included',
@@ -231,7 +231,7 @@ export const PRODUCTS: Product[] = [
     inStock: true,
     stockCount: 14,
     badge: 'POPULAR COLOR',
-    imageUrl: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/hero-dualsense.png',
     features: [
       'Immersive haptic feedback brings in-game actions to life in your hands',
       'Dynamic adaptive triggers simulate physical resistance of gear and weapons',
@@ -529,7 +529,7 @@ export const PRODUCTS: Product[] = [
     inStock: true,
     stockCount: 5,
     badge: 'GAME OF THE YEAR',
-    imageUrl: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg',
+    imageUrl: '/hero-elden-ring.png',
     features: [
       'Massive open-world RPG with hundreds of weapons and bosses',
       'Full 60 FPS performance mode on PS5',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Phone, Mail, Facebook, Instagram, Youtube, MessageCircle, ShieldCheck, Truck } from 'lucide-react';
-import { Category } from '../types/store';
+import { Category, SiteConfig } from '../types/store';
 import { BrandLogo } from './BrandLogo';
 import { PolicyType } from './PolicyModal';
 
@@ -8,12 +8,16 @@ interface FooterProps {
   onSelectCategory: (category: Category | 'all') => void;
   onOpenPolicy: (type: PolicyType) => void;
   onOpenCart?: () => void;
+  onOpenAdmin?: () => void;
+  siteConfig?: SiteConfig;
 }
 
 export const Footer: React.FC<FooterProps> = ({
   onSelectCategory,
   onOpenPolicy,
   onOpenCart,
+  onOpenAdmin,
+  siteConfig,
 }) => {
   return (
     <footer className="bg-white dark:bg-[#080d14] text-[#424242] dark:text-gray-300 border-t border-[#e5e7eb] dark:border-[#1e293b] pt-12 pb-8 transition-colors duration-200">
@@ -37,27 +41,27 @@ export const Footer: React.FC<FooterProps> = ({
               Contact us via WhatsApp or call for fast assistance.
             </p>
             <a
-              href="https://wa.me/918446439374"
+              href={`https://wa.me/${siteConfig?.whatsappNumber || '918446439374'}`}
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-2 font-medium text-[#212121] dark:text-gray-200 hover:text-[#25d366] transition-colors"
             >
               <MessageCircle className="w-4 h-4 text-[#25d366]" />
-              <span>+91 84464 39374 (WhatsApp)</span>
+              <span>{siteConfig?.phone || '+91 84464 39374'} (WhatsApp)</span>
             </a>
             <a
-              href="tel:+918446439374"
+              href={`tel:${siteConfig?.phone?.replace(/\s+/g, '') || '+918446439374'}`}
               className="flex items-center gap-2 font-medium text-[#212121] dark:text-gray-200 hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors"
             >
               <Phone className="w-3.5 h-3.5 text-[#1a73e8] dark:text-[#60a5fa]" />
-              <span>+91 84464 39374 (Call)</span>
+              <span>{siteConfig?.phone || '+91 84464 39374'} (Call)</span>
             </a>
             <a
-              href="mailto:djntechofficial@gmail.com"
+              href={`mailto:${siteConfig?.email || 'djntechofficial@gmail.com'}`}
               className="flex items-center gap-2 text-[#64748b] dark:text-gray-400 hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors"
             >
               <Mail className="w-3.5 h-3.5 text-[#1a73e8] dark:text-[#60a5fa]" />
-              <span>djntechofficial@gmail.com</span>
+              <span>{siteConfig?.email || 'djntechofficial@gmail.com'}</span>
             </a>
           </div>
 
@@ -222,11 +226,22 @@ export const Footer: React.FC<FooterProps> = ({
         <div className="pt-6 text-center text-xs text-[#64748b] dark:text-gray-500 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p>© {new Date().getFullYear()} DJN Tech (djntech.in). All rights reserved.</p>
           <div className="flex items-center gap-4 text-[11px]">
-            <button onClick={() => onOpenPolicy('shipping')} className="hover:text-[#111827] dark:hover:text-white">Free Delivery</button>
+            <button onClick={() => onOpenPolicy('shipping')} className="hover:text-[#111827] dark:hover:text-white cursor-pointer">Free Delivery</button>
             <span>·</span>
-            <button onClick={() => onOpenPolicy('refund')} className="hover:text-[#111827] dark:hover:text-white">7-Day Returns</button>
+            <button onClick={() => onOpenPolicy('refund')} className="hover:text-[#111827] dark:hover:text-white cursor-pointer">7-Day Returns</button>
             <span>·</span>
-            <button onClick={() => onOpenPolicy('privacy')} className="hover:text-[#111827] dark:hover:text-white">Privacy</button>
+            <button onClick={() => onOpenPolicy('privacy')} className="hover:text-[#111827] dark:hover:text-white cursor-pointer">Privacy</button>
+            {onOpenAdmin && (
+              <>
+                <span>·</span>
+                <button
+                  onClick={onOpenAdmin}
+                  className="text-blue-600 dark:text-blue-400 font-bold hover:underline cursor-pointer"
+                >
+                  Admin Portal
+                </button>
+              </>
+            )}
           </div>
         </div>
 

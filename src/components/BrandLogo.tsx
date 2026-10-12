@@ -145,7 +145,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
       <img
         src="/logo-horizontal-dark.png"
         alt="DJN Tech Console Store"
-        className="hidden dark:block h-8 sm:h-10 md:h-11 lg:h-12 w-auto max-w-[145px] sm:max-w-[220px] md:max-w-[280px] object-contain select-none shrink-0 drop-shadow-sm"
+        className="hidden dark:block h-8 sm:h-10 md:h-11 lg:h-12 w-auto max-w-[145px] sm:max-w-[220px] md:max-w-[280px] object-contain select-none shrink-0 brightness-110 contrast-105"
         loading="eager"
         decoding="async"
       />
