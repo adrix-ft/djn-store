@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Heart, ShoppingBag, Trash2, ArrowRight } from 'lucide-react';
 import { Product } from '../types/store';
 import { ProductVisualizer } from './ProductVisualizer';
@@ -20,14 +21,33 @@ export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({
   onAddToCart,
   onSelectProduct,
 }) => {
+  // Lock background body scroll when wishlist is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex justify-end animate-in fade-in duration-200">
-      <div className="w-full max-w-md bg-white dark:bg-[#111827] border-l border-[#e5e7eb] dark:border-[#1e293b] h-full flex flex-col justify-between shadow-2xl animate-in slide-in-from-right duration-300">
+  const drawerContent = (
+    <div className="fixed inset-0 z-[9999] flex justify-end">
+      {/* Sibling Backdrop to prevent backdrop-filter bleed-through bugs */}
+      <div
+        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-200"
+        onClick={onClose}
+      />
+
+      {/* Solid Opaque Drawer Panel */}
+      <div className="relative z-10 w-full max-w-md h-full h-[100dvh] bg-white dark:bg-[#0b0f17] border-l border-[#e5e7eb] dark:border-[#1e293b] flex flex-col justify-between shadow-2xl">
         
         {/* Header */}
-        <div className="p-5 border-b border-[#e5e7eb] dark:border-[#1e293b] flex items-center justify-between">
+        <div className="p-5 border-b border-[#e5e7eb] dark:border-[#1e293b] flex items-center justify-between bg-white dark:bg-[#0b0f17] shrink-0">
           <div className="flex items-center gap-2">
             <Heart className="w-5 h-5 text-[#d0473e] fill-[#d0473e]" />
             <h2 className="text-base font-bold text-[#212121] dark:text-white">
@@ -37,13 +57,14 @@ export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({
           <button
             onClick={onClose}
             className="p-1.5 rounded-full hover:bg-[#f1f5f9] dark:hover:bg-[#1e293b] text-[#64748b] dark:text-gray-400 hover:text-[#212121] dark:hover:text-white transition-colors cursor-pointer"
+            aria-label="Close wishlist"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Wishlist Items List */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-3">
+        <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-5 space-y-3 bg-white dark:bg-[#0b0f17]">
           {items.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-3">
               <div className="w-16 h-16 rounded-full bg-[#f1f5f9] dark:bg-[#1e293b] flex items-center justify-center text-[#94a3b8]">
@@ -140,4 +161,6 @@ export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({
       </div>
     </div>
   );
+
+  return typeof document !== 'undefined' ? createPortal(drawerContent, document.body) : drawerContent;
 };

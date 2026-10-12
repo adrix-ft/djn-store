@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { ChevronRight, SlidersHorizontal, ArrowUpDown, Filter, Sparkles } from 'lucide-react';
 import { Product, Category, Platform } from '../types/store';
 import { ProductCard } from './ProductCard';
@@ -32,6 +32,10 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
   const [selectedCondition, setSelectedCondition] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc' | 'rating' | 'discount'>('featured');
 
+  useEffect(() => {
+    setSelectedPlatform(platform);
+  }, [platform]);
+
   // Filter products by category
   const filteredProducts = useMemo(() => {
     return products.filter((p) => {
@@ -63,6 +67,35 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
   }, [products, category, selectedPlatform, selectedCondition, sortBy]);
 
   const getCategoryDetails = () => {
+    if (category === 'preowned_games') {
+      if (selectedPlatform === 'PS5') {
+        return {
+          title: 'PlayStation 5 Games',
+          subtitle: '100% optical laser-tested PS5 game discs with original cases, zero reading lag, and 7-Day Replacement Guarantee.',
+          tag: 'PS5 Tested Games · Grade A+ Mint'
+        };
+      }
+      if (selectedPlatform === 'PS4') {
+        return {
+          title: 'PlayStation 4 Games',
+          subtitle: 'Tested PS4 game discs compatible with PS4 & PS5 systems with enhanced 60fps performance and 7-day replacement warranty.',
+          tag: 'PS4 Games · 100% Optical Tested'
+        };
+      }
+      if (selectedPlatform === 'Xbox') {
+        return {
+          title: 'Xbox Series X | Xbox One Games',
+          subtitle: 'Certified tested Xbox game discs, backward compatible classics, and next-gen blockbusters with 7-Day Replacement Guarantee.',
+          tag: 'Xbox Games · Laser Tested Mint'
+        };
+      }
+      return {
+        title: 'Pre-Owned Tested Games',
+        subtitle: '100% optical laser-tested PS5, PS4 & Xbox game discs with clean original boxes, buffed surfaces, and 7-Day Replacement Guarantee.',
+        tag: 'Grade A+ Mint · Laser Readability 100%'
+      };
+    }
+
     switch (category) {
       case 'consoles':
         return {
@@ -75,12 +108,6 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
           title: 'Wireless Controllers',
           subtitle: 'DualSense wireless controllers with haptic feedback, Midnight Black, Cosmic Red, and official DualShock 4 gamepads.',
           tag: 'Haptic Feedback · Precision Sticks'
-        };
-      case 'preowned_games':
-        return {
-          title: 'Pre-Owned Tested Games',
-          subtitle: '100% optical laser-tested PS5 & PS4 game discs with clean original boxes, buffed surfaces, and 7-Day Replacement Guarantee.',
-          tag: 'Grade A+ Mint · Laser Readability 100%'
         };
       case 'accessories':
         return {
@@ -98,6 +125,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
   };
 
   const { title, subtitle, tag } = getCategoryDetails();
+  const showPlatformFilter = platform === 'all';
 
   return (
     <div className="w-full bg-[#f8f9fa] dark:bg-[#0b0f17] min-h-screen py-6 sm:py-8 text-[#212121] dark:text-gray-100 transition-colors duration-200">
@@ -164,27 +192,34 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
           
           {/* Platform & Condition Filter Chips */}
           <div className="flex flex-wrap items-center gap-2">
+            {showPlatformFilter && (
+              <>
+                <span className="text-xs font-bold text-[#6b7280] dark:text-gray-400 mr-1 flex items-center gap-1">
+                  <Filter className="w-3.5 h-3.5" />
+                  Platform:
+                </span>
+                {(['all', 'PS5', 'PS4', 'Xbox'] as const).map((plat) => (
+                  <button
+                    key={plat}
+                    onClick={() => setSelectedPlatform(plat)}
+                    className={`px-3 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                      selectedPlatform === plat
+                        ? 'bg-[#111827] dark:bg-blue-600 text-white font-semibold shadow-xs'
+                        : 'bg-[#f4f5f7] dark:bg-[#161f30] text-[#4b5563] dark:text-gray-300 hover:text-[#111827] dark:hover:text-white'
+                    }`}
+                  >
+                    {plat === 'all' ? 'All' : plat}
+                  </button>
+                ))}
+
+                <div className="h-4 w-[1px] bg-[#e5e7eb] dark:bg-gray-800 mx-1 hidden sm:block" />
+              </>
+            )}
+
             <span className="text-xs font-bold text-[#6b7280] dark:text-gray-400 mr-1 flex items-center gap-1">
-              <Filter className="w-3.5 h-3.5" />
-              Platform:
+              {!showPlatformFilter && <Filter className="w-3.5 h-3.5" />}
+              Condition:
             </span>
-            {(['all', 'PS5', 'PS4', 'Xbox'] as const).map((plat) => (
-              <button
-                key={plat}
-                onClick={() => setSelectedPlatform(plat)}
-                className={`px-3 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                  selectedPlatform === plat
-                    ? 'bg-[#111827] dark:bg-blue-600 text-white font-semibold shadow-xs'
-                    : 'bg-[#f4f5f7] dark:bg-[#161f30] text-[#4b5563] dark:text-gray-300 hover:text-[#111827] dark:hover:text-white'
-                }`}
-              >
-                {plat === 'all' ? 'All' : plat}
-              </button>
-            ))}
-
-            <div className="h-4 w-[1px] bg-[#e5e7eb] dark:bg-gray-800 mx-1 hidden sm:block" />
-
-            <span className="text-xs font-bold text-[#6b7280] dark:text-gray-400 mr-1 hidden sm:inline">Condition:</span>
             {[
               { id: 'all', label: 'All' },
               { id: 'new', label: 'Brand New' },
@@ -247,11 +282,13 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
             </div>
             <h3 className="text-base font-bold text-[#111827] dark:text-white">No matching products found</h3>
             <p className="text-xs text-[#6b7280] dark:text-gray-400 mt-1 max-w-sm mx-auto">
-              Try adjusting your platform or condition filters to see available inventory.
+              {showPlatformFilter
+                ? 'Try adjusting your platform or condition filters to see available inventory.'
+                : 'Try adjusting your condition filter to see available inventory.'}
             </p>
             <button
               onClick={() => {
-                setSelectedPlatform('all');
+                setSelectedPlatform(platform);
                 setSelectedCondition('all');
               }}
               className="mt-4 px-4 py-2 bg-[#111827] dark:bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-black dark:hover:bg-blue-700 cursor-pointer"

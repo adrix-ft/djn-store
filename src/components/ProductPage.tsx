@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { Product } from '../types/store';
 import { ProductCard } from './ProductCard';
+import { GameCaseFrame } from './GameCaseFrame';
 
 interface ProductPageProps {
   product: Product;
@@ -48,26 +49,14 @@ export const ProductPage: React.FC<ProductPageProps> = ({
   onNavigateCategory,
   onNavigateHome
 }) => {
-  const [selectedImage, setSelectedImage] = useState(product.imageUrl);
   const [pincode, setPincode] = useState('110001');
   const [pincodeChecked, setPincodeChecked] = useState(true);
   const [copiedLink, setCopiedLink] = useState(false);
 
-  // Sync selected image if product prop changes
+  // Scroll to top on product change
   useEffect(() => {
-    setSelectedImage(product.imageUrl);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [product.id]);
-
-  // Gallery images (simulate multi-angle views like Flipkart/Amazon)
-  const galleryImages = [
-    product.imageUrl,
-    ...(product.category === 'consoles'
-      ? ['/ps5-hero.jpg', '/dualsense-hero.jpg']
-      : product.category === 'controllers'
-      ? ['/dualsense-hero.jpg']
-      : ['/games-hero.jpg'])
-  ];
 
   // Recommended products (same category or platform, excluding current product)
   const similarProducts = allProducts
@@ -145,7 +134,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({
             <div className="lg:col-span-5 flex flex-col items-center">
               
               {/* Main Image Box with Zoom Container */}
-              <div className="relative w-full aspect-square bg-[#fbfcfd] dark:bg-[#161f30] border border-[#eaedf0] dark:border-[#2d3748] rounded-2xl p-6 flex items-center justify-center overflow-hidden group">
+              <div className="relative w-full aspect-square bg-[#fbfcfd] dark:bg-[#161f30] border border-[#eaedf0] dark:border-[#2d3748] rounded-2xl p-4 sm:p-6 flex items-center justify-center overflow-hidden group">
                 {/* Condition Badge */}
                 <span className="absolute top-4 left-4 z-10 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-white dark:bg-[#1e293b] text-[#111827] dark:text-white border border-[#eaedf0] dark:border-gray-700 shadow-xs">
                   {product.condition}
@@ -162,32 +151,23 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                   <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
                 </button>
 
-                <img
-                  src={selectedImage}
-                  alt={product.name}
-                  className="w-full h-full object-contain filter drop-shadow-md transition-transform duration-500 group-hover:scale-105"
-                  loading="eager"
-                />
+                {product.category === 'preowned_games' ? (
+                  <GameCaseFrame
+                    imageUrl={product.imageUrl}
+                    name={product.name}
+                    platform={product.platform}
+                    size="detail"
+                    className="h-full py-1"
+                  />
+                ) : (
+                  <img
+                    src={product.imageUrl}
+                    alt={product.name}
+                    className="w-full h-full object-contain filter drop-shadow-md transition-transform duration-500 group-hover:scale-105"
+                    loading="eager"
+                  />
+                )}
               </div>
-
-              {/* Multi-Angle Thumbnail Row */}
-              {galleryImages.length > 1 && (
-                <div className="flex items-center gap-3 mt-4 w-full justify-center overflow-x-auto py-1">
-                  {galleryImages.map((img, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setSelectedImage(img)}
-                      className={`w-16 h-16 rounded-xl border-2 p-1.5 bg-[#fbfcfd] dark:bg-[#161f30] transition-all cursor-pointer shrink-0 overflow-hidden ${
-                        selectedImage === img
-                          ? 'border-[#1a73e8] dark:border-[#60a5fa] shadow-xs'
-                          : 'border-[#eaedf0] dark:border-[#2d3748] hover:border-[#9ca3af]'
-                      }`}
-                    >
-                      <img src={img} alt="Thumbnail" className="w-full h-full object-contain" />
-                    </button>
-                  ))}
-                </div>
-              )}
 
               {/* Primary Sticky Buy & Cart Buttons (Flipkart/Amazon Style) */}
               <div className="grid grid-cols-2 gap-3.5 w-full mt-6">

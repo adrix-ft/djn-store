@@ -19,7 +19,9 @@ import { OrderConfirmationModal } from './components/OrderConfirmationModal';
 import { WishlistDrawer } from './components/WishlistDrawer';
 import { HomeTrustSections } from './components/HomeTrustSections';
 import { Footer } from './components/Footer';
-import { Check, Home, LayoutGrid, Gamepad2, Gamepad, Disc } from 'lucide-react';
+import { SellConsolesPage } from './components/SellConsolesPage';
+import { RepairConsolePage } from './components/RepairConsolePage';
+import { Check } from 'lucide-react';
 
 export default function App() {
   const [products, setProducts] = useState<Product[]>(PRODUCTS);
@@ -43,11 +45,11 @@ export default function App() {
   const handleToggleTheme = () => {
     const nextTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(nextTheme);
-    showToast(nextTheme === 'dark' ? '🌙 Dark Mode Activated' : '☀️ Light Mode Activated');
+    showToast(nextTheme === 'dark' ? 'Dark Mode Activated' : 'Light Mode Activated');
   };
 
   // Multi-page Routing State
-  const [currentPage, setCurrentPage] = useState<'home' | 'all' | Category | 'product-detail'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'all' | Category | 'sell-consoles' | 'repair-console' | 'product-detail'>('home');
   const [activeCategory, setActiveCategory] = useState<Category | 'all'>('all');
   const [selectedPlatform, setSelectedPlatform] = useState<Platform | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -98,13 +100,31 @@ export default function App() {
     setSelectedProduct(null);
     setCurrentPage('home');
     setActiveCategory('all');
+    setSelectedPlatform('all');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleNavigateCategory = (cat: Category | 'all') => {
+  const handleNavigateSellConsoles = () => {
+    setSelectedProduct(null);
+    setCurrentPage('sell-consoles');
+    setActiveCategory('all');
+    setSelectedPlatform('all');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleNavigateRepairConsole = () => {
+    setSelectedProduct(null);
+    setCurrentPage('repair-console');
+    setActiveCategory('all');
+    setSelectedPlatform('all');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleNavigateCategory = (cat: Category | 'all', plat: Platform | 'all' = 'all') => {
     setSelectedProduct(null);
     setCurrentPage(cat);
     setActiveCategory(cat);
+    setSelectedPlatform(plat);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -262,8 +282,8 @@ export default function App() {
       imageUrl: 'https://psxgaming.com/wp-content/uploads/2025/03/ps4-300x300.png',
     },
     {
-      id: 'consoles' as const,
-      name: 'Xbox',
+      id: 'preowned_games' as const,
+      name: 'XBOX Games',
       platform: 'Xbox' as const,
       imageUrl: 'https://psxgaming.com/wp-content/uploads/2025/03/xbox-300x300.png',
     },
@@ -280,7 +300,7 @@ export default function App() {
       
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-20 md:bottom-6 right-6 z-50 bg-[#111827] dark:bg-gray-800 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-bottom-4 duration-200 text-xs sm:text-sm font-medium border border-gray-700">
+        <div className="fixed bottom-6 right-6 z-50 bg-[#111827] dark:bg-gray-800 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-bottom-4 duration-200 text-xs sm:text-sm font-medium border border-gray-700">
           <Check className="w-4 h-4 text-[#10b981]" />
           <span>{toastMessage}</span>
         </div>
@@ -292,10 +312,13 @@ export default function App() {
         wishlistCount={wishlist.length}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenWishlist={() => setIsWishlistOpen(true)}
-        onSelectCategory={(cat) => handleNavigateCategory(cat)}
+        onSelectCategory={(cat, plat) => handleNavigateCategory(cat, plat)}
         activeCategory={activeCategory}
+        activePlatform={selectedPlatform}
         currentPage={currentPage}
         onNavigateHome={handleNavigateHome}
+        onNavigateSellConsoles={handleNavigateSellConsoles}
+        onNavigateRepairConsole={handleNavigateRepairConsole}
         onSearch={(q) => {
           setSearchQuery(q);
           if (q.trim()) {
@@ -334,11 +357,30 @@ export default function App() {
             onNavigateCategory={handleNavigateCategory}
             onNavigateHome={handleNavigateHome}
           />
+        ) : currentPage === 'sell-consoles' ? (
+          
+          /* VIEW 2: SELL CONSOLES TRADE-IN PORTAL */
+          <SellConsolesPage
+            onNavigateHome={handleNavigateHome}
+            onNavigateCategory={handleNavigateCategory}
+            onSelectProduct={handleSelectProduct}
+          />
+
+        ) : currentPage === 'repair-console' ? (
+          
+          /* VIEW 3: REPAIR CONSOLE SERVICE PORTAL */
+          <RepairConsolePage
+            onNavigateHome={handleNavigateHome}
+            onNavigateCategory={handleNavigateCategory}
+            onSelectProduct={handleSelectProduct}
+          />
+
         ) : currentPage !== 'home' && currentPage !== 'product-detail' ? (
           
-          /* VIEW 2: DEDICATED CATEGORY / CATALOG PAGE */
+          /* VIEW 3: DEDICATED CATEGORY / CATALOG PAGE */
           <CategoryPage
             category={currentPage}
+            platform={selectedPlatform}
             products={products}
             onSelectProduct={handleSelectProduct}
             onAddToCart={handleAddToCart}
@@ -377,7 +419,7 @@ export default function App() {
                 {categoryCircles.map((cat, idx) => (
                   <button
                     key={idx}
-                    onClick={() => handleNavigateCategory(cat.id)}
+                    onClick={() => handleNavigateCategory(cat.id, cat.platform)}
                     className="flex flex-col items-center group cursor-pointer"
                   >
                     <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full bg-[#f8f9fa] dark:bg-[#161f30] border border-[#eaedf0] dark:border-[#2d3748] group-hover:border-[#111827] dark:group-hover:border-blue-500 group-hover:shadow-md flex items-center justify-center overflow-hidden p-3.5 transition-all duration-300">
@@ -560,89 +602,6 @@ export default function App() {
         order={completedOrder}
         onClose={() => setCompletedOrder(null)}
       />
-
-      {/* Sticky Mobile Category & Catalog Quick Navigator (Fast 1-Thumb Browsing) */}
-      <nav aria-label="Mobile Navigation" className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0b0f17]/95 backdrop-blur-md border-t border-[#e5e7eb] dark:border-[#1e293b] px-2 py-2 grid grid-cols-5 items-center justify-items-center shadow-[0_-2px_10px_rgba(0,0,0,0.05)] dark:shadow-[0_-2px_10px_rgba(0,0,0,0.4)]">
-        {/* 1. Home */}
-        <button
-          onClick={handleNavigateHome}
-          className={`flex flex-col items-center gap-0.5 text-[10px] transition-colors cursor-pointer ${
-            currentPage === 'home'
-              ? 'text-[#1a73e8] dark:text-[#60a5fa] font-bold'
-              : 'text-[#6b7280] dark:text-gray-400 hover:text-[#111827] dark:hover:text-white font-medium'
-          }`}
-        >
-          <Home className="w-5 h-5 stroke-[1.8]" />
-          <span>Home</span>
-          {currentPage === 'home' && (
-            <span className="w-1 h-1 rounded-full bg-[#1a73e8] dark:bg-[#60a5fa]"></span>
-          )}
-        </button>
-
-        {/* 2. Consoles */}
-        <button
-          onClick={() => handleNavigateCategory('consoles')}
-          className={`flex flex-col items-center gap-0.5 text-[10px] transition-colors cursor-pointer ${
-            currentPage === 'consoles'
-              ? 'text-[#1a73e8] dark:text-[#60a5fa] font-bold'
-              : 'text-[#6b7280] dark:text-gray-400 hover:text-[#111827] dark:hover:text-white font-medium'
-          }`}
-        >
-          <Gamepad2 className="w-5 h-5 stroke-[1.8]" />
-          <span>Consoles</span>
-          {currentPage === 'consoles' && (
-            <span className="w-1 h-1 rounded-full bg-[#1a73e8] dark:bg-[#60a5fa]"></span>
-          )}
-        </button>
-
-        {/* 3. Controllers */}
-        <button
-          onClick={() => handleNavigateCategory('controllers')}
-          className={`flex flex-col items-center gap-0.5 text-[10px] transition-colors cursor-pointer ${
-            currentPage === 'controllers'
-              ? 'text-[#1a73e8] dark:text-[#60a5fa] font-bold'
-              : 'text-[#6b7280] dark:text-gray-400 hover:text-[#111827] dark:hover:text-white font-medium'
-          }`}
-        >
-          <Gamepad className="w-5 h-5 stroke-[1.8]" />
-          <span>Controllers</span>
-          {currentPage === 'controllers' && (
-            <span className="w-1 h-1 rounded-full bg-[#1a73e8] dark:bg-[#60a5fa]"></span>
-          )}
-        </button>
-
-        {/* 4. Pre-Owned Games */}
-        <button
-          onClick={() => handleNavigateCategory('preowned_games')}
-          className={`flex flex-col items-center gap-0.5 text-[10px] transition-colors cursor-pointer ${
-            currentPage === 'preowned_games'
-              ? 'text-[#1a73e8] dark:text-[#60a5fa] font-bold'
-              : 'text-[#6b7280] dark:text-gray-400 hover:text-[#111827] dark:hover:text-white font-medium'
-          }`}
-        >
-          <Disc className="w-5 h-5 stroke-[1.8]" />
-          <span>Games</span>
-          {currentPage === 'preowned_games' && (
-            <span className="w-1 h-1 rounded-full bg-[#1a73e8] dark:bg-[#60a5fa]"></span>
-          )}
-        </button>
-
-        {/* 5. All / Catalog */}
-        <button
-          onClick={() => handleNavigateCategory('all')}
-          className={`flex flex-col items-center gap-0.5 text-[10px] transition-colors cursor-pointer ${
-            currentPage === 'all' || currentPage === 'accessories'
-              ? 'text-[#1a73e8] dark:text-[#60a5fa] font-bold'
-              : 'text-[#6b7280] dark:text-gray-400 hover:text-[#111827] dark:hover:text-white font-medium'
-          }`}
-        >
-          <LayoutGrid className="w-5 h-5 stroke-[1.8]" />
-          <span>Catalog</span>
-          {(currentPage === 'all' || currentPage === 'accessories') && (
-            <span className="w-1 h-1 rounded-full bg-[#1a73e8] dark:bg-[#60a5fa]"></span>
-          )}
-        </button>
-      </nav>
 
     </div>
   );

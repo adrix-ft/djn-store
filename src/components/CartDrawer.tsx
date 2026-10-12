@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, ShieldCheck, Tag, Check } from 'lucide-react';
 import { CartItem } from '../types/store';
 import { ProductVisualizer } from './ProductVisualizer';
@@ -28,6 +29,18 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 }) => {
   const [couponInput, setCouponInput] = useState('');
   const [couponError, setCouponError] = useState('');
+
+  // Lock background body scroll when cart is open to prevent underlying page from scrolling
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -61,9 +74,16 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
     }
   };
 
-  return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex justify-end animate-in fade-in duration-200">
-      <div className="w-full max-w-md bg-white border-l border-[#e5e7eb] h-full flex flex-col justify-between shadow-2xl animate-in slide-in-from-right duration-300">
+  const drawerContent = (
+    <div className="fixed inset-0 z-[9999] flex justify-end">
+      {/* Sibling Backdrop to eliminate backdrop-filter bleed-through bugs */}
+      <div
+        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-200"
+        onClick={onClose}
+      />
+
+      {/* Solid Opaque Drawer Panel */}
+      <div className="relative z-10 w-full max-w-md h-full h-[100dvh] bg-white dark:bg-[#0b0f17] border-l border-[#e5e7eb] dark:border-[#1e293b] flex flex-col justify-between shadow-2xl">
         
         {/* Header */}
         <div className="p-5 border-b border-[#e5e7eb] dark:border-[#1e293b] flex items-center justify-between">
@@ -104,7 +124,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
         </div>
 
         {/* Items List */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-3">
+        <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-5 space-y-3 bg-white dark:bg-[#0b0f17]">
           {items.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-3">
               <div className="w-16 h-16 rounded-full bg-[#f1f5f9] dark:bg-[#1e293b] flex items-center justify-center text-[#94a3b8]">
@@ -261,4 +281,6 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
       </div>
     </div>
   );
+
+  return typeof document !== 'undefined' ? createPortal(drawerContent, document.body) : drawerContent;
 };
