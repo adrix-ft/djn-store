@@ -433,6 +433,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       onUpdateProducts(PRODUCTS);
       onUpdateSiteConfig(DEFAULT_SITE_CONFIG);
       setConfigForm(DEFAULT_SITE_CONFIG);
+      localStorage.removeItem('djn_products_v6');
       localStorage.removeItem('djn_products_v5');
       localStorage.removeItem('djn_site_config');
       showToast('Restored store catalog to default factory settings.');

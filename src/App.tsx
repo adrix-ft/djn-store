@@ -34,7 +34,7 @@ import { Check } from 'lucide-react';
 
 export default function App() {
   const [products, setProducts] = useState<Product[]>(() => {
-    const saved = localStorage.getItem('djn_products_v5');
+    const saved = localStorage.getItem('djn_products_v6');
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -363,38 +363,22 @@ export default function App() {
     });
   };
 
-  // Section collections for Home page
+  // Section collections for Home page (dynamically adapting to hero or database products)
   const featuredProducts = useMemo(() => {
-    return products.filter((p) => [
-      'gow-ragnarok-ps5',
-      'spiderman-2-ps5',
-      'dualsense-midnight-black',
-      'ps4-pro-1tb-preowned',
-      'ps5-slim-disc',
-      'elden-ring-ps5'
-    ].includes(p.id));
+    const curated = products.filter((p) => p.badge || p.rating >= 4.8);
+    return curated.length > 0 ? curated : products;
   }, [products]);
 
   const trendingProducts = useMemo(() => {
-    return products.filter((p) => [
-      'elden-ring-ps5',
-      'black-myth-wukong-ps5',
-      'dualsense-cosmic-red',
-      'ps5-slim-disc',
-      'last-of-us-part1-ps5',
-      'ghost-of-tsushima-dc-ps5'
-    ].includes(p.id));
+    const curated = products.filter(
+      (p) => p.category === 'preowned_games' || p.category === 'controllers'
+    );
+    return curated.length > 0 ? curated : products;
   }, [products]);
 
   const todaysDeals = useMemo(() => {
-    return products.filter((p) => [
-      'bloodborne-goty-ps4',
-      'red-dead-2-ps4',
-      'gta-v-ps5',
-      'dualshock-4-jet-black-preowned',
-      'gow-2018-ps4',
-      'resident-evil-4-ps5'
-    ].includes(p.id));
+    const curated = products.filter((p) => p.discountPercent >= 10);
+    return curated.length > 0 ? curated : products;
   }, [products]);
 
   // Pricing calculations
