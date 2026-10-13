@@ -24,6 +24,12 @@ import { RepairConsolePage } from './components/RepairConsolePage';
 import { AdminPanel } from './components/AdminPanel';
 import { AdminPinModal } from './components/AdminPinModal';
 import { DEFAULT_SITE_CONFIG } from './data/siteConfig';
+import {
+  fetchProductsFromDB,
+  fetchSiteConfigFromDB,
+  fetchOrdersFromDB,
+  createOrderInDB,
+} from './lib/supabase';
 import { Check } from 'lucide-react';
 
 export default function App() {
@@ -55,6 +61,37 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('djn_site_config', JSON.stringify(siteConfig));
   }, [siteConfig]);
+
+  // Sync with Supabase on mount
+  useEffect(() => {
+    let isMounted = true;
+    async function loadFromSupabase() {
+      try {
+        const [dbProducts, dbConfig, dbOrders] = await Promise.all([
+          fetchProductsFromDB(),
+          fetchSiteConfigFromDB(),
+          fetchOrdersFromDB(),
+        ]);
+        if (isMounted) {
+          if (dbProducts && dbProducts.length > 0) {
+            setProducts(dbProducts);
+          }
+          if (dbConfig) {
+            setSiteConfig(dbConfig);
+          }
+          if (dbOrders && dbOrders.length > 0) {
+            setOrders(dbOrders);
+          }
+        }
+      } catch (err) {
+        console.warn('[Supabase] Initial sync fallback to local storage:', err);
+      }
+    }
+    loadFromSupabase();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Theme Management (Default: Light Theme)
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -319,6 +356,11 @@ export default function App() {
     setOrders((prev) => [order, ...prev]);
     setCart([]);
     setIsCheckoutOpen(false);
+
+    // Persist order to Supabase
+    createOrderInDB(order).catch((err) => {
+      console.warn('[Supabase] Failed to persist order online:', err);
+    });
   };
 
   // Section collections for Home page

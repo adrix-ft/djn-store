@@ -10,6 +10,12 @@ import {
 import { DEFAULT_SITE_CONFIG } from '../data/siteConfig';
 import { PRODUCTS } from '../data/products';
 import {
+  upsertProductToDB,
+  deleteProductFromDB,
+  upsertSiteConfigToDB,
+  updateOrderStatusInDB,
+} from '../lib/supabase';
+import {
   Package,
   Settings,
   ShoppingBag,
@@ -306,10 +312,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         p.id === editingProduct.id ? updatedProduct : p
       );
       onUpdateProducts(nextProducts);
+      upsertProductToDB(updatedProduct).catch(console.error);
       showToast(`Updated "${updatedProduct.name}"`);
     } else {
       // Add new
       onUpdateProducts([updatedProduct, ...products]);
+      upsertProductToDB(updatedProduct).catch(console.error);
       showToast(`Added new product "${updatedProduct.name}"`);
     }
 
@@ -318,13 +326,18 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
   // Toggle inStock quick button
   const handleToggleStock = (productId: string) => {
+    let updatedTarget: Product | undefined;
     const nextProducts = products.map((p) => {
       if (p.id === productId) {
-        return { ...p, inStock: !p.inStock };
+        updatedTarget = { ...p, inStock: !p.inStock };
+        return updatedTarget;
       }
       return p;
     });
     onUpdateProducts(nextProducts);
+    if (updatedTarget) {
+      upsertProductToDB(updatedTarget).catch(console.error);
+    }
     const target = products.find((p) => p.id === productId);
     showToast(
       `${target?.name || 'Product'} marked ${
@@ -336,8 +349,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   // Delete product
   const handleConfirmDelete = () => {
     if (!productToDelete) return;
-    const nextProducts = products.filter((p) => p.id !== productToDelete.id);
+    const idToDelete = productToDelete.id;
+    const nextProducts = products.filter((p) => p.id !== idToDelete);
     onUpdateProducts(nextProducts);
+    deleteProductFromDB(idToDelete).catch(console.error);
     showToast(`Deleted "${productToDelete.name}"`);
     setProductToDelete(null);
   };
@@ -346,6 +361,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const handleSaveSiteConfig = (e: React.FormEvent) => {
     e.preventDefault();
     onUpdateSiteConfig(configForm);
+    upsertSiteConfigToDB(configForm).catch(console.error);
     showToast('Website content and contact details updated successfully!');
   };
 
@@ -358,6 +374,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       o.id === orderId ? { ...o, status: newStatus } : o
     );
     onUpdateOrders(nextOrders);
+    updateOrderStatusInDB(orderId, newStatus).catch(console.error);
     showToast(`Order #${orderId} status changed to ${newStatus}`);
   };
 

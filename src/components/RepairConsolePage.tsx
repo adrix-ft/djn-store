@@ -24,6 +24,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { Category, Platform, Product } from '../types/store';
+import { submitRepairRequestToDB } from '../lib/supabase';
 
 interface RepairConsolePageProps {
   onNavigateHome: () => void;
@@ -379,6 +380,20 @@ export const RepairConsolePage: React.FC<RepairConsolePageProps> = ({
     const newId = `DJN-FIX-${Math.floor(100000 + Math.random() * 900000)}`;
     setBookingId(newId);
     setBookingSuccess(true);
+
+    submitRepairRequestToDB({
+      id: newId,
+      consoleType: deviceName,
+      issueId: currentIssue.id,
+      issueTitle: currentIssue.title,
+      estimatedCost: totalEstimatedCost,
+      customerName: formData.fullName,
+      customerPhone: formData.phone,
+      pickupAddress: `${formData.address}, ${formData.city} - ${formData.pincode}`,
+      notes: `${formData.problemDescription ? 'Problem: ' + formData.problemDescription + ' | ' : ''}Serial: ${formData.consoleSerial || 'N/A'}, Urgency: ${urgency}, Slot: ${formData.preferredDate || 'Earliest'} ${formData.preferredTimeSlot}`,
+    }).catch((err) => {
+      console.warn('[Supabase] Failed to persist repair request:', err);
+    });
   };
 
   const faqs = [

@@ -17,6 +17,7 @@ import {
   Info
 } from 'lucide-react';
 import { Category, Platform, Product } from '../types/store';
+import { submitTradeInRequestToDB } from '../lib/supabase';
 
 interface SellConsolesPageProps {
   onNavigateHome: () => void;
@@ -140,6 +141,24 @@ export const SellConsolesPage: React.FC<SellConsolesPageProps> = ({
     const newId = `DJN-SELL-${Math.floor(100000 + Math.random() * 900000)}`;
     setBookingId(newId);
     setBookingSuccess(true);
+
+    submitTradeInRequestToDB({
+      id: newId,
+      brand: selectedBrand,
+      modelId: currentModel.id,
+      modelName: currentModel.name,
+      condition: conditionLabel,
+      warrantySealIntact,
+      hasExtraController,
+      cashEstimate: totalCashEstimate,
+      storeCreditEstimate,
+      customerName: formData.fullName,
+      customerPhone: formData.phone,
+      customerUpi: formData.upiId,
+      pickupAddress: `${formData.address}, ${formData.city} - ${formData.pincode}`,
+    }).catch((err) => {
+      console.warn('[Supabase] Failed to persist trade-in request:', err);
+    });
   };
 
   const faqs = [
