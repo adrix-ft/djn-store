@@ -9,6 +9,7 @@ import { Product, CartItem, Category, Platform, Condition, Order, ProductReview,
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ProductCard } from './components/ProductCard';
+import { ProductSectionCarousel } from './components/ProductSectionCarousel';
 import { ProductPage } from './components/ProductPage';
 import { CategoryPage } from './components/CategoryPage';
 import { Marquee } from './components/Marquee';
@@ -535,152 +536,62 @@ export default function App() {
 
 
 
-            {/* SECTION 1: Featured Products (Clean White Surface) */}
-            <section className="w-full py-10 sm:py-14 bg-white dark:bg-[#0b0f17]">
-              <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-                <div className="flex items-end justify-between mb-6 pb-3 border-b border-[#e5e7eb] dark:border-[#1e293b]">
-                  <div>
-                    <div className="inline-flex items-center gap-2 mb-1.5">
-                      <span className="w-2 h-2 rounded-full bg-blue-600 dark:bg-blue-400" />
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
-                        Official Hardware & Certified Discs
-                      </span>
-                    </div>
-                    <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#111827] dark:text-white tracking-tight">
-                      Featured Products
-                    </h2>
-                    <p className="hidden sm:block text-xs text-[#6b7280] dark:text-gray-400 mt-0.5">
-                      Top-rated consoles, official controllers & bestseller games
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
-                    <span className="sm:hidden text-[11px] font-medium text-gray-400 dark:text-gray-500">
-                      Swipe →
-                    </span>
-                    <button
-                      onClick={() => handleNavigateCategory('all')}
-                      className="text-xs font-bold text-[#2563eb] dark:text-[#60a5fa] hover:underline cursor-pointer flex items-center gap-1"
-                    >
-                      <span>View all</span>
-                      <span>→</span>
-                    </button>
-                  </div>
-                </div>
+            {/* SECTION 1: Featured Products (Horizontal Carousel) */}
+            <ProductSectionCarousel
+              title="Featured Products"
+              subtitle="Top-rated consoles, official controllers & bestseller games"
+              badgeText="Official Hardware & Certified Discs"
+              badgeDotClass="bg-blue-600 dark:bg-blue-400"
+              badgeTextClass="text-blue-600 dark:text-blue-400"
+              products={featuredProducts}
+              onViewAll={() => handleNavigateCategory('all')}
+              viewAllLabel="View all"
+              onSelectProduct={handleSelectProduct}
+              onAddToCart={handleAddToCart}
+              onToggleWishlist={handleToggleWishlist}
+              wishlistIds={wishlist.map((w) => w.id)}
+              cartIds={cart.map((c) => c.product.id)}
+              containerBgClass="bg-white dark:bg-[#0b0f17]"
+              borderClass="border-b border-[#e5e7eb] dark:border-[#1e293b]"
+            />
 
-                <div className="flex sm:grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 overflow-x-auto sm:overflow-visible no-scrollbar snap-x snap-mandatory gap-3.5 sm:gap-5 pb-3 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0">
-                  {featuredProducts.map((prod) => (
-                    <ProductCard
-                      key={prod.id}
-                      product={prod}
-                      className="w-[164px] min-w-[164px] sm:w-auto sm:min-w-0 shrink-0 sm:shrink snap-start h-full"
-                      onSelect={handleSelectProduct}
-                      onAddToCart={handleAddToCart}
-                      onToggleWishlist={handleToggleWishlist}
-                      isWishlisted={wishlist.some((w) => w.id === prod.id)}
-                      isInCart={cart.some((c) => c.product.id === prod.id)}
-                    />
-                  ))}
-                </div>
-              </div>
-            </section>
+            {/* SECTION 2: Trending Now (Horizontal Carousel) */}
+            <ProductSectionCarousel
+              title="Trending Now"
+              subtitle="Most viewed games and high-velocity console bundles"
+              badgeText="🔥 High Demand This Week"
+              badgeDotClass="bg-amber-500 animate-pulse"
+              badgeTextClass="text-amber-700 dark:text-amber-400"
+              products={trendingProducts}
+              onViewAll={() => handleNavigateCategory('all')}
+              viewAllLabel="Browse all"
+              onSelectProduct={handleSelectProduct}
+              onAddToCart={handleAddToCart}
+              onToggleWishlist={handleToggleWishlist}
+              wishlistIds={wishlist.map((w) => w.id)}
+              cartIds={cart.map((c) => c.product.id)}
+              containerBgClass="bg-[#f4f5f8] dark:bg-[#0e1626] border-y border-[#e2e5eb] dark:border-[#1e293b]"
+              borderClass="border-b border-[#d8dce4] dark:border-[#223048]"
+            />
 
-            {/* SECTION 2: Trending Now (Contrasting Tinted Band) */}
-            <section className="w-full py-12 sm:py-16 bg-[#f4f5f8] dark:bg-[#0e1626] border-y border-[#e2e5eb] dark:border-[#1e293b]">
-              <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-                <div className="flex items-end justify-between mb-6 pb-3 border-b border-[#d8dce4] dark:border-[#223048]">
-                  <div>
-                    <div className="inline-flex items-center gap-2 mb-1.5">
-                      <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
-                        🔥 High Demand This Week
-                      </span>
-                    </div>
-                    <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#111827] dark:text-white tracking-tight">
-                      Trending Now
-                    </h2>
-                    <p className="hidden sm:block text-xs text-[#6b7280] dark:text-gray-400 mt-0.5">
-                      Most viewed games and high-velocity console bundles
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
-                    <span className="sm:hidden text-[11px] font-medium text-gray-400 dark:text-gray-500">
-                      Swipe →
-                    </span>
-                    <button
-                      onClick={() => handleNavigateCategory('all')}
-                      className="text-xs font-bold text-[#2563eb] dark:text-[#60a5fa] hover:underline cursor-pointer flex items-center gap-1"
-                    >
-                      <span>Browse all</span>
-                      <span>→</span>
-                    </button>
-                  </div>
-                </div>
-
-                <div className="flex sm:grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 overflow-x-auto sm:overflow-visible no-scrollbar snap-x snap-mandatory gap-3.5 sm:gap-5 pb-3 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0">
-                  {trendingProducts.map((prod) => (
-                    <ProductCard
-                      key={prod.id}
-                      product={prod}
-                      className="w-[164px] min-w-[164px] sm:w-auto sm:min-w-0 shrink-0 sm:shrink snap-start h-full"
-                      onSelect={handleSelectProduct}
-                      onAddToCart={handleAddToCart}
-                      onToggleWishlist={handleToggleWishlist}
-                      isWishlisted={wishlist.some((w) => w.id === prod.id)}
-                      isInCart={cart.some((c) => c.product.id === prod.id)}
-                    />
-                  ))}
-                </div>
-              </div>
-            </section>
-
-            {/* SECTION 3: Special Deals (Subtle Emerald/Warm Savings Surface) */}
-            <section className="w-full py-12 sm:py-16 bg-gradient-to-b from-white via-emerald-50/25 to-white dark:from-[#0b0f17] dark:via-[#09221b]/20 dark:to-[#0b0f17]">
-              <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-                <div className="flex items-end justify-between mb-6 pb-3 border-b border-emerald-200/60 dark:border-emerald-950/60">
-                  <div>
-                    <div className="inline-flex items-center gap-2 mb-1.5">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-                        ⚡ Biggest Price Drops · Up to 55% OFF
-                      </span>
-                    </div>
-                    <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#111827] dark:text-white tracking-tight">
-                      Special Deals
-                    </h2>
-                    <p className="hidden sm:block text-xs text-[#6b7280] dark:text-gray-400 mt-0.5">
-                      Discounted optical discs, pre-owned consoles & refurbished accessories
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
-                    <span className="sm:hidden text-[11px] font-medium text-gray-400 dark:text-gray-500">
-                      Swipe →
-                    </span>
-                    <button
-                      onClick={() => handleNavigateCategory('preowned_games')}
-                      className="text-xs font-bold text-emerald-700 dark:text-emerald-400 hover:underline cursor-pointer flex items-center gap-1"
-                    >
-                      <span>See all deals</span>
-                      <span>→</span>
-                    </button>
-                  </div>
-                </div>
-
-                <div className="flex sm:grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 overflow-x-auto sm:overflow-visible no-scrollbar snap-x snap-mandatory gap-3.5 sm:gap-5 pb-3 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0">
-                  {todaysDeals.map((prod) => (
-                    <ProductCard
-                      key={prod.id}
-                      product={prod}
-                      className="w-[164px] min-w-[164px] sm:w-auto sm:min-w-0 shrink-0 sm:shrink snap-start h-full"
-                      onSelect={handleSelectProduct}
-                      onAddToCart={handleAddToCart}
-                      onToggleWishlist={handleToggleWishlist}
-                      isWishlisted={wishlist.some((w) => w.id === prod.id)}
-                      isInCart={cart.some((c) => c.product.id === prod.id)}
-                    />
-                  ))}
-                </div>
-              </div>
-            </section>
+            {/* SECTION 3: Special Deals (Horizontal Carousel) */}
+            <ProductSectionCarousel
+              title="Special Deals"
+              subtitle="Discounted optical discs, pre-owned consoles & refurbished accessories"
+              badgeText="⚡ Biggest Price Drops · Up to 55% OFF"
+              badgeDotClass="bg-emerald-500"
+              badgeTextClass="text-emerald-700 dark:text-emerald-400"
+              products={todaysDeals}
+              onViewAll={() => handleNavigateCategory('preowned_games')}
+              viewAllLabel="See all deals"
+              onSelectProduct={handleSelectProduct}
+              onAddToCart={handleAddToCart}
+              onToggleWishlist={handleToggleWishlist}
+              wishlistIds={wishlist.map((w) => w.id)}
+              cartIds={cart.map((c) => c.product.id)}
+              containerBgClass="bg-gradient-to-b from-white via-emerald-50/25 to-white dark:from-[#0b0f17] dark:via-[#09221b]/20 dark:to-[#0b0f17]"
+              borderClass="border-b border-emerald-200/60 dark:border-emerald-950/60"
+            />
 
             {/* SECTION 4: Trust Pillars & Customer Feedback */}
             <section className="w-full py-6 sm:py-14 lg:py-20 bg-[#f8f9fb] dark:bg-[#0c121e] border-t border-[#eaedf0] dark:border-[#1e293b]">
