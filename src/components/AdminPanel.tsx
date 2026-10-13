@@ -38,7 +38,6 @@ import {
   Tag,
   ShieldAlert,
   ArrowLeft,
-  Sliders,
   DollarSign,
   Layers,
   Sparkles,
@@ -47,6 +46,18 @@ import {
   Disc,
   CreditCard,
   ShieldCheck,
+  ChevronLeft,
+  ChevronRight,
+  TrendingUp,
+  AlertCircle,
+  Filter,
+  Copy,
+  MessageSquare,
+  CheckCircle2,
+  Clock,
+  Truck,
+  Send,
+  Sliders,
 } from 'lucide-react';
 
 interface AdminPanelProps {
@@ -61,7 +72,16 @@ interface AdminPanelProps {
   showToast: (msg: string) => void;
 }
 
-type AdminTab = 'products' | 'content' | 'orders' | 'backup';
+type AdminTab = 'products' | 'orders' | 'content' | 'backup';
+
+type ProductNavTab =
+  | 'all'
+  | 'consoles'
+  | 'controllers'
+  | 'accessories'
+  | 'ps5_games'
+  | 'ps4_games'
+  | 'xbox_games';
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({
   products,
@@ -75,26 +95,25 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   showToast,
 }) => {
   const [activeTab, setActiveTab] = useState<AdminTab>('products');
-
-  // Product Category Navigation Tabs (matching website navigation)
-  type ProductNavTab =
-    | 'all'
-    | 'consoles'
-    | 'controllers'
-    | 'accessories'
-    | 'ps5_games'
-    | 'ps4_games'
-    | 'xbox_games';
-
   const [activeProductTab, setActiveProductTab] = useState<ProductNavTab>('all');
 
-  // Search & Filter state for products
+  // Search & Filters for Products
   const [productSearch, setProductSearch] = useState('');
-  const [stockFilter, setStockFilter] = useState<string>('all');
+  const [stockFilter, setStockFilter] = useState<'all' | 'in' | 'out' | 'low'>('all');
+  const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc' | 'stock-desc' | 'name-asc'>('featured');
+
+  // Pagination for Products Table (20 items per page)
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
+
+  // Search & Filter for Orders
+  const [orderSearch, setOrderSearch] = useState('');
+  const [orderStatusFilter, setOrderStatusFilter] = useState<string>('all');
 
   // Product Editor Modal State
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [modalTab, setModalTab] = useState<'basic' | 'pricing' | 'specs' | 'warranty'>('basic');
 
   // Delete Confirmation State
   const [productToDelete, setProductToDelete] = useState<Product | null>(null);
@@ -106,7 +125,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const [importJsonText, setImportJsonText] = useState('');
   const [importError, setImportError] = useState<string | null>(null);
 
-  // Product Form Initial Blank State
+  // Blank product baseline
   const blankProduct: Product = {
     id: '',
     name: '',
@@ -121,8 +140,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     reviewCount: 15,
     inStock: true,
     stockCount: 5,
-    badge: 'New Arrival',
-    features: ['100% Genuine Certified', 'Tested and verified by DJN Tech'],
+    badge: 'NEW ARRIVAL',
+    features: ['100% Genuine Certified', 'Bench tested and verified by DJN Tech'],
     description: 'High quality gaming product inspected and verified by DJN Tech.',
     inTheBox: ['Original Retail Item', 'Verification Certificate'],
     warranty: '7-Day Replacement Guarantee',
@@ -135,19 +154,20 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const [featuresText, setFeaturesText] = useState('');
   const [inTheBoxText, setInTheBoxText] = useState('');
 
-  // Stats calculation
+  // Key Metrics
   const totalProducts = products.length;
   const inStockCount = products.filter((p) => p.inStock).length;
   const outOfStockCount = totalProducts - inStockCount;
+  const totalStockUnits = products.reduce((sum, p) => sum + (p.stockCount || 0), 0);
   const totalOrders = orders.length;
   const totalRevenue = orders.reduce((acc, o) => acc + (o.total || 0), 0);
 
-  // Dynamic Product Tabs based on current catalog
+  // Product Category Navigation Pills with Live Counts
   const productNavTabs = useMemo(
     () => [
       {
         id: 'all' as ProductNavTab,
-        label: 'All Products',
+        label: 'All Catalog',
         icon: Layers,
         count: products.length,
       },
@@ -187,7 +207,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       },
       {
         id: 'xbox_games' as ProductNavTab,
-        label: 'XBOX Games',
+        label: 'Xbox Games',
         icon: Disc,
         count: products.filter(
           (p) => p.category === 'preowned_games' && p.platform === 'Xbox'
@@ -197,43 +217,62 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     [products]
   );
 
-  // Filtered Products by active category tab, search query, and stock status
+  // Filtered Products
   const filteredProducts = useMemo(() => {
-    return products.filter((p) => {
-      // Tab matching:
-      let matchesTab = true;
-      if (activeProductTab === 'consoles') {
-        matchesTab = p.category === 'consoles';
-      } else if (activeProductTab === 'controllers') {
-        matchesTab = p.category === 'controllers';
-      } else if (activeProductTab === 'accessories') {
-        matchesTab = p.category === 'accessories';
-      } else if (activeProductTab === 'ps5_games') {
-        matchesTab = p.category === 'preowned_games' && p.platform === 'PS5';
-      } else if (activeProductTab === 'ps4_games') {
-        matchesTab = p.category === 'preowned_games' && p.platform === 'PS4';
-      } else if (activeProductTab === 'xbox_games') {
-        matchesTab = p.category === 'preowned_games' && p.platform === 'Xbox';
-      }
+    return products
+      .filter((p) => {
+        // Tab filter
+        let matchesTab = true;
+        if (activeProductTab === 'consoles') matchesTab = p.category === 'consoles';
+        else if (activeProductTab === 'controllers') matchesTab = p.category === 'controllers';
+        else if (activeProductTab === 'accessories') matchesTab = p.category === 'accessories';
+        else if (activeProductTab === 'ps5_games') matchesTab = p.category === 'preowned_games' && p.platform === 'PS5';
+        else if (activeProductTab === 'ps4_games') matchesTab = p.category === 'preowned_games' && p.platform === 'PS4';
+        else if (activeProductTab === 'xbox_games') matchesTab = p.category === 'preowned_games' && p.platform === 'Xbox';
 
-      const matchesSearch =
-        p.name.toLowerCase().includes(productSearch.toLowerCase()) ||
-        p.subtitle.toLowerCase().includes(productSearch.toLowerCase()) ||
-        p.id.toLowerCase().includes(productSearch.toLowerCase());
+        // Search query
+        const q = productSearch.trim().toLowerCase();
+        const matchesSearch =
+          !q ||
+          p.name.toLowerCase().includes(q) ||
+          (p.subtitle && p.subtitle.toLowerCase().includes(q)) ||
+          p.id.toLowerCase().includes(q);
 
-      const matchesStock =
-        stockFilter === 'all' ||
-        (stockFilter === 'in' && p.inStock) ||
-        (stockFilter === 'out' && !p.inStock);
+        // Stock status
+        let matchesStock = true;
+        if (stockFilter === 'in') matchesStock = p.inStock;
+        else if (stockFilter === 'out') matchesStock = !p.inStock;
+        else if (stockFilter === 'low') matchesStock = p.inStock && (p.stockCount || 0) <= 2;
 
-      return matchesTab && matchesSearch && matchesStock;
-    });
-  }, [products, activeProductTab, productSearch, stockFilter]);
+        return matchesTab && matchesSearch && matchesStock;
+      })
+      .sort((a, b) => {
+        if (sortBy === 'price-asc') return a.price - b.price;
+        if (sortBy === 'price-desc') return b.price - a.price;
+        if (sortBy === 'stock-desc') return (b.stockCount || 0) - (a.stockCount || 0);
+        if (sortBy === 'name-asc') return a.name.localeCompare(b.name);
+        return 0; // default featured
+      });
+  }, [products, activeProductTab, productSearch, stockFilter, sortBy]);
 
-  // Open Add Product Modal with smart pre-selected category & platform
+  // Paginated Slices
+  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
+  const paginatedProducts = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredProducts.slice(start, start + itemsPerPage);
+  }, [filteredProducts, currentPage]);
+
+  // Reset page when filters change
+  const handleTabChange = (tab: ProductNavTab) => {
+    setActiveProductTab(tab);
+    setCurrentPage(1);
+  };
+
+  // Open Add Product Modal with smart defaults based on active tab
   const handleOpenAddProduct = () => {
     const newId = `product-${Date.now()}`;
     setEditingProduct(null);
+    setModalTab('basic');
 
     let initialCategory: Category = 'consoles';
     let initialPlatform: Platform = 'PS5';
@@ -273,8 +312,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const handleOpenEditProduct = (product: Product) => {
     setEditingProduct(product);
     setProductForm({ ...product });
-    setFeaturesText(product.features.join('\n'));
-    setInTheBoxText(product.inTheBox.join('\n'));
+    setFeaturesText((product.features || []).join('\n'));
+    setInTheBoxText((product.inTheBox || []).join('\n'));
+    setModalTab('basic');
     setIsProductModalOpen(true);
   };
 
@@ -282,15 +322,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const handleSaveProduct = (e: React.FormEvent) => {
     e.preventDefault();
     if (!productForm.name.trim()) {
-      alert('Product name is required.');
+      alert('Product title is required.');
       return;
     }
 
     const calculatedDiscount =
       productForm.mrp > productForm.price
-        ? Math.round(
-            ((productForm.mrp - productForm.price) / productForm.mrp) * 100
-          )
+        ? Math.round(((productForm.mrp - productForm.price) / productForm.mrp) * 100)
         : 0;
 
     const updatedProduct: Product = {
@@ -307,15 +345,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     };
 
     if (editingProduct) {
-      // Update existing
       const nextProducts = products.map((p) =>
         p.id === editingProduct.id ? updatedProduct : p
       );
       onUpdateProducts(nextProducts);
       upsertProductToDB(updatedProduct).catch(console.error);
-      showToast(`Updated "${updatedProduct.name}"`);
+      showToast(`Updated "${updatedProduct.name}" in catalog`);
     } else {
-      // Add new
       onUpdateProducts([updatedProduct, ...products]);
       upsertProductToDB(updatedProduct).catch(console.error);
       showToast(`Added new product "${updatedProduct.name}"`);
@@ -324,7 +360,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     setIsProductModalOpen(false);
   };
 
-  // Toggle inStock quick button
+  // Quick In-Stock Toggle
   const handleToggleStock = (productId: string) => {
     let updatedTarget: Product | undefined;
     const nextProducts = products.map((p) => {
@@ -340,42 +376,69 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     }
     const target = products.find((p) => p.id === productId);
     showToast(
-      `${target?.name || 'Product'} marked ${
-        target?.inStock ? 'Out of Stock' : 'In Stock'
-      }`
+      `${target?.name || 'Product'} marked ${target?.inStock ? 'Out of Stock' : 'In Stock'}`
     );
+  };
+
+  // Quick Inline Stock Quantity Adjuster (+1 / -1)
+  const handleAdjustStockUnits = (productId: string, delta: number) => {
+    let updatedTarget: Product | undefined;
+    const nextProducts = products.map((p) => {
+      if (p.id === productId) {
+        const newCount = Math.max(0, (p.stockCount || 0) + delta);
+        updatedTarget = {
+          ...p,
+          stockCount: newCount,
+          inStock: newCount > 0,
+        };
+        return updatedTarget;
+      }
+      return p;
+    });
+    onUpdateProducts(nextProducts);
+    if (updatedTarget) {
+      upsertProductToDB(updatedTarget).catch(console.error);
+    }
+    showToast(`Updated stock count to ${updatedTarget?.stockCount || 0} units`);
   };
 
   // Delete product
   const handleConfirmDelete = () => {
     if (!productToDelete) return;
-    const idToDelete = productToDelete.id;
-    const nextProducts = products.filter((p) => p.id !== idToDelete);
+    const nextProducts = products.filter((p) => p.id !== productToDelete.id);
     onUpdateProducts(nextProducts);
-    deleteProductFromDB(idToDelete).catch(console.error);
-    showToast(`Deleted "${productToDelete.name}"`);
+    deleteProductFromDB(productToDelete.id).catch(console.error);
+    showToast(`Deleted "${productToDelete.name}" from catalog`);
     setProductToDelete(null);
   };
 
-  // Save Site Settings
+  // Update Order Status
+  const handleUpdateOrderStatus = (orderId: string, status: Order['status']) => {
+    const nextOrders = orders.map((o) => (o.id === orderId ? { ...o, status } : o));
+    onUpdateOrders(nextOrders);
+    updateOrderStatusInDB(orderId, status).catch(console.error);
+    showToast(`Order #${orderId} marked as ${status}`);
+  };
+
+  // Open WhatsApp Customer Notification
+  const handleSendWhatsAppUpdate = (order: Order) => {
+    const cleanPhone = (order.customer.phone || '').replace(/\D/g, '');
+    const phoneWithCountry = cleanPhone.startsWith('91') ? cleanPhone : `91${cleanPhone}`;
+    const itemsSummary = order.items
+      .map((it) => `${it.product.name} (x${it.quantity})`)
+      .join(', ');
+    const message = encodeURIComponent(
+      `Hello ${order.customer.fullName}! 👋\n\nYour order #${order.id} from *DJN Tech Console Store* is currently: *${order.status.toUpperCase()}*.\n\n📦 *Items:* ${itemsSummary}\n💰 *Total:* ₹${order.total.toLocaleString('en-IN')}\n\nThank you for choosing DJN Tech!`
+    );
+    window.open(`https://wa.me/${phoneWithCountry}?text=${message}`, '_blank');
+  };
+
+  // Save Site Configuration
   const handleSaveSiteConfig = (e: React.FormEvent) => {
     e.preventDefault();
     onUpdateSiteConfig(configForm);
     upsertSiteConfigToDB(configForm).catch(console.error);
-    showToast('Website content and contact details updated successfully!');
-  };
-
-  // Order status update
-  const handleUpdateOrderStatus = (
-    orderId: string,
-    newStatus: Order['status']
-  ) => {
-    const nextOrders = orders.map((o) =>
-      o.id === orderId ? { ...o, status: newStatus } : o
-    );
-    onUpdateOrders(nextOrders);
-    updateOrderStatusInDB(orderId, newStatus).catch(console.error);
-    showToast(`Order #${orderId} status changed to ${newStatus}`);
+    showToast('Website banners, promo codes & contact details saved!');
   };
 
   // Export JSON
@@ -385,11 +448,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       encodeURIComponent(JSON.stringify(products, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute('href', dataStr);
-    downloadAnchor.setAttribute('download', 'djn-products.json');
+    downloadAnchor.setAttribute('download', 'djn-products-backup.json');
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
-    showToast('Downloaded products.json catalog backup');
+    showToast('Downloaded products catalog backup (JSON)');
   };
 
   const handleExportSiteConfigJson = () => {
@@ -402,7 +465,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
-    showToast('Downloaded site-config.json backup');
+    showToast('Downloaded site-config backup (JSON)');
   };
 
   // Import JSON
@@ -434,49 +497,80 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       onUpdateSiteConfig(DEFAULT_SITE_CONFIG);
       setConfigForm(DEFAULT_SITE_CONFIG);
       localStorage.removeItem('djn_products_v6');
-      localStorage.removeItem('djn_products_v5');
       localStorage.removeItem('djn_site_config');
       showToast('Restored store catalog to default factory settings.');
     }
   };
 
+  // Filtered Orders
+  const filteredOrders = useMemo(() => {
+    return orders.filter((o) => {
+      const q = orderSearch.trim().toLowerCase();
+      const matchesSearch =
+        !q ||
+        o.id.toLowerCase().includes(q) ||
+        o.customer.fullName.toLowerCase().includes(q) ||
+        o.customer.phone.includes(q) ||
+        o.customer.email.toLowerCase().includes(q);
+
+      const matchesStatus =
+        orderStatusFilter === 'all' || o.status === orderStatusFilter;
+
+      return matchesSearch && matchesStatus;
+    });
+  }, [orders, orderSearch, orderStatusFilter]);
+
   return (
-    <div className="min-h-screen bg-[#f8fafc] dark:bg-[#0b1120] text-gray-900 dark:text-gray-100 transition-colors">
-      {/* Top Admin Navigation Bar */}
-      <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#111827]/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black text-sm shadow-sm">
+    <div className="min-h-screen bg-[#f8fafc] dark:bg-[#0b1120] text-gray-900 dark:text-gray-100 flex flex-col transition-colors selection:bg-blue-500 selection:text-white">
+      
+      {/* TOP EXECUTIVE HEADER BAR */}
+      <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#111827]/95 backdrop-blur-md border-b border-gray-200/80 dark:border-gray-800 shadow-2xs">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+          
+          {/* Brand & Live Connection Indicator */}
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-sm shadow-md shadow-blue-500/20">
               DJN
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-base font-bold text-gray-900 dark:text-white leading-tight">
+                <h1 className="text-sm sm:text-base font-extrabold text-gray-900 dark:text-white leading-none tracking-tight">
                   Store Management Console
                 </h1>
-                <span className="px-2 py-0.5 text-[10px] font-bold rounded-md bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300">
-                  ADMIN
+                <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  Supabase Live Sync
                 </span>
               </div>
-              <p className="text-[11px] text-gray-500 dark:text-gray-400">
-                Live editor for catalog, website banners & orders
+              <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
+                Enterprise control for catalog, physical inventory & orders
               </p>
             </div>
           </div>
 
+          {/* Quick Actions & Exit Controls */}
           <div className="flex items-center gap-2.5">
             <button
+              onClick={handleOpenAddProduct}
+              className="flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold shadow-md shadow-blue-600/20 transition-all cursor-pointer"
+            >
+              <Plus className="w-4 h-4 stroke-[2.5]" />
+              <span className="hidden sm:inline">Add Product</span>
+            </button>
+
+            <button
               onClick={onExit}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-xs font-semibold text-gray-700 dark:text-gray-200 transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-xs font-semibold text-gray-700 dark:text-gray-200 transition-colors cursor-pointer"
+              title="Return to customer store view"
             >
               <ExternalLink className="w-3.5 h-3.5" />
-              <span>View Live Store</span>
+              <span className="hidden md:inline">View Store</span>
             </button>
 
             <button
               onClick={onLogout}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-red-200 dark:border-red-900/50 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs font-semibold text-red-600 dark:text-red-400 transition-colors cursor-pointer"
-              title="Lock & Logout Admin Session"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-red-200 dark:border-red-900/50 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs font-semibold text-red-600 dark:text-red-400 transition-colors cursor-pointer"
+              title="Lock & Exit Admin"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Logout</span>
@@ -485,119 +579,139 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         </div>
       </header>
 
-      {/* Main Admin Content Container */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-        {/* Top Stat Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-          <div className="p-4 rounded-2xl bg-white dark:bg-[#161f30] border border-gray-200/80 dark:border-gray-800 shadow-xs">
-            <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-1">
-              <span className="text-xs font-medium">Total Products</span>
-              <Package className="w-4 h-4 text-blue-500" />
+      {/* SUB-HEADER / TAB NAVIGATION BAR */}
+      <div className="bg-white dark:bg-[#0f172a] border-b border-gray-200/80 dark:border-gray-800/80 px-4 sm:px-6 lg:px-8 py-2.5">
+        <div className="w-full max-w-[1920px] mx-auto flex items-center justify-between gap-4 overflow-x-auto no-scrollbar">
+          
+          <nav className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {[
+              { id: 'products' as AdminTab, label: 'Product Catalog', count: products.length, icon: Package },
+              { id: 'orders' as AdminTab, label: 'Customer Orders', count: orders.length, icon: ShoppingBag },
+              { id: 'content' as AdminTab, label: 'Banners & Marketing', count: null, icon: Settings },
+              { id: 'backup' as AdminTab, label: 'Backup & Restore', count: null, icon: Database },
+            ].map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
+                    isActive
+                      ? 'bg-blue-600 text-white shadow-sm'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800/60'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{tab.label}</span>
+                  {tab.count !== null && (
+                    <span
+                      className={`px-1.5 py-0.2 rounded-full text-[10px] font-extrabold ${
+                        isActive
+                          ? 'bg-white/25 text-white'
+                          : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400'
+                      }`}
+                    >
+                      {tab.count}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </nav>
+
+          <div className="hidden lg:flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400 font-medium">
+            <span>Currency: <strong className="text-gray-800 dark:text-gray-200">INR (₹)</strong></span>
+            <span>·</span>
+            <span>Total Physical Units: <strong className="text-blue-600 dark:text-blue-400">{totalStockUnits}</strong></span>
+          </div>
+        </div>
+      </div>
+
+      {/* MAIN ADMIN WORKSPACE */}
+      <main className="flex-1 w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+        {/* EXECUTIVE KPI DASHBOARD STATS */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          
+          {/* KPI 1: Total Catalog & Physical Units */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs relative overflow-hidden group hover:border-blue-500/40 transition-colors">
+            <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-2">
+              <span className="text-xs font-semibold uppercase tracking-wider">Catalog Titles</span>
+              <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+                <Package className="w-4 h-4" />
+              </div>
             </div>
-            <div className="text-2xl font-black text-gray-900 dark:text-white">
+            <div className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
               {totalProducts}
             </div>
-            <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium mt-1">
-              {inStockCount} In Stock · {outOfStockCount} Out
+            <div className="flex items-center gap-1.5 text-[11px] font-semibold text-blue-600 dark:text-blue-400 mt-2">
+              <TrendingUp className="w-3.5 h-3.5" />
+              <span>{totalStockUnits} physical discs & units in inventory</span>
             </div>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white dark:bg-[#161f30] border border-gray-200/80 dark:border-gray-800 shadow-xs">
-            <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-1">
-              <span className="text-xs font-medium">Customer Orders</span>
-              <ShoppingBag className="w-4 h-4 text-emerald-500" />
+          {/* KPI 2: Gross Orders Revenue */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs relative overflow-hidden group hover:border-emerald-500/40 transition-colors">
+            <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-2">
+              <span className="text-xs font-semibold uppercase tracking-wider">Gross Orders</span>
+              <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                <ShoppingBag className="w-4 h-4" />
+              </div>
             </div>
-            <div className="text-2xl font-black text-gray-900 dark:text-white">
-              {totalOrders}
+            <div className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
+              ₹{totalRevenue.toLocaleString('en-IN')}
             </div>
-            <div className="text-[11px] text-gray-500 dark:text-gray-400 font-medium mt-1">
-              Tracked via checkout
-            </div>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-white dark:bg-[#161f30] border border-gray-200/80 dark:border-gray-800 shadow-xs">
-            <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-1">
-              <span className="text-xs font-medium">Store WhatsApp</span>
-              <Phone className="w-4 h-4 text-[#25d366]" />
-            </div>
-            <div className="text-base font-bold text-gray-900 dark:text-white truncate">
-              {siteConfig.phone}
-            </div>
-            <div className="text-[11px] text-gray-500 dark:text-gray-400 font-medium mt-1">
-              Direct customer link
+            <div className="text-[11px] font-medium text-gray-500 dark:text-gray-400 mt-2">
+              {totalOrders} customer checkouts tracked
             </div>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white dark:bg-[#161f30] border border-gray-200/80 dark:border-gray-800 shadow-xs">
-            <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-1">
-              <span className="text-xs font-medium">Active Promo</span>
-              <Tag className="w-4 h-4 text-purple-500" />
+          {/* KPI 3: Stock Status Health */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs relative overflow-hidden group hover:border-amber-500/40 transition-colors">
+            <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-2">
+              <span className="text-xs font-semibold uppercase tracking-wider">Stock Health</span>
+              <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                <CheckCircle2 className="w-4 h-4" />
+              </div>
             </div>
-            <div className="text-xl font-bold text-gray-900 dark:text-white truncate">
+            <div className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400 tracking-tight">
+              {inStockCount} Active
+            </div>
+            <div className="text-[11px] text-gray-500 dark:text-gray-400 font-medium mt-2">
+              {outOfStockCount > 0 ? (
+                <span className="text-red-500 font-bold">{outOfStockCount} out of stock</span>
+              ) : (
+                <span className="text-emerald-600 dark:text-emerald-400">100% catalog in stock</span>
+              )}
+            </div>
+          </div>
+
+          {/* KPI 4: Active Store Promotions */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs relative overflow-hidden group hover:border-purple-500/40 transition-colors">
+            <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-2">
+              <span className="text-xs font-semibold uppercase tracking-wider">Active Promo Code</span>
+              <div className="w-8 h-8 rounded-lg bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+                <Tag className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-xl sm:text-2xl font-black text-purple-600 dark:text-purple-400 tracking-tight">
               {siteConfig.promoCode}
             </div>
-            <div className="text-[11px] text-purple-600 dark:text-purple-400 font-medium mt-1">
-              {siteConfig.promoDiscountPercent}% Discount
+            <div className="text-[11px] text-gray-500 dark:text-gray-400 font-medium mt-2">
+              {siteConfig.promoDiscountPercent}% OFF at checkout
             </div>
           </div>
         </div>
 
-        {/* Tab Switcher */}
-        <div className="flex items-center gap-2 border-b border-gray-200 dark:border-gray-800 pb-2 overflow-x-auto">
-          <button
-            onClick={() => setActiveTab('products')}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all cursor-pointer ${
-              activeTab === 'products'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
-            }`}
-          >
-            <Package className="w-4 h-4" />
-            <span>Products Catalog ({products.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('content')}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all cursor-pointer ${
-              activeTab === 'content'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
-            }`}
-          >
-            <Settings className="w-4 h-4" />
-            <span>Website Banners & Contact</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('orders')}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all cursor-pointer ${
-              activeTab === 'orders'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
-            }`}
-          >
-            <ShoppingBag className="w-4 h-4" />
-            <span>Customer Orders ({orders.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('backup')}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all cursor-pointer ${
-              activeTab === 'backup'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
-            }`}
-          >
-            <Database className="w-4 h-4" />
-            <span>Backup & Restore</span>
-          </button>
-        </div>
-
-        {/* TAB 1: PRODUCTS MANAGEMENT */}
+        {/* ========================================================================= */}
+        {/* TAB 1: PRODUCT CATALOG MANAGEMENT */}
+        {/* ========================================================================= */}
         {activeTab === 'products' && (
           <div className="space-y-4">
-            {/* Category Navigation Ribbon - 1:1 Mirror of Website Tabs */}
-            <div className="p-1.5 rounded-2xl bg-white dark:bg-[#161f30] border border-gray-200/80 dark:border-gray-800 shadow-xs flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+            
+            {/* Category Navigation Ribbon (1:1 Mirror of Store Navigation) */}
+            <div className="p-1.5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs flex items-center gap-1.5 overflow-x-auto no-scrollbar">
               {productNavTabs.map((tab) => {
                 const Icon = tab.icon;
                 const isActive = activeProductTab === tab.id;
@@ -605,21 +719,17 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   <button
                     key={tab.id}
                     type="button"
-                    onClick={() => setActiveProductTab(tab.id)}
+                    onClick={() => handleTabChange(tab.id)}
                     className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 ${
                       isActive
                         ? 'bg-blue-600 text-white shadow-sm'
                         : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800/60'
                     }`}
                   >
-                    <Icon
-                      className={`w-3.5 h-3.5 ${
-                        isActive ? 'text-white' : 'text-gray-400'
-                      }`}
-                    />
+                    <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-gray-400'}`} />
                     <span>{tab.label}</span>
                     <span
-                      className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${
+                      className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
                         isActive
                           ? 'bg-white/20 text-white'
                           : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400'
@@ -632,181 +742,233 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               })}
             </div>
 
-            {/* Search, Stock Filter & Add Button Bar */}
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#161f30] border border-gray-200/80 dark:border-gray-800 shadow-xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+            {/* Controls Bar: Search, Filters, Sorting, and Add Product */}
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
               <div className="flex flex-1 flex-wrap items-center gap-2.5">
-                {/* Search Box */}
-                <div className="relative flex-1 min-w-[200px]">
-                  <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
+                
+                {/* Search Field */}
+                <div className="relative flex-1 min-w-[240px]">
+                  <Search className="absolute left-3.5 top-2.5 w-4 h-4 text-gray-400" />
                   <input
                     type="text"
                     value={productSearch}
-                    onChange={(e) => setProductSearch(e.target.value)}
-                    placeholder={`Search within ${
+                    onChange={(e) => {
+                      setProductSearch(e.target.value);
+                      setCurrentPage(1);
+                    }}
+                    placeholder={`Search titles, ID, platform in ${
                       productNavTabs.find((t) => t.id === activeProductTab)?.label || 'products'
                     }...`}
-                    className="w-full pl-9 pr-3 py-2 rounded-xl text-xs bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-10 pr-8 py-2 rounded-xl text-xs bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
                   />
                   {productSearch && (
                     <button
-                      onClick={() => setProductSearch('')}
-                      className="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-600"
+                      onClick={() => {
+                        setProductSearch('');
+                        setCurrentPage(1);
+                      }}
+                      className="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer"
                     >
                       <X className="w-3.5 h-3.5" />
                     </button>
                   )}
                 </div>
 
-                {/* Stock Filter */}
+                {/* Stock Status Filter */}
                 <select
                   value={stockFilter}
-                  onChange={(e) => setStockFilter(e.target.value)}
-                  className="px-3 py-2 rounded-xl text-xs bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white focus:outline-none"
+                  onChange={(e) => {
+                    setStockFilter(e.target.value as any);
+                    setCurrentPage(1);
+                  }}
+                  className="px-3 py-2 rounded-xl text-xs bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
                 >
                   <option value="all">All Stock Status</option>
                   <option value="in">In Stock Only</option>
                   <option value="out">Out of Stock Only</option>
+                  <option value="low">Low Stock (≤ 2 units)</option>
+                </select>
+
+                {/* Sort Option */}
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as any)}
+                  className="px-3 py-2 rounded-xl text-xs bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                >
+                  <option value="featured">Sort: Featured</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                  <option value="stock-desc">Stock Quantity (High first)</option>
+                  <option value="name-asc">Title: A to Z</option>
                 </select>
               </div>
 
               {/* Add Product Button */}
               <button
                 onClick={handleOpenAddProduct}
-                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm shadow-md transition-all shrink-0 cursor-pointer"
+                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-xs sm:text-sm shadow-md shadow-blue-600/20 transition-all shrink-0 cursor-pointer"
               >
-                <Plus className="w-4 h-4" />
-                <span>
-                  Add New Product
-                </span>
+                <Plus className="w-4 h-4 stroke-[2.5]" />
+                <span>Add Product</span>
               </button>
             </div>
 
-            {/* Products Table / Grid View */}
-            <div className="bg-white dark:bg-[#161f30] rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-xs overflow-hidden">
+            {/* Products Data Table */}
+            <div className="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-xs overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs border-collapse">
                   <thead>
-                    <tr className="bg-gray-50/80 dark:bg-[#111827]/80 text-gray-500 dark:text-gray-400 font-semibold border-b border-gray-200 dark:border-gray-800">
-                      <th className="py-3 px-4">Product Details</th>
-                      <th className="py-3 px-3">Platform</th>
-                      <th className="py-3 px-3">Condition</th>
-                      <th className="py-3 px-3">Price & MRP</th>
-                      <th className="py-3 px-3">Stock Status</th>
-                      <th className="py-3 px-4 text-right">Actions</th>
+                    <tr className="bg-gray-50/80 dark:bg-[#161f30] text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider text-[11px] border-b border-gray-200/80 dark:border-gray-800">
+                      <th className="py-3.5 px-4">Product Details & Cover</th>
+                      <th className="py-3.5 px-3">Category</th>
+                      <th className="py-3.5 px-3">Condition</th>
+                      <th className="py-3.5 px-3">Price & MRP</th>
+                      <th className="py-3.5 px-4">Inventory Stepper</th>
+                      <th className="py-3.5 px-4 text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 dark:divide-gray-800/60">
-                    {filteredProducts.length === 0 ? (
+                    {paginatedProducts.length === 0 ? (
                       <tr>
-                        <td
-                          colSpan={6}
-                          className="py-12 text-center text-gray-400 dark:text-gray-500"
-                        >
-                          <Package className="w-10 h-10 mx-auto mb-2 opacity-40" />
-                          <p className="text-sm font-medium">No products found matching filters.</p>
-                          <p className="text-xs mt-1">Try clearing filters or search query.</p>
+                        <td colSpan={6} className="py-16 text-center text-gray-400 dark:text-gray-500">
+                          <Package className="w-12 h-12 mx-auto mb-3 opacity-30 stroke-[1.5]" />
+                          <p className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                            No products found matching filters
+                          </p>
+                          <p className="text-xs mt-1 text-gray-500">
+                            Try resetting search keywords or switching category tabs.
+                          </p>
                         </td>
                       </tr>
                     ) : (
-                      filteredProducts.map((p) => (
+                      paginatedProducts.map((p) => (
                         <tr
                           key={p.id}
-                          className="hover:bg-gray-50/50 dark:hover:bg-[#1a2333]/50 transition-colors"
+                          className="hover:bg-blue-50/30 dark:hover:bg-[#1a2333]/50 transition-colors group"
                         >
-                          {/* Details & Image */}
-                          <td className="py-3 px-4">
+                          {/* Title & Cover Art */}
+                          <td className="py-3.5 px-4">
                             <div className="flex items-center gap-3">
-                              <div className="w-11 h-11 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 overflow-hidden shrink-0 flex items-center justify-center">
+                              <div className="w-12 h-14 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 overflow-hidden shrink-0 flex items-center justify-center shadow-2xs group-hover:border-blue-500/40 transition-colors">
                                 {p.imageUrl ? (
                                   <img
                                     src={p.imageUrl}
                                     alt={p.name}
-                                    className="w-full h-full object-cover"
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer"
+                                    className="w-full h-full object-cover transition-transform group-hover:scale-105"
                                     onError={(e) => {
-                                      (e.target as HTMLElement).style.display = 'none';
+                                      (e.currentTarget as HTMLImageElement).src =
+                                        'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg';
                                     }}
                                   />
                                 ) : (
                                   <Package className="w-5 h-5 text-gray-400" />
                                 )}
                               </div>
-                              <div className="min-w-0 max-w-xs sm:max-w-sm">
-                                <div className="font-bold text-gray-900 dark:text-white truncate">
+                              <div className="min-w-0 max-w-xs sm:max-w-md">
+                                <div className="font-bold text-gray-900 dark:text-white truncate text-[13px] group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                                   {p.name}
                                 </div>
                                 <div className="text-[11px] text-gray-500 dark:text-gray-400 truncate">
                                   {p.subtitle || p.category}
                                 </div>
-                                {p.badge && (
-                                  <span className="inline-block mt-0.5 px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300">
-                                    {p.badge}
+                                <div className="flex items-center gap-1.5 mt-1">
+                                  <span className="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-800/40">
+                                    {p.platform}
                                   </span>
-                                )}
+                                  {p.badge && (
+                                    <span className="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200/50 dark:border-amber-800/40 truncate max-w-[120px]">
+                                      {p.badge}
+                                    </span>
+                                  )}
+                                  <span className="text-[9px] font-mono text-gray-400 hidden sm:inline">
+                                    ID: {p.id}
+                                  </span>
+                                </div>
                               </div>
                             </div>
                           </td>
 
-                          {/* Platform */}
-                          <td className="py-3 px-3 whitespace-nowrap">
-                            <span className="px-2 py-0.5 rounded-md font-semibold text-[11px] bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
-                              {p.platform}
+                          {/* Category */}
+                          <td className="py-3.5 px-3 whitespace-nowrap">
+                            <span className="px-2 py-1 rounded-md text-[11px] font-semibold bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 uppercase">
+                              {p.category.replace('_', ' ')}
                             </span>
                           </td>
 
                           {/* Condition */}
-                          <td className="py-3 px-3 whitespace-nowrap">
-                            <span className="text-[11px] text-gray-600 dark:text-gray-400">
+                          <td className="py-3.5 px-3 whitespace-nowrap">
+                            <span className="text-xs text-gray-700 dark:text-gray-300 font-medium">
                               {p.condition}
                             </span>
                           </td>
 
-                          {/* Price */}
-                          <td className="py-3 px-3 whitespace-nowrap">
-                            <div className="font-bold text-gray-900 dark:text-white">
+                          {/* Price & MRP */}
+                          <td className="py-3.5 px-3 whitespace-nowrap">
+                            <div className="font-bold text-gray-900 dark:text-white text-sm">
                               ₹{p.price.toLocaleString('en-IN')}
                             </div>
                             {p.mrp > p.price && (
-                              <div className="text-[10px] text-gray-400 line-through">
-                                ₹{p.mrp.toLocaleString('en-IN')}{' '}
-                                <span className="text-emerald-600 font-semibold no-underline">
-                                  ({p.discountPercent}% off)
+                              <div className="flex items-center gap-1.5 mt-0.5">
+                                <span className="text-[11px] text-gray-400 line-through">
+                                  ₹{p.mrp.toLocaleString('en-IN')}
+                                </span>
+                                <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">
+                                  {p.discountPercent}% OFF
                                 </span>
                               </div>
                             )}
                           </td>
 
-                          {/* Stock Toggle */}
-                          <td className="py-3 px-3 whitespace-nowrap">
-                            <button
-                              type="button"
-                              onClick={() => handleToggleStock(p.id)}
-                              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full font-bold text-[10px] transition-all cursor-pointer ${
-                                p.inStock
-                                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800'
-                                  : 'bg-red-50 text-red-600 border border-red-200 dark:bg-red-950/40 dark:text-red-300 dark:border-red-800'
-                              }`}
-                              title="Click to toggle stock status"
-                            >
-                              <span
-                                className={`w-1.5 h-1.5 rounded-full ${
-                                  p.inStock ? 'bg-emerald-500' : 'bg-red-500'
+                          {/* Inventory Stepper & Quick Toggle */}
+                          <td className="py-3.5 px-4 whitespace-nowrap">
+                            <div className="flex items-center gap-2">
+                              {/* Stock Count Stepper */}
+                              <div className="inline-flex items-center border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800/80 p-0.5">
+                                <button
+                                  type="button"
+                                  onClick={() => handleAdjustStockUnits(p.id, -1)}
+                                  title="Decrease stock unit by 1"
+                                  className="w-6 h-6 flex items-center justify-center rounded text-gray-600 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-700 cursor-pointer font-bold transition-colors"
+                                >
+                                  -
+                                </button>
+                                <span className="w-8 text-center font-bold text-xs text-gray-900 dark:text-white">
+                                  {p.stockCount || 0}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => handleAdjustStockUnits(p.id, 1)}
+                                  title="Increase stock unit by 1"
+                                  className="w-6 h-6 flex items-center justify-center rounded text-gray-600 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-700 cursor-pointer font-bold transition-colors"
+                                >
+                                  +
+                                </button>
+                              </div>
+
+                              {/* In/Out Pill */}
+                              <button
+                                type="button"
+                                onClick={() => handleToggleStock(p.id)}
+                                className={`px-2.5 py-1 rounded-full text-[10px] font-bold cursor-pointer transition-colors ${
+                                  p.inStock
+                                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 hover:bg-emerald-200'
+                                    : 'bg-red-100 text-red-800 dark:bg-red-950/80 dark:text-red-300 hover:bg-red-200'
                                 }`}
-                              />
-                              <span>
-                                {p.inStock
-                                  ? `In Stock (${p.stockCount || 1})`
-                                  : 'Out of Stock'}
-                              </span>
-                            </button>
+                              >
+                                {p.inStock ? 'In Stock' : 'Out of Stock'}
+                              </button>
+                            </div>
                           </td>
 
                           {/* Actions */}
-                          <td className="py-3 px-4 text-right whitespace-nowrap">
+                          <td className="py-3.5 px-4 text-right whitespace-nowrap">
                             <div className="flex items-center justify-end gap-1.5">
                               <button
                                 onClick={() => handleOpenEditProduct(p)}
                                 className="p-1.5 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors cursor-pointer"
-                                title="Edit Product"
+                                title="Edit Product Specs & Pricing"
                               >
                                 <Edit2 className="w-3.5 h-3.5" />
                               </button>
@@ -826,345 +988,78 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   </tbody>
                 </table>
               </div>
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="p-4 border-t border-gray-100 dark:border-gray-800/80 flex flex-col sm:flex-row items-center justify-between gap-3 bg-gray-50/50 dark:bg-[#161f30]/50">
+                  <div className="text-xs text-gray-500 dark:text-gray-400">
+                    Showing <strong className="text-gray-900 dark:text-white">{(currentPage - 1) * itemsPerPage + 1}</strong> to{' '}
+                    <strong className="text-gray-900 dark:text-white">
+                      {Math.min(currentPage * itemsPerPage, filteredProducts.length)}
+                    </strong>{' '}
+                    of <strong className="text-gray-900 dark:text-white">{filteredProducts.length}</strong> items
+                  </div>
+
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                      disabled={currentPage === 1}
+                      className="px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white dark:hover:bg-gray-800 transition-colors cursor-pointer flex items-center gap-1"
+                    >
+                      <ChevronLeft className="w-3.5 h-3.5" />
+                      <span>Previous</span>
+                    </button>
+
+                    <span className="px-3 py-1.5 text-xs font-bold text-gray-700 dark:text-gray-300">
+                      Page {currentPage} of {totalPages}
+                    </span>
+
+                    <button
+                      onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                      disabled={currentPage === totalPages}
+                      className="px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white dark:hover:bg-gray-800 transition-colors cursor-pointer flex items-center gap-1"
+                    >
+                      <span>Next</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
 
-        {/* TAB 2: WEBSITE CONTENT & BANNERS */}
-        {activeTab === 'content' && (
-          <form onSubmit={handleSaveSiteConfig} className="space-y-6">
-            {/* Contact Details Card */}
-            <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#161f30] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4">
-              <div className="flex items-center gap-2.5 pb-2 border-b border-gray-100 dark:border-gray-800">
-                <Phone className="w-5 h-5 text-blue-600" />
-                <div>
-                  <h3 className="font-bold text-sm text-gray-900 dark:text-white">
-                    Store Contact & Social Details
-                  </h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Controls phone numbers, WhatsApp quick links, and official email across the entire website.
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                <div>
-                  <label className="font-semibold block mb-1">
-                    Store Phone / Calling Number *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={configForm.phone}
-                    onChange={(e) =>
-                      setConfigForm({ ...configForm, phone: e.target.value })
-                    }
-                    placeholder="+91 84464 39374"
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <span className="text-[10px] text-gray-400 mt-1 block">
-                    Displayed in header, footer & contact modals.
-                  </span>
-                </div>
-
-                <div>
-                  <label className="font-semibold block mb-1">
-                    WhatsApp Digits (without + or spaces) *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={configForm.whatsappNumber}
-                    onChange={(e) =>
-                      setConfigForm({
-                        ...configForm,
-                        whatsappNumber: e.target.value.replace(/\D/g, ''),
-                      })
-                    }
-                    placeholder="918446439374"
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <span className="text-[10px] text-gray-400 mt-1 block">
-                    Used for wa.me links (e.g. 918446439374).
-                  </span>
-                </div>
-
-                <div>
-                  <label className="font-semibold block mb-1">
-                    Store Support Email *
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={configForm.email}
-                    onChange={(e) =>
-                      setConfigForm({ ...configForm, email: e.target.value })
-                    }
-                    placeholder="djntechofficial@gmail.com"
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="font-semibold block mb-1">
-                    Instagram Handle or URL *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={configForm.instagram}
-                    onChange={(e) =>
-                      setConfigForm({ ...configForm, instagram: e.target.value })
-                    }
-                    placeholder="@djntech"
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div className="sm:col-span-2">
-                  <label className="font-semibold block mb-1">
-                    Support Operating Timings
-                  </label>
-                  <input
-                    type="text"
-                    value={configForm.supportHours}
-                    onChange={(e) =>
-                      setConfigForm({
-                        ...configForm,
-                        supportHours: e.target.value,
-                      })
-                    }
-                    placeholder="Monday to Sunday, 10:00 AM – 9:00 PM IST"
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Marquee & Banner Card */}
-            <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#161f30] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4">
-              <div className="flex items-center gap-2.5 pb-2 border-b border-gray-100 dark:border-gray-800">
-                <Sparkles className="w-5 h-5 text-amber-500" />
-                <div>
-                  <h3 className="font-bold text-sm text-gray-900 dark:text-white">
-                    Announcement Marquee & Shipping
-                  </h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Controls the scrolling ticker tape on homepage and threshold for free shipping.
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-3 text-xs">
-                <div>
-                  <label className="font-semibold block mb-1">
-                    Announcement Marquee Ticker Text
-                  </label>
-                  <textarea
-                    rows={2}
-                    value={configForm.marqueeAnnouncement}
-                    onChange={(e) =>
-                      setConfigForm({
-                        ...configForm,
-                        marqueeAnnouncement: e.target.value,
-                      })
-                    }
-                    placeholder="⚡ Free Express Shipping Across India · 🛡️ Certified 25-Point Hardware QA Inspection..."
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="font-semibold block mb-1">
-                      Free Shipping Minimum Order (₹)
-                    </label>
-                    <input
-                      type="number"
-                      value={configForm.freeShippingThreshold}
-                      onChange={(e) =>
-                        setConfigForm({
-                          ...configForm,
-                          freeShippingThreshold: Number(e.target.value) || 0,
-                        })
-                      }
-                      className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="font-semibold block mb-1">
-                      Store Brand Name
-                    </label>
-                    <input
-                      type="text"
-                      value={configForm.storeName}
-                      onChange={(e) =>
-                        setConfigForm({
-                          ...configForm,
-                          storeName: e.target.value,
-                        })
-                      }
-                      className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Promo Codes & Discounts Card */}
-            <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#161f30] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4">
-              <div className="flex items-center gap-2.5 pb-2 border-b border-gray-100 dark:border-gray-800">
-                <Tag className="w-5 h-5 text-purple-600" />
-                <div>
-                  <h3 className="font-bold text-sm text-gray-900 dark:text-white">
-                    Coupon Code & Promotions
-                  </h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Customers can enter this coupon code at checkout to receive instant discounts.
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                <div>
-                  <label className="font-semibold block mb-1">
-                    Active Coupon Code
-                  </label>
-                  <input
-                    type="text"
-                    value={configForm.promoCode}
-                    onChange={(e) =>
-                      setConfigForm({
-                        ...configForm,
-                        promoCode: e.target.value.toUpperCase(),
-                      })
-                    }
-                    placeholder="DJN2026"
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs uppercase font-mono font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="font-semibold block mb-1">
-                    Discount Percentage (%)
-                  </label>
-                  <input
-                    type="number"
-                    min={1}
-                    max={90}
-                    value={configForm.promoDiscountPercent}
-                    onChange={(e) =>
-                      setConfigForm({
-                        ...configForm,
-                        promoDiscountPercent: Number(e.target.value) || 0,
-                      })
-                    }
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Razorpay Payment Gateway Settings Card */}
-            <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#161f30] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4">
-              <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-gray-800">
-                <div className="flex items-center gap-2.5">
-                  <CreditCard className="w-5 h-5 text-blue-600" />
-                  <div>
-                    <h3 className="font-bold text-sm text-gray-900 dark:text-white">
-                      Razorpay Payment Gateway Settings
-                    </h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      Configure your Razorpay Key ID for UPI (Google Pay, PhonePe, Paytm), Debit/Credit Cards & NetBanking.
-                    </p>
-                  </div>
-                </div>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={configForm.razorpayEnabled !== false}
-                    onChange={(e) =>
-                      setConfigForm({
-                        ...configForm,
-                        razorpayEnabled: e.target.checked,
-                      })
-                    }
-                    className="rounded text-blue-600 focus:ring-blue-500"
-                  />
-                  <span className="text-xs font-bold text-gray-700 dark:text-gray-300">
-                    Enable Razorpay
-                  </span>
-                </label>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                <div>
-                  <label className="font-semibold block mb-1">
-                    Razorpay Key ID (Live / Test) *
-                  </label>
-                  <input
-                    type="text"
-                    value={configForm.razorpayKeyId || ''}
-                    onChange={(e) =>
-                      setConfigForm({
-                        ...configForm,
-                        razorpayKeyId: e.target.value.trim(),
-                      })
-                    }
-                    placeholder="rzp_live_... or rzp_test_..."
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs font-mono text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <span className="text-[10px] text-gray-400 mt-1 block">
-                    Find this in your{' '}
-                    <a
-                      href="https://dashboard.razorpay.com/app/keys"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-blue-600 underline font-semibold"
-                    >
-                      Razorpay Dashboard &gt; Settings &gt; API Keys
-                    </a>
-                  </span>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200/60 dark:border-blue-900/40 text-[11px] text-blue-800 dark:text-blue-300 flex flex-col justify-center">
-                  <span className="font-bold flex items-center gap-1.5 mb-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-                    256-Bit SSL Encryption Active
-                  </span>
-                  <span>
-                    When enabled, customers can pay directly with UPI, Cards, NetBanking or EMI. If left on test key, it operates in safe sandbox mode.
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Save Button */}
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                className="flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md transition-all cursor-pointer"
-              >
-                <Save className="w-4 h-4" />
-                <span>Save Website Settings</span>
-              </button>
-            </div>
-          </form>
-        )}
-
-        {/* TAB 3: CUSTOMER ORDERS */}
+        {/* ========================================================================= */}
+        {/* TAB 2: CUSTOMER ORDERS MANAGEMENT */}
+        {/* ========================================================================= */}
         {activeTab === 'orders' && (
           <div className="space-y-4">
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#161f30] border border-gray-200/80 dark:border-gray-800 shadow-xs flex items-center justify-between">
-              <div>
-                <h3 className="font-bold text-sm text-gray-900 dark:text-white">
-                  Customer Checkout Orders
-                </h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                  {orders.length} total orders recorded. Total Revenue: ₹
-                  {totalRevenue.toLocaleString('en-IN')}
-                </p>
+            
+            {/* Orders Header & Search Toolbar */}
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+              <div className="flex flex-1 flex-wrap items-center gap-3">
+                <div className="relative flex-1 min-w-[240px]">
+                  <Search className="absolute left-3.5 top-2.5 w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    value={orderSearch}
+                    onChange={(e) => setOrderSearch(e.target.value)}
+                    placeholder="Search by Order ID, customer name, phone, or email..."
+                    className="w-full pl-10 pr-4 py-2 rounded-xl text-xs bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <select
+                  value={orderStatusFilter}
+                  onChange={(e) => setOrderStatusFilter(e.target.value)}
+                  className="px-3 py-2 rounded-xl text-xs bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                >
+                  <option value="all">All Order Statuses</option>
+                  <option value="Confirmed">Confirmed</option>
+                  <option value="Dispatched">Dispatched</option>
+                  <option value="Out for Delivery">Out for Delivery</option>
+                  <option value="Delivered">Delivered</option>
+                </select>
               </div>
 
               {orders.length > 0 && (
@@ -1175,47 +1070,58 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                       showToast('Cleared order history');
                     }
                   }}
-                  className="px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className="px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
                 >
                   Clear History
                 </button>
               )}
             </div>
 
-            {orders.length === 0 ? (
-              <div className="p-12 text-center rounded-2xl bg-white dark:bg-[#161f30] border border-gray-200/80 dark:border-gray-800 text-gray-400">
-                <ShoppingBag className="w-12 h-12 mx-auto mb-2 opacity-30" />
-                <p className="text-sm font-semibold">No orders recorded yet</p>
-                <p className="text-xs mt-1">
+            {/* Orders Feed */}
+            {filteredOrders.length === 0 ? (
+              <div className="p-16 text-center rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs text-gray-400">
+                <ShoppingBag className="w-12 h-12 mx-auto mb-3 opacity-30 stroke-[1.5]" />
+                <p className="text-sm font-bold text-gray-700 dark:text-gray-300">No orders found</p>
+                <p className="text-xs mt-1 text-gray-500">
                   When customers complete checkout, their order details and shipping info will appear here.
                 </p>
               </div>
             ) : (
-              <div className="space-y-3">
-                {orders.map((o) => (
+              <div className="space-y-3.5">
+                {filteredOrders.map((o) => (
                   <div
                     key={o.id}
-                    className="p-5 rounded-2xl bg-white dark:bg-[#161f30] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-3"
+                    className="p-5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4 hover:border-blue-500/30 transition-colors"
                   >
-                    <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-gray-100 dark:border-gray-800">
+                    {/* Top Row: ID, Date, Status & WhatsApp Dispatch Button */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-gray-100 dark:border-gray-800">
                       <div className="flex items-center gap-3">
-                        <span className="font-mono font-bold text-xs sm:text-sm text-blue-600 dark:text-blue-400">
+                        <span className="font-mono font-bold text-xs sm:text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 px-2.5 py-1 rounded-lg border border-blue-200/50 dark:border-blue-800/50">
                           #{o.id}
                         </span>
-                        <span className="text-xs text-gray-400">{o.date}</span>
+                        <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                          <Clock className="w-3.5 h-3.5" />
+                          <span>{o.date}</span>
+                        </div>
                       </div>
 
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-gray-500">Status:</span>
+                      <div className="flex items-center gap-2.5">
+                        <button
+                          type="button"
+                          onClick={() => handleSendWhatsAppUpdate(o)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#25d366]/10 text-[#25d366] hover:bg-[#25d366]/20 text-xs font-bold transition-colors cursor-pointer"
+                          title="Open WhatsApp to send customer order notification"
+                        >
+                          <Send className="w-3.5 h-3.5" />
+                          <span>Notify via WhatsApp</span>
+                        </button>
+
                         <select
                           value={o.status}
                           onChange={(e) =>
-                            handleUpdateOrderStatus(
-                              o.id,
-                              e.target.value as Order['status']
-                            )
+                            handleUpdateOrderStatus(o.id, e.target.value as Order['status'])
                           }
-                          className="px-2.5 py-1 rounded-lg text-xs font-bold bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
+                          className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white cursor-pointer"
                         >
                           <option value="Confirmed">Confirmed</option>
                           <option value="Dispatched">Dispatched</option>
@@ -1225,71 +1131,76 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                       </div>
                     </div>
 
-                    {/* Customer & Shipping Details */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs">
-                      <div>
-                        <span className="text-gray-400 block text-[10px] uppercase font-bold">
+                    {/* Customer & Shipping Summary Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
+                      <div className="space-y-1">
+                        <span className="text-gray-400 block text-[10px] uppercase font-bold tracking-wider">
                           Customer
                         </span>
-                        <p className="font-bold text-gray-900 dark:text-white">
+                        <p className="font-bold text-gray-900 dark:text-white text-sm">
                           {o.customer.fullName}
                         </p>
-                        <p className="text-gray-500">{o.customer.phone}</p>
-                        <p className="text-gray-500">{o.customer.email}</p>
+                        <p className="text-gray-500 flex items-center gap-1">
+                          <Phone className="w-3 h-3" /> {o.customer.phone}
+                        </p>
+                        <p className="text-gray-500 flex items-center gap-1">
+                          <Mail className="w-3 h-3" /> {o.customer.email}
+                        </p>
                       </div>
 
-                      <div>
-                        <span className="text-gray-400 block text-[10px] uppercase font-bold">
+                      <div className="space-y-1">
+                        <span className="text-gray-400 block text-[10px] uppercase font-bold tracking-wider">
                           Shipping Address
                         </span>
-                        <p className="text-gray-700 dark:text-gray-300">
+                        <p className="text-gray-800 dark:text-gray-200 leading-snug">
                           {o.customer.address}
                         </p>
-                        <p className="text-gray-500">
-                          {o.customer.city}, {o.customer.state} -{' '}
-                          {o.customer.pincode}
+                        <p className="text-gray-500 font-medium">
+                          {o.customer.city}, {o.customer.state} - {o.customer.pincode}
                         </p>
                       </div>
 
-                      <div>
-                        <span className="text-gray-400 block text-[10px] uppercase font-bold">
+                      <div className="space-y-1">
+                        <span className="text-gray-400 block text-[10px] uppercase font-bold tracking-wider">
                           Payment & Total
                         </span>
-                        <p className="font-bold text-emerald-600 dark:text-emerald-400 text-sm">
+                        <p className="font-black text-emerald-600 dark:text-emerald-400 text-base">
                           ₹{o.total.toLocaleString('en-IN')}
                         </p>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                            o.customer.paymentMethod === 'razorpay'
-                              ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/60 dark:text-blue-300'
-                              : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
-                          }`}>
-                            {o.customer.paymentMethod === 'razorpay' ? 'Razorpay (Paid)' : o.customer.paymentMethod}
+                          <span
+                            className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                              o.customer.paymentMethod === 'razorpay'
+                                ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/60 dark:text-blue-300'
+                                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                            }`}
+                          >
+                            {o.customer.paymentMethod === 'razorpay' ? 'Razorpay (Paid Online)' : o.customer.paymentMethod}
                           </span>
                         </div>
                         {o.customer.paymentId && (
                           <span className="block text-[10px] font-mono text-gray-400 mt-0.5 truncate">
-                            ID: {o.customer.paymentId}
+                            Txn ID: {o.customer.paymentId}
                           </span>
                         )}
                       </div>
                     </div>
 
-                    {/* Items List */}
+                    {/* Ordered Items List */}
                     <div className="pt-2 border-t border-gray-100 dark:border-gray-800/60">
-                      <span className="text-gray-400 block text-[10px] uppercase font-bold mb-1.5">
+                      <span className="text-gray-400 block text-[10px] uppercase font-bold mb-2">
                         Purchased Items ({o.items.length})
                       </span>
-                      <div className="space-y-1.5">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         {o.items.map((item, idx) => (
                           <div
                             key={idx}
-                            className="flex items-center justify-between text-xs py-1 px-2 rounded-lg bg-gray-50 dark:bg-[#1a2333]/50"
+                            className="flex items-center justify-between text-xs py-2 px-3 rounded-xl bg-gray-50 dark:bg-[#1a2333]/60 border border-gray-100 dark:border-gray-800"
                           >
-                            <span className="font-medium text-gray-800 dark:text-gray-200">
-                              {item.product.name} (x{item.quantity})
+                            <span className="font-medium text-gray-800 dark:text-gray-200 truncate pr-2">
+                              {item.product.name} <strong className="text-blue-600">(x{item.quantity})</strong>
                             </span>
-                            <span className="font-bold text-gray-900 dark:text-white">
+                            <span className="font-bold text-gray-900 dark:text-white shrink-0">
                               ₹{(item.product.price * item.quantity).toLocaleString('en-IN')}
                             </span>
                           </div>
@@ -1303,11 +1214,205 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           </div>
         )}
 
-        {/* TAB 4: BACKUP & RESTORE */}
+        {/* ========================================================================= */}
+        {/* TAB 3: WEBSITE BANNERS & MARKETING SETTINGS */}
+        {/* ========================================================================= */}
+        {activeTab === 'content' && (
+          <form onSubmit={handleSaveSiteConfig} className="space-y-6">
+            
+            {/* Contact Details Card */}
+            <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4">
+              <div className="flex items-center gap-2.5 pb-2 border-b border-gray-100 dark:border-gray-800">
+                <Phone className="w-5 h-5 text-blue-600" />
+                <div>
+                  <h3 className="font-bold text-sm text-gray-900 dark:text-white">
+                    Store Contact & Customer Support
+                  </h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Controls phone numbers, WhatsApp quick links, and official email across the entire website.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                <div>
+                  <label className="font-semibold block mb-1">Store Phone / Calling Number *</label>
+                  <input
+                    type="text"
+                    required
+                    value={configForm.phone}
+                    onChange={(e) => setConfigForm({ ...configForm, phone: e.target.value })}
+                    placeholder="+91 84464 39374"
+                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <span className="text-[10px] text-gray-400 mt-1 block">
+                    Displayed in header, footer & contact support buttons.
+                  </span>
+                </div>
+
+                <div>
+                  <label className="font-semibold block mb-1">WhatsApp Digits (without + or spaces) *</label>
+                  <input
+                    type="text"
+                    required
+                    value={configForm.whatsappNumber}
+                    onChange={(e) =>
+                      setConfigForm({
+                        ...configForm,
+                        whatsappNumber: e.target.value.replace(/\D/g, ''),
+                      })
+                    }
+                    placeholder="918446439374"
+                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                  />
+                  <span className="text-[10px] text-gray-400 mt-1 block">
+                    Used for direct wa.me chat links (e.g. 918446439374).
+                  </span>
+                </div>
+
+                <div>
+                  <label className="font-semibold block mb-1">Store Support Email *</label>
+                  <input
+                    type="email"
+                    required
+                    value={configForm.email}
+                    onChange={(e) => setConfigForm({ ...configForm, email: e.target.value })}
+                    placeholder="contact@djntech.in"
+                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="font-semibold block mb-1">Instagram Profile Link</label>
+                  <input
+                    type="url"
+                    value={configForm.instagramUrl}
+                    onChange={(e) => setConfigForm({ ...configForm, instagramUrl: e.target.value })}
+                    placeholder="https://instagram.com/djntech"
+                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Announcement Ticker & Promo Code */}
+            <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4">
+              <div className="flex items-center gap-2.5 pb-2 border-b border-gray-100 dark:border-gray-800">
+                <Tag className="w-5 h-5 text-purple-600" />
+                <div>
+                  <h3 className="font-bold text-sm text-gray-900 dark:text-white">
+                    Announcement Marquee & Promo Code
+                  </h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Update the infinite scrolling ticker bar and active checkout coupon code.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-4 text-xs">
+                <div>
+                  <label className="font-semibold block mb-1">Running Marquee Announcement Ticker</label>
+                  <textarea
+                    rows={2}
+                    value={configForm.marqueeAnnouncement}
+                    onChange={(e) => setConfigForm({ ...configForm, marqueeAnnouncement: e.target.value })}
+                    placeholder="⚡ FLAT 10% OFF ON ALL PRE-OWNED PS4 & PS5 GAMES · USE CODE: DJN10 · FREE SHIPPING ACROSS INDIA"
+                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  {/* Live Marquee Ticker Preview */}
+                  <div className="mt-2 p-2 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200/50 dark:border-blue-900/40 text-[11px] text-blue-700 dark:text-blue-300 overflow-hidden whitespace-nowrap">
+                    <strong>Preview: </strong> {configForm.marqueeAnnouncement}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="font-semibold block mb-1">Active Coupon Code *</label>
+                    <input
+                      type="text"
+                      required
+                      value={configForm.promoCode}
+                      onChange={(e) => setConfigForm({ ...configForm, promoCode: e.target.value.toUpperCase() })}
+                      placeholder="DJN10"
+                      className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs uppercase font-mono font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="font-semibold block mb-1">Promo Discount Percentage (%) *</label>
+                    <input
+                      type="number"
+                      min={1}
+                      max={90}
+                      required
+                      value={configForm.promoDiscountPercent}
+                      onChange={(e) => setConfigForm({ ...configForm, promoDiscountPercent: Number(e.target.value) })}
+                      className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Payment Gateway (Razorpay) */}
+            <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4">
+              <div className="flex items-center gap-2.5 pb-2 border-b border-gray-100 dark:border-gray-800">
+                <CreditCard className="w-5 h-5 text-indigo-600" />
+                <div>
+                  <h3 className="font-bold text-sm text-gray-900 dark:text-white">
+                    Razorpay Payment Gateway API
+                  </h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Powers instant UPI, Credit/Debit cards, NetBanking and EMI checkout.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                <div>
+                  <label className="font-semibold block mb-1">Razorpay Key ID (Live / Test)</label>
+                  <input
+                    type="text"
+                    value={configForm.razorpayKeyId || ''}
+                    onChange={(e) => setConfigForm({ ...configForm, razorpayKeyId: e.target.value.trim() })}
+                    placeholder="rzp_live_... or rzp_test_..."
+                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs font-mono text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200/60 dark:border-blue-900/40 text-[11px] text-blue-800 dark:text-blue-300 flex flex-col justify-center">
+                  <span className="font-bold flex items-center gap-1.5 mb-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+                    256-Bit SSL Encryption Active
+                  </span>
+                  <span>
+                    When configured, customers can pay directly with UPI, Cards, NetBanking or EMI.
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Save Button */}
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                className="flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-sm shadow-md shadow-blue-600/20 transition-all cursor-pointer"
+              >
+                <Save className="w-4 h-4" />
+                <span>Save Website Settings</span>
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* ========================================================================= */}
+        {/* TAB 4: BACKUP & DATA MANAGEMENT */}
+        {/* ========================================================================= */}
         {activeTab === 'backup' && (
           <div className="space-y-6">
-            {/* Export Card */}
-            <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#161f30] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4">
+            
+            {/* Export JSON Card */}
+            <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4">
               <div className="flex items-center gap-2.5 pb-2 border-b border-gray-100 dark:border-gray-800">
                 <Download className="w-5 h-5 text-blue-600" />
                 <div>
@@ -1323,7 +1428,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={handleExportProductsJson}
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition-all cursor-pointer"
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm transition-all cursor-pointer"
                 >
                   <Download className="w-4 h-4" />
                   <span>Download products.json ({products.length} Items)</span>
@@ -1339,8 +1444,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               </div>
             </div>
 
-            {/* Import Card */}
-            <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#161f30] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4">
+            {/* Import JSON Card */}
+            <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4">
               <div className="flex items-center gap-2.5 pb-2 border-b border-gray-100 dark:border-gray-800">
                 <Upload className="w-5 h-5 text-emerald-600" />
                 <div>
@@ -1366,9 +1471,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 />
 
                 {importError && (
-                  <p className="text-xs text-red-500 font-medium">
-                    {importError}
-                  </p>
+                  <p className="text-xs text-red-500 font-medium">{importError}</p>
                 )}
 
                 <button
@@ -1388,10 +1491,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 <ShieldAlert className="w-5 h-5 text-red-600" />
                 <div>
                   <h3 className="font-bold text-sm text-red-700 dark:text-red-400">
-                    Reset Store to Factory Defaults
+                    Reset Store to Default Fallback
                   </h3>
                   <p className="text-xs text-red-600/80 dark:text-red-400/80">
-                    Restore the original 24 default products and standard contact details.
+                    Restore the standard baseline products and clear local override cache.
                   </p>
                 </div>
               </div>
@@ -1401,353 +1504,413 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 className="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition-all cursor-pointer"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
-                <span>Reset to Factory Defaults</span>
+                <span>Reset Local Cache</span>
               </button>
             </div>
           </div>
         )}
       </main>
 
-      {/* PRODUCT ADD / EDIT MODAL FORM */}
+      {/* ========================================================================= */}
+      {/* PRODUCT ADD / EDIT MODAL WITH LIVE CARD PREVIEW */}
+      {/* ========================================================================= */}
       {isProductModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn overflow-y-auto">
-          <div className="relative w-full max-w-2xl max-h-[90vh] rounded-2xl bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-800 shadow-2xl p-6 overflow-y-auto my-8">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-xs overflow-y-auto animate-in fade-in duration-150">
+          <div className="relative w-full max-w-4xl max-h-[92vh] rounded-2xl bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-800 shadow-2xl flex flex-col overflow-hidden my-auto">
+            
             {/* Modal Header */}
-            <div className="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-gray-800 mb-4">
-              <div className="flex items-center gap-2.5">
+            <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between shrink-0 bg-gray-50/50 dark:bg-[#161f30]">
+              <div className="flex items-center gap-3">
                 <div className="p-2 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
                   <Package className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-gray-900 dark:text-white">
-                    {editingProduct ? 'Edit Product Details' : 'Add New Product'}
+                  <h3 className="text-base font-bold text-gray-900 dark:text-white leading-tight">
+                    {editingProduct ? `Edit: ${editingProduct.name}` : 'Add New Product to Store'}
                   </h3>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Fill in product attributes, pricing, stock, and descriptions
+                    Configure specifications, price, inventory stock, and media
                   </p>
                 </div>
               </div>
+
               <button
                 onClick={() => setIsProductModalOpen(false)}
-                className="p-1.5 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                className="p-1.5 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Modal Form */}
-            <form onSubmit={handleSaveProduct} className="space-y-4 text-xs">
-              {/* Basic Details */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="sm:col-span-2">
-                  <label className="font-semibold block mb-1">
-                    Product Title *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={productForm.name}
-                    onChange={(e) =>
-                      setProductForm({ ...productForm, name: e.target.value })
-                    }
-                    placeholder="e.g. PlayStation 5 Slim (Disc Edition)"
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
+            {/* Modal Form Sub-Tabs */}
+            <div className="px-6 pt-3 pb-0 border-b border-gray-100 dark:border-gray-800 flex items-center gap-2 overflow-x-auto shrink-0 bg-white dark:bg-[#111827]">
+              {[
+                { id: 'basic' as const, label: '1. Basic Info & Image' },
+                { id: 'pricing' as const, label: '2. Pricing & Stock' },
+                { id: 'specs' as const, label: '3. Features & In The Box' },
+                { id: 'warranty' as const, label: '4. Warranty & Details' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setModalTab(tab.id)}
+                  className={`px-3.5 py-2 text-xs font-bold border-b-2 transition-colors cursor-pointer whitespace-nowrap ${
+                    modalTab === tab.id
+                      ? 'border-blue-600 text-blue-600 dark:text-blue-400'
+                      : 'border-transparent text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
 
-                <div className="sm:col-span-2">
-                  <label className="font-semibold block mb-1">Subtitle</label>
-                  <input
-                    type="text"
-                    value={productForm.subtitle}
-                    onChange={(e) =>
-                      setProductForm({
-                        ...productForm,
-                        subtitle: e.target.value,
-                      })
-                    }
-                    placeholder="e.g. 1TB Ultra-High Speed SSD · DualSense Wireless Controller"
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="font-semibold block mb-1">Category *</label>
-                  <select
-                    value={productForm.category}
-                    onChange={(e) =>
-                      setProductForm({
-                        ...productForm,
-                        category: e.target.value as Category,
-                      })
-                    }
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none"
-                  >
-                    <option value="consoles">Consoles</option>
-                    <option value="controllers">Controllers</option>
-                    <option value="preowned_games">Pre-Owned Games</option>
-                    <option value="accessories">Accessories</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="font-semibold block mb-1">Platform *</label>
-                  <select
-                    value={productForm.platform}
-                    onChange={(e) =>
-                      setProductForm({
-                        ...productForm,
-                        platform: e.target.value as Platform,
-                      })
-                    }
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none"
-                  >
-                    <option value="PS5">PlayStation 5</option>
-                    <option value="PS4">PlayStation 4</option>
-                    <option value="Xbox">Xbox Series X|S</option>
-                    <option value="Switch">Nintendo Switch</option>
-                    <option value="Universal">Universal</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="font-semibold block mb-1">Condition *</label>
-                  <select
-                    value={productForm.condition}
-                    onChange={(e) =>
-                      setProductForm({
-                        ...productForm,
-                        condition: e.target.value as Condition,
-                      })
-                    }
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none"
-                  >
-                    <option value="Brand New Sealed">Brand New Sealed</option>
-                    <option value="Pre-Owned Grade A+">Pre-Owned Grade A+</option>
-                    <option value="Pre-Owned Grade A">Pre-Owned Grade A</option>
-                    <option value="DJN Certified Refurbished">
-                      DJN Certified Refurbished
-                    </option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="font-semibold block mb-1">Badge Tag</label>
-                  <input
-                    type="text"
-                    value={productForm.badge || ''}
-                    onChange={(e) =>
-                      setProductForm({ ...productForm, badge: e.target.value })
-                    }
-                    placeholder="e.g. Bestseller, Hot Deal, New Arrival"
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              {/* Pricing & Stock */}
-              <div className="p-3.5 rounded-xl bg-gray-50 dark:bg-[#1a2333]/50 border border-gray-200/80 dark:border-gray-700 space-y-3">
-                <span className="font-bold text-gray-700 dark:text-gray-300 block">
-                  Pricing & Stock Inventory
-                </span>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  <div>
-                    <label className="font-semibold block mb-1">
-                      Sale Price (₹) *
-                    </label>
-                    <input
-                      type="number"
-                      required
-                      value={productForm.price}
-                      onChange={(e) =>
-                        setProductForm({
-                          ...productForm,
-                          price: Number(e.target.value) || 0,
-                        })
-                      }
-                      className="w-full bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-xl p-2 text-xs text-gray-900 dark:text-white font-bold"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="font-semibold block mb-1">MRP Price (₹)</label>
-                    <input
-                      type="number"
-                      value={productForm.mrp}
-                      onChange={(e) =>
-                        setProductForm({
-                          ...productForm,
-                          mrp: Number(e.target.value) || 0,
-                        })
-                      }
-                      className="w-full bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-xl p-2 text-xs text-gray-900 dark:text-white"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="font-semibold block mb-1">Stock Count</label>
-                    <input
-                      type="number"
-                      value={productForm.stockCount}
-                      onChange={(e) =>
-                        setProductForm({
-                          ...productForm,
-                          stockCount: Number(e.target.value) || 0,
-                        })
-                      }
-                      className="w-full bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-xl p-2 text-xs text-gray-900 dark:text-white"
-                    />
-                  </div>
-
-                  <div className="flex flex-col justify-end">
-                    <label className="flex items-center gap-2 p-2 rounded-xl bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-700 cursor-pointer">
+            {/* Modal Body & Live Preview Split */}
+            <form onSubmit={handleSaveProduct} className="flex-1 overflow-y-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 text-xs">
+              
+              {/* Form Input Columns (Left / 7 cols) */}
+              <div className="lg:col-span-7 space-y-4">
+                
+                {/* SUB-TAB 1: Basic Info & Image */}
+                {modalTab === 'basic' && (
+                  <div className="space-y-4 animate-in fade-in duration-100">
+                    <div>
+                      <label className="font-bold text-gray-800 dark:text-gray-200 block mb-1">
+                        Product Title *
+                      </label>
                       <input
-                        type="checkbox"
-                        checked={productForm.inStock}
-                        onChange={(e) =>
-                          setProductForm({
-                            ...productForm,
-                            inStock: e.target.checked,
-                          })
-                        }
-                        className="rounded text-blue-600"
-                      />
-                      <span className="font-bold text-[11px]">
-                        {productForm.inStock ? 'In Stock' : 'Out of Stock'}
-                      </span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              {/* Image URL & Preview */}
-              <div>
-                <label className="font-semibold block mb-1">Image URL</label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={productForm.imageUrl || ''}
-                    onChange={(e) =>
-                      setProductForm({
-                        ...productForm,
-                        imageUrl: e.target.value,
-                      })
-                    }
-                    placeholder="/ps5-hero.jpg or https://images.unsplash.com/..."
-                    className="flex-1 bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none"
-                  />
-                  {productForm.imageUrl && (
-                    <div className="w-10 h-10 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shrink-0">
-                      <img
-                        src={productForm.imageUrl}
-                        alt="Preview"
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          (e.target as HTMLElement).style.display = 'none';
-                        }}
+                        type="text"
+                        required
+                        value={productForm.name}
+                        onChange={(e) => setProductForm({ ...productForm, name: e.target.value })}
+                        placeholder="e.g. PlayStation 5 Slim (Disc Edition)"
+                        className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
-                  )}
-                </div>
+
+                    <div>
+                      <label className="font-bold text-gray-800 dark:text-gray-200 block mb-1">
+                        Subtitle / Highlights Line
+                      </label>
+                      <input
+                        type="text"
+                        value={productForm.subtitle}
+                        onChange={(e) => setProductForm({ ...productForm, subtitle: e.target.value })}
+                        placeholder="e.g. 1TB Custom SSD · 4K 120Hz · Ray Tracing"
+                        className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="font-bold text-gray-800 dark:text-gray-200 block mb-1">Category *</label>
+                        <select
+                          value={productForm.category}
+                          onChange={(e) => setProductForm({ ...productForm, category: e.target.value as Category })}
+                          className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="consoles">Consoles</option>
+                          <option value="controllers">Controllers</option>
+                          <option value="preowned_games">Pre-Owned Games</option>
+                          <option value="accessories">Accessories</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="font-bold text-gray-800 dark:text-gray-200 block mb-1">Platform *</label>
+                        <select
+                          value={productForm.platform}
+                          onChange={(e) => setProductForm({ ...productForm, platform: e.target.value as Platform })}
+                          className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="PS5">PlayStation 5 (PS5)</option>
+                          <option value="PS4">PlayStation 4 (PS4)</option>
+                          <option value="Xbox">Xbox Series X|S / Xbox One</option>
+                          <option value="Switch">Nintendo Switch</option>
+                          <option value="Universal">Universal</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="font-bold text-gray-800 dark:text-gray-200 block mb-1">
+                        High-Resolution Image URL
+                      </label>
+                      <input
+                        type="url"
+                        value={productForm.imageUrl || ''}
+                        onChange={(e) => setProductForm({ ...productForm, imageUrl: e.target.value })}
+                        placeholder="https://... or /hero-ps5-slim.png"
+                        className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                      <span className="text-[10px] text-gray-400 mt-1 block">
+                        Direct image link or local path. Instant live preview is visible on the right.
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="font-bold text-gray-800 dark:text-gray-200 block mb-1">Product Badge</label>
+                        <input
+                          type="text"
+                          value={productForm.badge || ''}
+                          onChange={(e) => setProductForm({ ...productForm, badge: e.target.value })}
+                          placeholder="e.g. BESTSELLER, 4K GAMING, GOTY"
+                          className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="font-bold text-gray-800 dark:text-gray-200 block mb-1">Condition Tag</label>
+                        <select
+                          value={productForm.condition}
+                          onChange={(e) => setProductForm({ ...productForm, condition: e.target.value as Condition })}
+                          className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="Brand New Sealed">Brand New Sealed</option>
+                          <option value="Pre-Owned Grade A+">Pre-Owned Grade A+</option>
+                          <option value="Pre-Owned Grade A">Pre-Owned Grade A</option>
+                          <option value="DJN Certified Refurbished">DJN Certified Refurbished</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* SUB-TAB 2: Pricing & Inventory */}
+                {modalTab === 'pricing' && (
+                  <div className="space-y-4 animate-in fade-in duration-100">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="font-bold text-gray-800 dark:text-gray-200 block mb-1">
+                          Selling Price (₹) *
+                        </label>
+                        <input
+                          type="number"
+                          required
+                          min={0}
+                          value={productForm.price}
+                          onChange={(e) => setProductForm({ ...productForm, price: Number(e.target.value) })}
+                          className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="font-bold text-gray-800 dark:text-gray-200 block mb-1">
+                          Original MRP (₹) *
+                        </label>
+                        <input
+                          type="number"
+                          required
+                          min={0}
+                          value={productForm.mrp}
+                          onChange={(e) => setProductForm({ ...productForm, mrp: Number(e.target.value) })}
+                          className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Auto-Calculated Discount Callout */}
+                    <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/50 dark:border-emerald-800/40 text-emerald-800 dark:text-emerald-300 flex items-center justify-between">
+                      <span>Calculated Customer Discount:</span>
+                      <strong className="text-sm font-black">
+                        {productForm.mrp > productForm.price
+                          ? `${Math.round(((productForm.mrp - productForm.price) / productForm.mrp) * 100)}% OFF`
+                          : '0% OFF'}
+                      </strong>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 pt-2">
+                      <div>
+                        <label className="font-bold text-gray-800 dark:text-gray-200 block mb-1">
+                          Physical Stock Quantity
+                        </label>
+                        <input
+                          type="number"
+                          min={0}
+                          value={productForm.stockCount}
+                          onChange={(e) =>
+                            setProductForm({
+                              ...productForm,
+                              stockCount: Number(e.target.value),
+                              inStock: Number(e.target.value) > 0,
+                            })
+                          }
+                          className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                      </div>
+
+                      <div className="flex flex-col justify-end">
+                        <label className="flex items-center gap-2 p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={productForm.inStock}
+                            onChange={(e) => setProductForm({ ...productForm, inStock: e.target.checked })}
+                            className="w-4 h-4 text-blue-600 rounded"
+                          />
+                          <span className="font-bold text-gray-900 dark:text-white">Mark In Stock</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* SUB-TAB 3: Features & In The Box */}
+                {modalTab === 'specs' && (
+                  <div className="space-y-4 animate-in fade-in duration-100">
+                    <div>
+                      <label className="font-bold text-gray-800 dark:text-gray-200 block mb-1">
+                        Bullet Features (1 per line)
+                      </label>
+                      <textarea
+                        rows={4}
+                        value={featuresText}
+                        onChange={(e) => setFeaturesText(e.target.value)}
+                        placeholder="Slimmer design with 1TB ultra-high speed internal SSD&#10;Haptic feedback and adaptive triggers&#10;Official 1 Year Sony Warranty"
+                        className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="font-bold text-gray-800 dark:text-gray-200 block mb-1">
+                        In The Box Package Items (1 per line)
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={inTheBoxText}
+                        onChange={(e) => setInTheBoxText(e.target.value)}
+                        placeholder="PS5 Slim Console&#10;DualSense Wireless Controller&#10;HDMI 2.1 Cable&#10;Power Cord"
+                        className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="font-bold text-gray-800 dark:text-gray-200 block mb-1">
+                        Long Product Overview / Story
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={productForm.description}
+                        onChange={(e) => setProductForm({ ...productForm, description: e.target.value })}
+                        className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* SUB-TAB 4: Warranty & QA Details */}
+                {modalTab === 'warranty' && (
+                  <div className="space-y-4 animate-in fade-in duration-100">
+                    <div>
+                      <label className="font-bold text-gray-800 dark:text-gray-200 block mb-1">
+                        Warranty Terms Text
+                      </label>
+                      <input
+                        type="text"
+                        value={productForm.warranty}
+                        onChange={(e) => setProductForm({ ...productForm, warranty: e.target.value })}
+                        placeholder="e.g. 1 Year Official Sony Warranty + DJN Tech Assured Support"
+                        className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="font-bold text-gray-800 dark:text-gray-200 block mb-1">Genre / Category Tag</label>
+                        <input
+                          type="text"
+                          value={productForm.genre || ''}
+                          onChange={(e) => setProductForm({ ...productForm, genre: e.target.value })}
+                          placeholder="e.g. Next-Gen Console, Action RPG"
+                          className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="font-bold text-gray-800 dark:text-gray-200 block mb-1">Edition</label>
+                        <input
+                          type="text"
+                          value={productForm.edition || ''}
+                          onChange={(e) => setProductForm({ ...productForm, edition: e.target.value })}
+                          placeholder="e.g. Standard Disc Edition"
+                          className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
-              {/* Warranty & Specs */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Live Preview Panel (Right / 5 cols) */}
+              <div className="lg:col-span-5 flex flex-col justify-between p-4 rounded-xl bg-gray-50 dark:bg-[#161f30] border border-gray-200 dark:border-gray-700/80">
                 <div>
-                  <label className="font-semibold block mb-1">Warranty</label>
-                  <input
-                    type="text"
-                    value={productForm.warranty}
-                    onChange={(e) =>
-                      setProductForm({
-                        ...productForm,
-                        warranty: e.target.value,
-                      })
-                    }
-                    placeholder="1 Year Sony Warranty / 7-Day Replacement"
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none"
-                  />
+                  <div className="flex items-center justify-between pb-2 mb-3 border-b border-gray-200 dark:border-gray-700 text-gray-400">
+                    <span className="text-[10px] uppercase font-bold tracking-wider">Live Customer Card Preview</span>
+                    <Eye className="w-3.5 h-3.5" />
+                  </div>
+
+                  {/* Mock Card Preview */}
+                  <div className="w-full max-w-[210px] mx-auto rounded-xl bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-800 shadow-md overflow-hidden">
+                    <div className="relative aspect-4/3 bg-gray-100 dark:bg-gray-800 flex items-center justify-center p-2 overflow-hidden">
+                      {productForm.imageUrl ? (
+                        <img
+                          src={productForm.imageUrl}
+                          alt={productForm.name}
+                          className="w-full h-full object-contain"
+                          onError={(e) => {
+                            (e.currentTarget as HTMLImageElement).src =
+                              'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg';
+                          }}
+                        />
+                      ) : (
+                        <Package className="w-10 h-10 text-gray-400 opacity-40" />
+                      )}
+
+                      {productForm.badge && (
+                        <span className="absolute top-2 left-2 px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#111827] text-white">
+                          {productForm.badge}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="p-3 text-left">
+                      <div className="text-[10px] text-gray-400 font-semibold mb-0.5">
+                        {productForm.platform} · {productForm.condition}
+                      </div>
+                      <p className="font-bold text-gray-900 dark:text-white text-xs truncate">
+                        {productForm.name || 'Product Title'}
+                      </p>
+                      <div className="flex items-center gap-1.5 mt-1.5">
+                        <span className="font-bold text-gray-900 dark:text-white text-xs">
+                          ₹{productForm.price.toLocaleString('en-IN')}
+                        </span>
+                        {productForm.mrp > productForm.price && (
+                          <span className="text-[10px] text-gray-400 line-through">
+                            ₹{productForm.mrp.toLocaleString('en-IN')}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                <div>
-                  <label className="font-semibold block mb-1">
-                    Storage / Edition
-                  </label>
-                  <input
-                    type="text"
-                    value={productForm.storage || ''}
-                    onChange={(e) =>
-                      setProductForm({
-                        ...productForm,
-                        storage: e.target.value,
-                      })
-                    }
-                    placeholder="e.g. 1TB SSD / Standard Edition"
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none"
-                  />
+                {/* Modal Footer Controls */}
+                <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-end gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => setIsProductModalOpen(false)}
+                    className="px-4 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-600/20 active:scale-95 transition-all cursor-pointer flex items-center gap-1.5"
+                  >
+                    <Save className="w-4 h-4" />
+                    <span>Save to Store</span>
+                  </button>
                 </div>
-              </div>
-
-              {/* Description */}
-              <div>
-                <label className="font-semibold block mb-1">Description</label>
-                <textarea
-                  rows={2}
-                  value={productForm.description}
-                  onChange={(e) =>
-                    setProductForm({
-                      ...productForm,
-                      description: e.target.value,
-                    })
-                  }
-                  className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none"
-                />
-              </div>
-
-              {/* Features & In the box */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="font-semibold block mb-1">
-                    Key Features (One per line)
-                  </label>
-                  <textarea
-                    rows={3}
-                    value={featuresText}
-                    onChange={(e) => setFeaturesText(e.target.value)}
-                    placeholder="Ultra-High Speed SSD&#10;Ray Tracing Support&#10;Haptic Feedback"
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="font-semibold block mb-1">
-                    What's In The Box (One per line)
-                  </label>
-                  <textarea
-                    rows={3}
-                    value={inTheBoxText}
-                    onChange={(e) => setInTheBoxText(e.target.value)}
-                    placeholder="PlayStation 5 Console&#10;DualSense Wireless Controller&#10;HDMI 2.1 Cable"
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              {/* Submit / Cancel Buttons */}
-              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-gray-100 dark:border-gray-800">
-                <button
-                  type="button"
-                  onClick={() => setIsProductModalOpen(false)}
-                  className="px-4 py-2 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 font-semibold"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-md cursor-pointer"
-                >
-                  {editingProduct ? 'Update Product' : 'Add to Catalog'}
-                </button>
               </div>
             </form>
           </div>
@@ -1756,38 +1919,41 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
       {/* DELETE CONFIRMATION MODAL */}
       {productToDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
-          <div className="relative w-full max-w-sm rounded-2xl bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-800 shadow-2xl p-6 text-center space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-red-50 dark:bg-red-950/40 text-red-600 flex items-center justify-center mx-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
+          <div className="relative w-full max-w-md rounded-2xl bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-800 shadow-2xl p-6 text-center space-y-4">
+            <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center mx-auto">
               <Trash2 className="w-6 h-6" />
             </div>
 
             <div>
-              <h3 className="font-bold text-base text-gray-900 dark:text-white">
-                Delete Product?
+              <h3 className="text-base font-bold text-gray-900 dark:text-white">
+                Delete "{productToDelete.name}"?
               </h3>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                Are you sure you want to remove "{productToDelete.name}" from the store catalog?
+                This item will be permanently removed from your online catalog and Supabase database.
               </p>
             </div>
 
-            <div className="flex items-center justify-center gap-2.5 pt-2">
+            <div className="flex items-center justify-center gap-3 pt-2">
               <button
+                type="button"
                 onClick={() => setProductToDelete(null)}
-                className="px-4 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                className="px-4 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
               >
                 Cancel
               </button>
               <button
+                type="button"
                 onClick={handleConfirmDelete}
-                className="px-4 py-2 rounded-xl text-xs font-bold bg-red-600 hover:bg-red-700 text-white shadow-md cursor-pointer"
+                className="px-5 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-md shadow-red-600/20 cursor-pointer"
               >
-                Yes, Delete
+                Yes, Delete Item
               </button>
             </div>
           </div>
         </div>
       )}
+
     </div>
   );
 };
