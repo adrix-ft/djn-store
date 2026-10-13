@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import {
   Search,
@@ -72,13 +72,29 @@ export const Header: React.FC<HeaderProps> = ({
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
 
-  const filteredSuggestions = localSearch.trim()
-    ? allProducts.filter(p => 
-        p.name.toLowerCase().includes(localSearch.toLowerCase()) ||
-        p.subtitle.toLowerCase().includes(localSearch.toLowerCase()) ||
-        p.platform.toLowerCase().includes(localSearch.toLowerCase())
-      ).slice(0, 5)
-    : [];
+  const filteredSuggestions = useMemo(() => {
+    const q = localSearch.trim().toLowerCase();
+    if (!q) return [];
+
+    return allProducts
+      .filter((p) => {
+        const name = p.name.toLowerCase();
+        const sub = (p.subtitle || '').toLowerCase();
+        const plat = (p.platform || '').toLowerCase();
+        const cat = (p.category || '').toLowerCase();
+        return name.includes(q) || sub.includes(q) || plat.includes(q) || cat.includes(q);
+      })
+      .sort((a, b) => {
+        const aName = a.name.toLowerCase();
+        const bName = b.name.toLowerCase();
+        const aStarts = aName.startsWith(q);
+        const bStarts = bName.startsWith(q);
+        if (aStarts && !bStarts) return -1;
+        if (!aStarts && bStarts) return 1;
+        return 0;
+      })
+      .slice(0, 7);
+  }, [allProducts, localSearch]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -151,28 +167,99 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </form>
 
-          {/* Live Autocomplete Dropdown */}
+          {/* Live Autocomplete Dropdown with Verified Cover Images */}
           {showSearchDropdown && localSearch.trim() && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#111827] rounded-2xl shadow-xl border border-[#e5e7eb] dark:border-[#1e293b] p-2 z-50 animate-in fade-in-50 zoom-in-95 duration-150">
+            <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#111827] rounded-2xl shadow-2xl border border-[#e5e7eb] dark:border-[#1e293b] p-2 z-50 animate-in fade-in-50 zoom-in-95 duration-150 max-h-[490px] overflow-y-auto no-scrollbar">
               {filteredSuggestions.length > 0 ? (
-                filteredSuggestions.map((prod) => (
-                  <div
-                    key={prod.id}
-                    onClick={() => {
-                      onSelectProduct(prod);
-                      setShowSearchDropdown(false);
-                    }}
-                    className="p-2.5 hover:bg-[#f9fafb] dark:hover:bg-[#1a2333] rounded-xl cursor-pointer flex items-center justify-between text-xs transition-colors"
-                  >
-                    <div className="truncate pr-2">
-                      <p className="font-semibold text-[#212121] dark:text-white truncate">{prod.name}</p>
-                      <p className="text-[11px] text-[#64748b] dark:text-gray-400">₹{prod.price.toLocaleString('en-IN')}.00 · {prod.condition}</p>
-                    </div>
-                    <ArrowRight className="w-3.5 h-3.5 text-[#9e9e9e] dark:text-gray-500" />
+                <>
+                  <div className="px-2.5 py-1.5 flex items-center justify-between text-[11px] font-semibold text-gray-400 dark:text-gray-500 border-b border-gray-100 dark:border-gray-800/80 mb-1">
+                    <span className="uppercase tracking-wider">Matched Titles ({filteredSuggestions.length})</span>
+                    <span className="text-[10px]">Click to view item</span>
                   </div>
-                ))
+
+                  {filteredSuggestions.map((prod) => (
+                    <div
+                      key={prod.id}
+                      onClick={() => {
+                        onSelectProduct(prod);
+                        setShowSearchDropdown(false);
+                      }}
+                      className="p-2 hover:bg-[#f3f4f6] dark:hover:bg-[#1a2333] rounded-xl cursor-pointer flex items-center gap-3 text-xs transition-colors group"
+                    >
+                      {/* Game / Product Cover Thumbnail */}
+                      <div className="w-11 h-14 min-w-[44px] rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700/80 flex items-center justify-center shrink-0 shadow-2xs group-hover:border-blue-500/50 transition-colors">
+                        {prod.imageUrl ? (
+                          <img
+                            src={prod.imageUrl}
+                            alt={prod.name}
+                            loading="lazy"
+                            referrerPolicy="no-referrer"
+                            className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+                            onError={(e) => {
+                              (e.currentTarget as HTMLImageElement).src =
+                                'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg';
+                            }}
+                          />
+                        ) : (
+                          <span className="text-[10px] font-bold text-gray-500 dark:text-gray-400">
+                            {prod.platform}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Product Metadata & Title */}
+                      <div className="flex-1 min-w-0 text-left">
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <span className="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-800/50">
+                            {prod.platform}
+                          </span>
+                          {prod.badge && (
+                            <span className="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-400 border border-amber-200/50 dark:border-amber-800/40 truncate max-w-[120px]">
+                              {prod.badge}
+                            </span>
+                          )}
+                        </div>
+
+                        <p className="font-semibold text-[#111827] dark:text-white truncate text-[13px] group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                          {prod.name}
+                        </p>
+
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <span className="text-xs font-bold text-[#111827] dark:text-gray-100">
+                            ₹{prod.price.toLocaleString('en-IN')}
+                          </span>
+                          {prod.mrp > prod.price && (
+                            <span className="text-[11px] text-gray-400 line-through">
+                              ₹{prod.mrp.toLocaleString('en-IN')}
+                            </span>
+                          )}
+                          {prod.discountPercent > 0 && (
+                            <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">
+                              {prod.discountPercent}% OFF
+                            </span>
+                          )}
+                          <span className="text-[10px] text-gray-400 dark:text-gray-500 hidden sm:inline">
+                            · {prod.condition}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Arrow */}
+                      <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:translate-x-0.5 transition-all shrink-0 ml-1 mr-1" />
+                    </div>
+                  ))}
+
+                  {/* View All Matches Footer */}
+                  <div
+                    onClick={handleSearchSubmit}
+                    className="mt-1 pt-2 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between px-3 py-1.5 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 rounded-lg cursor-pointer transition-colors"
+                  >
+                    <span>View all matching results for "{localSearch}"</span>
+                    <span>→</span>
+                  </div>
+                </>
               ) : (
-                <div className="p-3 text-center text-xs text-[#64748b] dark:text-gray-400">
+                <div className="p-4 text-center text-xs text-[#64748b] dark:text-gray-400">
                   No items found for "{localSearch}"
                 </div>
               )}
@@ -309,6 +396,47 @@ export const Header: React.FC<HeaderProps> = ({
               Cancel
             </button>
           </form>
+
+          {/* Mobile Live Autocomplete Dropdown */}
+          {localSearch.trim() && filteredSuggestions.length > 0 && (
+            <div className="mt-2 bg-white dark:bg-[#111827] rounded-xl shadow-lg border border-[#e5e7eb] dark:border-[#1e293b] p-2 max-h-72 overflow-y-auto no-scrollbar">
+              {filteredSuggestions.map((prod) => (
+                <div
+                  key={prod.id}
+                  onClick={() => {
+                    onSelectProduct(prod);
+                    setIsMobileSearchOpen(false);
+                  }}
+                  className="p-2 hover:bg-[#f3f4f6] dark:hover:bg-[#1a2333] rounded-lg cursor-pointer flex items-center gap-2.5 text-xs transition-colors border-b border-gray-50 dark:border-gray-800/50 last:border-0"
+                >
+                  <div className="w-10 h-12 rounded overflow-hidden bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shrink-0">
+                    {prod.imageUrl ? (
+                      <img
+                        src={prod.imageUrl}
+                        alt={prod.name}
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).src =
+                            'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg';
+                        }}
+                      />
+                    ) : (
+                      <span className="text-[9px] font-bold text-gray-500">{prod.platform}</span>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0 text-left">
+                    <p className="font-semibold text-gray-900 dark:text-white truncate text-xs">{prod.name}</p>
+                    <div className="flex items-center gap-2 mt-0.5 text-[11px]">
+                      <span className="font-bold text-gray-900 dark:text-gray-100">₹{prod.price.toLocaleString('en-IN')}</span>
+                      <span className="text-[9px] font-bold text-emerald-600 dark:text-emerald-400">{prod.discountPercent}% OFF</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

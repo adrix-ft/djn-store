@@ -29,7 +29,7 @@ export const ProductVisualizer: React.FC<VisualizerProps> = ({
   const fallbackImages: Record<string, string> = {
     consoles: 'https://psxgaming.com/wp-content/uploads/2025/03/game-console-300x300.png',
     controllers: 'https://psxgaming.com/wp-content/uploads/2025/03/joystick-300x300.png',
-    preowned_games: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=800&q=80',
+    preowned_games: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg',
     accessories: 'https://psxgaming.com/wp-content/uploads/2025/03/vr-300x300.png',
   };
 
