@@ -20,17 +20,17 @@ class RootErrorBoundary extends React.Component<{ children: React.ReactNode }, {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-[#090d16] text-white flex flex-col items-center justify-center p-6 text-center select-none">
-          <div className="w-16 h-16 rounded-2xl bg-blue-600/20 border border-blue-500/40 flex items-center justify-center mb-4">
-            <img src="/logo-icon.png" alt="DJN Tech" className="w-10 h-10 object-contain" />
+        <div className="min-h-screen bg-white text-slate-900 flex flex-col items-center justify-center p-6 text-center select-none">
+          <div className="w-28 h-28 flex items-center justify-center mb-4">
+            <img src="/logo-original.png" alt="DJN Tech" className="w-full h-full object-contain" />
           </div>
           <h2 className="text-xl font-bold mb-2">DJN Tech Store</h2>
-          <p className="text-xs text-gray-400 max-w-sm mb-6">
+          <p className="text-xs text-slate-500 max-w-sm mb-6">
             An unexpected error occurred while loading. Click below to reload the storefront.
           </p>
           <button
             onClick={() => window.location.reload()}
-            className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold uppercase tracking-wider transition-all shadow-lg shadow-blue-600/30 cursor-pointer"
+            className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold uppercase tracking-wider transition-all shadow-md shadow-blue-600/20 cursor-pointer"
           >
             Reload Store
           </button>

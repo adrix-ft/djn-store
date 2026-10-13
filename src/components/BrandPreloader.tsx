@@ -82,74 +82,64 @@ export const BrandPreloader: React.FC<BrandPreloaderProps> = ({
 
   return (
     <div
-      className={`fixed inset-0 z-[999999] flex flex-col items-center justify-between p-6 sm:p-10 select-none bg-[#090d16] text-white transition-all duration-500 ease-out ${
-        isExiting ? 'opacity-0 scale-102 pointer-events-none' : 'opacity-100 scale-100'
+      className={`fixed inset-0 z-[999999] flex flex-col items-center justify-between p-6 sm:p-10 select-none bg-white text-slate-900 transition-all duration-500 ease-out ${
+        isExiting ? 'opacity-0 scale-[1.01] pointer-events-none' : 'opacity-100 scale-100'
       }`}
       aria-label="Loading DJN Tech Online Store"
       role="status"
     >
-      {/* Background Soft Blue & Cyan Ambient Glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 sm:w-96 h-80 sm:h-96 bg-blue-600/15 rounded-full blur-[110px] pointer-events-none" />
-      <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 translate-y-1/2 w-64 sm:w-80 h-64 sm:h-80 bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none" />
+      {/* Background Soft Blue & Indigo Ambient Glow (Light Theme) */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 sm:w-[480px] h-96 sm:h-[480px] bg-blue-100/60 rounded-full blur-[110px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 translate-y-1/2 w-80 sm:w-96 h-80 sm:h-96 bg-indigo-50/70 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Top Spacer / Subtle Official Pill */}
-      <div className="pt-4 flex items-center gap-2 text-[10px] sm:text-xs font-semibold tracking-widest uppercase text-blue-400/80">
-        <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-ping" />
+      <div className="pt-4 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-50 border border-slate-200/80 text-[10px] sm:text-xs font-semibold tracking-widest uppercase text-blue-600 shadow-xs">
+        <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-ping" />
         <span>Official Gaming Hardware & Discs</span>
       </div>
 
-      {/* Center Hero: Brand Emblem + Title + Progress Bar */}
-      <div className="relative z-10 flex flex-col items-center max-w-sm w-full -mt-6">
+      {/* Center Hero: Brand Emblem + Progress Bar */}
+      <div className="relative z-10 flex flex-col items-center max-w-sm w-full -mt-4">
         
-        {/* Glowing Brand Icon Logo */}
-        <div className="relative mb-5 flex items-center justify-center">
-          {/* Subtle Outer Rotating Halo */}
-          <div className="absolute -inset-3 rounded-3xl bg-gradient-to-tr from-blue-600/30 via-cyan-400/20 to-indigo-600/30 blur-md animate-pulse" />
+        {/* Original Brand Logo with ambient pulse */}
+        <div className="relative mb-2 flex items-center justify-center">
+          <div className="absolute -inset-4 rounded-full bg-blue-500/10 blur-2xl animate-pulse" />
           
-          <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-[#0f172a] border border-blue-500/30 shadow-2xl flex items-center justify-center p-3 overflow-hidden">
+          <div className="relative w-44 sm:w-56 h-44 sm:h-56 flex items-center justify-center">
             <img
-              src="/logo-icon.png"
-              alt="DJN Tech"
-              className="w-full h-full object-contain filter drop-shadow-[0_4px_12px_rgba(59,130,246,0.5)]"
+              src="/logo-original.png"
+              alt="DJN Tech Console Store"
+              className="w-full h-full object-contain filter drop-shadow-[0_8px_24px_rgba(15,23,42,0.06)]"
               loading="eager"
               decoding="async"
               onError={(e) => {
-                // If logo-icon fails, fallback to logo
-                (e.currentTarget as HTMLImageElement).src = '/favicon.png';
+                (e.currentTarget as HTMLImageElement).src = '/logo.png';
               }}
             />
           </div>
         </div>
 
-        {/* Brand Typography */}
-        <h1 className="text-xl sm:text-2xl font-black tracking-[0.2em] uppercase text-white leading-tight">
-          DJN TECH
-        </h1>
-        <p className="text-[11px] sm:text-xs tracking-[0.16em] uppercase text-gray-400 font-medium mt-1">
-          Online Gaming Store
-        </p>
-
-        {/* Dynamic Precision Progress Bar */}
-        <div className="w-64 sm:w-76 mt-8">
+        {/* Dynamic Precision Progress Bar (Light Theme) */}
+        <div className="w-64 sm:w-80 mt-1">
           
           {/* Bar Track */}
-          <div className="relative h-2 sm:h-2.5 w-full bg-slate-900/90 rounded-full overflow-hidden border border-slate-700/60 p-[2px] shadow-inner">
+          <div className="relative h-2.5 sm:h-3 w-full bg-slate-100/90 rounded-full overflow-hidden border border-slate-200 p-[2px] shadow-inner">
             {/* Animated Fill Gradient */}
             <div
-              className="h-full rounded-full bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-500 transition-all duration-150 ease-out shadow-[0_0_12px_rgba(56,189,248,0.7)] relative overflow-hidden"
+              className="h-full rounded-full bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 transition-all duration-150 ease-out shadow-[0_2px_10px_rgba(37,99,235,0.35)] relative overflow-hidden"
               style={{ width: `${progress}%` }}
             >
               {/* Sliding Light Shimmer Effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite]" />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite]" />
             </div>
           </div>
 
           {/* Progress Percent & Live Status Row */}
-          <div className="flex items-center justify-between text-xs font-mono mt-2.5 text-gray-400">
-            <span className="text-[11px] text-gray-300 font-sans truncate max-w-[200px]">
+          <div className="flex items-center justify-between text-xs mt-3 text-slate-500">
+            <span className="text-[11px] font-medium text-slate-600 truncate max-w-[210px]">
               {statusText}
             </span>
-            <span className="font-bold text-blue-400 tabular-nums">
+            <span className="font-bold font-mono text-blue-600 tabular-nums">
               {progress}%
             </span>
           </div>
@@ -160,7 +150,7 @@ export const BrandPreloader: React.FC<BrandPreloaderProps> = ({
 
       {/* Bottom Footer Trust Row */}
       <div className="pb-4 text-center">
-        <p className="text-[10px] sm:text-[11px] text-gray-500 tracking-wide font-medium">
+        <p className="text-[10px] sm:text-[11px] text-slate-500 tracking-wide font-medium">
           PS5 · PS4 · Xbox Consoles · Tested Pre-Owned Games · Cash on Delivery
         </p>
       </div>
@@ -168,3 +158,4 @@ export const BrandPreloader: React.FC<BrandPreloaderProps> = ({
     </div>
   );
 };
+
