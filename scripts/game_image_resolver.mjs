@@ -3,15 +3,15 @@ import fs from 'fs';
 // Curated App IDs & direct image URLs for games that are console exclusives or special editions
 const MANUAL_GAME_IMAGES = {
   // PlayStation Exclusives
-  "Gran Turismo Sport": "https://image.api.playstation.com/vulcan/img/rnd/202010/2621/e4iV4QkGgZ4cM8a8Z5q0Zt5a.png",
+  "Gran Turismo Sport": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r7v.jpg",
   "Driveclub": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1x3t.jpg",
-  "The Last of Us Part II": "https://image.api.playstation.com/vulcan/img/rnd/202010/2618/Y02ljdBodKFBuziorqlr2duK.png",
-  "The Last of Us Remastered": "https://image.api.playstation.com/vulcan/img/rnd/202011/1020/b3rRRLucJmvd2wK32v5e28sX.png",
+  "The Last of Us Part II": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r7h.jpg",
+  "The Last of Us Remastered": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg",
   "Uncharted 4: A Thief's End": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1659420/library_600x900.jpg",
   "Uncharted: The Lost Legacy": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1659420/library_600x900.jpg",
   "Uncharted: The Nathan Drake Collection": "https://images.igdb.com/igdb/image/upload/t_cover_big/co20ee.jpg",
-  "Ratchet & Clank": "https://image.api.playstation.com/vulcan/ap/rnd/202101/2921/DwLzYqTqOq9iC7Z4yP0V8K.png",
-  "God of War III Remastered": "https://image.api.playstation.com/vulcan/img/rnd/202011/0402/p91eFwS7w5v2Q2Y4mK0t.png",
+  "Ratchet & Clank": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1x7f.jpg",
+  "God of War III Remastered": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1t9n.jpg",
   "Horizon Zero Dawn Complete Edition": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1151640/library_600x900.jpg",
   "Days Gone": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1259420/library_600x900.jpg",
   "Ghost of Tsushima: Director's Cut": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2215430/library_600x900.jpg",
@@ -34,7 +34,7 @@ const MANUAL_GAME_IMAGES = {
   "Cricket 19": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1028350/library_600x900.jpg",
   "Cricket 24": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2162600/library_600x900.jpg",
   "Ashes Cricket": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/649640/library_600x900.jpg",
-  "Big Bash Boom": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/967560/library_600x900.jpg",
+  "Big Bash Boom": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2kpm.jpg",
   "UFC 4": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2h3u.jpg",
   "UFC 5": "https://images.igdb.com/igdb/image/upload/t_cover_big/co70w5.jpg",
   "WWE 2K18": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/664430/library_600x900.jpg",
@@ -89,13 +89,13 @@ const MANUAL_GAME_IMAGES = {
   "Injustice 2": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/627270/library_600x900.jpg",
   "Mortal Kombat 11 Ultimate": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/976310/library_600x900.jpg",
   "Naruto Shippuden: Ultimate Ninja Storm 4": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/349040/library_600x900.jpg",
-  "Dragon Ball Xenoverse": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/323470/library_600x900.jpg",
+  "Dragon Ball Xenoverse": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r3k.jpg",
   "Dragon Ball Z: Kakarot": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/851850/library_600x900.jpg",
   "Marvel's Avengers": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/997070/library_600x900.jpg",
   "Tom Clancy's Ghost Recon Breakpoint": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2231380/library_600x900.jpg",
 
   // Ubisoft series
-  "Watch Dogs": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/243470/library_600x900.jpg",
+  "Watch Dogs": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r8c.jpg",
   "Watch Dogs 2": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/447040/library_600x900.jpg",
   "Watch Dogs Legion": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2239550/library_600x900.jpg",
   "Assassin's Creed IV Black Flag": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/242050/library_600x900.jpg",
@@ -104,8 +104,8 @@ const MANUAL_GAME_IMAGES = {
   "Assassin's Creed Origins": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/582160/library_600x900.jpg",
   "Assassin's Creed Odyssey": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/812140/library_600x900.jpg",
   "Assassin's Creed Valhalla": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2208920/library_600x900.jpg",
-  "Assassin's Creed Mirage": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2849220/library_600x900.jpg",
-  "Assassin's Creed Mirage: Launch Edition": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2849220/library_600x900.jpg"
+  "Assassin's Creed Mirage": "https://images.igdb.com/igdb/image/upload/t_cover_big/co6w8x.jpg",
+  "Assassin's Creed Mirage: Launch Edition": "https://images.igdb.com/igdb/image/upload/t_cover_big/co6w8x.jpg"
 };
 
 // Function to resolve image URL
