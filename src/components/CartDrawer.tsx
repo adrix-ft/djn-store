@@ -60,6 +60,13 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   const amountNeededForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
   const freeShippingProgress = Math.min(100, Math.round((subtotal / FREE_SHIPPING_THRESHOLD) * 100));
 
+  const hasOutOfStockItems = items.some(
+    (it) => !it.product.inStock || (typeof it.product.stockCount === 'number' && it.product.stockCount <= 0)
+  );
+  const hasExceededItems = items.some(
+    (it) => typeof it.product.stockCount === 'number' && it.quantity > it.product.stockCount
+  );
+
   const handleApply = (e: React.FormEvent) => {
     e.preventDefault();
     setCouponError('');
@@ -142,60 +149,88 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               </button>
             </div>
           ) : (
-            items.map(({ product, quantity, selectedCondition }) => (
-              <div
-                key={`${product.id}-${selectedCondition}`}
-                className="p-3 rounded-xl border border-[#e5e7eb] dark:border-[#1e293b] bg-white dark:bg-[#161f30] flex gap-3 shadow-xs"
-              >
-                <div className="w-16 h-20 bg-[#f8fafc] dark:bg-[#111827] rounded-lg overflow-hidden flex items-center justify-center shrink-0 border border-[#e2e8f0] dark:border-[#2d3748]">
-                  <ProductVisualizer product={product} size="sm" />
-                </div>
+            items.map(({ product, quantity, selectedCondition }) => {
+              const maxStock = typeof product.stockCount === 'number' ? product.stockCount : 99;
+              const isItemOutOfStock = !product.inStock || maxStock <= 0;
+              const isExceeded = quantity > maxStock;
 
-                <div className="flex-1 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-mono text-[#1a73e8] dark:text-[#60a5fa] font-bold uppercase">{product.platform}</span>
-                      <button
-                        onClick={() => onRemoveItem(product.id)}
-                        className="text-[#94a3b8] hover:text-[#d0473e] dark:hover:text-[#f87171] transition-colors p-0.5 cursor-pointer"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                    <h4 className="text-xs font-semibold text-[#212121] dark:text-white line-clamp-1">
-                      {product.name}
-                    </h4>
-                    <span className="text-[10px] text-[#10b981] font-mono">
-                      {selectedCondition}
-                    </span>
+              return (
+                <div
+                  key={`${product.id}-${selectedCondition}`}
+                  className={`p-3 rounded-xl border bg-white dark:bg-[#161f30] flex gap-3 shadow-xs ${
+                    isItemOutOfStock 
+                      ? 'border-red-300 dark:border-red-900/60 bg-red-50/20' 
+                      : 'border-[#e5e7eb] dark:border-[#1e293b]'
+                  }`}
+                >
+                  <div className={`w-16 h-20 bg-[#f8fafc] dark:bg-[#111827] rounded-lg overflow-hidden flex items-center justify-center shrink-0 border border-[#e2e8f0] dark:border-[#2d3748] ${
+                    isItemOutOfStock ? 'grayscale-[30%]' : ''
+                  }`}>
+                    <ProductVisualizer product={product} size="sm" />
                   </div>
 
-                  <div className="flex items-center justify-between pt-2 border-t border-[#f1f5f9] dark:border-gray-800 mt-2">
-                    <span className="text-xs font-bold text-[#1a73e8] dark:text-[#60a5fa] font-mono tabular-nums">
-                      ₹{(product.price * quantity).toLocaleString('en-IN')}.00
-                    </span>
-
-                    <div className="flex items-center gap-2 bg-[#f8fafc] dark:bg-[#111827] border border-[#cbd5e1] dark:border-gray-700 rounded-full px-2 py-0.5">
-                      <button
-                        onClick={() => onUpdateQuantity(product.id, quantity - 1)}
-                        className="text-[#64748b] dark:text-gray-400 hover:text-[#212121] dark:hover:text-white cursor-pointer"
-                      >
-                        <Minus className="w-3 h-3" />
-                      </button>
-                      <span className="text-xs font-bold text-[#212121] dark:text-white font-mono min-w-[14px] text-center">
-                        {quantity}
+                  <div className="flex-1 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[10px] font-mono text-[#1a73e8] dark:text-[#60a5fa] font-bold uppercase">{product.platform}</span>
+                          {isItemOutOfStock ? (
+                            <span className="text-[9px] text-red-600 dark:text-red-400 font-bold bg-red-100 dark:bg-red-950/60 px-1.5 py-0.2 rounded">
+                              Out of Stock
+                            </span>
+                          ) : isExceeded ? (
+                            <span className="text-[9px] text-amber-600 dark:text-amber-400 font-bold bg-amber-100 dark:bg-amber-950/60 px-1.5 py-0.2 rounded">
+                              Only {maxStock} left
+                            </span>
+                          ) : null}
+                        </div>
+                        <button
+                          onClick={() => onRemoveItem(product.id)}
+                          className="text-[#94a3b8] hover:text-[#d0473e] dark:hover:text-[#f87171] transition-colors p-0.5 cursor-pointer"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                      <h4 className="text-xs font-semibold text-[#212121] dark:text-white line-clamp-1 mt-0.5">
+                        {product.name}
+                      </h4>
+                      <span className="text-[10px] text-[#10b981] font-mono">
+                        {selectedCondition}
                       </span>
-                      <button
-                        onClick={() => onUpdateQuantity(product.id, quantity + 1)}
-                        className="text-[#64748b] dark:text-gray-400 hover:text-[#212121] dark:hover:text-white cursor-pointer"
-                      >
-                        <Plus className="w-3 h-3" />
-                      </button>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-[#f1f5f9] dark:border-gray-800 mt-2">
+                      <span className="text-xs font-bold text-[#1a73e8] dark:text-[#60a5fa] font-mono tabular-nums">
+                        ₹{(product.price * quantity).toLocaleString('en-IN')}.00
+                      </span>
+
+                      <div className="flex items-center gap-2 bg-[#f8fafc] dark:bg-[#111827] border border-[#cbd5e1] dark:border-gray-700 rounded-full px-2 py-0.5">
+                        <button
+                          onClick={() => onUpdateQuantity(product.id, quantity - 1)}
+                          className="text-[#64748b] dark:text-gray-400 hover:text-[#212121] dark:hover:text-white cursor-pointer"
+                        >
+                          <Minus className="w-3 h-3" />
+                        </button>
+                        <span className="text-xs font-bold text-[#212121] dark:text-white font-mono min-w-[14px] text-center">
+                          {quantity}
+                        </span>
+                        <button
+                          onClick={() => onUpdateQuantity(product.id, quantity + 1)}
+                          disabled={isItemOutOfStock || quantity >= maxStock}
+                          className={`cursor-pointer ${
+                            isItemOutOfStock || quantity >= maxStock
+                              ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed'
+                              : 'text-[#64748b] dark:text-gray-400 hover:text-[#212121] dark:hover:text-white'
+                          }`}
+                        >
+                          <Plus className="w-3 h-3" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
 
@@ -261,16 +296,32 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             </div>
 
             {/* Checkout Action Pill Button */}
-            <button
-              onClick={() => {
-                onClose();
-                onProceedToCheckout();
-              }}
-              className="w-full py-3 bg-[#212121] dark:bg-blue-600 hover:bg-[#333333] dark:hover:bg-blue-700 text-white font-bold rounded-full text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <span>Proceed to Checkout</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+            {hasOutOfStockItems || hasExceededItems ? (
+              <div className="space-y-2">
+                <div className="p-2.5 rounded-lg bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-[11px] text-red-700 dark:text-red-300 text-center font-medium">
+                  {hasOutOfStockItems 
+                    ? 'Some items in your cart are currently Out of Stock. Please remove them to proceed.'
+                    : 'Some item quantities exceed physical store inventory. Please decrease quantity.'}
+                </div>
+                <button
+                  disabled
+                  className="w-full py-3 bg-gray-200 dark:bg-gray-800 text-gray-400 dark:text-gray-500 font-bold rounded-full text-xs cursor-not-allowed flex items-center justify-center gap-2 border border-gray-300 dark:border-gray-700"
+                >
+                  <span>Cannot Checkout ({hasOutOfStockItems ? 'Out of Stock' : 'Stock Exceeded'})</span>
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => {
+                  onClose();
+                  onProceedToCheckout();
+                }}
+                className="w-full py-3 bg-[#212121] dark:bg-blue-600 hover:bg-[#333333] dark:hover:bg-blue-700 text-white font-bold rounded-full text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>Proceed to Checkout</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            )}
 
             <p className="text-center text-[10px] text-[#94a3b8] dark:text-gray-400">
               Free replacement within 7 days · Cash on Delivery available

@@ -365,7 +365,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     let updatedTarget: Product | undefined;
     const nextProducts = products.map((p) => {
       if (p.id === productId) {
-        updatedTarget = { ...p, inStock: !p.inStock };
+        const nextInStock = !p.inStock;
+        const nextStockCount = nextInStock ? (p.stockCount && p.stockCount > 0 ? p.stockCount : 1) : 0;
+        updatedTarget = { ...p, inStock: nextInStock, stockCount: nextStockCount };
         return updatedTarget;
       }
       return p;

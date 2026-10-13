@@ -30,6 +30,7 @@ import {
   fetchSiteConfigFromDB,
   fetchOrdersFromDB,
   createOrderInDB,
+  upsertProductToDB,
 } from './lib/supabase';
 import { Check } from 'lucide-react';
 
@@ -204,7 +205,7 @@ export default function App() {
   }, [wishlist]);
 
   useEffect(() => {
-    localStorage.setItem('djn_products_v5', JSON.stringify(products));
+    localStorage.setItem('djn_products_v6', JSON.stringify(products));
   }, [products]);
 
   const showToast = (msg: string) => {
@@ -282,12 +283,25 @@ export default function App() {
 
   // Add to Cart
   const handleAddToCart = (product: Product, condition?: Condition) => {
+    const isOutOfStock = !product.inStock || (typeof product.stockCount === 'number' && product.stockCount <= 0);
+    if (isOutOfStock) {
+      showToast(`"${product.name}" is currently Out of Stock!`);
+      return;
+    }
+
+    const maxStock = typeof product.stockCount === 'number' ? product.stockCount : 99;
     const chosenCondition = condition || product.condition;
+
+    let reachedLimit = false;
     setCart((prevCart) => {
       const existing = prevCart.find(
         (it) => it.product.id === product.id && it.selectedCondition === chosenCondition
       );
       if (existing) {
+        if (existing.quantity >= maxStock) {
+          reachedLimit = true;
+          return prevCart;
+        }
         return prevCart.map((it) =>
           it.product.id === product.id && it.selectedCondition === chosenCondition
             ? { ...it, quantity: it.quantity + 1 }
@@ -297,11 +311,21 @@ export default function App() {
         return [...prevCart, { product, quantity: 1, selectedCondition: chosenCondition }];
       }
     });
-    showToast(`Added "${product.name}" to cart`);
+
+    if (reachedLimit) {
+      showToast(`Only ${maxStock} unit(s) available in stock for "${product.name}"`);
+    } else {
+      showToast(`Added "${product.name}" to cart`);
+    }
   };
 
   // Instant Buy Now
   const handleBuyNow = (product: Product, condition?: Condition) => {
+    const isOutOfStock = !product.inStock || (typeof product.stockCount === 'number' && product.stockCount <= 0);
+    if (isOutOfStock) {
+      showToast(`"${product.name}" is currently Out of Stock!`);
+      return;
+    }
     handleAddToCart(product, condition);
     setIsCheckoutOpen(true);
   };
@@ -312,6 +336,17 @@ export default function App() {
       handleRemoveFromCart(productId);
       return;
     }
+    const targetProduct = products.find((p) => p.id === productId);
+    const maxStock = targetProduct && typeof targetProduct.stockCount === 'number' ? targetProduct.stockCount : 99;
+
+    if (quantity > maxStock) {
+      showToast(`Only ${maxStock} unit(s) available in stock`);
+      setCart((prev) =>
+        prev.map((it) => (it.product.id === productId ? { ...it, quantity: maxStock } : it))
+      );
+      return;
+    }
+
     setCart((prev) =>
       prev.map((it) => (it.product.id === productId ? { ...it, quantity } : it))
     );
@@ -351,17 +386,48 @@ export default function App() {
     showToast(`Coupon removed`);
   };
 
-  // Order Placement Success
+  // Order Placement Success & Stock Reduction
   const handleOrderSuccess = (order: Order) => {
     setCompletedOrder(order);
     setOrders((prev) => [order, ...prev]);
     setCart([]);
     setIsCheckoutOpen(false);
 
-    // Persist order to Supabase
+    // 1. Decrement stock in catalog state and sync each affected product to Supabase
+    setProducts((prevProducts) => {
+      const updatedProducts = prevProducts.map((p) => {
+        const orderedItem = order.items.find((item) => item.product.id === p.id);
+        if (!orderedItem) return p;
+
+        const currentStock = typeof p.stockCount === 'number' ? p.stockCount : 1;
+        const newStock = Math.max(0, currentStock - orderedItem.quantity);
+        const newInStock = newStock > 0;
+
+        const updated: Product = {
+          ...p,
+          stockCount: newStock,
+          inStock: newInStock,
+        };
+
+        // Persist updated product stock to Supabase
+        upsertProductToDB(updated).catch((err) => {
+          console.warn('[Supabase] Failed to update product stock:', p.id, err);
+        });
+
+        return updated;
+      });
+
+      // Sync to local storage
+      localStorage.setItem('djn_products_v6', JSON.stringify(updatedProducts));
+      return updatedProducts;
+    });
+
+    // 2. Persist order to Supabase
     createOrderInDB(order).catch((err) => {
       console.warn('[Supabase] Failed to persist order online:', err);
     });
+
+    showToast(`Order #${order.id} confirmed! Stock updated.`);
   };
 
   // Section collections for Home page: Distinct, non-overlapping, and thematic catalogs
