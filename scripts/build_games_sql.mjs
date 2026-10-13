@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { getGameImageUrl } from './game_image_resolver.mjs';
 
 const RAW_LIST = [
   "FIFA 16 (PS4)",
@@ -347,100 +348,105 @@ function jsonSql(obj) {
   return "'" + JSON.stringify(obj).replace(/'/g, "''") + "'::jsonb";
 }
 
-let distinctTitles = Object.keys(countMap);
-distinctTitles.sort();
+async function main() {
+  let distinctTitles = Object.keys(countMap);
+  distinctTitles.sort();
 
-let sqlStatements = [];
-sqlStatements.push(`-- ============================================================================
--- DJN TECH - POPULATE PRE-OWNED PS4 & PS5 GAMES INVENTORY
+  let sqlStatements = [];
+  sqlStatements.push(`-- ============================================================================
+-- DJN TECH - POPULATE PRE-OWNED PS4 & PS5 GAMES INVENTORY WITH HIGH-RES COVER ART
 -- Total unique catalog titles: ${distinctTitles.length}
 -- Total physical units inventory: ${RAW_LIST.length}
 -- ============================================================================
 `);
 
-for (const rawTitle of distinctTitles) {
-  const stockCount = countMap[rawTitle];
-  
-  // Extract Platform
-  let platform = 'PS4';
-  if (rawTitle.includes('(PS5)')) {
-    platform = 'PS5';
-  }
+  console.log(`Resolving image URLs for ${distinctTitles.length} games...`);
 
-  const isCustomCover = rawTitle.includes('(Custom printed cover)');
+  for (let i = 0; i < distinctTitles.length; i++) {
+    const rawTitle = distinctTitles[i];
+    const stockCount = countMap[rawTitle];
+    
+    // Extract Platform
+    let platform = 'PS4';
+    if (rawTitle.includes('(PS5)')) {
+      platform = 'PS5';
+    }
 
-  // Clean title without (PS4), (PS5), (Custom printed cover)
-  let cleanName = rawTitle
-    .replace(/\(PS4\)/gi, '')
-    .replace(/\(PS5\)/gi, '')
-    .replace(/\(Custom printed cover\)/gi, '')
-    .trim();
+    const isCustomCover = rawTitle.includes('(Custom printed cover)');
 
-  // Find metadata in registry
-  let details = GAME_DETAILS[cleanName];
-  if (!details) {
-    // fuzzy match
-    for (const key of Object.keys(GAME_DETAILS)) {
-      if (cleanName.toLowerCase().startsWith(key.toLowerCase()) || cleanName.toLowerCase().includes(key.toLowerCase())) {
-        details = GAME_DETAILS[key];
-        break;
+    // Clean title without (PS4), (PS5), (Custom printed cover)
+    let cleanName = rawTitle
+      .replace(/\(PS4\)/gi, '')
+      .replace(/\(PS5\)/gi, '')
+      .replace(/\(Custom printed cover\)/gi, '')
+      .trim();
+
+    // Find metadata in registry
+    let details = GAME_DETAILS[cleanName];
+    if (!details) {
+      // fuzzy match
+      for (const key of Object.keys(GAME_DETAILS)) {
+        if (cleanName.toLowerCase().startsWith(key.toLowerCase()) || cleanName.toLowerCase().includes(key.toLowerCase())) {
+          details = GAME_DETAILS[key];
+          break;
+        }
       }
     }
-  }
 
-  // Fallbacks if not matched
-  let basePrice = details ? details.price : 999;
-  let mrp = details ? details.mrp : 3499;
-  let genre = details ? details.genre : 'Action / Adventure';
-  let badge = details ? details.badge : (platform === 'PS5' ? 'PS5 ENHANCED' : 'PRE-OWNED');
+    // Fallbacks if not matched
+    let basePrice = details ? details.price : 999;
+    let mrp = details ? details.mrp : 3499;
+    let genre = details ? details.genre : 'Action / Adventure';
+    let badge = details ? details.badge : (platform === 'PS5' ? 'PS5 ENHANCED' : 'PRE-OWNED');
 
-  // Adjust for PS5 version premium if base lookup was for PS4
-  if (platform === 'PS5' && !rawTitle.includes('(PS5)')) {
-    basePrice = Math.round(basePrice * 1.35);
-    mrp = Math.max(mrp, 4499);
-  }
-  // Adjust for Custom printed cover (slight discount)
-  if (isCustomCover) {
-    basePrice = Math.max(499, basePrice - 200);
-    badge = 'CUSTOM COVER';
-  }
+    if (platform === 'PS5' && !rawTitle.includes('(PS5)')) {
+      basePrice = Math.round(basePrice * 1.35);
+      mrp = Math.max(mrp, 4499);
+    }
+    if (isCustomCover) {
+      basePrice = Math.max(499, basePrice - 200);
+      badge = 'CUSTOM COVER';
+    }
 
-  const discountPercent = Math.round(((mrp - basePrice) / mrp) * 100);
-  const condition = isCustomCover ? 'Pre-Owned Grade A' : 'Pre-Owned Grade A+';
-  const discCondition = isCustomCover
-    ? 'Grade A (100% genuine disc, laser tested, custom high-gloss printed cover)'
-    : 'Grade A+ (100% genuine disc, optical laser seek verified, original case)';
+    const discountPercent = Math.round(((mrp - basePrice) / mrp) * 100);
+    const condition = isCustomCover ? 'Pre-Owned Grade A' : 'Pre-Owned Grade A+';
+    const discCondition = isCustomCover
+      ? 'Grade A (100% genuine disc, laser tested, custom high-gloss printed cover)'
+      : 'Grade A+ (100% genuine disc, optical laser seek verified, original case)';
 
-  const edition = isCustomCover ? 'Custom Printed Case Edition' : 'Standard Pre-Owned Retail Case';
-  
-  // Generate stable id
-  const customTag = isCustomCover ? '-custom-cover' : '';
-  const id = `${slugify(cleanName)}-${platform.toLowerCase()}${customTag}-preowned`;
+    const edition = isCustomCover ? 'Custom Printed Case Edition' : 'Standard Pre-Owned Retail Case';
+    
+    const customTag = isCustomCover ? '-custom-cover' : '';
+    const id = `${slugify(cleanName)}-${platform.toLowerCase()}${customTag}-preowned`;
 
-  const fullName = `${cleanName} (${platform}${isCustomCover ? ' - Custom Cover' : ''})`;
-  const subtitle = `100% Optical Laser Tested Disc · ${condition} · 7-Day Guarantee`;
+    const fullName = `${cleanName} (${platform}${isCustomCover ? ' - Custom Cover' : ''})`;
+    const subtitle = `100% Optical Laser Tested Disc · ${condition} · 7-Day Guarantee`;
 
-  const features = [
-    `Genuine official Sony PlayStation ${platform} Blu-ray disc`,
-    `25-Point optical seek and complete installation verified`,
-    isCustomCover ? `Comes in sturdy DVD/Blu-ray case with premium custom printed cover art` : `Original retail game case with authentic inlay cover`,
-    `Protected under DJN Tech 7-Day Doorstep Replacement Guarantee`
-  ];
+    const features = [
+      `Genuine official Sony PlayStation ${platform} Blu-ray disc`,
+      `25-Point optical seek and complete installation verified`,
+      isCustomCover ? `Comes in sturdy DVD/Blu-ray case with premium custom printed cover art` : `Original retail game case with authentic inlay cover`,
+      `Protected under DJN Tech 7-Day Doorstep Replacement Guarantee`
+    ];
 
-  const inTheBox = [
-    `${platform} Game Disc (${cleanName})`,
-    isCustomCover ? 'High-Gloss Custom Cover Box' : 'Official Retail Case',
-    'DJN Hardware QA Certificate'
-  ];
+    const inTheBox = [
+      `${platform} Game Disc (${cleanName})`,
+      isCustomCover ? 'High-Gloss Custom Cover Box' : 'Official Retail Case',
+      'DJN Hardware QA Certificate'
+    ];
 
-  const description = `Immerse yourself in ${cleanName} on PlayStation ${platform}. Every pre-owned disc at DJN Tech is ultrasonic cleaned, bench tested for complete installation pass, and dispatched in protective packaging with tracking.`;
+    const description = `Immerse yourself in ${cleanName} on PlayStation ${platform}. Every pre-owned disc at DJN Tech is ultrasonic cleaned, bench tested for complete installation pass, and dispatched in protective packaging with tracking.`;
 
-  const themeColor = platform === 'PS5' ? '#0070D1' : '#003791';
+    const themeColor = platform === 'PS5' ? '#0070D1' : '#003791';
 
-  const insertQuery = `INSERT INTO public.products (
+    // Fetch verified image URL
+    const imageUrl = await getGameImageUrl(rawTitle);
+    process.stdout.write(`[${i + 1}/${distinctTitles.length}] ${cleanName} (${platform}) -> ${imageUrl.slice(0, 50)}...\n`);
+
+    const insertQuery = `INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     ${escapeSql(id)},
     ${escapeSql(fullName)},
@@ -463,7 +469,8 @@ for (const rawTitle of distinctTitles) {
     ${escapeSql(discCondition)},
     ${escapeSql(edition)},
     ${escapeSql(genre)},
-    ${escapeSql(themeColor)}
+    ${escapeSql(themeColor)},
+    ${escapeSql(imageUrl)}
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -485,13 +492,17 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();`;
 
-  sqlStatements.push(insertQuery);
+    sqlStatements.push(insertQuery);
+  }
+
+  const finalSql = sqlStatements.join('\n\n');
+  fs.writeFileSync('supabase/populate_games.sql', finalSql, 'utf8');
+  console.log('\nSuccessfully generated supabase/populate_games.sql with image URLs!');
+  console.log('Total SQL statements:', distinctTitles.length);
+  console.log('Total file size:', finalSql.length);
 }
 
-const finalSql = sqlStatements.join('\n\n');
-fs.writeFileSync('supabase/populate_games.sql', finalSql, 'utf8');
-console.log('Successfully generated supabase/populate_games.sql');
-console.log('Total SQL statements:', distinctTitles.length);
-console.log('Total file size:', finalSql.length);
+main();

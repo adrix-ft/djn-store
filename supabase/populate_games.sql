@@ -1,5 +1,5 @@
 -- ============================================================================
--- DJN TECH - POPULATE PRE-OWNED PS4 & PS5 GAMES INVENTORY
+-- DJN TECH - POPULATE PRE-OWNED PS4 & PS5 GAMES INVENTORY WITH HIGH-RES COVER ART
 -- Total unique catalog titles: 106
 -- Total physical units inventory: 212
 -- ============================================================================
@@ -8,7 +8,7 @@
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'among-us-crewmate-edition-ps4-preowned',
     'Among Us: Crewmate Edition (PS4)',
@@ -20,7 +20,7 @@ INSERT INTO public.products (
     899,
     64,
     4.8,
-    28,
+    47,
     TRUE,
     1,
     'CREWMATE',
@@ -31,7 +31,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Party / Social Deduction',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/945360/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -53,12 +54,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'ashes-cricket-ps4-preowned',
     'Ashes Cricket (PS4)',
@@ -70,7 +72,7 @@ INSERT INTO public.products (
     1199,
     66,
     4.8,
-    52,
+    20,
     TRUE,
     1,
     'POPULAR',
@@ -81,7 +83,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Cricket',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/649640/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -103,12 +106,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'assassins-creed-iv-black-flag-ps4-preowned',
     'Assassin''s Creed IV Black Flag (PS4)',
@@ -120,7 +124,7 @@ INSERT INTO public.products (
     799,
     68,
     4.8,
-    35,
+    23,
     TRUE,
     1,
     'PIRATE HIT',
@@ -131,7 +135,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Pirate Adventure',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/242050/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -153,12 +158,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'assassins-creed-mirage-ps5-preowned',
     'Assassin''s Creed Mirage (PS5)',
@@ -170,7 +176,7 @@ INSERT INTO public.products (
     1899,
     53,
     4.8,
-    46,
+    27,
     TRUE,
     1,
     'BAGHDAD',
@@ -181,7 +187,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Stealth Adventure',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2849220/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -203,12 +210,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'assassins-creed-mirage-launch-edition-ps5-preowned',
     'Assassin''s Creed Mirage: Launch Edition (PS5)',
@@ -220,7 +228,7 @@ INSERT INTO public.products (
     2099,
     51,
     4.8,
-    23,
+    40,
     TRUE,
     1,
     'LAUNCH EDITION',
@@ -231,7 +239,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Stealth Adventure',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2849220/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -253,12 +262,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'assassins-creed-odyssey-ps4-preowned',
     'Assassin''s Creed Odyssey (PS4)',
@@ -270,7 +280,7 @@ INSERT INTO public.products (
     1199,
     70,
     4.8,
-    59,
+    37,
     TRUE,
     1,
     'MYTHOLOGY',
@@ -281,7 +291,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action RPG / Ancient Greece',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/812140/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -303,12 +314,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'assassins-creed-origins-ps4-preowned',
     'Assassin''s Creed Origins (PS4)',
@@ -320,7 +332,7 @@ INSERT INTO public.products (
     1099,
     69,
     4.8,
-    21,
+    48,
     TRUE,
     1,
     'BAYEK',
@@ -331,7 +343,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action RPG / Ancient Egypt',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/582160/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -353,12 +366,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'assassins-creed-syndicate-ps4-preowned',
     'Assassin''s Creed Syndicate (PS4)',
@@ -370,7 +384,7 @@ INSERT INTO public.products (
     899,
     70,
     4.8,
-    36,
+    61,
     TRUE,
     2,
     'POPULAR',
@@ -381,7 +395,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Victorian London',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/368500/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -403,12 +418,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'assassins-creed-unity-ps4-preowned',
     'Assassin''s Creed Unity (PS4)',
@@ -420,7 +436,7 @@ INSERT INTO public.products (
     799,
     68,
     4.8,
-    28,
+    26,
     TRUE,
     1,
     'CLASSIC',
@@ -431,7 +447,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Historical Paris',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/289650/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -453,12 +470,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'assassins-creed-valhalla-ps4-preowned',
     'Assassin''s Creed Valhalla (PS4)',
@@ -470,7 +488,7 @@ INSERT INTO public.products (
     1399,
     69,
     4.8,
-    27,
+    40,
     TRUE,
     2,
     'VIKING EPIC',
@@ -481,7 +499,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action RPG / Viking Conquest',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2208920/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -503,12 +522,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'assassins-creed-valhalla-ps5-preowned',
     'Assassin''s Creed Valhalla (PS5)',
@@ -520,7 +540,7 @@ INSERT INTO public.products (
     1399,
     69,
     4.8,
-    34,
+    42,
     TRUE,
     2,
     'VIKING EPIC',
@@ -531,7 +551,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action RPG / Viking Conquest',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2208920/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -553,12 +574,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'batman-arkham-knight-ps4-preowned',
     'Batman: Arkham Knight (PS4)',
@@ -570,7 +592,7 @@ INSERT INTO public.products (
     899,
     70,
     4.8,
-    18,
+    44,
     TRUE,
     3,
     'CLASSIC',
@@ -581,7 +603,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Superhero Dark Knight',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/208650/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -603,12 +626,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'battlefield-1-ps4-preowned',
     'Battlefield 1 (PS4)',
@@ -620,7 +644,7 @@ INSERT INTO public.products (
     799,
     73,
     4.8,
-    40,
+    25,
     TRUE,
     1,
     'POPULAR',
@@ -631,7 +655,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Shooter / WW1 Historical',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1238840/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -653,12 +678,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'battlefield-2042-ps5-preowned',
     'Battlefield 2042 (PS5)',
@@ -670,7 +696,7 @@ INSERT INTO public.products (
     1299,
     71,
     4.8,
-    37,
+    61,
     TRUE,
     1,
     'PS5 NEXT-GEN',
@@ -681,7 +707,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Shooter / Large-Scale War',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1517290/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -703,12 +730,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'battlefield-4-ps4-preowned',
     'Battlefield 4 (PS4)',
@@ -720,7 +748,7 @@ INSERT INTO public.products (
     699,
     77,
     4.8,
-    35,
+    44,
     TRUE,
     1,
     'CLASSIC',
@@ -731,7 +759,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Shooter / Modern Warfare',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1238860/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -753,12 +782,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'big-bash-boom-ps4-preowned',
     'Big Bash Boom (PS4)',
@@ -770,7 +800,7 @@ INSERT INTO public.products (
     899,
     70,
     4.8,
-    21,
+    60,
     TRUE,
     2,
     'FAMILY',
@@ -781,7 +811,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Cricket Arcade',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/967560/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -803,12 +834,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'call-of-duty-advanced-warfare-ps4-preowned',
     'Call of Duty: Advanced Warfare (PS4)',
@@ -820,7 +852,7 @@ INSERT INTO public.products (
     799,
     77,
     4.8,
-    40,
+    33,
     TRUE,
     1,
     'EXO COMBAT',
@@ -831,7 +863,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Shooter / First-Person',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/209650/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -853,12 +886,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'call-of-duty-black-ops-4-ps4-preowned',
     'Call of Duty: Black Ops 4 (PS4)',
@@ -870,7 +904,7 @@ INSERT INTO public.products (
     999,
     75,
     4.8,
-    56,
+    44,
     TRUE,
     2,
     'BLACKOUT',
@@ -881,7 +915,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Shooter / Multiplayer FPS',
-    '#003791'
+    '#003791',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co1x3k.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -903,12 +938,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'call-of-duty-black-ops-iii-ps4-preowned',
     'Call of Duty: Black Ops III (PS4)',
@@ -920,7 +956,7 @@ INSERT INTO public.products (
     899,
     74,
     4.8,
-    19,
+    59,
     TRUE,
     1,
     'ZOMBIES',
@@ -931,7 +967,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Shooter / Sci-Fi FPS',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/311210/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -953,12 +990,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'call-of-duty-infinite-warfare-ps4-preowned',
     'Call of Duty: Infinite Warfare (PS4)',
@@ -970,7 +1008,7 @@ INSERT INTO public.products (
     799,
     77,
     4.8,
-    43,
+    21,
     TRUE,
     1,
     'CAMPAIGN',
@@ -981,7 +1019,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Shooter / Space Combat',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/476600/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1003,12 +1042,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'call-of-duty-modern-warfare-ii-ps5-preowned',
     'Call of Duty: Modern Warfare II (PS5)',
@@ -1020,7 +1060,7 @@ INSERT INTO public.products (
     2499,
     50,
     4.8,
-    58,
+    42,
     TRUE,
     1,
     'BESTSELLER',
@@ -1031,7 +1071,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Shooter / Tactical FPS',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1938090/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1053,12 +1094,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'cricket-19-ps4-preowned',
     'Cricket 19 (PS4)',
@@ -1070,7 +1112,7 @@ INSERT INTO public.products (
     1399,
     65,
     4.8,
-    19,
+    54,
     TRUE,
     4,
     'FAN FAVORITE',
@@ -1081,7 +1123,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Cricket',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1028350/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1103,12 +1146,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'cricket-24-ps5-custom-cover-preowned',
     'Cricket 24 (PS5 - Custom Cover)',
@@ -1120,7 +1164,7 @@ INSERT INTO public.products (
     2199,
     51,
     4.8,
-    21,
+    33,
     TRUE,
     1,
     'CUSTOM COVER',
@@ -1131,7 +1175,8 @@ INSERT INTO public.products (
     'Grade A (100% genuine disc, laser tested, custom high-gloss printed cover)',
     'Custom Printed Case Edition',
     'Sports / Cricket',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2162600/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1153,12 +1198,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'cricket-24-ps5-preowned',
     'Cricket 24 (PS5)',
@@ -1170,7 +1216,7 @@ INSERT INTO public.products (
     2399,
     47,
     4.8,
-    50,
+    26,
     TRUE,
     1,
     'LATEST CRICKET',
@@ -1181,7 +1227,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Cricket',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2162600/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1203,12 +1250,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'cyberpunk-2077-ps4-preowned',
     'Cyberpunk 2077 (PS4)',
@@ -1220,7 +1268,7 @@ INSERT INTO public.products (
     1499,
     63,
     4.8,
-    37,
+    51,
     TRUE,
     1,
     'ENHANCED',
@@ -1231,7 +1279,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action RPG / Sci-Fi',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1253,12 +1302,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'days-gone-ps4-preowned',
     'Days Gone (PS4)',
@@ -1270,7 +1320,7 @@ INSERT INTO public.products (
     1099,
     69,
     4.8,
-    40,
+    43,
     TRUE,
     2,
     'ZOMBIE SURVIVAL',
@@ -1281,7 +1331,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Open World Survival',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1259420/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1303,12 +1354,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'dead-by-daylight-ps4-preowned',
     'Dead by Daylight (PS4)',
@@ -1320,7 +1372,7 @@ INSERT INTO public.products (
     1099,
     63,
     4.8,
-    19,
+    29,
     TRUE,
     1,
     'MULTIPLAYER',
@@ -1331,7 +1383,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Asymmetrical Horror',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/381210/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1353,12 +1406,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'deathloop-ps5-preowned',
     'Deathloop (PS5)',
@@ -1370,7 +1424,7 @@ INSERT INTO public.products (
     1399,
     65,
     4.8,
-    40,
+    62,
     TRUE,
     1,
     'CRITICS PICK',
@@ -1381,7 +1435,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Time-Loop Shooter',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1252330/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1403,12 +1458,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'dragon-ball-xenoverse-ps4-preowned',
     'Dragon Ball Xenoverse (PS4)',
@@ -1420,7 +1476,7 @@ INSERT INTO public.products (
     799,
     68,
     4.8,
-    27,
+    23,
     TRUE,
     1,
     'DRAGON BALL',
@@ -1431,7 +1487,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Anime / Fighting RPG',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/323470/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1453,12 +1510,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'dragon-ball-z-kakarot-ps4-preowned',
     'Dragon Ball Z: Kakarot (PS4)',
@@ -1470,7 +1528,7 @@ INSERT INTO public.products (
     1299,
     63,
     4.8,
-    38,
+    55,
     TRUE,
     1,
     'KAKAROT',
@@ -1481,7 +1539,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Anime / Action RPG',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/851850/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1503,12 +1562,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'driveclub-ps4-preowned',
     'Driveclub (PS4)',
@@ -1520,7 +1580,7 @@ INSERT INTO public.products (
     999,
     67,
     4.8,
-    53,
+    24,
     TRUE,
     2,
     'PS EXCLUSIVE',
@@ -1531,7 +1591,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Racing / Sim-Cade',
-    '#003791'
+    '#003791',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co1x3t.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1553,12 +1614,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'dying-light-ps4-preowned',
     'Dying Light (PS4)',
@@ -1570,7 +1632,7 @@ INSERT INTO public.products (
     899,
     70,
     4.8,
-    43,
+    52,
     TRUE,
     1,
     'SURVIVAL',
@@ -1581,7 +1643,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Parkour Zombie',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/239140/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1603,12 +1666,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'dying-light-enhanced-edition-ps4-preowned',
     'Dying Light Enhanced Edition (PS4)',
@@ -1620,7 +1684,7 @@ INSERT INTO public.products (
     1099,
     69,
     4.8,
-    48,
+    30,
     TRUE,
     1,
     'ENHANCED',
@@ -1631,7 +1695,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Zombie Survival',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/239140/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1653,12 +1718,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'f1-22-ps5-preowned',
     'F1 22 (PS5)',
@@ -1670,7 +1736,7 @@ INSERT INTO public.products (
     1499,
     67,
     4.8,
-    46,
+    36,
     TRUE,
     1,
     'RACING',
@@ -1681,7 +1747,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Racing / Formula 1',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1692250/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1703,12 +1770,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'fc-24-ps4-preowned',
     'FC 24 (PS4)',
@@ -1720,7 +1788,7 @@ INSERT INTO public.products (
     2199,
     56,
     4.8,
-    54,
+    57,
     TRUE,
     1,
     'HOT TITLE',
@@ -1731,7 +1799,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Football',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1753,12 +1822,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'fc-24-ps5-preowned',
     'FC 24 (PS5)',
@@ -1770,7 +1840,7 @@ INSERT INTO public.products (
     2199,
     56,
     4.8,
-    36,
+    53,
     TRUE,
     4,
     'HOT TITLE',
@@ -1781,7 +1851,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Football',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1803,12 +1874,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'fifa-14-ps4-preowned',
     'FIFA 14 (PS4)',
@@ -1820,7 +1892,7 @@ INSERT INTO public.products (
     499,
     83,
     4.8,
-    31,
+    37,
     TRUE,
     1,
     'RETRO',
@@ -1831,7 +1903,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Football',
-    '#003791'
+    '#003791',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co20de.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1853,12 +1926,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'fifa-15-ps4-preowned',
     'FIFA 15 (PS4)',
@@ -1870,7 +1944,7 @@ INSERT INTO public.products (
     549,
     82,
     4.8,
-    19,
+    30,
     TRUE,
     1,
     'RETRO',
@@ -1881,7 +1955,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Football',
-    '#003791'
+    '#003791',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co20df.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1903,12 +1978,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'fifa-16-ps4-preowned',
     'FIFA 16 (PS4)',
@@ -1920,7 +1996,7 @@ INSERT INTO public.products (
     599,
     83,
     4.8,
-    28,
+    36,
     TRUE,
     2,
     'CLASSIC',
@@ -1931,7 +2007,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Football',
-    '#003791'
+    '#003791',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co20dg.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -1953,12 +2030,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'fifa-17-ps4-preowned',
     'FIFA 17 (PS4)',
@@ -1970,7 +2048,7 @@ INSERT INTO public.products (
     699,
     80,
     4.8,
-    43,
+    59,
     TRUE,
     1,
     'CLASSIC',
@@ -1981,7 +2059,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Football',
-    '#003791'
+    '#003791',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co20dh.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2003,12 +2082,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'fifa-18-ps4-preowned',
     'FIFA 18 (PS4)',
@@ -2020,7 +2100,7 @@ INSERT INTO public.products (
     799,
     80,
     4.8,
-    21,
+    40,
     TRUE,
     2,
     'POPULAR',
@@ -2031,7 +2111,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Football',
-    '#003791'
+    '#003791',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co20di.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2053,12 +2134,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'fifa-19-ps4-preowned',
     'FIFA 19 (PS4)',
@@ -2070,7 +2152,7 @@ INSERT INTO public.products (
     899,
     78,
     4.8,
-    25,
+    19,
     TRUE,
     7,
     'TOP SELLER',
@@ -2081,7 +2163,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Football',
-    '#003791'
+    '#003791',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co20dj.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2103,12 +2186,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'fifa-20-ps4-preowned',
     'FIFA 20 (PS4)',
@@ -2120,7 +2204,7 @@ INSERT INTO public.products (
     999,
     75,
     4.8,
-    55,
+    40,
     TRUE,
     3,
     'POPULAR',
@@ -2131,7 +2215,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Football',
-    '#003791'
+    '#003791',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co1r76.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2153,12 +2238,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'fifa-21-ps4-preowned',
     'FIFA 21 (PS4)',
@@ -2170,7 +2256,7 @@ INSERT INTO public.products (
     1199,
     70,
     4.8,
-    40,
+    52,
     TRUE,
     1,
     'POPULAR',
@@ -2181,7 +2267,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Football',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1313860/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2203,12 +2290,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'fifa-22-ps4-preowned',
     'FIFA 22 (PS4)',
@@ -2220,7 +2308,7 @@ INSERT INTO public.products (
     1399,
     65,
     4.8,
-    43,
+    49,
     TRUE,
     1,
     'TRENDING',
@@ -2231,7 +2319,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Football',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1506830/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2253,12 +2342,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'fifa-23-ps5-custom-cover-preowned',
     'FIFA 23 (PS5 - Custom Cover)',
@@ -2270,7 +2360,7 @@ INSERT INTO public.products (
     1499,
     67,
     4.8,
-    24,
+    49,
     TRUE,
     2,
     'CUSTOM COVER',
@@ -2281,7 +2371,8 @@ INSERT INTO public.products (
     'Grade A (100% genuine disc, laser tested, custom high-gloss printed cover)',
     'Custom Printed Case Edition',
     'Sports / Football',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1811260/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2303,12 +2394,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'fifa-23-ps4-preowned',
     'FIFA 23 (PS4)',
@@ -2320,7 +2412,7 @@ INSERT INTO public.products (
     1699,
     62,
     4.8,
-    34,
+    22,
     TRUE,
     2,
     'BESTSELLER',
@@ -2331,7 +2423,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Football',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1811260/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2353,12 +2446,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'fifa-23-ps5-preowned',
     'FIFA 23 (PS5)',
@@ -2370,7 +2464,7 @@ INSERT INTO public.products (
     1699,
     62,
     4.8,
-    37,
+    52,
     TRUE,
     4,
     'BESTSELLER',
@@ -2381,7 +2475,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Football',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1811260/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2403,12 +2498,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'far-cry-4-ps4-preowned',
     'Far Cry 4 (PS4)',
@@ -2420,7 +2516,7 @@ INSERT INTO public.products (
     799,
     68,
     4.8,
-    42,
+    26,
     TRUE,
     2,
     'KYRAT',
@@ -2431,7 +2527,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Open World FPS',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/298110/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2453,12 +2550,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'far-cry-6-ps5-custom-cover-preowned',
     'Far Cry 6 (PS5 - Custom Cover)',
@@ -2470,7 +2568,7 @@ INSERT INTO public.products (
     1299,
     71,
     4.8,
-    55,
+    52,
     TRUE,
     1,
     'CUSTOM COVER',
@@ -2481,7 +2579,8 @@ INSERT INTO public.products (
     'Grade A (100% genuine disc, laser tested, custom high-gloss printed cover)',
     'Custom Printed Case Edition',
     'Action / Guerrilla FPS',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2369390/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2503,12 +2602,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'far-cry-6-ps5-preowned',
     'Far Cry 6 (PS5)',
@@ -2520,7 +2620,7 @@ INSERT INTO public.products (
     1499,
     67,
     4.8,
-    24,
+    52,
     TRUE,
     1,
     'YARA',
@@ -2531,7 +2631,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Guerrilla FPS',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2369390/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2553,12 +2654,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'gta-5-ps4-custom-cover-preowned',
     'GTA 5 (PS4 - Custom Cover)',
@@ -2570,7 +2672,7 @@ INSERT INTO public.products (
     899,
     74,
     4.8,
-    35,
+    60,
     TRUE,
     7,
     'CUSTOM COVER',
@@ -2581,7 +2683,8 @@ INSERT INTO public.products (
     'Grade A (100% genuine disc, laser tested, custom high-gloss printed cover)',
     'Custom Printed Case Edition',
     'Action / Open World',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2603,12 +2706,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'ghost-of-tsushima-directors-cut-ps5-preowned',
     'Ghost of Tsushima: Director''s Cut (PS5)',
@@ -2620,7 +2724,7 @@ INSERT INTO public.products (
     2299,
     54,
     4.8,
-    52,
+    43,
     TRUE,
     1,
     'DIRECTOR''S CUT',
@@ -2631,7 +2735,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Samurai Open World',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2215430/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2653,12 +2758,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'god-of-war-ps4-preowned',
     'God of War (PS4)',
@@ -2670,7 +2776,7 @@ INSERT INTO public.products (
     999,
     71,
     4.8,
-    54,
+    31,
     TRUE,
     10,
     'GAME OF THE YEAR',
@@ -2681,7 +2787,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Mythological RPG',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2703,12 +2810,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'god-of-war-iii-remastered-ps4-preowned',
     'God of War III Remastered (PS4)',
@@ -2720,7 +2828,7 @@ INSERT INTO public.products (
     899,
     64,
     4.8,
-    33,
+    28,
     TRUE,
     1,
     'CLASSIC HITS',
@@ -2731,7 +2839,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Hack and Slash',
-    '#003791'
+    '#003791',
+    'https://image.api.playstation.com/vulcan/img/rnd/202011/0402/p91eFwS7w5v2Q2Y4mK0t.png'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2753,12 +2862,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'gran-turismo-sport-ps4-preowned',
     'Gran Turismo Sport (PS4)',
@@ -2770,7 +2880,7 @@ INSERT INTO public.products (
     999,
     71,
     4.8,
-    50,
+    55,
     TRUE,
     5,
     'PLAYSTATION HITS',
@@ -2781,7 +2891,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Racing / Simulation',
-    '#003791'
+    '#003791',
+    'https://image.api.playstation.com/vulcan/img/rnd/202010/2621/e4iV4QkGgZ4cM8a8Z5q0Zt5a.png'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2803,12 +2914,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'grand-theft-auto-v-ps4-preowned',
     'Grand Theft Auto V (PS4)',
@@ -2820,7 +2932,7 @@ INSERT INTO public.products (
     1299,
     63,
     4.8,
-    55,
+    61,
     TRUE,
     16,
     'ALL-TIME BESTSELLER',
@@ -2831,7 +2943,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Open World',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2853,12 +2966,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'grand-theft-auto-v-ps5-preowned',
     'Grand Theft Auto V (PS5)',
@@ -2870,7 +2984,7 @@ INSERT INTO public.products (
     1299,
     63,
     4.8,
-    36,
+    54,
     TRUE,
     5,
     'ALL-TIME BESTSELLER',
@@ -2881,7 +2995,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Open World',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2903,12 +3018,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'hogwarts-legacy-ps5-preowned',
     'Hogwarts Legacy (PS5)',
@@ -2920,7 +3036,7 @@ INSERT INTO public.products (
     2399,
     52,
     4.8,
-    50,
+    21,
     TRUE,
     4,
     'BESTSELLER',
@@ -2931,7 +3047,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action RPG / Wizarding World',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -2953,12 +3070,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'horizon-zero-dawn-complete-edition-ps4-preowned',
     'Horizon Zero Dawn Complete Edition (PS4)',
@@ -2970,7 +3088,7 @@ INSERT INTO public.products (
     999,
     67,
     4.8,
-    52,
+    29,
     TRUE,
     4,
     'COMPLETE EDITION',
@@ -2981,7 +3099,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action RPG / Open World',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1151640/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3003,12 +3122,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'hot-wheels-unleashed-ps5-preowned',
     'Hot Wheels Unleashed (PS5)',
@@ -3020,7 +3140,7 @@ INSERT INTO public.products (
     1499,
     57,
     4.8,
-    57,
+    58,
     TRUE,
     1,
     'FAMILY',
@@ -3031,7 +3151,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Racing / Arcade',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1271700/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3053,12 +3174,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'injustice-2-ps4-preowned',
     'Injustice 2 (PS4)',
@@ -3070,7 +3192,7 @@ INSERT INTO public.products (
     899,
     70,
     4.8,
-    43,
+    58,
     TRUE,
     3,
     'FIGHTING',
@@ -3081,7 +3203,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Fighting / DC Superheroes',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/627270/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3103,12 +3226,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'mafia-iii-ps4-preowned',
     'Mafia III (PS4)',
@@ -3120,7 +3244,7 @@ INSERT INTO public.products (
     899,
     70,
     4.8,
-    57,
+    61,
     TRUE,
     2,
     'CRIME SAGA',
@@ -3131,7 +3255,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Crime Drama',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/360430/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3153,12 +3278,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'marvels-avengers-ps4-preowned',
     'Marvel''s Avengers (PS4)',
@@ -3170,7 +3296,7 @@ INSERT INTO public.products (
     899,
     74,
     4.8,
-    23,
+    35,
     TRUE,
     1,
     'HEROES',
@@ -3181,7 +3307,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Superhero Brawler',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/997070/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3203,12 +3330,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'marvels-spider-man-ps4-preowned',
     'Marvel''s Spider-Man (PS4)',
@@ -3220,7 +3348,7 @@ INSERT INTO public.products (
     1299,
     63,
     4.8,
-    26,
+    24,
     TRUE,
     4,
     'BLOCKBUSTER',
@@ -3231,7 +3359,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Superhero Open World',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3253,12 +3382,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'marvels-spider-man-miles-morales-ps5-preowned',
     'Marvel''s Spider-Man: Miles Morales (PS5)',
@@ -3270,7 +3400,7 @@ INSERT INTO public.products (
     1799,
     55,
     4.8,
-    33,
+    28,
     TRUE,
     2,
     'BESTSELLER',
@@ -3281,7 +3411,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Open World',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817190/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3303,12 +3434,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'metal-gear-solid-v-the-phantom-pain-ps4-preowned',
     'Metal Gear Solid V: The Phantom Pain (PS4)',
@@ -3320,7 +3452,7 @@ INSERT INTO public.products (
     999,
     67,
     4.8,
-    47,
+    21,
     TRUE,
     2,
     'KOJIMA CLASSIC',
@@ -3331,7 +3463,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Tactical Espionage / Stealth',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/287700/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3353,12 +3486,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'metro-exodus-ps5-preowned',
     'Metro Exodus (PS5)',
@@ -3370,7 +3504,7 @@ INSERT INTO public.products (
     1399,
     60,
     4.8,
-    58,
+    48,
     TRUE,
     1,
     'PS5 ENHANCED',
@@ -3381,7 +3515,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Atmospheric FPS / Post-Apocalyptic',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/412020/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3403,12 +3538,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'minecraft-playstation-4-edition-ps4-preowned',
     'Minecraft: PlayStation 4 Edition (PS4)',
@@ -3420,7 +3556,7 @@ INSERT INTO public.products (
     1399,
     53,
     4.8,
-    52,
+    34,
     TRUE,
     1,
     'ALL-TIME HIT',
@@ -3431,7 +3567,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sandbox / Survival',
-    '#003791'
+    '#003791',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co1tnt.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3453,12 +3590,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'mortal-kombat-11-ultimate-ps5-preowned',
     'Mortal Kombat 11 Ultimate (PS5)',
@@ -3470,7 +3608,7 @@ INSERT INTO public.products (
     1699,
     58,
     4.8,
-    60,
+    36,
     TRUE,
     1,
     'ULTIMATE',
@@ -3481,7 +3619,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Fighting / Brutal Combat',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/976310/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3503,12 +3642,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'naruto-shippuden-ultimate-ninja-storm-4-ps4-preowned',
     'Naruto Shippuden: Ultimate Ninja Storm 4 (PS4)',
@@ -3520,7 +3660,7 @@ INSERT INTO public.products (
     999,
     67,
     4.8,
-    32,
+    53,
     TRUE,
     1,
     'ANIME HIT',
@@ -3531,7 +3671,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Anime / Fighting',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/349040/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3553,12 +3694,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'nioh-ps4-preowned',
     'Nioh (PS4)',
@@ -3570,7 +3712,7 @@ INSERT INTO public.products (
     899,
     70,
     4.8,
-    26,
+    60,
     TRUE,
     1,
     'SOULSLIKE',
@@ -3581,7 +3723,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action RPG / Dark Samurai',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/485510/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3603,12 +3746,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'nioh-collection-ps5-preowned',
     'Nioh Collection (PS5)',
@@ -3620,7 +3764,7 @@ INSERT INTO public.products (
     2399,
     52,
     4.8,
-    39,
+    55,
     TRUE,
     1,
     'DUAL PACK',
@@ -3631,7 +3775,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action RPG / Complete Remastered',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1325200/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3653,12 +3798,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'payday-3-ps5-preowned',
     'Payday 3 (PS5)',
@@ -3670,7 +3816,7 @@ INSERT INTO public.products (
     1499,
     57,
     4.8,
-    23,
+    37,
     TRUE,
     1,
     'HEIST',
@@ -3681,7 +3827,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Co-op Shooter / Heist',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1272080/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3703,12 +3850,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'playerunknowns-battlegrounds-ps4-preowned',
     'PlayerUnknown''s Battlegrounds (PS4)',
@@ -3731,7 +3879,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Battle Royale / Shooter',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/578080/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3753,12 +3902,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'ratchet-clank-ps4-preowned',
     'Ratchet & Clank (PS4)',
@@ -3770,7 +3920,7 @@ INSERT INTO public.products (
     899,
     64,
     4.8,
-    52,
+    35,
     TRUE,
     4,
     'PLAYSTATION HITS',
@@ -3781,7 +3931,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Platformer',
-    '#003791'
+    '#003791',
+    'https://image.api.playstation.com/vulcan/ap/rnd/202101/2921/DwLzYqTqOq9iC7Z4yP0V8K.png'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3803,12 +3954,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'red-dead-redemption-ii-ps4-preowned',
     'Red Dead Redemption II (PS4)',
@@ -3820,7 +3972,7 @@ INSERT INTO public.products (
     1599,
     64,
     4.8,
-    62,
+    36,
     TRUE,
     3,
     'MASTERPIECE',
@@ -3831,7 +3983,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Open World Western',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3853,12 +4006,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'resident-evil-2-ps4-preowned',
     'Resident Evil 2 (PS4)',
@@ -3870,7 +4024,7 @@ INSERT INTO public.products (
     1299,
     63,
     4.8,
-    28,
+    19,
     TRUE,
     1,
     'HORROR HIT',
@@ -3881,7 +4035,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Survival Horror / Remake',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/883710/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3903,12 +4058,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'resident-evil-4-ps4-preowned',
     'Resident Evil 4 (PS4)',
@@ -3920,7 +4076,7 @@ INSERT INTO public.products (
     1899,
     58,
     4.8,
-    24,
+    58,
     TRUE,
     1,
     'GOTY NOMINEE',
@@ -3931,7 +4087,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Survival Horror / Action',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -3953,12 +4110,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'resident-evil-4-ps5-preowned',
     'Resident Evil 4 (PS5)',
@@ -3970,7 +4128,7 @@ INSERT INTO public.products (
     1899,
     58,
     4.8,
-    19,
+    21,
     TRUE,
     1,
     'GOTY NOMINEE',
@@ -3981,7 +4139,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Survival Horror / Action',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4003,12 +4162,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'ride-5-ps5-preowned',
     'Ride 5 (PS5)',
@@ -4020,7 +4180,7 @@ INSERT INTO public.products (
     2199,
     51,
     4.8,
-    28,
+    34,
     TRUE,
     1,
     'NEXT-GEN',
@@ -4031,7 +4191,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Racing / Superbike',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1650010/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4053,12 +4214,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'silent-hill-ps5-preowned',
     'Silent Hill (PS5)',
@@ -4070,7 +4232,7 @@ INSERT INTO public.products (
     2999,
     40,
     4.8,
-    34,
+    54,
     TRUE,
     1,
     'ICONIC HORROR',
@@ -4081,7 +4243,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Psychological Horror',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2124490/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4103,12 +4266,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'sleeping-dogs-definitive-edition-ps4-preowned',
     'Sleeping Dogs: Definitive Edition (PS4)',
@@ -4120,7 +4284,7 @@ INSERT INTO public.products (
     899,
     64,
     4.8,
-    32,
+    29,
     TRUE,
     1,
     'MARTIAL ARTS',
@@ -4131,7 +4295,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Hong Kong Open World',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/307690/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4153,12 +4318,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'sniper-elite-3-ultimate-edition-ps4-preowned',
     'Sniper Elite 3 Ultimate Edition (PS4)',
@@ -4170,7 +4336,7 @@ INSERT INTO public.products (
     899,
     70,
     4.8,
-    39,
+    19,
     TRUE,
     1,
     'ULTIMATE',
@@ -4181,7 +4347,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Tactical Shooter / Stealth',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/238090/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4203,12 +4370,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'sniper-elite-5-ps5-preowned',
     'Sniper Elite 5 (PS5)',
@@ -4220,7 +4388,7 @@ INSERT INTO public.products (
     1999,
     56,
     4.8,
-    46,
+    37,
     TRUE,
     1,
     'NEXT-GEN',
@@ -4231,7 +4399,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Tactical Shooter / Stealth',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1029690/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4253,12 +4422,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'sonic-forces-ps4-preowned',
     'Sonic Forces (PS4)',
@@ -4270,7 +4440,7 @@ INSERT INTO public.products (
     999,
     60,
     4.8,
-    34,
+    28,
     TRUE,
     1,
     'SONIC',
@@ -4281,7 +4451,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Platformer',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/637100/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4303,12 +4474,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'spider-man-ps5-custom-cover-preowned',
     'Spider-Man (PS5 - Custom Cover)',
@@ -4320,7 +4492,7 @@ INSERT INTO public.products (
     999,
     71,
     4.8,
-    44,
+    39,
     TRUE,
     1,
     'CUSTOM COVER',
@@ -4331,7 +4503,8 @@ INSERT INTO public.products (
     'Grade A (100% genuine disc, laser tested, custom high-gloss printed cover)',
     'Custom Printed Case Edition',
     'Action / Superhero Open World',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4353,12 +4526,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'the-last-of-us-part-ii-ps4-preowned',
     'The Last of Us Part II (PS4)',
@@ -4370,7 +4544,7 @@ INSERT INTO public.products (
     1699,
     58,
     4.8,
-    54,
+    26,
     TRUE,
     2,
     'AWARD WINNER',
@@ -4381,7 +4555,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Story-driven',
-    '#003791'
+    '#003791',
+    'https://image.api.playstation.com/vulcan/img/rnd/202010/2618/Y02ljdBodKFBuziorqlr2duK.png'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4403,12 +4578,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'the-last-of-us-remastered-ps4-preowned',
     'The Last of Us Remastered (PS4)',
@@ -4420,7 +4596,7 @@ INSERT INTO public.products (
     999,
     67,
     4.8,
-    21,
+    25,
     TRUE,
     4,
     'MASTERPIECE',
@@ -4431,7 +4607,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Narrative Survival',
-    '#003791'
+    '#003791',
+    'https://image.api.playstation.com/vulcan/img/rnd/202011/1020/b3rRRLucJmvd2wK32v5e28sX.png'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4453,12 +4630,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'the-witcher-3-wild-hunt-ps4-preowned',
     'The Witcher 3: Wild Hunt (PS4)',
@@ -4470,7 +4648,7 @@ INSERT INTO public.products (
     1199,
     66,
     4.8,
-    31,
+    50,
     TRUE,
     1,
     'GOTY WINNER',
@@ -4481,7 +4659,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'RPG / Open World Fantasy',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/292030/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4503,12 +4682,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'tom-clancys-ghost-recon-breakpoint-ps4-preowned',
     'Tom Clancy''s Ghost Recon Breakpoint (PS4)',
@@ -4520,7 +4700,7 @@ INSERT INTO public.products (
     999,
     71,
     4.8,
-    29,
+    30,
     TRUE,
     1,
     'CO-OP',
@@ -4531,7 +4711,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Tactical Shooter / Open World',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2231380/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4553,12 +4734,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'tomb-raider-i-iii-remastered-ps5-preowned',
     'Tomb Raider I-III Remastered (PS5)',
@@ -4570,7 +4752,7 @@ INSERT INTO public.products (
     1899,
     46,
     4.8,
-    41,
+    37,
     TRUE,
     1,
     'TRILOGY',
@@ -4581,7 +4763,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Classic Adventure',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2525380/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4603,12 +4786,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'ufc-4-ps4-preowned',
     'UFC 4 (PS4)',
@@ -4620,7 +4804,7 @@ INSERT INTO public.products (
     1399,
     65,
     4.8,
-    42,
+    33,
     TRUE,
     1,
     'COMBAT',
@@ -4631,7 +4815,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / MMA Combat',
-    '#003791'
+    '#003791',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co2h3u.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4653,12 +4838,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'ufc-5-ps5-preowned',
     'UFC 5 (PS5)',
@@ -4670,7 +4856,7 @@ INSERT INTO public.products (
     2699,
     44,
     4.8,
-    45,
+    30,
     TRUE,
     1,
     'NEXT-GEN',
@@ -4681,7 +4867,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / MMA Combat',
-    '#0070D1'
+    '#0070D1',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co70w5.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4703,12 +4890,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'uncharted-4-a-thiefs-end-ps4-preowned',
     'Uncharted 4: A Thief''s End (PS4)',
@@ -4720,7 +4908,7 @@ INSERT INTO public.products (
     999,
     67,
     4.8,
-    61,
+    35,
     TRUE,
     7,
     'BESTSELLER',
@@ -4731,7 +4919,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Cinematic Adventure',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1659420/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4753,12 +4942,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'uncharted-the-lost-legacy-ps4-preowned',
     'Uncharted: The Lost Legacy (PS4)',
@@ -4770,7 +4960,7 @@ INSERT INTO public.products (
     999,
     67,
     4.8,
-    51,
+    26,
     TRUE,
     1,
     'EXPANSION',
@@ -4781,7 +4971,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Adventure',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1659420/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4803,12 +4994,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'uncharted-the-nathan-drake-collection-ps4-preowned',
     'Uncharted: The Nathan Drake Collection (PS4)',
@@ -4820,7 +5012,7 @@ INSERT INTO public.products (
     999,
     67,
     4.8,
-    50,
+    62,
     TRUE,
     3,
     'TRILOGY PACK',
@@ -4831,7 +5023,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Adventure 3-in-1',
-    '#003791'
+    '#003791',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co20ee.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4853,12 +5046,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'wrc-ps5-custom-cover-preowned',
     'WRC (PS5 - Custom Cover)',
@@ -4870,7 +5064,7 @@ INSERT INTO public.products (
     1699,
     62,
     4.8,
-    23,
+    29,
     TRUE,
     1,
     'CUSTOM COVER',
@@ -4881,7 +5075,8 @@ INSERT INTO public.products (
     'Grade A (100% genuine disc, laser tested, custom high-gloss printed cover)',
     'Custom Printed Case Edition',
     'Racing / Rally Sim',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1849250/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4903,12 +5098,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'wwe-2k18-ps4-preowned',
     'WWE 2K18 (PS4)',
@@ -4920,7 +5116,7 @@ INSERT INTO public.products (
     899,
     74,
     4.8,
-    58,
+    18,
     TRUE,
     1,
     'CLASSIC',
@@ -4931,7 +5127,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Wrestling',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/664430/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -4953,12 +5150,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'wwe-2k22-ps5-preowned',
     'WWE 2K22 (PS5)',
@@ -4970,7 +5168,7 @@ INSERT INTO public.products (
     1499,
     63,
     4.8,
-    23,
+    51,
     TRUE,
     2,
     'POPULAR',
@@ -4981,7 +5179,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Wrestling',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1255630/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -5003,12 +5202,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'wwe-2k23-ps5-preowned',
     'WWE 2K23 (PS5)',
@@ -5020,7 +5220,7 @@ INSERT INTO public.products (
     1899,
     58,
     4.8,
-    34,
+    60,
     TRUE,
     1,
     'TOP SELLER',
@@ -5031,7 +5231,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Wrestling',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1942660/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -5053,12 +5254,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'wwe-2k24-ps4-preowned',
     'WWE 2K24 (PS4)',
@@ -5070,7 +5272,7 @@ INSERT INTO public.products (
     2699,
     46,
     4.8,
-    43,
+    58,
     TRUE,
     1,
     'LATEST',
@@ -5081,7 +5283,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Sports / Wrestling',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2315690/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -5103,12 +5306,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'watch-dogs-ps4-preowned',
     'Watch Dogs (PS4)',
@@ -5120,7 +5324,7 @@ INSERT INTO public.products (
     699,
     72,
     4.8,
-    51,
+    54,
     TRUE,
     3,
     'CLASSIC',
@@ -5131,7 +5335,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Open World Hacking',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/243470/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -5153,12 +5358,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'watch-dogs-2-ps4-preowned',
     'Watch Dogs 2 (PS4)',
@@ -5170,7 +5376,7 @@ INSERT INTO public.products (
     899,
     70,
     4.8,
-    46,
+    62,
     TRUE,
     4,
     'POPULAR',
@@ -5181,7 +5387,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Open World Hacking',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/447040/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -5203,12 +5410,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'watch-dogs-legion-ps4-preowned',
     'Watch Dogs Legion (PS4)',
@@ -5220,7 +5428,7 @@ INSERT INTO public.products (
     1199,
     70,
     4.8,
-    26,
+    50,
     TRUE,
     1,
     'NEXT-GEN',
@@ -5231,7 +5439,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Open World London',
-    '#003791'
+    '#003791',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2239550/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -5253,12 +5462,13 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
 
 INSERT INTO public.products (
     id, name, subtitle, category, platform, condition, mrp, price, discount_percent,
     rating, review_count, in_stock, stock_count, badge, features, description,
-    in_the_box, warranty, disc_condition, edition, genre, theme_color
+    in_the_box, warranty, disc_condition, edition, genre, theme_color, image_url
 ) VALUES (
     'watch-dogs-legion-ps5-preowned',
     'Watch Dogs Legion (PS5)',
@@ -5270,7 +5480,7 @@ INSERT INTO public.products (
     1199,
     70,
     4.8,
-    62,
+    21,
     TRUE,
     1,
     'NEXT-GEN',
@@ -5281,7 +5491,8 @@ INSERT INTO public.products (
     'Grade A+ (100% genuine disc, optical laser seek verified, original case)',
     'Standard Pre-Owned Retail Case',
     'Action / Open World London',
-    '#0070D1'
+    '#0070D1',
+    'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2239550/library_600x900.jpg'
 )
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -5303,4 +5514,5 @@ ON CONFLICT (id) DO UPDATE SET
     edition = EXCLUDED.edition,
     genre = EXCLUDED.genre,
     theme_color = EXCLUDED.theme_color,
+    image_url = EXCLUDED.image_url,
     updated_at = NOW();
