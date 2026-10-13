@@ -364,23 +364,121 @@ export default function App() {
     });
   };
 
-  // Section collections for Home page (dynamically adapting to hero or database products)
+  // Section collections for Home page: Distinct, non-overlapping, and thematic catalogs
   const featuredProducts = useMemo(() => {
-    const curated = products.filter((p) => p.badge || p.rating >= 4.8);
+    // 1. Hardware first (consoles & controllers)
+    const hardware = products.filter(
+      (p) => p.category === 'consoles' || p.category === 'controllers'
+    );
+
+    // 2. High-profile flagship blockbusters & GOTY masterpieces
+    const flagshipKeywords = [
+      'grand theft auto',
+      'gta',
+      'ghost of tsushima',
+      'spider-man',
+      'god of war',
+      'hogwarts legacy',
+      'the last of us',
+      'red dead redemption',
+      'uncharted',
+      'witcher 3',
+      'cyberpunk',
+      'horizon zero',
+      'resident evil',
+      'elden ring',
+    ];
+
+    const flagshipGames = products.filter((p) => {
+      if (p.category !== 'preowned_games') return false;
+      const lower = p.name.toLowerCase();
+      // Skip custom printed covers in featured to keep it premium standard edition
+      if (lower.includes('custom printed cover')) return false;
+      return flagshipKeywords.some((kw) => lower.includes(kw));
+    });
+
+    const curated = [...hardware, ...flagshipGames];
     return curated.length > 0 ? curated : products;
   }, [products]);
 
   const trendingProducts = useMemo(() => {
-    const curated = products.filter(
-      (p) => p.category === 'preowned_games' || p.category === 'controllers'
-    );
-    return curated.length > 0 ? curated : products;
-  }, [products]);
+    const featuredIdSet = new Set(featuredProducts.map((p) => p.id));
+
+    // High-demand competitive, sports, racing, combat & modern releases
+    const trendingKeywords = [
+      'fc 24',
+      'fifa',
+      'cricket 24',
+      'cricket 19',
+      'big bash',
+      'call of duty',
+      'modern warfare',
+      'black ops',
+      'wwe 2k',
+      'gran turismo',
+      'f1 22',
+      'ride 5',
+      'hot wheels',
+      'mortal kombat',
+      'injustice',
+      'ufc 5',
+      'battlefield',
+      'assassin\'s creed mirage',
+      'assassin\'s creed valhalla',
+      'payday 3',
+      'dragon ball',
+      'sniper elite',
+    ];
+
+    const trending = products.filter((p) => {
+      if (featuredIdSet.has(p.id)) return false; // Strictly no duplication with Featured
+      const lower = p.name.toLowerCase();
+      if (lower.includes('custom printed cover')) return false;
+      return trendingKeywords.some((kw) => lower.includes(kw));
+    });
+
+    // Fill with remaining catalog if more variety is needed
+    if (trending.length < 14) {
+      const remaining = products.filter(
+        (p) => !featuredIdSet.has(p.id) && !trending.some((t) => t.id === p.id)
+      );
+      return [...trending, ...remaining].slice(0, 20);
+    }
+
+    return trending;
+  }, [products, featuredProducts]);
 
   const todaysDeals = useMemo(() => {
-    const curated = products.filter((p) => p.discountPercent >= 10);
-    return curated.length > 0 ? curated : products;
-  }, [products]);
+    const featuredIdSet = new Set(featuredProducts.map((p) => p.id));
+    const trendingIdSet = new Set(trendingProducts.map((p) => p.id));
+
+    // Products strictly not shown in Featured or Trending
+    const candidates = products.filter(
+      (p) => !featuredIdSet.has(p.id) && !trendingIdSet.has(p.id)
+    );
+
+    // Prioritize high-discount steals, budget titles (< ₹1299), and custom-printed cover value editions
+    const deals = [...candidates].sort((a, b) => {
+      const aIsCustom = a.name.toLowerCase().includes('custom printed cover');
+      const bIsCustom = b.name.toLowerCase().includes('custom printed cover');
+      if (aIsCustom && !bIsCustom) return -1;
+      if (!aIsCustom && bIsCustom) return 1;
+
+      // Higher discount first
+      if (b.discountPercent !== a.discountPercent) {
+        return b.discountPercent - a.discountPercent;
+      }
+      // Lower price first
+      return a.price - b.price;
+    });
+
+    // Fallback if catalog is small
+    if (deals.length === 0) {
+      return [...products].sort((a, b) => b.discountPercent - a.discountPercent);
+    }
+
+    return deals;
+  }, [products, featuredProducts, trendingProducts]);
 
   // Pricing calculations
   const cartSubtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);

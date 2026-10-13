@@ -36,15 +36,22 @@ export const ProductSectionCarousel: React.FC<ProductSectionCarouselProps> = ({
   onToggleWishlist,
   wishlistIds,
   cartIds,
-  maxDisplay = 20,
+  maxDisplay = 18,
   containerBgClass = 'bg-white dark:bg-[#0b0f17]',
   borderClass = 'border-b border-[#e5e7eb] dark:border-[#1e293b]',
 }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
 
-  // Take top items for fast rendering, or all if small
+  // Mouse drag-to-scroll refs
+  const isMouseDownRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+  const hasMovedRef = useRef(false);
+
+  // Take top items for fast rendering
   const displayProducts = products.slice(0, maxDisplay);
 
   const checkScroll = () => {
@@ -76,6 +83,69 @@ export const ProductSectionCarousel: React.FC<ProductSectionCarouselProps> = ({
       left: direction === 'left' ? -scrollAmount : scrollAmount,
       behavior: 'smooth',
     });
+  };
+
+  // Mouse Drag / Cursor Swipe Handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (e.button !== 0) return; // Left click only
+    const el = scrollContainerRef.current;
+    if (!el) return;
+
+    isMouseDownRef.current = true;
+    hasMovedRef.current = false;
+    startXRef.current = e.pageX;
+    scrollLeftRef.current = el.scrollLeft;
+
+    // Disable smooth scroll and snap during active mouse drag for immediate response
+    el.style.scrollBehavior = 'auto';
+    el.style.scrollSnapType = 'none';
+
+    const handleWindowMouseMove = (moveEvent: MouseEvent) => {
+      if (!isMouseDownRef.current) return;
+      const currentEl = scrollContainerRef.current;
+      if (!currentEl) return;
+
+      const deltaX = moveEvent.pageX - startXRef.current;
+      if (Math.abs(deltaX) > 6) {
+        if (!hasMovedRef.current) {
+          hasMovedRef.current = true;
+          setIsDragging(true);
+        }
+      }
+
+      currentEl.scrollLeft = scrollLeftRef.current - deltaX;
+      checkScroll();
+    };
+
+    const handleWindowMouseUp = () => {
+      isMouseDownRef.current = false;
+      setIsDragging(false);
+
+      window.removeEventListener('mousemove', handleWindowMouseMove);
+      window.removeEventListener('mouseup', handleWindowMouseUp);
+
+      const currentEl = scrollContainerRef.current;
+      if (currentEl) {
+        currentEl.style.scrollBehavior = 'smooth';
+        currentEl.style.scrollSnapType = 'x mandatory';
+      }
+
+      // Briefly retain hasMovedRef so the immediate click event on mouseup is intercepted
+      setTimeout(() => {
+        hasMovedRef.current = false;
+      }, 60);
+    };
+
+    window.addEventListener('mousemove', handleWindowMouseMove);
+    window.addEventListener('mouseup', handleWindowMouseUp);
+  };
+
+  // Prevent accidental product click when releasing a drag gesture
+  const handleClickCapture = (e: React.MouseEvent) => {
+    if (hasMovedRef.current) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
   };
 
   if (!products || products.length === 0) {
@@ -117,7 +187,7 @@ export const ProductSectionCarousel: React.FC<ProductSectionCarouselProps> = ({
                 aria-label="Scroll left"
                 className={`w-8 h-8 rounded-full border border-gray-200 dark:border-gray-700 flex items-center justify-center transition-all ${
                   canScrollLeft
-                    ? 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-xs cursor-pointer'
+                    ? 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-xs cursor-pointer active:scale-95'
                     : 'bg-gray-50 dark:bg-gray-900/50 text-gray-300 dark:text-gray-600 border-gray-100 dark:border-gray-800 cursor-not-allowed opacity-50'
                 }`}
               >
@@ -129,7 +199,7 @@ export const ProductSectionCarousel: React.FC<ProductSectionCarouselProps> = ({
                 aria-label="Scroll right"
                 className={`w-8 h-8 rounded-full border border-gray-200 dark:border-gray-700 flex items-center justify-center transition-all ${
                   canScrollRight
-                    ? 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-xs cursor-pointer'
+                    ? 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-xs cursor-pointer active:scale-95'
                     : 'bg-gray-50 dark:bg-gray-900/50 text-gray-300 dark:text-gray-600 border-gray-100 dark:border-gray-800 cursor-not-allowed opacity-50'
                 }`}
               >
@@ -147,16 +217,21 @@ export const ProductSectionCarousel: React.FC<ProductSectionCarouselProps> = ({
           </div>
         </div>
 
-        {/* Horizontal Carousel Track (Desktop & Mobile) */}
+        {/* Horizontal Carousel Track (Desktop Cursor Drag + Mobile Touch Swipe) */}
         <div
           ref={scrollContainerRef}
-          className="flex overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory gap-3.5 sm:gap-4 md:gap-5 pb-3 pt-1 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0"
+          onMouseDown={handleMouseDown}
+          onDragStart={(e) => e.preventDefault()}
+          onClickCapture={handleClickCapture}
+          className={`flex overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory gap-3.5 sm:gap-4 md:gap-5 pb-3 pt-1 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 select-none ${
+            isDragging ? 'cursor-grabbing' : 'cursor-grab sm:hover:cursor-grab'
+          }`}
         >
           {displayProducts.map((prod) => (
             <ProductCard
               key={prod.id}
               product={prod}
-              className="w-[164px] min-w-[164px] sm:w-[195px] sm:min-w-[195px] md:w-[220px] md:min-w-[220px] lg:w-[235px] lg:min-w-[235px] shrink-0 snap-start h-full"
+              className="w-[164px] min-w-[164px] sm:w-[195px] sm:min-w-[195px] md:w-[220px] md:min-w-[220px] lg:w-[235px] lg:min-w-[235px] shrink-0 snap-start h-full pointer-events-auto"
               onSelect={onSelectProduct}
               onAddToCart={onAddToCart}
               onToggleWishlist={onToggleWishlist}
