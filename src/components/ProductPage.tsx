@@ -163,6 +163,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                   <img
                     src={product.imageUrl}
                     alt={product.name}
+                    referrerPolicy="no-referrer"
                     className="w-full h-full object-contain filter drop-shadow-md transition-transform duration-500 group-hover:scale-105"
                     loading="eager"
                   />
