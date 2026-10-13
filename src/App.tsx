@@ -95,18 +95,6 @@ export default function App() {
     };
   }, []);
 
-  // Fetch orders only when admin is accessed or authenticated to save customer bandwidth
-  useEffect(() => {
-    if (isAdminAuthenticated || currentPage === 'admin') {
-      fetchOrdersFromDB().then((dbOrders) => {
-        if (dbOrders && dbOrders.length > 0) {
-          setOrders(dbOrders);
-        }
-      }).catch((err) => {
-        console.warn('[Supabase] Failed to fetch orders for admin:', err);
-      });
-    }
-  }, [isAdminAuthenticated, currentPage]);
 
   // Theme Management (Default: Light Theme)
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -197,6 +185,19 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('djn_admin_orders', JSON.stringify(orders));
   }, [orders]);
+
+  // Fetch orders only when admin is accessed or authenticated to save customer bandwidth
+  useEffect(() => {
+    if (isAdminAuthenticated || currentPage === 'admin') {
+      fetchOrdersFromDB().then((dbOrders) => {
+        if (dbOrders && dbOrders.length > 0) {
+          setOrders(dbOrders);
+        }
+      }).catch((err) => {
+        console.warn('[Supabase] Failed to fetch orders for admin:', err);
+      });
+    }
+  }, [isAdminAuthenticated, currentPage]);
 
   // Cart & Wishlist with localStorage persistence
   const [cart, setCart] = useState<CartItem[]>(() => {

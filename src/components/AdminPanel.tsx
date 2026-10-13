@@ -1288,8 +1288,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   <label className="font-semibold block mb-1">Instagram Profile Link</label>
                   <input
                     type="url"
-                    value={configForm.instagramUrl}
-                    onChange={(e) => setConfigForm({ ...configForm, instagramUrl: e.target.value })}
+                    value={configForm.instagram}
+                    onChange={(e) => setConfigForm({ ...configForm, instagram: e.target.value })}
                     placeholder="https://instagram.com/djntech"
                     className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
