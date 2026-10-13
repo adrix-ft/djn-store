@@ -60,6 +60,7 @@ export const ProductVisualizer: React.FC<VisualizerProps> = ({
           src={currentImage}
           alt={product.name}
           loading="lazy"
+          decoding="async"
           referrerPolicy="no-referrer"
           onError={() => setImageError(true)}
           className="w-full h-full object-contain p-1 sm:p-2 transition-transform duration-300 group-hover:scale-105"

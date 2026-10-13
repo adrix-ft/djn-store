@@ -209,6 +209,7 @@ export const GameCaseFrame: React.FC<GameCaseFrameProps> = ({
                 src={imageUrl}
                 alt={name}
                 loading="lazy"
+                decoding="async"
                 referrerPolicy="no-referrer"
                 onLoad={() => setImageLoaded(true)}
                 onError={() => setHasError(true)}

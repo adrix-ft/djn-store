@@ -10,20 +10,23 @@ import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ProductCard } from './components/ProductCard';
 import { ProductSectionCarousel } from './components/ProductSectionCarousel';
-import { ProductPage } from './components/ProductPage';
-import { CategoryPage } from './components/CategoryPage';
 import { Marquee } from './components/Marquee';
-import { PolicyModal, PolicyType } from './components/PolicyModal';
-import { CartDrawer } from './components/CartDrawer';
-import { CheckoutModal } from './components/CheckoutModal';
-import { OrderConfirmationModal } from './components/OrderConfirmationModal';
-import { WishlistDrawer } from './components/WishlistDrawer';
 import { HomeTrustSections } from './components/HomeTrustSections';
 import { Footer } from './components/Footer';
-import { SellConsolesPage } from './components/SellConsolesPage';
-import { RepairConsolePage } from './components/RepairConsolePage';
-import { AdminPanel } from './components/AdminPanel';
-import { AdminPinModal } from './components/AdminPinModal';
+import type { PolicyType } from './components/PolicyModal';
+
+// Code-split heavy views and modals for sub-second initial bundle load
+const ProductPage = React.lazy(() => import('./components/ProductPage').then(m => ({ default: m.ProductPage })));
+const CategoryPage = React.lazy(() => import('./components/CategoryPage').then(m => ({ default: m.CategoryPage })));
+const SellConsolesPage = React.lazy(() => import('./components/SellConsolesPage').then(m => ({ default: m.SellConsolesPage })));
+const RepairConsolePage = React.lazy(() => import('./components/RepairConsolePage').then(m => ({ default: m.RepairConsolePage })));
+const AdminPanel = React.lazy(() => import('./components/AdminPanel').then(m => ({ default: m.AdminPanel })));
+const AdminPinModal = React.lazy(() => import('./components/AdminPinModal').then(m => ({ default: m.AdminPinModal })));
+const CartDrawer = React.lazy(() => import('./components/CartDrawer').then(m => ({ default: m.CartDrawer })));
+const WishlistDrawer = React.lazy(() => import('./components/WishlistDrawer').then(m => ({ default: m.WishlistDrawer })));
+const CheckoutModal = React.lazy(() => import('./components/CheckoutModal').then(m => ({ default: m.CheckoutModal })));
+const OrderConfirmationModal = React.lazy(() => import('./components/OrderConfirmationModal').then(m => ({ default: m.OrderConfirmationModal })));
+const PolicyModal = React.lazy(() => import('./components/PolicyModal').then(m => ({ default: m.PolicyModal })));
 import { DEFAULT_SITE_CONFIG } from './data/siteConfig';
 import {
   fetchProductsFromDB,
@@ -69,10 +72,9 @@ export default function App() {
     let isMounted = true;
     async function loadFromSupabase() {
       try {
-        const [dbProducts, dbConfig, dbOrders] = await Promise.all([
+        const [dbProducts, dbConfig] = await Promise.all([
           fetchProductsFromDB(),
           fetchSiteConfigFromDB(),
-          fetchOrdersFromDB(),
         ]);
         if (isMounted) {
           if (dbProducts && dbProducts.length > 0) {
@@ -80,9 +82,6 @@ export default function App() {
           }
           if (dbConfig) {
             setSiteConfig(dbConfig);
-          }
-          if (dbOrders && dbOrders.length > 0) {
-            setOrders(dbOrders);
           }
         }
       } catch (err) {
@@ -94,6 +93,19 @@ export default function App() {
       isMounted = false;
     };
   }, []);
+
+  // Fetch orders only when admin is accessed or authenticated to save customer bandwidth
+  useEffect(() => {
+    if (isAdminAuthenticated || currentPage === 'admin') {
+      fetchOrdersFromDB().then((dbOrders) => {
+        if (dbOrders && dbOrders.length > 0) {
+          setOrders(dbOrders);
+        }
+      }).catch((err) => {
+        console.warn('[Supabase] Failed to fetch orders for admin:', err);
+      });
+    }
+  }, [isAdminAuthenticated, currentPage]);
 
   // Theme Management (Default: Light Theme)
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -563,17 +575,28 @@ export default function App() {
   if (currentPage === 'admin') {
     return (
       <div className={`min-h-screen ${theme === 'dark' ? 'dark' : ''}`}>
-        <AdminPanel
-          products={products}
-          onUpdateProducts={(newProducts) => setProducts(newProducts)}
-          siteConfig={siteConfig}
-          onUpdateSiteConfig={(newConfig) => setSiteConfig(newConfig)}
-          orders={orders}
-          onUpdateOrders={(newOrders) => setOrders(newOrders)}
-          onExit={() => setCurrentPage('home')}
-          onLogout={handleAdminLogout}
-          showToast={showToast}
-        />
+        <React.Suspense
+          fallback={
+            <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 text-gray-500">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                <span className="text-xs font-semibold">Loading Admin Console...</span>
+              </div>
+            </div>
+          }
+        >
+          <AdminPanel
+            products={products}
+            onUpdateProducts={(newProducts) => setProducts(newProducts)}
+            siteConfig={siteConfig}
+            onUpdateSiteConfig={(newConfig) => setSiteConfig(newConfig)}
+            orders={orders}
+            onUpdateOrders={(newOrders) => setOrders(newOrders)}
+            onExit={() => setCurrentPage('home')}
+            onLogout={handleAdminLogout}
+            showToast={showToast}
+          />
+        </React.Suspense>
         {toastMessage && (
           <div className="fixed bottom-6 right-6 z-50 bg-[#111827] dark:bg-gray-800 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-bottom-4 duration-200 text-xs sm:text-sm font-medium border border-gray-700">
             <Check className="w-4 h-4 text-[#10b981]" />
@@ -625,64 +648,71 @@ export default function App() {
 
       {/* Main Content Area: Conditional Routing Based on currentPage */}
       <main className="flex-1 pb-16 md:pb-0">
-        
-        {/* VIEW 1: DEDICATED PRODUCT PAGE (FLIPKART / AMAZON STYLE) */}
-        {currentPage === 'product-detail' && selectedProduct ? (
-          <ProductPage
-            product={selectedProduct}
-            allProducts={products}
-            onSelectProduct={handleSelectProduct}
-            onAddToCart={handleAddToCart}
-            onBuyNow={handleBuyNow}
-            onToggleWishlist={handleToggleWishlist}
-            isWishlisted={wishlist.some((w) => w.id === selectedProduct.id)}
-            isInCart={cart.some((c) => c.product.id === selectedProduct.id)}
-            onBack={() => {
-              if (activeCategory !== 'all') {
-                setCurrentPage(activeCategory);
-              } else {
-                setCurrentPage('home');
-              }
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            onNavigateCategory={handleNavigateCategory}
-            onNavigateHome={handleNavigateHome}
-          />
-        ) : currentPage === 'sell-consoles' ? (
-          
-          /* VIEW 2: SELL CONSOLES TRADE-IN PORTAL */
-          <SellConsolesPage
-            onNavigateHome={handleNavigateHome}
-            onNavigateCategory={handleNavigateCategory}
-            onSelectProduct={handleSelectProduct}
-          />
+        <React.Suspense
+          fallback={
+            <div className="min-h-[50vh] flex flex-col items-center justify-center py-20 text-gray-400">
+              <div className="w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mb-3" />
+              <span className="text-xs font-semibold">Loading...</span>
+            </div>
+          }
+        >
+          {/* VIEW 1: DEDICATED PRODUCT PAGE (FLIPKART / AMAZON STYLE) */}
+          {currentPage === 'product-detail' && selectedProduct ? (
+            <ProductPage
+              product={selectedProduct}
+              allProducts={products}
+              onSelectProduct={handleSelectProduct}
+              onAddToCart={handleAddToCart}
+              onBuyNow={handleBuyNow}
+              onToggleWishlist={handleToggleWishlist}
+              isWishlisted={wishlist.some((w) => w.id === selectedProduct.id)}
+              isInCart={cart.some((c) => c.product.id === selectedProduct.id)}
+              onBack={() => {
+                if (activeCategory !== 'all') {
+                  setCurrentPage(activeCategory);
+                } else {
+                  setCurrentPage('home');
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              onNavigateCategory={handleNavigateCategory}
+              onNavigateHome={handleNavigateHome}
+            />
+          ) : currentPage === 'sell-consoles' ? (
+            
+            /* VIEW 2: SELL CONSOLES TRADE-IN PORTAL */
+            <SellConsolesPage
+              onNavigateHome={handleNavigateHome}
+              onNavigateCategory={handleNavigateCategory}
+              onSelectProduct={handleSelectProduct}
+            />
 
-        ) : currentPage === 'repair-console' ? (
-          
-          /* VIEW 3: REPAIR CONSOLE SERVICE PORTAL */
-          <RepairConsolePage
-            onNavigateHome={handleNavigateHome}
-            onNavigateCategory={handleNavigateCategory}
-            onSelectProduct={handleSelectProduct}
-          />
+          ) : currentPage === 'repair-console' ? (
+            
+            /* VIEW 3: REPAIR CONSOLE SERVICE PORTAL */
+            <RepairConsolePage
+              onNavigateHome={handleNavigateHome}
+              onNavigateCategory={handleNavigateCategory}
+              onSelectProduct={handleSelectProduct}
+            />
 
-        ) : currentPage !== 'home' && currentPage !== 'product-detail' ? (
-          
-          /* VIEW 3: DEDICATED CATEGORY / CATALOG PAGE */
-          <CategoryPage
-            category={currentPage}
-            platform={selectedPlatform}
-            products={products}
-            onSelectProduct={handleSelectProduct}
-            onAddToCart={handleAddToCart}
-            onToggleWishlist={handleToggleWishlist}
-            wishlistIds={wishlist.map((w) => w.id)}
-            cartIds={cart.map((c) => c.product.id)}
-            onNavigateHome={handleNavigateHome}
-            onSelectCategory={handleNavigateCategory}
-          />
+          ) : currentPage !== 'home' && currentPage !== 'product-detail' ? (
+            
+            /* VIEW 3: DEDICATED CATEGORY / CATALOG PAGE */
+            <CategoryPage
+              category={currentPage}
+              platform={selectedPlatform}
+              products={products}
+              onSelectProduct={handleSelectProduct}
+              onAddToCart={handleAddToCart}
+              onToggleWishlist={handleToggleWishlist}
+              wishlistIds={wishlist.map((w) => w.id)}
+              cartIds={cart.map((c) => c.product.id)}
+              onNavigateHome={handleNavigateHome}
+              onSelectCategory={handleNavigateCategory}
+            />
 
-        ) : (
+          ) : (
 
           /* VIEW 3: FULL HOME PAGE */
           <div className="w-full flex flex-col">
@@ -764,7 +794,7 @@ export default function App() {
 
           </div>
         )}
-
+        </React.Suspense>
       </main>
 
       {/* Fully Functional Footer */}
@@ -777,59 +807,83 @@ export default function App() {
       />
 
       {/* Customer Policy & Information Modal */}
-      <PolicyModal
-        type={activePolicy}
-        onClose={() => setActivePolicy(null)}
-      />
+      {activePolicy && (
+        <React.Suspense fallback={null}>
+          <PolicyModal
+            type={activePolicy}
+            onClose={() => setActivePolicy(null)}
+          />
+        </React.Suspense>
+      )}
 
       {/* Admin Security PIN Modal */}
-      <AdminPinModal
-        isOpen={isAdminPinModalOpen}
-        onClose={() => setIsAdminPinModalOpen(false)}
-        onSuccess={handleAdminPinSuccess}
-      />
+      {isAdminPinModalOpen && (
+        <React.Suspense fallback={null}>
+          <AdminPinModal
+            isOpen={isAdminPinModalOpen}
+            onClose={() => setIsAdminPinModalOpen(false)}
+            onSuccess={handleAdminPinSuccess}
+          />
+        </React.Suspense>
+      )}
 
       {/* Cart Slide-Over Drawer */}
-      <CartDrawer
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        items={cart}
-        onUpdateQuantity={handleUpdateQuantity}
-        onRemoveItem={handleRemoveFromCart}
-        onProceedToCheckout={() => setIsCheckoutOpen(true)}
-        appliedCoupon={appliedCoupon}
-        onApplyCoupon={handleApplyCoupon}
-        onRemoveCoupon={handleRemoveCoupon}
-      />
+      {isCartOpen && (
+        <React.Suspense fallback={null}>
+          <CartDrawer
+            isOpen={isCartOpen}
+            onClose={() => setIsCartOpen(false)}
+            items={cart}
+            onUpdateQuantity={handleUpdateQuantity}
+            onRemoveItem={handleRemoveFromCart}
+            onProceedToCheckout={() => setIsCheckoutOpen(true)}
+            appliedCoupon={appliedCoupon}
+            onApplyCoupon={handleApplyCoupon}
+            onRemoveCoupon={handleRemoveCoupon}
+          />
+        </React.Suspense>
+      )}
 
       {/* Wishlist Drawer */}
-      <WishlistDrawer
-        isOpen={isWishlistOpen}
-        onClose={() => setIsWishlistOpen(false)}
-        items={wishlist}
-        onRemoveItem={(id) => handleToggleWishlist({ id } as any)}
-        onAddToCart={(p) => handleAddToCart(p)}
-        onSelectProduct={handleSelectProduct}
-      />
+      {isWishlistOpen && (
+        <React.Suspense fallback={null}>
+          <WishlistDrawer
+            isOpen={isWishlistOpen}
+            onClose={() => setIsWishlistOpen(false)}
+            items={wishlist}
+            onRemoveItem={(id) => handleToggleWishlist({ id } as any)}
+            onAddToCart={(p) => handleAddToCart(p)}
+            onSelectProduct={handleSelectProduct}
+          />
+        </React.Suspense>
+      )}
 
       {/* Express Checkout Modal */}
-      <CheckoutModal
-        isOpen={isCheckoutOpen}
-        onClose={() => setIsCheckoutOpen(false)}
-        items={cart}
-        subtotal={cartSubtotal}
-        discount={cartDiscount}
-        shipping={cartShipping}
-        total={cartTotal}
-        onOrderSuccess={handleOrderSuccess}
-        siteConfig={siteConfig}
-      />
+      {isCheckoutOpen && (
+        <React.Suspense fallback={null}>
+          <CheckoutModal
+            isOpen={isCheckoutOpen}
+            onClose={() => setIsCheckoutOpen(false)}
+            items={cart}
+            subtotal={cartSubtotal}
+            discount={cartDiscount}
+            shipping={cartShipping}
+            total={cartTotal}
+            onOrderSuccess={handleOrderSuccess}
+            siteConfig={siteConfig}
+          />
+        </React.Suspense>
+      )}
 
       {/* Order Confirmation Modal */}
-      <OrderConfirmationModal
-        order={completedOrder}
-        onClose={() => setCompletedOrder(null)}
-      />
+      {completedOrder && (
+        <React.Suspense fallback={null}>
+          <OrderConfirmationModal
+            order={completedOrder}
+            onClose={() => setCompletedOrder(null)}
+          />
+        </React.Suspense>
+      )}
 
     </div>
   );

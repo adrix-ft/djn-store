@@ -190,6 +190,8 @@ export const Hero: React.FC<HeroProps> = ({
                     }}
                     className="w-auto h-[270px] sm:h-[370px] md:h-[420px] lg:h-[470px] max-w-full object-contain filter drop-shadow-[0_22px_36px_rgba(0,0,0,0.18)] dark:drop-shadow-[0_28px_50px_rgba(0,0,0,0.7)] transition-transform duration-500 group-hover:scale-105"
                     loading="eager"
+                    fetchPriority="high"
+                    decoding="async"
                   />
                 </motion.div>
               </AnimatePresence>
