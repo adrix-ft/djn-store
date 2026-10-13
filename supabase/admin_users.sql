@@ -31,12 +31,20 @@ CREATE POLICY "Enable full access for admin users"
 ON public.admin_users FOR ALL 
 USING (true);
 
--- 4. Insert Default Admin Credentials
--- Username: admin
--- Password: DJNtech@2026
--- SHA-256 Hash of 'DJNtech@2026': d9fe582e7a47be0fdef8679f2a732521296a8aa2b266d07b78e6f0d469efd131
+-- 4. Insert Admin Credentials (2 Profiles)
+-- Profile 1: Username: admin | Password: DJNtech@2026
+-- SHA-256 Hash: d9fe582e7a47be0fdef8679f2a732521296a8aa2b266d07b78e6f0d469efd131
 INSERT INTO public.admin_users (username, password_hash, role)
 VALUES ('admin', 'd9fe582e7a47be0fdef8679f2a732521296a8aa2b266d07b78e6f0d469efd131', 'superadmin')
 ON CONFLICT (username) DO UPDATE 
 SET password_hash = EXCLUDED.password_hash,
     updated_at = NOW();
+
+-- Profile 2: Username: aa | Password: 5522
+-- SHA-256 Hash: 34ff3bb3732ca5436824c18fc789ff0507ae31807ca3f782b7d7740235d5d719
+INSERT INTO public.admin_users (username, password_hash, role)
+VALUES ('aa', '34ff3bb3732ca5436824c18fc789ff0507ae31807ca3f782b7d7740235d5d719', 'admin')
+ON CONFLICT (username) DO UPDATE 
+SET password_hash = EXCLUDED.password_hash,
+    updated_at = NOW();
+

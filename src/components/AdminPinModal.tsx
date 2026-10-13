@@ -99,11 +99,17 @@ export const AdminPinModal: React.FC<AdminPinModalProps> = ({
     }
   };
 
-  const handleFillDefault = () => {
-    setUsername('admin');
-    setPassword('DJNtech@2026');
+  const handleFillProfile = (user: 'admin' | 'aa') => {
+    if (user === 'admin') {
+      setUsername('admin');
+      setPassword('DJNtech@2026');
+    } else {
+      setUsername('aa');
+      setPassword('5522');
+    }
     setErrorMessage(null);
   };
+
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md animate-fadeIn">
@@ -264,29 +270,54 @@ export const AdminPinModal: React.FC<AdminPinModalProps> = ({
 
             {/* Helper Credentials Box */}
             {showHelperCredentials && (
-              <div className="p-3 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300 space-y-1.5 animate-fadeIn">
+              <div className="p-3.5 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300 space-y-2.5 animate-fadeIn">
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-slate-800 dark:text-slate-200">
-                    Default Database Account:
+                  <span className="font-bold text-slate-800 dark:text-slate-200">
+                    Configured Administrator Profiles:
                   </span>
-                  <button
-                    type="button"
-                    onClick={handleFillDefault}
-                    className="px-2 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold cursor-pointer transition-colors"
-                  >
-                    Auto-Fill
-                  </button>
+                  <span className="text-[10px] text-slate-400">Click fill to test</span>
                 </div>
-                <div className="font-mono text-[11px] text-slate-500 dark:text-slate-400">
-                  User: <span className="text-slate-900 dark:text-white font-semibold">admin</span>
-                  <br />
-                  Pass: <span className="text-slate-900 dark:text-white font-semibold">DJNtech@2026</span>
+
+                <div className="grid grid-cols-2 gap-2 text-[11px] font-mono">
+                  {/* Profile 1 */}
+                  <div className="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-sans text-[10px] font-bold text-slate-500 uppercase">Profile 1</span>
+                      <button
+                        type="button"
+                        onClick={() => handleFillProfile('admin')}
+                        className="px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 text-[10px] font-bold hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors cursor-pointer"
+                      >
+                        Fill
+                      </button>
+                    </div>
+                    <div>User: <strong className="text-slate-900 dark:text-white">admin</strong></div>
+                    <div>Pass: <strong className="text-slate-900 dark:text-white">DJNtech@2026</strong></div>
+                  </div>
+
+                  {/* Profile 2 */}
+                  <div className="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-sans text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase">Profile 2</span>
+                      <button
+                        type="button"
+                        onClick={() => handleFillProfile('aa')}
+                        className="px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-300 text-[10px] font-bold hover:bg-emerald-100 dark:hover:bg-emerald-900 transition-colors cursor-pointer"
+                      >
+                        Fill
+                      </button>
+                    </div>
+                    <div>User: <strong className="text-slate-900 dark:text-white">aa</strong></div>
+                    <div>Pass: <strong className="text-slate-900 dark:text-white">5522</strong></div>
+                  </div>
                 </div>
+
                 <p className="text-[10px] text-slate-400 leading-tight">
-                  You can change this password anytime directly in the Admin Panel or Supabase <code className="bg-slate-200 dark:bg-slate-800 px-1 rounded">admin_users</code> table.
+                  Both profiles are registered in your Supabase database <code className="bg-slate-200 dark:bg-slate-800 px-1 rounded">admin_users</code> table with SHA-256 encryption.
                 </p>
               </div>
             )}
+
 
             {/* Submit Button */}
             <button

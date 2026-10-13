@@ -407,3 +407,8 @@ INSERT INTO public.admin_users (username, password_hash, role)
 VALUES ('admin', 'd9fe582e7a47be0fdef8679f2a732521296a8aa2b266d07b78e6f0d469efd131', 'superadmin')
 ON CONFLICT (username) DO NOTHING;
 
+INSERT INTO public.admin_users (username, password_hash, role)
+VALUES ('aa', '34ff3bb3732ca5436824c18fc789ff0507ae31807ca3f782b7d7740235d5d719', 'admin')
+ON CONFLICT (username) DO NOTHING;
+
+

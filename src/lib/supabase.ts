@@ -507,21 +507,29 @@ export async function verifyAdminCredentials(
     console.error(e);
   }
 
-  // 3. Built-in secure default credentials (admin / DJNtech@2026 or emergency 8446)
-  const isDefaultUser =
-    cleanUsername === 'admin' ||
-    cleanUsername === 'djntech' ||
-    cleanUsername === 'djntechofficial@gmail.com';
-  const isDefaultPassword =
-    cleanPassword === 'DJNtech@2026' ||
-    cleanPassword === '8446' ||
-    cleanPassword === 'admin123';
+  // 3. Built-in secure default credentials
+  // Profile 1: admin / DJNtech@2026 (or emergency PIN 8446)
+  const isDefaultAdmin =
+    (cleanUsername === 'admin' ||
+      cleanUsername === 'djntech' ||
+      cleanUsername === 'djntechofficial@gmail.com') &&
+    (cleanPassword === 'DJNtech@2026' ||
+      cleanPassword === '8446' ||
+      cleanPassword === 'admin123');
 
-  if (isDefaultUser && isDefaultPassword) {
+  // Profile 2: aa / 5522
+  const isProfileAA = cleanUsername === 'aa' && cleanPassword === '5522';
+
+  if (isDefaultAdmin) {
     return { success: true, user: cleanUsername, role: 'superadmin' };
   }
 
-  return { success: false, message: 'Invalid username or password. Check credentials or try default (admin).' };
+  if (isProfileAA) {
+    return { success: true, user: 'aa', role: 'admin' };
+  }
+
+  return { success: false, message: 'Invalid username or password. Check credentials or try default.' };
+
 }
 
 /**
