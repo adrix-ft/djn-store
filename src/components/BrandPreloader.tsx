@@ -101,21 +101,27 @@ export const BrandPreloader: React.FC<BrandPreloaderProps> = ({
       {/* Center Hero: Brand Emblem + Progress Bar */}
       <div className="relative z-10 flex flex-col items-center max-w-sm w-full -mt-4">
         
-        {/* Original Brand Logo with ambient pulse */}
-        <div className="relative mb-2 flex items-center justify-center">
-          <div className="absolute -inset-4 rounded-full bg-blue-500/10 blur-2xl animate-pulse" />
+        {/* Animated Brand Logo with Ambient Glow and Floating Motion */}
+        <div className="relative mb-4 flex items-center justify-center">
+          {/* Breathing Ambient Backlight Glow */}
+          <div className="absolute -inset-6 rounded-full bg-gradient-to-tr from-blue-500/20 via-cyan-400/20 to-indigo-500/20 blur-2xl animate-logo-glow pointer-events-none" />
           
-          <div className="relative w-44 sm:w-56 h-44 sm:h-56 flex items-center justify-center">
+          {/* Levitating Logo Container with Sheen Sweep */}
+          <div className="relative w-56 sm:w-64 h-36 sm:h-44 flex items-center justify-center animate-logo-float">
             <img
-              src="/logo-original.png"
+              src="/logo.png"
               alt="DJN Tech Console Store"
-              className="w-full h-full object-contain filter drop-shadow-[0_8px_24px_rgba(15,23,42,0.06)]"
+              className="w-full h-full object-contain filter drop-shadow-[0_10px_25px_rgba(23,37,84,0.12)]"
               loading="eager"
               decoding="async"
               onError={(e) => {
-                (e.currentTarget as HTMLImageElement).src = '/logo.png';
+                (e.currentTarget as HTMLImageElement).src = '/logo-icon.png';
               }}
             />
+            {/* Glossy Sheen Sweep Effect */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
+              <div className="w-1/2 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent animate-logo-sweep" />
+            </div>
           </div>
         </div>
 

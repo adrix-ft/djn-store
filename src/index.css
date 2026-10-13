@@ -108,4 +108,47 @@
   }
 }
 
+/* Preloader Brand Logo Floating, Glow & Shimmer */
+@keyframes logoFloat {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.025);
+  }
+}
+
+@keyframes logoPulseGlow {
+  0%, 100% {
+    transform: scale(0.92);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 0.85;
+  }
+}
+
+@keyframes logoShineSweep {
+  0% {
+    transform: translateX(-160%) skewX(-20deg);
+  }
+  35%, 100% {
+    transform: translateX(220%) skewX(-20deg);
+  }
+}
+
+.animate-logo-float {
+  animation: logoFloat 2.6s ease-in-out infinite;
+}
+
+.animate-logo-glow {
+  animation: logoPulseGlow 2.6s ease-in-out infinite;
+}
+
+.animate-logo-sweep {
+  animation: logoShineSweep 3s ease-in-out infinite;
+}
+
+
 
