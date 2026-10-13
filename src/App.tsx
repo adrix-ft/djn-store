@@ -13,6 +13,7 @@ import { ProductSectionCarousel } from './components/ProductSectionCarousel';
 import { Marquee } from './components/Marquee';
 import { HomeTrustSections } from './components/HomeTrustSections';
 import { Footer } from './components/Footer';
+import { BrandPreloader } from './components/BrandPreloader';
 import type { PolicyType } from './components/PolicyModal';
 
 // Code-split heavy views and modals for sub-second initial bundle load
@@ -128,6 +129,9 @@ export default function App() {
     setTheme(nextTheme);
     showToast(nextTheme === 'dark' ? 'Dark Mode Activated' : 'Light Mode Activated');
   };
+
+  // Brand Splash Preloader State
+  const [isSiteLoading, setIsSiteLoading] = useState(true);
 
   // Multi-page Routing State
   const [currentPage, setCurrentPage] = useState<'home' | 'all' | Category | 'sell-consoles' | 'repair-console' | 'product-detail' | 'admin'>('home');
@@ -610,6 +614,11 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-[#0b0f17] text-[#212121] dark:text-gray-100 transition-colors duration-200">
       
+      {/* Brand Splash Screen with Animated Progress Bar */}
+      {isSiteLoading && (
+        <BrandPreloader onComplete={() => setIsSiteLoading(false)} />
+      )}
+
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 bg-[#111827] dark:bg-gray-800 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-bottom-4 duration-200 text-xs sm:text-sm font-medium border border-gray-700">
