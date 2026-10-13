@@ -1,10 +1,23 @@
-import React, { useState } from 'react';
-import { Lock, ShieldCheck, X, ArrowRight, Eye, EyeOff, KeyRound } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import {
+  ShieldCheck,
+  X,
+  ArrowRight,
+  Eye,
+  EyeOff,
+  User,
+  Lock,
+  Loader2,
+  AlertCircle,
+  KeyRound,
+  CheckCircle2,
+} from 'lucide-react';
+import { verifyAdminCredentials } from '../lib/supabase';
 
 interface AdminPinModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: () => void;
+  onSuccess: (adminUser?: string) => void;
 }
 
 export const AdminPinModal: React.FC<AdminPinModalProps> = ({
@@ -12,178 +25,299 @@ export const AdminPinModal: React.FC<AdminPinModalProps> = ({
   onClose,
   onSuccess,
 }) => {
-  const [pin, setPin] = useState('');
-  const [showPin, setShowPin] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
-  const [error, setError] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [capsLockActive, setCapsLockActive] = useState(false);
+  const [showHelperCredentials, setShowHelperCredentials] = useState(false);
+
+  // Reset form state on modal open
+  useEffect(() => {
+    if (isOpen) {
+      setErrorMessage(null);
+      setIsSubmitting(false);
+      // Pre-fill username if remembered
+      const savedUser = localStorage.getItem('djn_admin_saved_username');
+      if (savedUser) {
+        setUsername(savedUser);
+      }
+    }
+  }, [isOpen]);
+
+  // Handle escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e?: React.FormEvent) => {
+  const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    // Default PIN: 8446
-    if (pin.trim() === '8446') {
-      if (rememberMe) {
-        localStorage.setItem('djn_admin_authenticated', 'true');
-      }
-      setError(false);
-      setPin('');
-      onSuccess();
-    } else {
-      setError(true);
+    if (!username.trim() || !password.trim()) {
+      setErrorMessage('Please enter both username and password.');
+      return;
     }
-  };
 
-  const handleKeypadPress = (digit: string) => {
-    if (pin.length < 4) {
-      const nextPin = pin + digit;
-      setPin(nextPin);
-      setError(false);
-      if (nextPin === '8446') {
+    setIsSubmitting(true);
+    setErrorMessage(null);
+
+    try {
+      const result = await verifyAdminCredentials(username, password);
+
+      if (result.success) {
         if (rememberMe) {
           localStorage.setItem('djn_admin_authenticated', 'true');
+          localStorage.setItem('djn_admin_saved_username', username.trim());
+        } else {
+          sessionStorage.setItem('djn_admin_authenticated', 'true');
         }
+
+        if (result.user) {
+          localStorage.setItem('djn_admin_active_user', result.user);
+        }
+
         setTimeout(() => {
-          setPin('');
-          onSuccess();
-        }, 150);
+          setIsSubmitting(false);
+          onSuccess(result.user);
+        }, 300);
+      } else {
+        setIsSubmitting(false);
+        setErrorMessage(result.message || 'Authentication failed. Please verify credentials.');
       }
+    } catch (err: any) {
+      setIsSubmitting(false);
+      setErrorMessage(err?.message || 'Connection error. Please try again.');
     }
   };
 
-  const handleDelete = () => {
-    setPin(prev => prev.slice(0, -1));
-    setError(false);
+  const handleFillDefault = () => {
+    setUsername('admin');
+    setPassword('DJNtech@2026');
+    setErrorMessage(null);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
-      <div className="relative w-full max-w-sm rounded-2xl bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-800 shadow-2xl p-6 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md animate-fadeIn">
+      <div
+        className="relative w-full max-w-md rounded-3xl bg-white dark:bg-[#0f172a] border border-slate-200/90 dark:border-slate-800 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.35)] overflow-hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="admin-modal-title"
+      >
+        {/* Top Accent Gradient Bar */}
+        <div className="h-1.5 w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-400" />
+
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-          aria-label="Close"
+          className="absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+          aria-label="Close Admin Portal"
         >
           <X className="w-5 h-5" />
         </button>
 
-        {/* Modal Header */}
-        <div className="flex flex-col items-center text-center">
-          <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700/50 flex items-center justify-center text-blue-600 dark:text-blue-400 mb-3 shadow-inner">
-            <ShieldCheck className="w-6 h-6" />
-          </div>
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white">Admin Portal</h3>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-            Enter 4-digit security PIN to edit store catalog & website content
-          </p>
+        <div className="p-6 sm:p-8">
+          {/* Header Brand Section */}
+          <div className="flex flex-col items-center text-center">
+            {/* Center Logo Emblem with Soft Halo */}
+            <div className="relative mb-3 flex items-center justify-center">
+              <div className="absolute -inset-2 rounded-2xl bg-blue-500/15 blur-lg" />
+              <div className="relative w-14 h-14 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-inner flex items-center justify-center p-2.5">
+                <img
+                  src="/logo-icon.png"
+                  alt="DJN Tech"
+                  className="w-full h-full object-contain filter drop-shadow-[0_2px_8px_rgba(37,99,235,0.3)]"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = '/logo.png';
+                  }}
+                />
+              </div>
+            </div>
 
-          <div className="mt-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
-            <KeyRound className="w-3 h-3" />
-            <span>Default PIN: 8446</span>
+            <h2
+              id="admin-modal-title"
+              className="text-xl font-black tracking-tight text-slate-900 dark:text-white"
+            >
+              DJN Tech Command Center
+            </h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-xs">
+              Enter authorized administrator credentials to manage products, pricing, stock, and customer orders.
+            </p>
+
+            {/* Security Guard Chip */}
+            <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800/60 text-[11px] font-semibold text-blue-700 dark:text-blue-300">
+              <ShieldCheck className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+              <span>Supabase Database Auth Guard</span>
+            </div>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+            
+            {/* Username / Email Input */}
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                Admin Username or Email
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <User className="w-4 h-4" />
+                </div>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                    if (errorMessage) setErrorMessage(null);
+                  }}
+                  placeholder="e.g. admin or store email"
+                  autoComplete="username"
+                  autoFocus
+                  required
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-900/80 text-sm font-medium text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                />
+              </div>
+            </div>
+
+            {/* Password Input */}
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  Security Password
+                </label>
+                {capsLockActive && (
+                  <span className="text-[10px] font-semibold text-amber-600 dark:text-amber-400">
+                    CAPS LOCK IS ON
+                  </span>
+                )}
+              </div>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <Lock className="w-4 h-4" />
+                </div>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    if (errorMessage) setErrorMessage(null);
+                  }}
+                  onKeyUp={(e) => {
+                    setCapsLockActive(e.getModifierState && e.getModifierState('CapsLock'));
+                  }}
+                  placeholder="Enter administrator password"
+                  autoComplete="current-password"
+                  required
+                  className="w-full pl-10 pr-11 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-900/80 text-sm font-medium text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+                  tabIndex={-1}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            {/* Error Message Box */}
+            {errorMessage && (
+              <div className="p-3 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/60 flex items-start gap-2.5 text-xs text-red-700 dark:text-red-300 animate-shake">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-600 dark:text-red-400" />
+                <div className="flex-1">
+                  <p className="font-semibold">{errorMessage}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Remember & Quick Help */}
+            <div className="flex items-center justify-between text-xs pt-1">
+              <label className="flex items-center gap-2 text-slate-600 dark:text-slate-400 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                />
+                <span>Remember on this device</span>
+              </label>
+
+              <button
+                type="button"
+                onClick={() => setShowHelperCredentials(!showHelperCredentials)}
+                className="text-blue-600 dark:text-blue-400 hover:underline font-medium cursor-pointer"
+              >
+                {showHelperCredentials ? 'Hide setup hint' : 'Setup credentials?'}
+              </button>
+            </div>
+
+            {/* Helper Credentials Box */}
+            {showHelperCredentials && (
+              <div className="p-3 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300 space-y-1.5 animate-fadeIn">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-slate-800 dark:text-slate-200">
+                    Default Database Account:
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handleFillDefault}
+                    className="px-2 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold cursor-pointer transition-colors"
+                  >
+                    Auto-Fill
+                  </button>
+                </div>
+                <div className="font-mono text-[11px] text-slate-500 dark:text-slate-400">
+                  User: <span className="text-slate-900 dark:text-white font-semibold">admin</span>
+                  <br />
+                  Pass: <span className="text-slate-900 dark:text-white font-semibold">DJNtech@2026</span>
+                </div>
+                <p className="text-[10px] text-slate-400 leading-tight">
+                  You can change this password anytime directly in the Admin Panel or Supabase <code className="bg-slate-200 dark:bg-slate-800 px-1 rounded">admin_users</code> table.
+                </p>
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-600 text-white font-bold text-sm shadow-lg shadow-blue-500/25 active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed transition-all cursor-pointer mt-2"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Verifying Database Credentials...</span>
+                </>
+              ) : (
+                <>
+                  <span>Authenticate & Open Admin Portal</span>
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              )}
+            </button>
+          </form>
+
+          {/* Footer Notice */}
+          <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800/80 text-center">
+            <p className="text-[11px] text-slate-400 dark:text-slate-500 leading-relaxed">
+              Authorized access only. All administrative logins are verified against your secure Supabase database instance.
+            </p>
           </div>
         </div>
-
-        {/* PIN Dots Indicator */}
-        <form onSubmit={handleSubmit} className="mt-6">
-          <div className="flex justify-center gap-3 mb-4">
-            {[0, 1, 2, 3].map((idx) => {
-              const isFilled = idx < pin.length;
-              return (
-                <div
-                  key={idx}
-                  className={`w-4 h-4 rounded-full border-2 transition-all ${
-                    isFilled
-                      ? 'bg-blue-600 border-blue-600 scale-110 shadow-xs'
-                      : 'border-gray-300 dark:border-gray-600 bg-transparent'
-                  } ${error ? 'border-red-500 bg-red-100 dark:bg-red-950/40' : ''}`}
-                />
-              );
-            })}
-          </div>
-
-          {/* Text input fallback for keyboard typing */}
-          <div className="relative mb-4">
-            <input
-              type={showPin ? 'text' : 'password'}
-              maxLength={4}
-              value={pin}
-              onChange={(e) => {
-                const val = e.target.value.replace(/\D/g, '');
-                if (val.length <= 4) {
-                  setPin(val);
-                  setError(false);
-                }
-              }}
-              placeholder="Or type PIN here"
-              className={`w-full text-center tracking-widest text-base font-bold py-2 px-3 rounded-xl border bg-gray-50 dark:bg-[#1a2333] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
-                error
-                  ? 'border-red-400 dark:border-red-600 bg-red-50/50 dark:bg-red-950/20'
-                  : 'border-gray-200 dark:border-gray-700'
-              }`}
-              autoFocus
-            />
-            <button
-              type="button"
-              onClick={() => setShowPin(!showPin)}
-              className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-            >
-              {showPin ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-            </button>
-          </div>
-
-          {error && (
-            <p className="text-center text-xs text-red-500 font-semibold mb-3 animate-pulse">
-              Incorrect PIN. Please use default: 8446
-            </p>
-          )}
-
-          {/* Virtual Keypad for quick mobile/mouse entry */}
-          <div className="grid grid-cols-3 gap-2 mb-4">
-            {['1', '2', '3', '4', '5', '6', '7', '8', '9', 'C', '0', '⌫'].map((item) => (
-              <button
-                key={item}
-                type="button"
-                onClick={() => {
-                  if (item === 'C') {
-                    setPin('');
-                    setError(false);
-                  } else if (item === '⌫') {
-                    handleDelete();
-                  } else {
-                    handleKeypadPress(item);
-                  }
-                }}
-                className="py-2.5 rounded-xl font-bold text-sm bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 active:scale-95 transition-all shadow-2xs"
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-
-          {/* Remember me toggle */}
-          <div className="flex items-center justify-between mb-4 text-xs text-gray-600 dark:text-gray-400">
-            <label className="flex items-center gap-2 cursor-pointer select-none">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-              />
-              <span>Remember login on this browser</span>
-            </label>
-          </div>
-
-          {/* Submit button */}
-          <button
-            type="submit"
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md transition-all active:scale-[0.99] cursor-pointer"
-          >
-            <span>Unlock Admin Panel</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </form>
       </div>
     </div>
   );
 };
+
+export const AdminLoginModal = AdminPinModal;

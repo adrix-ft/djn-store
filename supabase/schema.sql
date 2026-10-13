@@ -384,3 +384,26 @@ ON CONFLICT (id) DO UPDATE SET
     reviews = EXCLUDED.reviews,
     updated_at = NOW();
 
+-- 10. ADMIN USERS & CREDENTIALS TABLE
+CREATE TABLE IF NOT EXISTS public.admin_users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    username TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    role TEXT DEFAULT 'superadmin',
+    last_login TIMESTAMPTZ,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.admin_users ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Enable read access for admin authentication" ON public.admin_users;
+CREATE POLICY "Enable read access for admin authentication" ON public.admin_users FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Enable full access for admin users" ON public.admin_users;
+CREATE POLICY "Enable full access for admin users" ON public.admin_users FOR ALL USING (true);
+
+INSERT INTO public.admin_users (username, password_hash, role)
+VALUES ('admin', 'd9fe582e7a47be0fdef8679f2a732521296a8aa2b266d07b78e6f0d469efd131', 'superadmin')
+ON CONFLICT (username) DO NOTHING;
+

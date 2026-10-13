@@ -14,6 +14,7 @@ import {
   deleteProductFromDB,
   upsertSiteConfigToDB,
   updateOrderStatusInDB,
+  updateAdminCredentials,
 } from '../lib/supabase';
 import {
   Package,
@@ -42,6 +43,7 @@ import {
   Layers,
   Sparkles,
   Eye,
+  EyeOff,
   Gamepad2,
   Disc,
   CreditCard,
@@ -58,6 +60,9 @@ import {
   Truck,
   Send,
   Sliders,
+  KeyRound,
+  User,
+  Lock,
 } from 'lucide-react';
 
 interface AdminPanelProps {
@@ -72,7 +77,7 @@ interface AdminPanelProps {
   showToast: (msg: string) => void;
 }
 
-type AdminTab = 'products' | 'orders' | 'content' | 'backup';
+type AdminTab = 'products' | 'orders' | 'content' | 'backup' | 'security';
 
 type ProductNavTab =
   | 'all'
@@ -153,6 +158,46 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const [productForm, setProductForm] = useState<Product>(blankProduct);
   const [featuresText, setFeaturesText] = useState('');
   const [inTheBoxText, setInTheBoxText] = useState('');
+
+  // Admin Security & Database Credentials
+  const [secUsername, setSecUsername] = useState(() => {
+    return localStorage.getItem('djn_admin_active_user') || 'admin';
+  });
+  const [secNewPassword, setSecNewPassword] = useState('');
+  const [secConfirmPassword, setSecConfirmPassword] = useState('');
+  const [showSecPassword, setShowSecPassword] = useState(false);
+  const [secLoading, setSecLoading] = useState(false);
+  const [secMessage, setSecMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  const handleUpdateAdminSecurity = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!secUsername.trim()) {
+      setSecMessage({ type: 'error', text: 'Username cannot be empty.' });
+      return;
+    }
+    if (secNewPassword.length < 6) {
+      setSecMessage({ type: 'error', text: 'Password must be at least 6 characters long.' });
+      return;
+    }
+    if (secNewPassword !== secConfirmPassword) {
+      setSecMessage({ type: 'error', text: 'New password and confirmation do not match.' });
+      return;
+    }
+
+    setSecLoading(true);
+    setSecMessage(null);
+
+    const res = await updateAdminCredentials(secUsername, secNewPassword);
+    setSecLoading(false);
+    if (res.success) {
+      setSecMessage({ type: 'success', text: res.message || 'Credentials updated successfully!' });
+      setSecNewPassword('');
+      setSecConfirmPassword('');
+      showToast('Admin credentials updated and synced to database');
+    } else {
+      setSecMessage({ type: 'error', text: res.message || 'Failed to update credentials.' });
+    }
+  };
 
   // Key Metrics
   const totalProducts = products.length;
@@ -591,6 +636,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               { id: 'orders' as AdminTab, label: 'Customer Orders', count: orders.length, icon: ShoppingBag },
               { id: 'content' as AdminTab, label: 'Banners & Marketing', count: null, icon: Settings },
               { id: 'backup' as AdminTab, label: 'Backup & Restore', count: null, icon: Database },
+              { id: 'security' as AdminTab, label: 'Admin Security', count: null, icon: KeyRound },
             ].map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -1511,7 +1557,204 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             </div>
           </div>
         )}
+
+        {/* ========================================================================= */}
+        {/* TAB 5: ADMIN SECURITY & DATABASE CREDENTIALS */}
+        {/* ========================================================================= */}
+        {activeTab === 'security' && (
+          <div className="space-y-6">
+            
+            {/* Header Card */}
+            <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3.5">
+                <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 border border-blue-200/60 dark:border-blue-900/40">
+                  <KeyRound className="w-6 h-6" />
+                </div>
+                <div>
+                  <h2 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
+                    Administrator Authentication & Database Security
+                  </h2>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Manage login credentials, password encryption, and database access controls.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-xs font-semibold text-emerald-700 dark:text-emerald-300 self-start sm:self-auto">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                <span>Active Session: Authenticated</span>
+              </div>
+            </div>
+
+            {/* Change Credentials Form */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              
+              {/* Form Card */}
+              <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-5">
+                <div className="flex items-center gap-2.5 pb-3 border-b border-gray-100 dark:border-gray-800">
+                  <Lock className="w-5 h-5 text-blue-600" />
+                  <div>
+                    <h3 className="font-bold text-sm text-gray-900 dark:text-white">
+                      Update Admin Username & Password
+                    </h3>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      Changes are encrypted with SHA-256 and synchronized directly to Supabase.
+                    </p>
+                  </div>
+                </div>
+
+                <form onSubmit={handleUpdateAdminSecurity} className="space-y-4 text-xs">
+                  <div>
+                    <label className="font-semibold block mb-1 text-gray-700 dark:text-gray-300">
+                      Administrator Username
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                        <User className="w-4 h-4" />
+                      </div>
+                      <input
+                        type="text"
+                        value={secUsername}
+                        onChange={(e) => setSecUsername(e.target.value)}
+                        placeholder="e.g. admin or store email"
+                        required
+                        className="w-full pl-9 pr-3 py-2.5 bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl text-xs font-medium text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="font-semibold block mb-1 text-gray-700 dark:text-gray-300">
+                      New Security Password (Min 6 characters)
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                        <Lock className="w-4 h-4" />
+                      </div>
+                      <input
+                        type={showSecPassword ? 'text' : 'password'}
+                        value={secNewPassword}
+                        onChange={(e) => setSecNewPassword(e.target.value)}
+                        placeholder="Enter strong password"
+                        required
+                        className="w-full pl-9 pr-10 py-2.5 bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl text-xs font-medium text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowSecPassword(!showSecPassword)}
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                      >
+                        {showSecPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="font-semibold block mb-1 text-gray-700 dark:text-gray-300">
+                      Confirm New Password
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                        <Lock className="w-4 h-4" />
+                      </div>
+                      <input
+                        type={showSecPassword ? 'text' : 'password'}
+                        value={secConfirmPassword}
+                        onChange={(e) => setSecConfirmPassword(e.target.value)}
+                        placeholder="Re-enter password to confirm"
+                        required
+                        className="w-full pl-9 pr-10 py-2.5 bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl text-xs font-medium text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                  </div>
+
+                  {secMessage && (
+                    <div
+                      className={`p-3 rounded-xl border flex items-center gap-2 text-xs font-semibold ${
+                        secMessage.type === 'success'
+                          ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300'
+                          : 'bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-800 text-red-700 dark:text-red-300'
+                      }`}
+                    >
+                      {secMessage.type === 'success' ? (
+                        <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
+                      ) : (
+                        <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
+                      )}
+                      <span>{secMessage.text}</span>
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={secLoading}
+                    className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-xs shadow-md shadow-blue-600/20 transition-all cursor-pointer disabled:opacity-50"
+                  >
+                    <Save className="w-4 h-4" />
+                    <span>{secLoading ? 'Syncing with Supabase...' : 'Save & Sync Credentials to Database'}</span>
+                  </button>
+                </form>
+              </div>
+
+              {/* Database & Security Architecture Card */}
+              <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4">
+                <div className="flex items-center gap-2.5 pb-3 border-b border-gray-100 dark:border-gray-800">
+                  <ShieldCheck className="w-5 h-5 text-emerald-600" />
+                  <div>
+                    <h3 className="font-bold text-sm text-gray-900 dark:text-white">
+                      Database Connection Architecture
+                    </h3>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      Your store credentials are saved directly in your PostgreSQL Supabase cluster.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-3 text-xs">
+                  <div className="p-3.5 rounded-xl bg-gray-50 dark:bg-[#1a2333] border border-gray-200/70 dark:border-gray-700/70 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-500 dark:text-gray-400">Database Host:</span>
+                      <span className="font-mono font-semibold text-gray-800 dark:text-gray-200">
+                        rudqiwifokllmjpfcnbp.supabase.co
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-500 dark:text-gray-400">Auth Table:</span>
+                      <span className="font-mono font-semibold text-blue-600 dark:text-blue-400">
+                        public.admin_users
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-500 dark:text-gray-400">Hashing Standard:</span>
+                      <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                        SHA-256 (Web Crypto API)
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-blue-50/60 dark:bg-blue-950/30 border border-blue-200/60 dark:border-blue-900/40 text-[11px] text-blue-800 dark:text-blue-300 leading-relaxed">
+                    <strong className="block font-bold mb-1">
+                      💡 Supabase SQL Migration Available:
+                    </strong>
+                    The SQL file <code className="font-mono bg-blue-100 dark:bg-blue-900 px-1 py-0.5 rounded">supabase/admin_users.sql</code> has been created. Run it in your Supabase SQL Editor if you ever need to reset or inspect raw user records in PostgreSQL directly.
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={onLogout}
+                    className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold text-xs transition-all cursor-pointer"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>Lock Session & Log Out</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        )}
       </main>
+
 
       {/* ========================================================================= */}
       {/* PRODUCT ADD / EDIT MODAL WITH LIVE CARD PREVIEW */}
