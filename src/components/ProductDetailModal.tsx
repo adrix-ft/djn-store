@@ -157,12 +157,19 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
               {/* Highlights Checklist */}
               <div className="mt-5 space-y-1.5 text-xs text-[#424242]">
-                {product.features.slice(0, 3).map((feat, idx) => (
-                  <div key={idx} className="flex items-center gap-2">
-                    <span className="text-[#10b981] font-bold">✓</span>
-                    <span>{feat}</span>
-                  </div>
-                ))}
+                {product.features
+                  .filter(
+                    (feat) =>
+                      !feat.toLowerCase().includes('25-point') &&
+                      !feat.toLowerCase().includes('doorstep replacement')
+                  )
+                  .slice(0, 3)
+                  .map((feat, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <span className="text-[#10b981] font-bold">✓</span>
+                      <span>{feat}</span>
+                    </div>
+                  ))}
               </div>
             </div>
 

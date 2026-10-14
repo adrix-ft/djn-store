@@ -279,23 +279,6 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                 </div>
               </div>
 
-              {/* Bank & Promotional Offers */}
-              <div className="py-3.5 border-b border-[#f3f4f6] dark:border-[#1e293b] space-y-2 text-xs">
-                <span className="font-bold text-[#111827] dark:text-white block">Available Offers:</span>
-                <div className="flex items-start gap-2 text-[#4b5563] dark:text-gray-300">
-                  <Tag className="w-3.5 h-3.5 text-[#059669] shrink-0 mt-0.5" />
-                  <span>
-                    <strong>Coupon DJN10:</strong> Get 10% instant discount up to ₹1,000 at checkout.
-                  </span>
-                </div>
-                <div className="flex items-start gap-2 text-[#4b5563] dark:text-gray-300">
-                  <Tag className="w-3.5 h-3.5 text-[#059669] shrink-0 mt-0.5" />
-                  <span>
-                    <strong>Free Shipping:</strong> Zero delivery charge on all orders above ₹1,000.
-                  </span>
-                </div>
-              </div>
-
               {/* Delivery Pin Code Checker */}
               <div className="py-3.5 border-b border-[#f3f4f6] dark:border-[#1e293b] text-xs">
                 <div className="flex items-center gap-2 mb-2 font-bold text-[#111827] dark:text-white">
@@ -349,12 +332,18 @@ export const ProductPage: React.FC<ProductPageProps> = ({
               <div className="pt-4">
                 <h3 className="font-bold text-sm text-[#111827] dark:text-white mb-2.5">Key Highlights:</h3>
                 <ul className="space-y-2 text-xs text-[#4b5563] dark:text-gray-300">
-                  {product.features.map((feat, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#1a73e8] dark:bg-[#60a5fa] shrink-0 mt-1.5" />
-                      <span>{feat}</span>
-                    </li>
-                  ))}
+                  {product.features
+                    .filter(
+                      (feat) =>
+                        !feat.toLowerCase().includes('25-point') &&
+                        !feat.toLowerCase().includes('doorstep replacement')
+                    )
+                    .map((feat, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#1a73e8] dark:bg-[#60a5fa] shrink-0 mt-1.5" />
+                        <span>{feat}</span>
+                      </li>
+                    ))}
                 </ul>
               </div>
 
