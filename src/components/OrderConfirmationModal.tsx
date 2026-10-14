@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle2, Truck, ShieldCheck, Printer, ArrowRight } from 'lucide-react';
+import { CheckCircle2, Truck, ShieldCheck, Printer, ArrowRight, Check } from 'lucide-react';
 import { Order } from '../types/store';
 
 interface OrderConfirmationModalProps {
@@ -38,7 +38,7 @@ export const OrderConfirmationModal: React.FC<OrderConfirmationModalProps> = ({ 
             <div className="grid grid-cols-4 gap-2 text-center">
               <div>
                 <div className="w-7 h-7 mx-auto rounded-full bg-[#1a73e8] text-white flex items-center justify-center font-bold text-xs">
-                  ✓
+                  <Check className="w-3.5 h-3.5" />
                 </div>
                 <p className="font-bold text-[#212121] dark:text-white mt-1">Confirmed</p>
                 <p className="text-[10px] text-[#94a3b8] dark:text-gray-400">Today</p>

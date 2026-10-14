@@ -113,7 +113,7 @@ export const PRODUCTS: Product[] = [
       'Energy-efficient slim architecture that runs cool and whisper-quiet',
       'Full HDR support for vibrant color reproduction on compatible TVs',
       'Includes original Sony DualShock 4 V2 wireless controller',
-      '100% optical laser seek and motherboard diagnostic pass'
+      'Tested and verified console hardware and disc drive'
     ],
     description: 'The golden standard for PlayStation gaming. The PS4 Slim 1TB delivers exceptional reliability, an immense library of award-winning titles, and effortless plug-and-play entertainment.',
     inTheBox: ['PlayStation 4 Slim 1TB Console', 'DualShock 4 Wireless Controller (Original V2)', 'HDMI Cable', 'Power Cable', 'USB Charging Cable'],

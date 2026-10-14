@@ -14,7 +14,8 @@ import {
   Banknote,
   Gift,
   ArrowRight,
-  Info
+  Info,
+  X
 } from 'lucide-react';
 import { Category, Platform, Product } from '../types/store';
 import { submitTradeInRequestToDB } from '../lib/supabase';
@@ -366,7 +367,7 @@ export const SellConsolesPage: React.FC<SellConsolesPageProps> = ({
                         : 'border-transparent text-[#6b7280] dark:text-gray-400 hover:text-gray-900'
                     }`}
                   >
-                    <span>✓ Seal Intact (Never Opened)</span>
+                    <span>Seal Intact (Never Opened)</span>
                     <span className="text-[10px] text-emerald-600 font-bold">Full Value</span>
                   </button>
                   <button
@@ -378,7 +379,7 @@ export const SellConsolesPage: React.FC<SellConsolesPageProps> = ({
                         : 'border-transparent text-[#6b7280] dark:text-gray-400 hover:text-gray-900'
                     }`}
                   >
-                    <span>⚠️ Seal Broken / Repaired</span>
+                    <span>Seal Broken / Previously Opened</span>
                     <span className="text-[10px] text-amber-600 font-bold">-₹1,000</span>
                   </button>
                 </div>
@@ -572,8 +573,8 @@ export const SellConsolesPage: React.FC<SellConsolesPageProps> = ({
               },
               {
                 step: '03',
-                title: '15-Min Laser Diagnostics',
-                desc: 'Our expert technician verifies optical disc reading, HDMI port, thermal fan noise, and NAND storage.'
+                title: 'Fast Hardware Diagnostics',
+                desc: 'Our technician verifies disc drive reading, ports, cooling, and system performance.'
               },
               {
                 step: '04',
@@ -652,7 +653,7 @@ export const SellConsolesPage: React.FC<SellConsolesPageProps> = ({
                     onClick={() => setIsBookingOpen(false)}
                     className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 text-gray-500 flex items-center justify-center cursor-pointer"
                   >
-                    ✕
+                    <X className="w-4 h-4" />
                   </button>
                 </div>
 

@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { ChevronRight, SlidersHorizontal, ArrowUpDown, Filter, Sparkles } from 'lucide-react';
+import { ChevronRight, SlidersHorizontal, ArrowUpDown, Filter, Sparkles, Gamepad2, Gamepad, Disc, Layers } from 'lucide-react';
 import { Product, Category, Platform } from '../types/store';
 import { ProductCard } from './ProductCard';
 
@@ -71,28 +71,28 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
       if (selectedPlatform === 'PS5') {
         return {
           title: 'PlayStation 5 Games',
-          subtitle: '100% optical laser-tested PS5 game discs with original cases, zero reading lag, and 7-Day Replacement Guarantee.',
-          tag: 'PS5 Tested Games · Grade A+ Mint'
+          subtitle: 'Verified pre-owned PS5 game discs with original cases and 7-Day Replacement Guarantee.',
+          tag: 'PlayStation 5 Games'
         };
       }
       if (selectedPlatform === 'PS4') {
         return {
           title: 'PlayStation 4 Games',
-          subtitle: 'Tested PS4 game discs compatible with PS4 & PS5 systems with enhanced 60fps performance and 7-day replacement warranty.',
-          tag: 'PS4 Games · 100% Optical Tested'
+          subtitle: 'Tested pre-owned PS4 game discs compatible with PS4 and PS5 systems with 7-Day Replacement Guarantee.',
+          tag: 'PlayStation 4 Games'
         };
       }
       if (selectedPlatform === 'Xbox') {
         return {
-          title: 'Xbox Series X | Xbox One Games',
-          subtitle: 'Certified tested Xbox game discs, backward compatible classics, and next-gen blockbusters with 7-Day Replacement Guarantee.',
-          tag: 'Xbox Games · Laser Tested Mint'
+          title: 'Xbox Games',
+          subtitle: 'Pre-owned Xbox games with original cases and 7-Day Replacement Guarantee.',
+          tag: 'Xbox Games'
         };
       }
       return {
-        title: 'Pre-Owned Tested Games',
-        subtitle: '100% optical laser-tested PS5, PS4 & Xbox game discs with clean original boxes, buffed surfaces, and 7-Day Replacement Guarantee.',
-        tag: 'Grade A+ Mint · Laser Readability 100%'
+        title: 'Pre-Owned Games',
+        subtitle: 'Pre-owned games for PlayStation and Xbox with 7-Day Replacement Guarantee.',
+        tag: 'Pre-Owned Games'
       };
     }
 
@@ -100,26 +100,26 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
       case 'consoles':
         return {
           title: 'PlayStation & Xbox Consoles',
-          subtitle: 'Official factory-sealed PS5 Slim & Pro consoles, verified refurbished PS4 systems, and Xbox Series X with warranty.',
-          tag: 'Official Warranty · Sealed Units'
+          subtitle: 'Brand new factory-sealed consoles and certified pre-owned systems with warranty.',
+          tag: 'Consoles'
         };
       case 'controllers':
         return {
           title: 'Wireless Controllers',
-          subtitle: 'DualSense wireless controllers with haptic feedback, Midnight Black, Cosmic Red, and official DualShock 4 gamepads.',
-          tag: 'Haptic Feedback · Precision Sticks'
+          subtitle: 'Original DualSense and Xbox wireless controllers with standard warranty.',
+          tag: 'Controllers'
         };
       case 'accessories':
         return {
           title: 'Gaming Accessories',
-          subtitle: 'Charging stations, vertical console stands, high-speed HDMI 2.1 cables, and protective gaming cases.',
-          tag: 'Fast Charging · High Speed Gear'
+          subtitle: 'Charging stations, stands, cables, and essential gaming accessories.',
+          tag: 'Accessories'
         };
       default:
         return {
-          title: 'All Products & Gaming Gear',
-          subtitle: 'Explore our complete verified catalog of consoles, controllers, and tested pre-owned game discs across India.',
-          tag: 'All Gaming Inventory'
+          title: 'All Products',
+          subtitle: 'Browse consoles, controllers, and tested pre-owned games.',
+          tag: 'Store Catalog'
         };
     }
   };
@@ -168,21 +168,25 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
           {/* Quick Sub-Category Nav Pills if viewing All */}
           {category === 'all' && (
             <div className="flex flex-wrap gap-2 mt-5 pt-4 border-t border-[#f3f4f6] dark:border-[#1e293b]">
-              {(['consoles', 'controllers', 'preowned_games', 'accessories'] as Category[]).map((catKey) => (
-                <button
-                  key={catKey}
-                  onClick={() => onSelectCategory(catKey)}
-                  className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#f4f5f7] dark:bg-[#1a2333] hover:bg-[#111827] dark:hover:bg-blue-600 hover:text-white dark:hover:text-white transition-all cursor-pointer text-[#4b5563] dark:text-gray-300"
-                >
-                  {catKey === 'consoles'
-                    ? 'Consoles'
-                    : catKey === 'controllers'
-                    ? 'Controllers'
-                    : catKey === 'preowned_games'
-                    ? 'Pre-Owned Games'
-                    : 'Accessories'}
-                </button>
-              ))}
+              {[
+                { id: 'consoles' as Category, label: 'Consoles', icon: Gamepad2 },
+                { id: 'controllers' as Category, label: 'Controllers', icon: Gamepad },
+                { id: 'preowned_games' as Category, label: 'Games', fullLabel: 'Pre-Owned Games', icon: Disc },
+                { id: 'accessories' as Category, label: 'Accessories', icon: Layers },
+              ].map((cat) => {
+                const Icon = cat.icon;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => onSelectCategory(cat.id)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#f4f5f7] dark:bg-[#1a2333] hover:bg-[#111827] dark:hover:bg-blue-600 hover:text-white dark:hover:text-white transition-all cursor-pointer text-[#4b5563] dark:text-gray-300"
+                  >
+                    <Icon className="w-3.5 h-3.5 shrink-0" />
+                    <span className="hidden sm:inline">{cat.fullLabel || cat.label}</span>
+                    <span className="sm:hidden">{cat.label}</span>
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>

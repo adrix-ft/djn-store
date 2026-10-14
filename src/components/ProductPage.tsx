@@ -173,24 +173,24 @@ export const ProductPage: React.FC<ProductPageProps> = ({
               </div>
 
               {/* Primary Sticky Buy & Cart Buttons (Flipkart/Amazon Style) */}
-              <div className="grid grid-cols-2 gap-3.5 w-full mt-6">
+              <div className="grid grid-cols-2 gap-2.5 sm:gap-3.5 w-full mt-6">
                 <button
                   onClick={() => onAddToCart(product)}
-                  className={`py-3.5 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs ${
+                  className={`py-3 sm:py-3.5 px-3 sm:px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 transition-all cursor-pointer shadow-xs ${
                     isInCart
                       ? 'bg-[#10b981] hover:bg-[#059669] text-white'
                       : 'bg-[#ff9f00] hover:bg-[#f59400] text-white'
                   }`}
                 >
-                  <ShoppingCart className="w-4 h-4" />
-                  <span>{isInCart ? 'Added in Cart ✓' : 'Add to Cart'}</span>
+                  {isInCart ? <Check className="w-4 h-4 shrink-0" /> : <ShoppingCart className="w-4 h-4 shrink-0" />}
+                  <span>{isInCart ? 'Added' : 'Add to Cart'}</span>
                 </button>
 
                 <button
                   onClick={() => onBuyNow(product)}
-                  className="py-3.5 px-4 rounded-xl font-bold text-sm bg-[#fb641b] hover:bg-[#ea550a] text-white flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs"
+                  className="py-3 sm:py-3.5 px-3 sm:px-4 rounded-xl font-bold text-xs sm:text-sm bg-[#fb641b] hover:bg-[#ea550a] text-white flex items-center justify-center gap-1.5 sm:gap-2 transition-all cursor-pointer shadow-xs"
                 >
-                  <Zap className="w-4 h-4" />
+                  <Zap className="w-4 h-4 shrink-0" />
                   <span>Buy Now</span>
                 </button>
               </div>
@@ -202,10 +202,11 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                 )}`}
                 target="_blank"
                 rel="noreferrer"
-                className="w-full mt-3 py-2.5 px-4 rounded-xl font-semibold text-xs text-[#075e54] dark:text-emerald-300 bg-[#25d366]/10 dark:bg-emerald-950/30 border border-[#25d366]/30 dark:border-emerald-800 hover:bg-[#25d366]/20 transition-colors flex items-center justify-center gap-2"
+                className="w-full mt-2.5 sm:mt-3 py-2.5 px-3 sm:px-4 rounded-xl font-semibold text-xs text-[#075e54] dark:text-emerald-300 bg-[#25d366]/10 dark:bg-emerald-950/30 border border-[#25d366]/30 dark:border-emerald-800 hover:bg-[#25d366]/20 transition-colors flex items-center justify-center gap-2"
               >
-                <MessageCircle className="w-4 h-4 text-[#25d366]" />
-                <span>Order via WhatsApp (+91 84464 39374)</span>
+                <MessageCircle className="w-4 h-4 text-[#25d366] shrink-0" />
+                <span className="hidden sm:inline">Order via WhatsApp (+91 84464 39374)</span>
+                <span className="sm:hidden">Order via WhatsApp</span>
               </a>
 
             </div>
@@ -375,6 +376,50 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                 </div>
               )}
 
+              {/* Mandatory Legal & Indian E-Commerce Disclosures */}
+              <div className="mt-5 p-4 rounded-xl bg-gray-50 dark:bg-[#161f30] border border-gray-200/80 dark:border-gray-800 text-xs space-y-2">
+                <span className="font-bold text-[#111827] dark:text-white flex items-center gap-1.5 uppercase tracking-wider text-[11px]">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                  Mandatory Legal & Metrology Disclosures
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5 text-[11px] text-[#4b5563] dark:text-gray-300 pt-2 border-t border-gray-200/60 dark:border-gray-700/60">
+                  <div>
+                    <span className="font-semibold text-gray-900 dark:text-gray-100">Generic Name: </span>
+                    <span>
+                      {product.category === 'consoles'
+                        ? 'Video Game Console System'
+                        : product.category === 'controllers'
+                        ? 'Wireless Gamepad Controller'
+                        : product.category === 'preowned_games'
+                        ? 'Video Game Software (Disc)'
+                        : 'Gaming Peripheral / Accessory'}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-gray-900 dark:text-gray-100">Net Quantity: </span>
+                    <span>1 N (Unit)</span>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-gray-900 dark:text-gray-100">Country of Origin: </span>
+                    <span>
+                      {product.platform === 'PS5' || product.platform === 'PS4'
+                        ? 'Japan / China (Imported)'
+                        : product.platform === 'Xbox'
+                        ? 'China / Vietnam (Imported)'
+                        : 'India'}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-gray-900 dark:text-gray-100">Marketed & Sold by: </span>
+                    <span>DJN Tech, Baner Road, Pune, Maharashtra 411045</span>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <span className="font-semibold text-gray-900 dark:text-gray-100">Customer Grievance Care: </span>
+                    <span>+91 84464 39374 · grievance@djntech.in</span>
+                  </div>
+                </div>
+              </div>
+
             </div>
 
           </div>
@@ -417,7 +462,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                     <span className="font-semibold text-[#111827] dark:text-white">{rev.userName}</span>
                     <span>· {rev.userLocation}</span>
                     {rev.verifiedBuyer && (
-                      <span className="text-[#059669] dark:text-emerald-400 font-medium">✓ Verified Buyer</span>
+                      <span className="text-[#059669] dark:text-emerald-400 font-medium">Verified Buyer</span>
                     )}
                   </div>
                 </div>

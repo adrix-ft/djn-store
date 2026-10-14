@@ -21,7 +21,8 @@ import {
   Disc,
   Power,
   Layers,
-  ArrowRight
+  ArrowRight,
+  X
 } from 'lucide-react';
 import { Category, Platform, Product } from '../types/store';
 import { submitRepairRequestToDB } from '../lib/supabase';
@@ -763,7 +764,7 @@ export const RepairConsolePage: React.FC<RepairConsolePageProps> = ({
                     onClick={() => setIsBookingOpen(false)}
                     className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 text-gray-500 flex items-center justify-center cursor-pointer"
                   >
-                    ✕
+                    <X className="w-4 h-4" />
                   </button>
                 </div>
 

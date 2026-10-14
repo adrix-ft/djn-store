@@ -647,6 +647,7 @@ export const Header: React.FC<HeaderProps> = ({
                 {
                   id: 'home',
                   label: 'Home',
+                  icon: Home,
                   onClick: () => {
                     onNavigateHome();
                     setIsMobileMenuOpen(false);
@@ -656,6 +657,7 @@ export const Header: React.FC<HeaderProps> = ({
                 {
                   id: 'consoles',
                   label: 'Consoles',
+                  icon: Gamepad2,
                   onClick: () => {
                     onSelectCategory('consoles', 'all');
                     setIsMobileMenuOpen(false);
@@ -665,6 +667,7 @@ export const Header: React.FC<HeaderProps> = ({
                 {
                   id: 'controllers',
                   label: 'Controllers',
+                  icon: Gamepad2,
                   onClick: () => {
                     onSelectCategory('controllers', 'all');
                     setIsMobileMenuOpen(false);
@@ -674,6 +677,7 @@ export const Header: React.FC<HeaderProps> = ({
                 {
                   id: 'accessories',
                   label: 'Accessories',
+                  icon: Layers,
                   onClick: () => {
                     onSelectCategory('accessories', 'all');
                     setIsMobileMenuOpen(false);
@@ -683,6 +687,7 @@ export const Header: React.FC<HeaderProps> = ({
                 {
                   id: 'ps5-games',
                   label: 'PS5 Games',
+                  icon: Disc,
                   onClick: () => {
                     onSelectCategory('preowned_games', 'PS5');
                     setIsMobileMenuOpen(false);
@@ -692,6 +697,7 @@ export const Header: React.FC<HeaderProps> = ({
                 {
                   id: 'ps4-games',
                   label: 'PS4 Games',
+                  icon: Disc,
                   onClick: () => {
                     onSelectCategory('preowned_games', 'PS4');
                     setIsMobileMenuOpen(false);
@@ -700,7 +706,8 @@ export const Header: React.FC<HeaderProps> = ({
                 },
                 {
                   id: 'xbox-games',
-                  label: 'XBOX Games',
+                  label: 'Xbox Games',
+                  icon: Disc,
                   onClick: () => {
                     onSelectCategory('preowned_games', 'Xbox');
                     setIsMobileMenuOpen(false);
@@ -709,7 +716,8 @@ export const Header: React.FC<HeaderProps> = ({
                 },
                 {
                   id: 'sell-consoles',
-                  label: 'Sell Your Consoles',
+                  label: 'Sell / Trade-In Console',
+                  icon: Banknote,
                   onClick: () => {
                     onNavigateSellConsoles();
                     setIsMobileMenuOpen(false);
@@ -719,26 +727,33 @@ export const Header: React.FC<HeaderProps> = ({
                 {
                   id: 'repair-console',
                   label: 'Repair Your Console',
+                  icon: Wrench,
                   onClick: () => {
                     onNavigateRepairConsole();
                     setIsMobileMenuOpen(false);
                   },
                   isActive: currentPage === 'repair-console'
                 }
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={tab.onClick}
-                  className={`w-full px-3.5 py-3 rounded-xl text-left flex items-center justify-between transition-all cursor-pointer text-sm ${
-                    tab.isActive
-                      ? 'bg-blue-600 text-white font-bold shadow-xs'
-                      : 'text-gray-800 dark:text-gray-100 font-semibold hover:bg-gray-100 dark:hover:bg-gray-800/60'
-                  }`}
-                >
-                  <span>{tab.label}</span>
-                  <ChevronRight className={`w-4 h-4 ${tab.isActive ? 'text-white' : 'text-gray-400'}`} />
-                </button>
-              ))}
+              ].map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={tab.onClick}
+                    className={`w-full px-3.5 py-3 rounded-xl text-left flex items-center justify-between transition-all cursor-pointer text-sm ${
+                      tab.isActive
+                        ? 'bg-blue-600 text-white font-bold shadow-xs'
+                        : 'text-gray-800 dark:text-gray-100 font-semibold hover:bg-gray-100 dark:hover:bg-gray-800/60'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Icon className={`w-4.5 h-4.5 shrink-0 ${tab.isActive ? 'text-white' : 'text-blue-600 dark:text-blue-400'}`} />
+                      <span>{tab.label}</span>
+                    </div>
+                    <ChevronRight className={`w-4 h-4 ${tab.isActive ? 'text-white' : 'text-gray-400'}`} />
+                  </button>
+                );
+              })}
             </div>
 
             {/* Bottom Footer Area */}

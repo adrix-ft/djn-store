@@ -11,12 +11,11 @@ export const Marquee: React.FC<MarqueeProps> = ({ announcementText }) => {
       ? [{ icon: Zap, text: announcementText }]
       : []),
     { icon: Truck, text: 'Free Delivery on Orders Above ₹1,000' },
-    { icon: ShieldCheck, text: '7-Day Hassle-Free Replacement' },
-    { icon: Disc, text: '100% Optical Laser-Tested Game Discs' },
-    { icon: Gamepad2, text: 'Official Sealed PS5 & Xbox Consoles' },
+    { icon: ShieldCheck, text: '7-Day Doorstep Replacement Guarantee' },
+    { icon: Disc, text: 'Tested & Verified Pre-Owned Game Discs' },
+    { icon: Gamepad2, text: 'Brand New Sealed PS5 & Xbox Consoles' },
     { icon: Zap, text: 'Original DualSense Wireless Controllers' },
-    { icon: Star, text: '4.9/5 Rating from 2,400+ Gamers' },
-    { icon: Award, text: '1 Year Sony Warranty on New Units' },
+    { icon: Award, text: '1 Year Manufacturer Warranty on New Units' },
   ];
 
   return (

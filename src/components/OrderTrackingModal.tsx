@@ -39,13 +39,13 @@ export const OrderTrackingModal: React.FC<OrderTrackingModalProps> = ({
   const stages: TrackingStage[] = [
     {
       title: 'Order Confirmed & Payment Verified',
-      desc: 'Order received. Secured via Razorpay 256-bit SSL.',
+      desc: 'Order received and payment confirmed.',
       time: 'Yesterday, 04:15 PM',
       completed: true,
     },
     {
-      title: 'DJN Tech 25-Point Hardware QA Inspection',
-      desc: 'Disc drive, laser reading, thermal paste & DualSense drift tested.',
+      title: 'Quality & Functional Inspection',
+      desc: 'Hardware, accessories, and disc reading inspected.',
       time: 'Yesterday, 07:30 PM',
       completed: true,
     },
@@ -163,8 +163,8 @@ export const OrderTrackingModal: React.FC<OrderTrackingModalProps> = ({
                     <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300">
                       {orderIdInput || 'DJN-84291'}
                     </span>
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
                       In Transit
                     </span>
                   </div>

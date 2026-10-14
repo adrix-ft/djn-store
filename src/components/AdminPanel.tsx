@@ -16,6 +16,7 @@ import {
   updateOrderStatusInDB,
   updateAdminCredentials,
 } from '../lib/supabase';
+import { AdminAnalytics } from './AdminAnalytics';
 import {
   Package,
   Settings,
@@ -77,7 +78,7 @@ interface AdminPanelProps {
   showToast: (msg: string) => void;
 }
 
-type AdminTab = 'products' | 'orders' | 'content' | 'backup' | 'security';
+type AdminTab = 'analytics' | 'products' | 'orders' | 'content' | 'backup' | 'security';
 
 type ProductNavTab =
   | 'all'
@@ -99,7 +100,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   onLogout,
   showToast,
 }) => {
-  const [activeTab, setActiveTab] = useState<AdminTab>('products');
+  const [activeTab, setActiveTab] = useState<AdminTab>('analytics');
   const [activeProductTab, setActiveProductTab] = useState<ProductNavTab>('all');
 
   // Search & Filters for Products
@@ -387,18 +388,18 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       onUpdateProducts(nextProducts);
       upsertProductToDB(updatedProduct).then((success) => {
         if (!success) {
-          showToast(`⚠️ Database update blocked by server security policy.`);
+          showToast('Database update blocked by server security policy.');
         } else {
-          showToast(`✓ Updated "${updatedProduct.name}" in live database!`);
+          showToast(`Updated "${updatedProduct.name}" in database.`);
         }
       });
     } else {
       onUpdateProducts([updatedProduct, ...products]);
       upsertProductToDB(updatedProduct).then((success) => {
         if (!success) {
-          showToast(`⚠️ Database insert blocked by server security policy.`);
+          showToast('Database insert blocked by server security policy.');
         } else {
-          showToast(`✓ Added "${updatedProduct.name}" to live database!`);
+          showToast(`Added "${updatedProduct.name}" to database.`);
         }
       });
     }
@@ -413,9 +414,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     onUpdateProducts(nextProducts);
     deleteProductFromDB(productToDelete.id).then((success) => {
       if (!success) {
-        showToast(`⚠️ Database delete blocked by server security policy.`);
+        showToast('Database delete blocked by server security policy.');
       } else {
-        showToast(`✓ Deleted "${productToDelete.name}" from live database!`);
+        showToast(`Deleted "${productToDelete.name}".`);
       }
     });
     setProductToDelete(null);
@@ -427,9 +428,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     onUpdateOrders(nextOrders);
     updateOrderStatusInDB(orderId, status).then((success) => {
       if (!success) {
-        showToast(`⚠️ Order status update blocked by server security policy.`);
+        showToast('Order status update blocked by server security policy.');
       } else {
-        showToast(`✓ Order #${orderId} updated to ${status} in database!`);
+        showToast(`Order #${orderId} marked as ${status}.`);
       }
     });
   };
@@ -442,7 +443,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       .map((it) => `${it.product.name} (x${it.quantity})`)
       .join(', ');
     const message = encodeURIComponent(
-      `Hello ${order.customer.fullName}! 👋\n\nYour order #${order.id} from *DJN Tech Console Store* is currently: *${order.status.toUpperCase()}*.\n\n📦 *Items:* ${itemsSummary}\n💰 *Total:* ₹${order.total.toLocaleString('en-IN')}\n\nThank you for choosing DJN Tech!`
+      `Hello ${order.customer.fullName}!\n\nYour order #${order.id} from DJN Tech Console Store is currently: ${order.status.toUpperCase()}.\n\nItems: ${itemsSummary}\nTotal: ₹${order.total.toLocaleString('en-IN')}\n\nThank you for choosing DJN Tech!`
     );
     window.open(`https://wa.me/${phoneWithCountry}?text=${message}`, '_blank');
   };
@@ -453,9 +454,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     onUpdateSiteConfig(configForm);
     upsertSiteConfigToDB(configForm).then((success) => {
       if (!success) {
-        showToast(`⚠️ Site config update blocked by server security policy.`);
+        showToast('Site settings update blocked by server security policy.');
       } else {
-        showToast('✓ Website settings saved to live database!');
+        showToast('Website settings saved successfully.');
       }
     });
   };
@@ -540,10 +541,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   }, [orders, orderSearch, orderStatusFilter]);
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] dark:bg-[#0b1120] text-gray-900 dark:text-gray-100 flex flex-col transition-colors selection:bg-blue-500 selection:text-white">
+    <div className="h-screen overflow-hidden bg-[#f8fafc] dark:bg-[#0b1120] text-gray-900 dark:text-gray-100 flex flex-col transition-colors selection:bg-blue-500 selection:text-white">
       
       {/* TOP EXECUTIVE HEADER BAR */}
-      <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#111827]/95 backdrop-blur-md border-b border-gray-200/80 dark:border-gray-800 shadow-2xs">
+      <header className="shrink-0 h-16 z-40 bg-white/95 dark:bg-[#111827]/95 backdrop-blur-md border-b border-gray-200/80 dark:border-gray-800 shadow-2xs">
         <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           
           {/* Brand & Live Connection Indicator */}
@@ -552,17 +553,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               DJN
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-sm sm:text-base font-extrabold text-gray-900 dark:text-white leading-none tracking-tight">
-                  Store Management Console
-                </h1>
-                <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Cloud Live Sync
-                </span>
-              </div>
+              <h1 className="text-sm sm:text-base font-extrabold text-gray-900 dark:text-white leading-none tracking-tight">
+                Store Management
+              </h1>
               <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
-                Enterprise control for catalog, physical inventory & orders
+                Catalog, inventory, and customer orders
               </p>
             </div>
           </div>
@@ -598,17 +593,27 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         </div>
       </header>
 
-      {/* SUB-HEADER / TAB NAVIGATION BAR */}
-      <div className="bg-white dark:bg-[#0f172a] border-b border-gray-200/80 dark:border-gray-800/80 px-4 sm:px-6 lg:px-8 py-2.5">
-        <div className="w-full max-w-[1920px] mx-auto flex items-center justify-between gap-4 overflow-x-auto no-scrollbar">
+      {/* BODY WITH VERTICAL SIDEBAR + MAIN WORKSPACE */}
+      <div className="flex-1 w-full max-w-[1920px] mx-auto flex flex-col md:flex-row overflow-hidden min-h-0">
+        
+        {/* VERTICAL SIDEBAR NAVIGATION (LOCKED / STATIONARY) */}
+        <aside className="w-full md:w-64 lg:w-72 shrink-0 bg-white dark:bg-[#0f172a] border-b md:border-b-0 md:border-r border-gray-200/80 dark:border-gray-800/80 flex flex-col p-3 sm:p-4 md:p-5 h-auto md:h-full md:overflow-y-auto no-scrollbar z-10">
           
-          <nav className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <div className="mb-3 px-2 hidden md:block">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+              Navigation
+            </span>
+          </div>
+
+          {/* Vertical Tabs List */}
+          <nav className="flex flex-row md:flex-col gap-1.5 overflow-x-auto md:overflow-visible pb-1 md:pb-0 no-scrollbar">
             {[
-              { id: 'products' as AdminTab, label: 'Product Catalog', count: products.length, icon: Package },
-              { id: 'orders' as AdminTab, label: 'Customer Orders', count: orders.length, icon: ShoppingBag },
-              { id: 'content' as AdminTab, label: 'Banners & Marketing', count: null, icon: Settings },
-              { id: 'backup' as AdminTab, label: 'Backup & Restore', count: null, icon: Database },
-              { id: 'security' as AdminTab, label: 'Admin Security', count: null, icon: KeyRound },
+              { id: 'analytics' as AdminTab, label: 'Analytics & Insights', shortLabel: 'Analytics', count: null, icon: TrendingUp },
+              { id: 'products' as AdminTab, label: 'Product Catalog', shortLabel: 'Catalog', count: products.length, icon: Package },
+              { id: 'orders' as AdminTab, label: 'Customer Orders', shortLabel: 'Orders', count: orders.length, icon: ShoppingBag },
+              { id: 'content' as AdminTab, label: 'Banners & Marketing', shortLabel: 'Marketing', count: null, icon: Settings },
+              { id: 'backup' as AdminTab, label: 'Backup & Restore', shortLabel: 'Backup', count: null, icon: Database },
+              { id: 'security' as AdminTab, label: 'Admin Security', shortLabel: 'Security', count: null, icon: KeyRound },
             ].map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -616,17 +621,20 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
+                  className={`flex md:w-full items-center justify-between px-3 md:px-3.5 py-2 md:py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap md:whitespace-normal group ${
                     isActive
-                      ? 'bg-blue-600 text-white shadow-sm'
+                      ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20 md:scale-[1.02]'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800/60'
                   }`}
                 >
-                  <Icon className="w-4 h-4" />
-                  <span>{tab.label}</span>
+                  <div className="flex items-center gap-2 md:gap-3 min-w-0">
+                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-blue-500'}`} />
+                    <span className="hidden md:inline truncate">{tab.label}</span>
+                    <span className="md:hidden truncate">{tab.shortLabel}</span>
+                  </div>
                   {tab.count !== null && (
                     <span
-                      className={`px-1.5 py-0.2 rounded-full text-[10px] font-extrabold ${
+                      className={`px-1.5 md:px-2 py-0.5 rounded-full text-[10px] font-extrabold shrink-0 ml-1.5 md:ml-2 ${
                         isActive
                           ? 'bg-white/25 text-white'
                           : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400'
@@ -640,85 +648,114 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             })}
           </nav>
 
-          <div className="hidden lg:flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400 font-medium">
-            <span>Currency: <strong className="text-gray-800 dark:text-gray-200">INR (₹)</strong></span>
-            <span>·</span>
-            <span>Catalog: <strong className="text-blue-600 dark:text-blue-400">{totalProducts} Products</strong></span>
-          </div>
-        </div>
-      </div>
-
-      {/* MAIN ADMIN WORKSPACE */}
-      <main className="flex-1 w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-
-        {/* EXECUTIVE KPI DASHBOARD STATS */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          
-          {/* KPI 1: Total Catalog Titles */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs relative overflow-hidden group hover:border-blue-500/40 transition-colors">
-            <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-2">
-              <span className="text-xs font-semibold uppercase tracking-wider">Catalog Titles</span>
-              <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center">
-                <Package className="w-4 h-4" />
+          {/* Sidebar Bottom Status Card (Desktop Only) */}
+          <div className="mt-auto pt-4 hidden md:block space-y-3 border-t border-gray-100 dark:border-gray-800">
+            <div className="p-3 rounded-2xl bg-gray-50 dark:bg-[#111827] border border-gray-200/60 dark:border-gray-800 space-y-1.5 text-xs">
+              <div className="flex items-center justify-between text-gray-500 dark:text-gray-400">
+                <span>Currency:</span>
+                <span className="font-bold text-gray-900 dark:text-white">INR (₹)</span>
+              </div>
+              <div className="flex items-center justify-between text-gray-500 dark:text-gray-400">
+                <span>Catalog:</span>
+                <span className="font-bold text-blue-600 dark:text-blue-400">{totalProducts} Products</span>
               </div>
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
-              {totalProducts}
-            </div>
-            <div className="flex items-center gap-1.5 text-[11px] font-semibold text-blue-600 dark:text-blue-400 mt-2">
-              <TrendingUp className="w-3.5 h-3.5" />
-              <span>{hardwareCount} Hardware & Accessories · {gamesCount} Games</span>
-            </div>
-          </div>
 
-          {/* KPI 2: Gross Orders Revenue */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs relative overflow-hidden group hover:border-emerald-500/40 transition-colors">
-            <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-2">
-              <span className="text-xs font-semibold uppercase tracking-wider">Gross Orders</span>
-              <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-                <ShoppingBag className="w-4 h-4" />
+            <button
+              onClick={handleOpenAddProduct}
+              className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-blue-50 hover:bg-blue-100/80 dark:bg-blue-950/40 dark:hover:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold text-xs transition-colors cursor-pointer border border-blue-200/60 dark:border-blue-900/40"
+            >
+              <Plus className="w-4 h-4 stroke-[2.5]" />
+              <span>Add Product</span>
+            </button>
+          </div>
+        </aside>
+
+        {/* MAIN ADMIN WORKSPACE (INDEPENDENTLY SCROLLABLE) */}
+        <main className="flex-1 min-w-0 h-full overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6">
+
+        {/* ========================================================================= */}
+        {/* TAB 0: ADVANCED ANALYTICS, GRAPHS & STORE INTELLIGENCE */}
+        {/* ========================================================================= */}
+        {activeTab === 'analytics' && (
+          <AdminAnalytics
+            products={products}
+            orders={orders}
+            siteConfig={siteConfig}
+            onNavigateTab={(tab) => setActiveTab(tab)}
+          />
+        )}
+
+        {/* EXECUTIVE KPI DASHBOARD STATS (Shown on other tabs) */}
+        {activeTab !== 'analytics' && (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            
+            {/* KPI 1: Total Catalog Titles */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs relative overflow-hidden group hover:border-blue-500/40 transition-colors">
+              <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-2">
+                <span className="text-xs font-semibold uppercase tracking-wider">Catalog Titles</span>
+                <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+                  <Package className="w-4 h-4" />
+                </div>
+              </div>
+              <div className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
+                {totalProducts}
+              </div>
+              <div className="flex items-center gap-1.5 text-[11px] font-semibold text-blue-600 dark:text-blue-400 mt-2">
+                <TrendingUp className="w-3.5 h-3.5" />
+                <span>{hardwareCount} Hardware & Accessories · {gamesCount} Games</span>
               </div>
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
-              ₹{totalRevenue.toLocaleString('en-IN')}
-            </div>
-            <div className="text-[11px] font-medium text-gray-500 dark:text-gray-400 mt-2">
-              {totalOrders} customer checkouts tracked
-            </div>
-          </div>
 
-          {/* KPI 3: Store Availability */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs relative overflow-hidden group hover:border-emerald-500/40 transition-colors">
-            <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-2">
-              <span className="text-xs font-semibold uppercase tracking-wider">Availability</span>
-              <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-                <CheckCircle2 className="w-4 h-4" />
+            {/* KPI 2: Gross Orders Revenue */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs relative overflow-hidden group hover:border-emerald-500/40 transition-colors">
+              <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-2">
+                <span className="text-xs font-semibold uppercase tracking-wider">Gross Orders</span>
+                <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                  <ShoppingBag className="w-4 h-4" />
+                </div>
+              </div>
+              <div className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
+                ₹{totalRevenue.toLocaleString('en-IN')}
+              </div>
+              <div className="text-[11px] font-medium text-gray-500 dark:text-gray-400 mt-2">
+                {totalOrders} customer checkouts tracked
               </div>
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400 tracking-tight">
-              100% Available
-            </div>
-            <div className="text-[11px] text-gray-500 dark:text-gray-400 font-medium mt-2">
-              All {totalProducts} products open for checkout
-            </div>
-          </div>
 
-          {/* KPI 4: Shipping Policy */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs relative overflow-hidden group hover:border-purple-500/40 transition-colors">
-            <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-2">
-              <span className="text-xs font-semibold uppercase tracking-wider">Free Shipping</span>
-              <div className="w-8 h-8 rounded-lg bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center">
-                <Truck className="w-4 h-4" />
+            {/* KPI 3: Store Availability */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs relative overflow-hidden group hover:border-emerald-500/40 transition-colors">
+              <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-2">
+                <span className="text-xs font-semibold uppercase tracking-wider">Availability</span>
+                <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                  <CheckCircle2 className="w-4 h-4" />
+                </div>
+              </div>
+              <div className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400 tracking-tight">
+                100% Available
+              </div>
+              <div className="text-[11px] text-gray-500 dark:text-gray-400 font-medium mt-2">
+                All {totalProducts} products open for checkout
               </div>
             </div>
-            <div className="text-xl sm:text-2xl font-black text-purple-600 dark:text-purple-400 tracking-tight">
-              Above ₹{siteConfig.freeShippingThreshold.toLocaleString('en-IN')}
-            </div>
-            <div className="text-[11px] text-gray-500 dark:text-gray-400 font-medium mt-2">
-              Standard ₹{siteConfig.standardShippingFee} for smaller orders
+
+            {/* KPI 4: Shipping Policy */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs relative overflow-hidden group hover:border-purple-500/40 transition-colors">
+              <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-2">
+                <span className="text-xs font-semibold uppercase tracking-wider">Free Shipping</span>
+                <div className="w-8 h-8 rounded-lg bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+                  <Truck className="w-4 h-4" />
+                </div>
+              </div>
+              <div className="text-xl sm:text-2xl font-black text-purple-600 dark:text-purple-400 tracking-tight">
+                Above ₹{siteConfig.freeShippingThreshold.toLocaleString('en-IN')}
+              </div>
+              <div className="text-[11px] text-gray-500 dark:text-gray-400 font-medium mt-2">
+                Standard ₹{siteConfig.standardShippingFee} for smaller orders
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* ========================================================================= */}
         {/* TAB 1: PRODUCT CATALOG MANAGEMENT */}
@@ -1274,7 +1311,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                     rows={2}
                     value={configForm.marqueeAnnouncement}
                     onChange={(e) => setConfigForm({ ...configForm, marqueeAnnouncement: e.target.value })}
-                    placeholder="⚡ FREE DELIVERY ON ORDERS ABOVE ₹1,000 · 100% TESTED PRE-OWNED GAMES & CONSOLES"
+                    placeholder="FREE DELIVERY ON ORDERS ABOVE ₹1,000 · TESTED PRE-OWNED GAMES & CONSOLES"
                     className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   {/* Live Marquee Ticker Preview */}
@@ -1596,31 +1633,17 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 <div className="space-y-3 text-xs">
                   <div className="p-3.5 rounded-xl bg-gray-50 dark:bg-[#1a2333] border border-gray-200/70 dark:border-gray-700/70 space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-500 dark:text-gray-400">Connection Status:</span>
-                      <span className="font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                        Active & Encrypted
+                      <span className="text-gray-500 dark:text-gray-400">Status:</span>
+                      <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                        Connected
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-500 dark:text-gray-400">Access Level:</span>
+                      <span className="text-gray-500 dark:text-gray-400">Access:</span>
                       <span className="font-semibold text-blue-600 dark:text-blue-400">
-                        Store Owner / Master Administrator
+                        Store Owner
                       </span>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-500 dark:text-gray-400">Security Standard:</span>
-                      <span className="font-semibold text-gray-800 dark:text-gray-200">
-                        256-Bit Hardware Encryption
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="p-3.5 rounded-xl bg-blue-50/60 dark:bg-blue-950/30 border border-blue-200/60 dark:border-blue-900/40 text-[11px] text-blue-800 dark:text-blue-300 leading-relaxed">
-                    <strong className="block font-bold mb-1">
-                      💡 Real-Time Data Protection:
-                    </strong>
-                    Enterprise access policies are active. Passwords, customer details, and order transactions are isolated and protected against unauthorized modifications.
                   </div>
 
                   <button
@@ -1638,6 +1661,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           </div>
         )}
       </main>
+    </div>
 
 
       {/* ========================================================================= */}

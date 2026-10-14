@@ -42,7 +42,7 @@ const HERO_ITEMS = [
     id: 'games',
     label: 'Pre-Owned Discs',
     title: 'Elden Ring: Shadow of the Erdtree',
-    subtitle: 'Laser Read Tested · 100% Genuine Certified Disc',
+    subtitle: 'Tested Pre-Owned Disc · Complete in Box',
     price: '₹2,199',
     mrp: '₹4,499',
     discount: '51% OFF',
@@ -100,8 +100,8 @@ export const Hero: React.FC<HeroProps> = ({
 
             {/* Subline */}
             <p className="mt-3 sm:mt-4 lg:mt-5 text-xs sm:text-base md:text-lg text-[#6b7280] dark:text-gray-300 font-normal leading-relaxed max-w-xl">
-              <span className="sm:hidden">Official sealed consoles & 100% laser-tested games.</span>
-              <span className="hidden sm:inline">Factory-sealed consoles and 100% laser-tested pre-owned discs with 7-day doorstep replacement guarantee.</span>
+              <span className="sm:hidden">Consoles, accessories & verified pre-owned games.</span>
+              <span className="hidden sm:inline">Brand new consoles, genuine accessories, and verified pre-owned games with a 7-day replacement guarantee.</span>
             </p>
 
             {/* Category Switcher Tabs */}
@@ -148,7 +148,7 @@ export const Hero: React.FC<HeroProps> = ({
               <span>·</span>
               <span>7-Day doorstep replacement</span>
               <span>·</span>
-              <span>100% Tested optical discs</span>
+              <span>Verified pre-owned games</span>
             </div>
 
           </div>
@@ -205,7 +205,7 @@ export const Hero: React.FC<HeroProps> = ({
                 className="mt-2 sm:mt-3 inline-flex items-center gap-3 px-4 sm:px-5 py-2.5 rounded-full bg-white/85 dark:bg-[#111827]/85 backdrop-blur-xl shadow-[0_12px_36px_rgba(0,0,0,0.10)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.55)] transition-all group-hover:scale-105 group-hover:shadow-xl"
               >
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                   <span className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white truncate max-w-[160px] sm:max-w-[240px]">
                     {currentItem.title}
                   </span>

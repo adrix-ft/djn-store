@@ -27,9 +27,11 @@ import {
   Printer,
   Copy,
   AlertCircle,
+  ArrowLeft,
 } from 'lucide-react';
 import { AuthUser, Order, Product, Condition } from '../types/store';
 import { GoogleLogoIcon } from './GoogleLogoIcon';
+import { BrandLogo } from './BrandLogo';
 
 interface UserDashboardModalProps {
   isOpen: boolean;
@@ -138,35 +140,32 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
     switch (status) {
       case 'Confirmed':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-            Confirmed · QA Inspection
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+            Confirmed
           </span>
         );
       case 'Dispatched':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
-            <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-            Dispatched · Blue Dart Express
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+            Dispatched
           </span>
         );
       case 'Out for Delivery':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
-            <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
-            Out for Delivery Today
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
+            Out for Delivery
           </span>
         );
       case 'Delivered':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-            Delivered · 7-Day Guarantee Active
+            Delivered
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300">
             {status}
           </span>
         );
@@ -180,32 +179,32 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
 
     return [
       {
-        title: 'Order Confirmed & Payment Verified',
-        desc: 'Secured payment completed. Official invoice generated.',
+        title: 'Order Confirmed',
+        desc: 'Payment received and order confirmed.',
         completed: true,
         active: order.status === 'Confirmed',
       },
       {
-        title: 'DJN Tech 25-Point Optical & Drift QA Inspection',
-        desc: 'Optical laser disc read & DualSense controller calibration verified.',
+        title: 'Quality Check',
+        desc: 'Hardware and discs inspected before packing.',
         completed: true,
         active: order.status === 'Confirmed',
       },
       {
-        title: 'Dispatched via Express Courier',
+        title: 'Dispatched',
         desc: `Blue Dart Express AWB #BD-${order.id.replace('DJN-', '')}-IN`,
         completed: isDispatched,
         active: order.status === 'Dispatched',
       },
       {
-        title: 'Out for Delivery with Local Courier',
-        desc: 'Assigned to delivery executive with secure OTP hand-off.',
+        title: 'Out for Delivery',
+        desc: 'With delivery executive for doorstep delivery.',
         completed: isOut,
         active: order.status === 'Out for Delivery',
       },
       {
-        title: 'Delivered to Doorstep',
-        desc: '7-Day Hassle-Free Replacement & Warranty activated.',
+        title: 'Delivered',
+        desc: '7-Day replacement guarantee active.',
         completed: isDelivered,
         active: order.status === 'Delivered',
       },
@@ -213,98 +212,119 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
   };
 
   const modalContent = (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-2 sm:p-4">
-      {/* Backdrop */}
-      <div
-        onClick={onClose}
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
-      />
+    <div className="fixed inset-0 z-[9999] bg-[#f8fafc] dark:bg-[#0b0f19] flex flex-col w-screen h-screen overflow-hidden animate-in fade-in duration-200">
+      
+      {/* 1. TOP GLOBAL APP BAR */}
+      <header className="bg-white dark:bg-[#0f172a] border-b border-gray-200 dark:border-gray-800 px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between shrink-0 shadow-xs z-20">
+        <div className="flex items-center gap-3">
+          <div
+            onClick={() => {
+              onClose();
+              onContinueShopping();
+            }}
+            className="cursor-pointer hover:opacity-85 transition-opacity"
+            title="Return to DJN Tech Store"
+          >
+            <BrandLogo variant="horizontal" />
+          </div>
+        </div>
 
-      {/* Main Container */}
-      <div className="relative w-full max-w-4xl bg-white dark:bg-[#111827] rounded-3xl shadow-2xl border border-gray-200/80 dark:border-gray-800 overflow-hidden z-10 max-h-[92vh] flex flex-col animate-in zoom-in-95 duration-200">
-        
-        {/* EXECUTIVE PROFILE HEADER */}
-        <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-blue-800 p-5 sm:p-7 text-white shrink-0 relative overflow-hidden">
-          {/* Subtle decorative background glow */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="flex items-center gap-2 sm:gap-3">
+          <button
+            onClick={() => {
+              onClose();
+              onContinueShopping();
+            }}
+            className="flex items-center gap-1.5 px-2.5 sm:px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs transition-colors cursor-pointer"
+            title="Return to Store"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Return to Store</span>
+          </button>
+
+          <button
+            onClick={() => {
+              onClose();
+              onSignOut();
+            }}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 text-xs font-semibold transition-colors cursor-pointer"
+            title="Sign Out"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Sign Out</span>
+          </button>
 
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors cursor-pointer"
+            className="p-2 text-gray-400 hover:text-gray-700 dark:hover:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
             aria-label="Close Dashboard"
           >
             <X className="w-5 h-5" />
           </button>
+        </div>
+      </header>
 
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 relative z-10">
+      {/* 2. EXECUTIVE PROFILE HERO BANNER */}
+      <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-blue-800 text-white shrink-0 relative overflow-hidden shadow-md">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6 relative z-10">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
             {/* User Avatar & Info */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 sm:gap-5">
               <div className="relative shrink-0">
                 {user.avatarUrl ? (
                   <img
                     src={user.avatarUrl}
                     alt={user.fullName}
                     referrerPolicy="no-referrer"
-                    className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl border-2 border-white/50 object-cover shadow-lg"
+                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border-2 border-white/50 object-cover shadow-xl"
                   />
                 ) : (
-                  <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-white/20 border-2 border-white/50 flex items-center justify-center text-2xl font-black text-white shadow-lg">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white/20 border-2 border-white/50 flex items-center justify-center text-2xl font-black text-white shadow-xl">
                     {user.fullName.charAt(0).toUpperCase()}
                   </div>
                 )}
                 {/* Active Status Badge */}
-                <span className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-white flex items-center justify-center shadow-xs">
+                <span className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-white flex items-center justify-center shadow-md">
                   <GoogleLogoIcon className="w-4 h-4" />
                 </span>
               </div>
 
               <div className="min-w-0">
-                <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="text-xl sm:text-2xl font-black tracking-tight truncate">
-                    {user.fullName}
-                  </h2>
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-200 text-[10px] font-bold border border-emerald-400/30">
-                    <ShieldCheck className="w-3 h-3" />
-                    Verified Customer
-                  </span>
-                </div>
-                <p className="text-xs text-blue-100 truncate mt-0.5">{user.email}</p>
-                <div className="flex items-center gap-2 mt-1.5 text-[11px] text-blue-200">
-                  <span className="px-2 py-0.5 rounded-md bg-white/10 font-semibold backdrop-blur-xs">
-                    VIP Gamer Member
-                  </span>
-                  <span>·</span>
-                  <span>Priority Courier Dispatch</span>
-                </div>
+                <h1 className="text-xl sm:text-2xl font-bold tracking-tight truncate">
+                  {user.fullName}
+                </h1>
+                <p className="text-xs sm:text-sm text-blue-100 truncate mt-0.5">{user.email}</p>
               </div>
             </div>
 
             {/* Quick Metrics Bar */}
-            <div className="grid grid-cols-3 gap-2 sm:gap-3 bg-white/10 backdrop-blur-md rounded-2xl p-2.5 sm:p-3 border border-white/15">
-              <div className="text-center px-2">
-                <span className="text-[10px] uppercase font-semibold text-blue-200 block">Orders</span>
-                <span className="text-base sm:text-lg font-black text-white">{userOrders.length}</span>
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 bg-white/10 backdrop-blur-md rounded-2xl p-2.5 sm:p-3.5 border border-white/15 shrink-0">
+              <div className="text-center px-2 sm:px-4">
+                <span className="text-[10px] uppercase font-semibold text-blue-200 block">Orders Placed</span>
+                <span className="text-base sm:text-xl font-black text-white">{userOrders.length}</span>
               </div>
-              <div className="text-center px-2 border-x border-white/15">
+              <div className="text-center px-2 sm:px-4 border-x border-white/15">
                 <span className="text-[10px] uppercase font-semibold text-blue-200 block">In Transit</span>
-                <span className="text-base sm:text-lg font-black text-amber-300">{activeShipments}</span>
+                <span className="text-base sm:text-xl font-black text-amber-300">{activeShipments}</span>
               </div>
-              <div className="text-center px-2">
-                <span className="text-[10px] uppercase font-semibold text-blue-200 block">Total Paid</span>
-                <span className="text-base sm:text-lg font-black text-emerald-300 font-mono">
-                  ₹{totalSpent > 0 ? (totalSpent > 9999 ? `${Math.round(totalSpent / 1000)}k` : totalSpent) : '0'}
+              <div className="text-center px-2 sm:px-4">
+                <span className="text-[10px] uppercase font-semibold text-blue-200 block">Total Spent</span>
+                <span className="text-base sm:text-xl font-black text-emerald-300 font-mono">
+                  ₹{totalSpent.toLocaleString('en-IN')}
                 </span>
               </div>
             </div>
           </div>
 
           {/* Navigation Tabs Pill Bar */}
-          <div className="flex items-center gap-1.5 mt-6 pt-4 border-t border-white/15 overflow-x-auto scrollbar-none">
+          <div className="flex items-center gap-1.5 sm:gap-2 mt-5 pt-3.5 border-t border-white/15 overflow-x-auto no-scrollbar">
             {[
-              { id: 'orders' as DashboardTab, label: 'My Orders & Shipments', icon: Package, count: userOrders.length },
-              { id: 'profile' as DashboardTab, label: 'Profile & Address', icon: User },
-              { id: 'warranty' as DashboardTab, label: '7-Day Guarantee', icon: ShieldCheck },
-              { id: 'wishlist' as DashboardTab, label: 'Wishlist', icon: Heart, count: wishlist.length },
+              { id: 'orders' as DashboardTab, label: 'My Orders & Shipments', shortLabel: 'Orders', icon: Package, count: userOrders.length },
+              { id: 'profile' as DashboardTab, label: 'Profile & Address', shortLabel: 'Profile', icon: User },
+              { id: 'warranty' as DashboardTab, label: '7-Day Guarantee', shortLabel: 'Guarantee', icon: ShieldCheck },
+              { id: 'wishlist' as DashboardTab, label: 'Saved Wishlist', shortLabel: 'Wishlist', icon: Heart, count: wishlist.length },
             ].map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -312,18 +332,19 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
+                  className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-white text-blue-700 shadow-sm'
+                      ? 'bg-white text-blue-700 shadow-md'
                       : 'text-white/80 hover:text-white hover:bg-white/10'
                   }`}
                 >
-                  <Icon className="w-3.5 h-3.5" />
-                  <span>{tab.label}</span>
+                  <Icon className="w-4 h-4 shrink-0" />
+                  <span className="hidden sm:inline">{tab.label}</span>
+                  <span className="sm:hidden">{tab.shortLabel}</span>
                   {tab.count !== undefined && tab.count > 0 && (
                     <span
-                      className={`px-1.5 py-0.2 rounded-full text-[10px] ${
-                        isActive ? 'bg-blue-100 text-blue-700 font-bold' : 'bg-white/20 text-white'
+                      className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] ${
+                        isActive ? 'bg-blue-100 text-blue-700 font-black' : 'bg-white/20 text-white'
                       }`}
                     >
                       {tab.count}
@@ -334,9 +355,11 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
             })}
           </div>
         </div>
+      </div>
 
-        {/* TAB CONTENTS (Scrollable) */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+      {/* 3. FULL-SCREEN SCROLLABLE CONTENT BODY */}
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
+        <div className="max-w-7xl mx-auto space-y-6">
           
           {/* TAB 1: MY ORDERS & SHIPMENTS */}
           {activeTab === 'orders' && (
@@ -380,7 +403,7 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
                   <ShoppingBag className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
                   <h4 className="text-sm font-bold text-gray-800 dark:text-gray-200">No matching orders found</h4>
                   <p className="text-xs text-gray-500 dark:text-gray-400 max-w-sm mx-auto mt-1 mb-4 leading-relaxed">
-                    Browse our collection of verified consoles, original controllers, and optical laser-tested game discs.
+                    Browse our collection of verified consoles, controllers, and tested pre-owned games.
                   </p>
                   <button
                     onClick={() => {
@@ -552,10 +575,11 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
                           <button
                             type="button"
                             onClick={() => setSelectedInvoiceOrder(order)}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a2333] hover:border-blue-500 text-xs font-bold text-gray-700 dark:text-gray-200 transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a2333] hover:border-blue-500 text-xs font-bold text-gray-700 dark:text-gray-200 transition-colors cursor-pointer"
                           >
-                            <FileText className="w-3.5 h-3.5 text-blue-500" />
-                            <span>View Digital Tax Invoice</span>
+                            <FileText className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                            <span className="hidden sm:inline">View Digital Tax Invoice</span>
+                            <span className="sm:hidden">Tax Invoice</span>
                           </button>
 
                           <a
@@ -564,10 +588,11 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
                             )}`}
                             target="_blank"
                             rel="noreferrer"
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs font-bold hover:bg-emerald-100 transition-colors"
+                            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs font-bold hover:bg-emerald-100 transition-colors"
                           >
-                            <MessageSquare className="w-3.5 h-3.5" />
-                            <span>WhatsApp Shipment Help</span>
+                            <MessageSquare className="w-3.5 h-3.5 shrink-0" />
+                            <span className="hidden sm:inline">WhatsApp Help</span>
+                            <span className="sm:hidden">Help</span>
                           </a>
                         </div>
                       </div>
@@ -737,20 +762,20 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
                   <div className="p-3.5 rounded-2xl bg-white dark:bg-[#111827] border border-blue-100 dark:border-blue-900/40 space-y-1">
                     <p className="font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                      Zero Stick Drift Certified
+                      Controller Testing
                     </p>
                     <p className="text-[11px] text-gray-500 dark:text-gray-400">
-                      Every controller analog stick potentiometer is tested for center deadzone calibration.
+                      Every controller analog stick and button is tested for accurate calibration and response.
                     </p>
                   </div>
 
                   <div className="p-3.5 rounded-2xl bg-white dark:bg-[#111827] border border-blue-100 dark:border-blue-900/40 space-y-1">
                     <p className="font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                      100% Optical Laser Reading
+                      Verified Game Discs
                     </p>
                     <p className="text-[11px] text-gray-500 dark:text-gray-400">
-                      Every pre-owned game disc undergoes a 25-point microscopic inspection with zero read errors.
+                      Every pre-owned game disc is inspected and tested on retail consoles to ensure smooth gameplay.
                     </p>
                   </div>
 
@@ -850,32 +875,35 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
           )}
 
         </div>
+      </div>
 
-        {/* FOOTER BAR WITH SIGN OUT */}
-        <div className="p-4 border-t border-gray-200/80 dark:border-gray-800 bg-gray-50 dark:bg-[#0e1422] flex items-center justify-between shrink-0">
-          <button
-            onClick={() => {
-              onClose();
-              onSignOut();
-            }}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer"
-          >
-            <LogOut className="w-4 h-4" />
-            <span>Sign Out ({user.email})</span>
-          </button>
-
+      {/* 4. BOTTOM FOOTER BAR */}
+      <footer className="px-4 sm:px-6 lg:px-8 py-3 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-[#0f172a] flex items-center justify-between text-xs text-gray-500 shrink-0">
+        <div className="flex items-center gap-2">
+          <span>DJN Tech Official Store · Signed in as <strong>{user.email}</strong></span>
+        </div>
+        <div className="flex items-center gap-4">
           <button
             onClick={() => {
               onClose();
               onContinueShopping();
             }}
-            className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition-colors cursor-pointer shadow-xs"
+            className="font-bold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer flex items-center gap-1.5 text-xs"
           >
-            Return to Store
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Return to Store</span>
+          </button>
+          <button
+            onClick={() => {
+              onClose();
+              onSignOut();
+            }}
+            className="font-bold text-red-600 dark:text-red-400 hover:underline cursor-pointer"
+          >
+            Sign Out
           </button>
         </div>
-
-      </div>
+      </footer>
 
       {/* DIGITAL TAX INVOICE POPUP MODAL */}
       {selectedInvoiceOrder && (

@@ -179,13 +179,31 @@ export const Footer: React.FC<FooterProps> = ({
                   Privacy Policy
                 </button>
               </li>
+              <li>
+                <button
+                  onClick={() => onOpenPolicy('grievance')}
+                  className="text-blue-600 dark:text-blue-400 font-semibold hover:underline transition-colors cursor-pointer text-left flex items-center gap-1"
+                >
+                  <span>Grievance Officer (Rule 4)</span>
+                </button>
+              </li>
             </ul>
           </div>
 
-          {/* Column 5: Social Connect */}
+          {/* Column 5: Social Connect & Compliance Badge */}
           <div className="space-y-3">
-            <h4 className="font-bold text-[#212121] dark:text-white text-sm">Social & Community</h4>
-            <div className="flex items-center gap-2">
+            <h4 className="font-bold text-[#212121] dark:text-white text-sm">Regulatory Compliance</h4>
+            <div className="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-900/60 border border-gray-200/80 dark:border-gray-800 text-[11px] space-y-1">
+              <p className="font-semibold text-gray-900 dark:text-white flex items-center gap-1">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span>Consumer Protection Compliant</span>
+              </p>
+              <p className="text-gray-500 dark:text-gray-400">
+                Operating under Consumer Protection (E-Commerce) Rules, 2020 & Legal Metrology Act.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 pt-1">
               <a
                 href="https://wa.me/918446439374"
                 target="_blank"
@@ -214,21 +232,19 @@ export const Footer: React.FC<FooterProps> = ({
                 <Youtube className="w-4 h-4" />
               </a>
             </div>
-            <div className="pt-2 text-[11px] text-[#64748b] dark:text-gray-400 flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#059669]" />
-              <span>100% Secure Checkout & Support</span>
-            </div>
           </div>
 
         </div>
 
-        {/* Bottom Copyright */}
+        {/* Bottom Copyright & Compliance Strip */}
         <div className="pt-6 text-center text-xs text-[#64748b] dark:text-gray-500 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p>© {new Date().getFullYear()} DJN Tech (djntech.in). All rights reserved.</p>
-          <div className="flex items-center gap-4 text-[11px]">
+          <p>© {new Date().getFullYear()} DJN Tech (djntech.in) · Registered in India · All prices inclusive of all taxes (GST)</p>
+          <div className="flex flex-wrap items-center justify-center gap-3 text-[11px]">
             <button onClick={() => onOpenPolicy('shipping')} className="hover:text-[#111827] dark:hover:text-white cursor-pointer">Free Delivery</button>
             <span>·</span>
             <button onClick={() => onOpenPolicy('refund')} className="hover:text-[#111827] dark:hover:text-white cursor-pointer">7-Day Returns</button>
+            <span>·</span>
+            <button onClick={() => onOpenPolicy('grievance')} className="hover:text-[#111827] dark:hover:text-white cursor-pointer font-medium text-blue-600 dark:text-blue-400">Grievance Redressal</button>
             <span>·</span>
             <button onClick={() => onOpenPolicy('privacy')} className="hover:text-[#111827] dark:hover:text-white cursor-pointer">Privacy</button>
             {onOpenAdmin && (

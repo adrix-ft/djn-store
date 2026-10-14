@@ -109,7 +109,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
 
         {/* Pricing Row */}
-        <div className="mt-2.5 pt-2 border-t border-[#f3f4f6] dark:border-[#1e293b] flex items-center justify-between">
+        <div className="mt-2.5 pt-2 border-t border-[#f3f4f6] dark:border-[#1e293b]">
           <div className="flex items-baseline gap-2">
             <span className="text-sm font-semibold text-[#111827] dark:text-white tabular-nums">
               ₹{product.price.toLocaleString('en-IN')}
@@ -120,6 +120,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               </span>
             )}
           </div>
+          <span className="text-[10px] text-[#9ca3af] dark:text-gray-400 block mt-0.5">
+            Incl. all taxes
+          </span>
         </div>
       </div>
 

@@ -17,6 +17,7 @@ import {
   Building,
   Sparkles,
   Lock,
+  ArrowLeft,
 } from 'lucide-react';
 import { AuthUser, CartItem, Order, OrderCustomerInfo, SiteConfig } from '../types/store';
 import { GoogleLogoIcon } from './GoogleLogoIcon';
@@ -517,9 +518,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="text-xs text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 font-semibold cursor-pointer"
+              className="text-xs text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 font-semibold cursor-pointer inline-flex items-center gap-1.5"
             >
-              ← Return to Cart
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Return to Cart</span>
             </button>
           </div>
         ) : (
@@ -879,6 +881,9 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                       ₹{total.toLocaleString('en-IN')}.00
                     </span>
                   </div>
+                  <p className="text-[10px] text-[#64748b] dark:text-gray-400 text-right mt-0.5 font-medium">
+                    (Inclusive of all statutory taxes & GST)
+                  </p>
                 </div>
               </div>
 
@@ -900,7 +905,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
                 <div className="flex items-center justify-center gap-2 text-[10px] text-gray-400 dark:text-gray-500 pt-1">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-                  <span>7-Day Replacement Guarantee & Doorstep Pickup</span>
+                  <span>7-Day Replacement · RBI & Consumer Protection Compliant</span>
                 </div>
               </div>
             </div>

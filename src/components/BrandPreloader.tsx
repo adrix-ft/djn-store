@@ -10,7 +10,7 @@ export const BrandPreloader: React.FC<BrandPreloaderProps> = ({
   minDurationMs = 1400,
 }) => {
   const [progress, setProgress] = useState(0);
-  const [statusText, setStatusText] = useState('Initializing gaming inventory...');
+  const [statusText, setStatusText] = useState('Loading store...');
   const [isExiting, setIsExiting] = useState(false);
   const [isMounted, setIsMounted] = useState(true);
 
@@ -37,13 +37,13 @@ export const BrandPreloader: React.FC<BrandPreloaderProps> = ({
 
       // Cycle thematic status messages
       if (nextProgress < 30) {
-        setStatusText('Checking certified PlayStation & Xbox consoles...');
+        setStatusText('Loading consoles & accessories...');
       } else if (nextProgress < 65) {
-        setStatusText('Loading 100% laser-tested optical disc library...');
+        setStatusText('Loading games catalog...');
       } else if (nextProgress < 95) {
-        setStatusText('Connecting to live store inventory & deals...');
+        setStatusText('Getting ready...');
       } else {
-        setStatusText('Ready! Welcome to DJN Tech Store.');
+        setStatusText('Welcome to DJN Tech');
       }
 
       if (rawRatio >= 1 && nextProgress >= 100) {
@@ -92,10 +92,9 @@ export const BrandPreloader: React.FC<BrandPreloaderProps> = ({
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 sm:w-[480px] h-96 sm:h-[480px] bg-blue-100/60 rounded-full blur-[110px] pointer-events-none" />
       <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 translate-y-1/2 w-80 sm:w-96 h-80 sm:h-96 bg-indigo-50/70 rounded-full blur-[100px] pointer-events-none" />
 
-      {/* Top Spacer / Subtle Official Pill */}
-      <div className="pt-4 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-50 border border-slate-200/80 text-[10px] sm:text-xs font-semibold tracking-widest uppercase text-blue-600 shadow-xs">
-        <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-ping" />
-        <span>Official Gaming Hardware & Discs</span>
+      {/* Top Brand Label */}
+      <div className="pt-4 flex items-center text-[11px] sm:text-xs font-semibold tracking-wider uppercase text-slate-400">
+        <span>DJN Tech Store</span>
       </div>
 
       {/* Center Hero: Brand Emblem + Progress Bar */}

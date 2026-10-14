@@ -14,6 +14,7 @@ import { Marquee } from './components/Marquee';
 import { HomeTrustSections } from './components/HomeTrustSections';
 import { Footer } from './components/Footer';
 import { BrandPreloader } from './components/BrandPreloader';
+import { MobileBottomNav } from './components/MobileBottomNav';
 import type { PolicyType } from './components/PolicyModal';
 
 // Code-split heavy views and modals for sub-second initial bundle load
@@ -619,6 +620,7 @@ export default function App() {
   }, [products, featuredProducts, trendingProducts]);
 
   // Pricing calculations
+  const cartCount = cart.reduce((acc, it) => acc + it.quantity, 0);
   const cartSubtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   const cartDiscount = 0;
   const cartShipping = cartSubtotal >= 1000 || cartSubtotal === 0 ? 0 : 99;
@@ -680,7 +682,7 @@ export default function App() {
 
       {/* Header Navigation with theme toggle and live order track */}
       <Header
-        cartCount={cart.reduce((acc, it) => acc + it.quantity, 0)}
+        cartCount={cartCount}
         wishlistCount={wishlist.length}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenWishlist={() => setIsWishlistOpen(true)}
@@ -816,9 +818,9 @@ export default function App() {
             {/* SECTION 2: Trending Now (Horizontal Carousel) */}
             <ProductSectionCarousel
               title="Trending Now"
-              subtitle="Most viewed games and high-velocity console bundles"
-              badgeText="🔥 High Demand This Week"
-              badgeDotClass="bg-amber-500 animate-pulse"
+              subtitle="Popular games and consoles this week"
+              badgeText="Popular"
+              badgeDotClass="bg-amber-500"
               badgeTextClass="text-amber-700 dark:text-amber-400"
               products={trendingProducts}
               onViewAll={() => handleNavigateCategory('all')}
@@ -835,8 +837,8 @@ export default function App() {
             {/* SECTION 3: Special Deals (Horizontal Carousel) */}
             <ProductSectionCarousel
               title="Special Deals"
-              subtitle="Discounted optical discs, pre-owned consoles & refurbished accessories"
-              badgeText="⚡ Biggest Price Drops · Up to 55% OFF"
+              subtitle="Discounted games, pre-owned consoles, and accessories"
+              badgeText="Limited Offers"
               badgeDotClass="bg-emerald-500"
               badgeTextClass="text-emerald-700 dark:text-emerald-400"
               products={todaysDeals}
@@ -982,6 +984,15 @@ export default function App() {
           />
         </React.Suspense>
       )}
+
+      {/* Mobile Sticky Bottom Icon Navigation Bar */}
+      <MobileBottomNav
+        currentPage={currentPage}
+        activeCategory={activeCategory}
+        onNavigateHome={handleNavigateHome}
+        onSelectCategory={handleNavigateCategory}
+        onNavigateSellConsoles={handleNavigateSellConsoles}
+      />
 
     </div>
   );

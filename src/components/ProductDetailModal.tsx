@@ -98,8 +98,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               <div className="mt-4 w-full p-3 bg-white rounded-xl border border-emerald-200 text-xs flex items-center gap-2.5 shadow-xs">
                 <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0" />
                 <div>
-                  <p className="font-bold text-[#212121]">DJN Tested Optical Disc</p>
-                  <p className="text-[11px] text-[#64748b]">Passed 100% data read & laser installation test. 7-Day Replacement Guarantee.</p>
+                  <p className="font-bold text-[#212121]">DJN Verified Pre-Owned Disc</p>
+                  <p className="text-[11px] text-[#64748b]">Tested and verified on retail console. 7-Day Replacement Guarantee.</p>
                 </div>
               </div>
             )}
@@ -132,6 +132,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   </span>
                 )}
               </div>
+              <p className="text-[11px] text-[#64748b] mt-1 font-medium">
+                Inclusive of all taxes · Free delivery on orders over ₹1,000
+              </p>
 
               <p className="text-xs text-[#64748b] mt-3 leading-relaxed">
                 {product.description}
@@ -166,7 +169,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   .slice(0, 3)
                   .map((feat, idx) => (
                     <div key={idx} className="flex items-center gap-2">
-                      <span className="text-[#10b981] font-bold">✓</span>
+                      <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                       <span>{feat}</span>
                     </div>
                   ))}
@@ -213,9 +216,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </button>
               </div>
 
-              <p className="text-center text-[11px] text-[#64748b]">
-                Free replacement within 7 days · Express Shipping Available
-              </p>
+              <div className="pt-2 text-center text-[10px] text-[#9ca3af] border-t border-[#f1f5f9] leading-tight">
+                <span>Net Qty: 1 N · Country of Origin: {product.platform === 'Xbox' || product.platform === 'PS5' ? 'Imported' : 'India'} · Marketed by DJN Tech, Pune · Grievance: grievance@djntech.in</span>
+              </div>
             </div>
 
           </div>
@@ -360,7 +363,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     <p className="text-xs font-bold text-[#212121] mt-1">{rev.title}</p>
                     <p className="text-xs text-[#64748b] mt-0.5">{rev.comment}</p>
                     <p className="text-[11px] text-[#212121] font-semibold mt-2">
-                      {rev.userName} <span className="text-[#10b981] font-normal">✓ Verified Buyer</span>
+                      {rev.userName} <span className="text-emerald-600 font-medium">· Verified Buyer</span>
                     </p>
                   </div>
                 ))}
@@ -375,7 +378,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             <div className="text-center mb-6">
               <h3 className="text-xl font-bold text-[#212121] font-display">Related products</h3>
               <p className="text-xs text-[#64748b] mt-0.5">
-                You may also like these popular picks! Explore our related products and find more styles you'll love
+                Popular games and accessories recommended for this console.
               </p>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
