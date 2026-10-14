@@ -456,8 +456,25 @@ export async function verifyAdminCredentials(
 
   const inputHash = await hashPassword(cleanPassword);
 
+  // 1. Try secure database RPC if available
   try {
-    // 1. Query Supabase database
+    const { data, error } = await (supabase as any).rpc('verify_admin_login', {
+      p_username: cleanUsername,
+      p_hash: inputHash,
+    });
+    if (!error && data && data.success) {
+      return {
+        success: true,
+        user: data.user,
+        role: data.role || 'superadmin',
+      };
+    }
+  } catch (err) {
+    // Continue to standard verification
+  }
+
+  // 2. Query Supabase admin_users table (if read permissions exist)
+  try {
     const { data, error } = await supabase
       .from('admin_users')
       .select('*')
@@ -466,11 +483,7 @@ export async function verifyAdminCredentials(
 
     if (!error && data && data.length > 0) {
       const user = data[0];
-      const match =
-        user.password_hash === inputHash ||
-        user.password_hash === cleanPassword;
-
-      if (match) {
+      if (user.password_hash === inputHash) {
         // Record last login
         supabase
           .from('admin_users')
@@ -488,48 +501,39 @@ export async function verifyAdminCredentials(
       }
     }
   } catch (err) {
-    console.warn('[Supabase Auth] Fallback verification:', err);
+    // Continue to hash verification
   }
 
-  // 2. Check locally saved custom credentials
-  try {
-    const saved = localStorage.getItem('djn_admin_custom_creds');
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      if (
-        parsed.username?.toLowerCase() === cleanUsername &&
-        (parsed.passwordHash === inputHash || parsed.password === cleanPassword)
-      ) {
-        return { success: true, user: parsed.username, role: 'superadmin' };
-      }
-    }
-  } catch (e) {
-    console.error(e);
+  // 3. Cryptographic SHA-256 hash verification (zero plain text credentials stored in codebase)
+  const SECURE_ADMIN_HASHES: Record<string, { hash: string; role: string; user: string }> = {
+    admin: {
+      hash: 'd9fe582e7a47be0fdef8679f2a732521296a8aa2b266d07b78e6f0d469efd131',
+      role: 'superadmin',
+      user: 'admin',
+    },
+    djntech: {
+      hash: 'd9fe582e7a47be0fdef8679f2a732521296a8aa2b266d07b78e6f0d469efd131',
+      role: 'superadmin',
+      user: 'admin',
+    },
+    'djntechofficial@gmail.com': {
+      hash: 'd9fe582e7a47be0fdef8679f2a732521296a8aa2b266d07b78e6f0d469efd131',
+      role: 'superadmin',
+      user: 'admin',
+    },
+    aa: {
+      hash: '34ff3bb3732ca5436824c18fc789ff0507ae31807ca3f782b7d7740235d5d719',
+      role: 'admin',
+      user: 'aa',
+    },
+  };
+
+  const account = SECURE_ADMIN_HASHES[cleanUsername];
+  if (account && account.hash === inputHash) {
+    return { success: true, user: account.user, role: account.role };
   }
 
-  // 3. Built-in secure default credentials
-  // Profile 1: admin / DJNtech@2026 (or emergency PIN 8446)
-  const isDefaultAdmin =
-    (cleanUsername === 'admin' ||
-      cleanUsername === 'djntech' ||
-      cleanUsername === 'djntechofficial@gmail.com') &&
-    (cleanPassword === 'DJNtech@2026' ||
-      cleanPassword === '8446' ||
-      cleanPassword === 'admin123');
-
-  // Profile 2: aa / 5522
-  const isProfileAA = cleanUsername === 'aa' && cleanPassword === '5522';
-
-  if (isDefaultAdmin) {
-    return { success: true, user: cleanUsername, role: 'superadmin' };
-  }
-
-  if (isProfileAA) {
-    return { success: true, user: 'aa', role: 'admin' };
-  }
-
-  return { success: false, message: 'Invalid username or password. Check credentials or try default.' };
-
+  return { success: false, message: 'Invalid username or password. Access denied.' };
 }
 
 /**

@@ -32,14 +32,12 @@ export const AdminPinModal: React.FC<AdminPinModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [capsLockActive, setCapsLockActive] = useState(false);
-  const [showHelperCredentials, setShowHelperCredentials] = useState(false);
 
   // Reset form state on modal open
   useEffect(() => {
     if (isOpen) {
       setErrorMessage(null);
       setIsSubmitting(false);
-      // Pre-fill username if remembered
       const savedUser = localStorage.getItem('djn_admin_saved_username');
       if (savedUser) {
         setUsername(savedUser);
@@ -97,17 +95,6 @@ export const AdminPinModal: React.FC<AdminPinModalProps> = ({
       setIsSubmitting(false);
       setErrorMessage(err?.message || 'Connection error. Please try again.');
     }
-  };
-
-  const handleFillProfile = (user: 'admin' | 'aa') => {
-    if (user === 'admin') {
-      setUsername('admin');
-      setPassword('DJNtech@2026');
-    } else {
-      setUsername('aa');
-      setPassword('5522');
-    }
-    setErrorMessage(null);
   };
 
 
@@ -247,8 +234,8 @@ export const AdminPinModal: React.FC<AdminPinModalProps> = ({
               </div>
             )}
 
-            {/* Remember & Quick Help */}
-            <div className="flex items-center justify-between text-xs pt-1">
+            {/* Remember Workstation Option */}
+            <div className="flex items-center text-xs pt-1">
               <label className="flex items-center gap-2 text-slate-600 dark:text-slate-400 cursor-pointer select-none">
                 <input
                   type="checkbox"
@@ -258,65 +245,7 @@ export const AdminPinModal: React.FC<AdminPinModalProps> = ({
                 />
                 <span>Remember on this device</span>
               </label>
-
-              <button
-                type="button"
-                onClick={() => setShowHelperCredentials(!showHelperCredentials)}
-                className="text-blue-600 dark:text-blue-400 hover:underline font-medium cursor-pointer"
-              >
-                {showHelperCredentials ? 'Hide setup hint' : 'Setup credentials?'}
-              </button>
             </div>
-
-            {/* Helper Credentials Box */}
-            {showHelperCredentials && (
-              <div className="p-3.5 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300 space-y-2.5 animate-fadeIn">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-slate-800 dark:text-slate-200">
-                    Configured Administrator Profiles:
-                  </span>
-                  <span className="text-[10px] text-slate-400">Click fill to test</span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 text-[11px] font-mono">
-                  {/* Profile 1 */}
-                  <div className="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-sans text-[10px] font-bold text-slate-500 uppercase">Profile 1</span>
-                      <button
-                        type="button"
-                        onClick={() => handleFillProfile('admin')}
-                        className="px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 text-[10px] font-bold hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors cursor-pointer"
-                      >
-                        Fill
-                      </button>
-                    </div>
-                    <div>User: <strong className="text-slate-900 dark:text-white">admin</strong></div>
-                    <div>Pass: <strong className="text-slate-900 dark:text-white">DJNtech@2026</strong></div>
-                  </div>
-
-                  {/* Profile 2 */}
-                  <div className="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-sans text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase">Profile 2</span>
-                      <button
-                        type="button"
-                        onClick={() => handleFillProfile('aa')}
-                        className="px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-300 text-[10px] font-bold hover:bg-emerald-100 dark:hover:bg-emerald-900 transition-colors cursor-pointer"
-                      >
-                        Fill
-                      </button>
-                    </div>
-                    <div>User: <strong className="text-slate-900 dark:text-white">aa</strong></div>
-                    <div>Pass: <strong className="text-slate-900 dark:text-white">5522</strong></div>
-                  </div>
-                </div>
-
-                <p className="text-[10px] text-slate-400 leading-tight">
-                  Both profiles are registered in your Supabase database <code className="bg-slate-200 dark:bg-slate-800 px-1 rounded">admin_users</code> table with SHA-256 encryption.
-                </p>
-              </div>
-            )}
 
 
             {/* Submit Button */}

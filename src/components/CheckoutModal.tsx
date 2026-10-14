@@ -380,14 +380,14 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           rzp.open();
           return;
         } catch (err: any) {
-          console.warn('Razorpay popup error, proceeding with test checkout simulation', err);
+          console.error('Razorpay initialization error:', err);
         }
       }
 
-      // If Razorpay script unavailable or test key blocked by network, simulate successful test gateway payment
-      setTimeout(() => {
-        finalizeOrder(`rzp_test_${Date.now()}`, 'razorpay');
-      }, 1200);
+      setIsSubmitting(false);
+      setErrorMessage(
+        'Unable to initialize Razorpay payment gateway. Please select Cash on Delivery or contact DJN Tech support.'
+      );
       return;
     }
 
