@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { PRODUCTS } from './data/products';
-import { Product, CartItem, Category, Platform, Condition, Order, ProductReview, SiteConfig } from './types/store';
+import { AuthUser, Product, CartItem, Category, Platform, Condition, Order, ProductReview, SiteConfig } from './types/store';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ProductCard } from './components/ProductCard';
@@ -28,11 +28,16 @@ const WishlistDrawer = React.lazy(() => import('./components/WishlistDrawer').th
 const CheckoutModal = React.lazy(() => import('./components/CheckoutModal').then(m => ({ default: m.CheckoutModal })));
 const OrderConfirmationModal = React.lazy(() => import('./components/OrderConfirmationModal').then(m => ({ default: m.OrderConfirmationModal })));
 const PolicyModal = React.lazy(() => import('./components/PolicyModal').then(m => ({ default: m.PolicyModal })));
+const AuthModal = React.lazy(() => import('./components/AuthModal').then(m => ({ default: m.AuthModal })));
+const UserOrdersModal = React.lazy(() => import('./components/UserOrdersModal').then(m => ({ default: m.UserOrdersModal })));
 import { DEFAULT_SITE_CONFIG } from './data/siteConfig';
 import {
   fetchProductsFromDB,
   fetchSiteConfigFromDB,
   fetchOrdersFromDB,
+  fetchUserOrdersFromDB,
+  signOutUser,
+  supabase,
   createOrderInDB,
   upsertProductToDB,
 } from './lib/supabase';
@@ -212,6 +217,104 @@ export default function App() {
 
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  // User Google Authentication State
+  const [authUser, setAuthUser] = useState<AuthUser | null>(() => {
+    const saved = localStorage.getItem('djn_auth_user');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  });
+
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isUserOrdersOpen, setIsUserOrdersOpen] = useState(false);
+  const [userOrders, setUserOrders] = useState<Order[]>([]);
+
+  // Supabase Auth Session listener
+  useEffect(() => {
+    // 1. Initial session check
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        const u = session.user;
+        const parsed: AuthUser = {
+          id: u.id,
+          email: (u.email || '').toLowerCase(),
+          fullName: u.user_metadata?.full_name || u.user_metadata?.name || u.email?.split('@')[0] || 'Customer',
+          avatarUrl: u.user_metadata?.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(u.email || 'Customer')}&backgroundColor=0070D1`,
+          provider: 'google',
+        };
+        setAuthUser(parsed);
+        localStorage.setItem('djn_auth_user', JSON.stringify(parsed));
+      }
+    });
+
+    // 2. Auth changes subscription (e.g. Google OAuth redirect)
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        const u = session.user;
+        const parsed: AuthUser = {
+          id: u.id,
+          email: (u.email || '').toLowerCase(),
+          fullName: u.user_metadata?.full_name || u.user_metadata?.name || u.email?.split('@')[0] || 'Customer',
+          avatarUrl: u.user_metadata?.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(u.email || 'Customer')}&backgroundColor=0070D1`,
+          provider: 'google',
+        };
+        setAuthUser(parsed);
+        localStorage.setItem('djn_auth_user', JSON.stringify(parsed));
+        showToast(`Welcome, ${parsed.fullName}!`);
+      } else if (event === 'SIGNED_OUT') {
+        setAuthUser(null);
+        localStorage.removeItem('djn_auth_user');
+        setUserOrders([]);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  // Fetch orders for this customer from Supabase whenever authUser or orders change
+  useEffect(() => {
+    if (authUser?.email) {
+      const email = authUser.email.trim().toLowerCase();
+      fetchUserOrdersFromDB(email).then((fetched) => {
+        // Merge with in-memory placed orders
+        const localMatches = orders.filter(
+          (o) => (o.customer?.email || '').trim().toLowerCase() === email
+        );
+        const combined = [...localMatches];
+        for (const fo of fetched) {
+          if (!combined.some((c) => c.id === fo.id)) {
+            combined.push(fo);
+          }
+        }
+        setUserOrders(combined);
+      });
+    } else {
+      setUserOrders([]);
+    }
+  }, [authUser?.email, orders]);
+
+  const handleLoginSuccess = (user: AuthUser) => {
+    setAuthUser(user);
+    setIsAuthModalOpen(false);
+    showToast(`Signed in as ${user.fullName}`);
+  };
+
+  const handleSignOutUser = async () => {
+    await signOutUser();
+    setAuthUser(null);
+    setUserOrders([]);
+    showToast('Signed out successfully');
+  };
+
   useEffect(() => {
     localStorage.setItem('djn_cart', JSON.stringify(cart));
   }, [cart]);
@@ -319,10 +422,14 @@ export default function App() {
     showToast(`Added "${product.name}" to cart`);
   };
 
-  // Instant Buy Now
+  // Instant Buy Now (requires login)
   const handleBuyNow = (product: Product, condition?: Condition) => {
     handleAddToCart(product, condition);
-    setIsCheckoutOpen(true);
+    if (!authUser) {
+      setIsAuthModalOpen(true);
+    } else {
+      setIsCheckoutOpen(true);
+    }
   };
 
   // Update Cart Quantity
@@ -357,6 +464,9 @@ export default function App() {
   const handleOrderSuccess = (order: Order) => {
     setCompletedOrder(order);
     setOrders((prev) => [order, ...prev]);
+    if (authUser) {
+      setUserOrders((prev) => [order, ...prev]);
+    }
     setCart([]);
     setIsCheckoutOpen(false);
 
@@ -576,6 +686,10 @@ export default function App() {
         onToggleTheme={handleToggleTheme}
         onOpenAdmin={handleOpenAdmin}
         siteConfig={siteConfig}
+        authUser={authUser}
+        onOpenAuth={() => setIsAuthModalOpen(true)}
+        onOpenUserOrders={() => setIsUserOrdersOpen(true)}
+        userOrdersCount={userOrders.length}
       />
 
       {/* Main Content Area: Conditional Routing Based on currentPage */}
@@ -768,7 +882,15 @@ export default function App() {
             items={cart}
             onUpdateQuantity={handleUpdateQuantity}
             onRemoveItem={handleRemoveFromCart}
-            onProceedToCheckout={() => setIsCheckoutOpen(true)}
+            onProceedToCheckout={() => {
+              if (!authUser) {
+                setIsAuthModalOpen(true);
+              } else {
+                setIsCheckoutOpen(true);
+              }
+            }}
+            authUser={authUser}
+            onRequestLogin={() => setIsAuthModalOpen(true)}
           />
         </React.Suspense>
       )}
@@ -800,6 +922,8 @@ export default function App() {
             total={cartTotal}
             onOrderSuccess={handleOrderSuccess}
             siteConfig={siteConfig}
+            authUser={authUser}
+            onRequestLogin={() => setIsAuthModalOpen(true)}
           />
         </React.Suspense>
       )}
@@ -810,6 +934,31 @@ export default function App() {
           <OrderConfirmationModal
             order={completedOrder}
             onClose={() => setCompletedOrder(null)}
+          />
+        </React.Suspense>
+      )}
+
+      {/* Google Authentication Modal */}
+      {isAuthModalOpen && (
+        <React.Suspense fallback={null}>
+          <AuthModal
+            isOpen={isAuthModalOpen}
+            onClose={() => setIsAuthModalOpen(false)}
+            onLoginSuccess={handleLoginSuccess}
+          />
+        </React.Suspense>
+      )}
+
+      {/* User Account & My Orders Modal */}
+      {isUserOrdersOpen && authUser && (
+        <React.Suspense fallback={null}>
+          <UserOrdersModal
+            isOpen={isUserOrdersOpen}
+            onClose={() => setIsUserOrdersOpen(false)}
+            user={authUser}
+            orders={userOrders}
+            onSignOut={handleSignOutUser}
+            onContinueShopping={() => setIsUserOrdersOpen(false)}
           />
         </React.Suspense>
       )}

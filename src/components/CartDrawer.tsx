@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, ShieldCheck, Check } from 'lucide-react';
-import { CartItem } from '../types/store';
+import { AuthUser, CartItem } from '../types/store';
 import { ProductVisualizer } from './ProductVisualizer';
 
 interface CartDrawerProps {
@@ -11,6 +11,8 @@ interface CartDrawerProps {
   onUpdateQuantity: (productId: string, quantity: number) => void;
   onRemoveItem: (productId: string) => void;
   onProceedToCheckout: () => void;
+  authUser?: AuthUser | null;
+  onRequestLogin?: () => void;
 }
 
 export const CartDrawer: React.FC<CartDrawerProps> = ({
@@ -20,6 +22,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   onUpdateQuantity,
   onRemoveItem,
   onProceedToCheckout,
+  authUser,
+  onRequestLogin,
 }) => {
   // Lock background body scroll when cart is open to prevent underlying page from scrolling
   useEffect(() => {
@@ -198,14 +202,24 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             </div>
 
             {/* Checkout Action Pill Button */}
+            {!authUser && (
+              <div className="flex items-center justify-center gap-1.5 py-1 text-[11px] font-semibold text-blue-600 dark:text-blue-400">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>Google sign-in required before checkout</span>
+              </div>
+            )}
             <button
               onClick={() => {
                 onClose();
-                onProceedToCheckout();
+                if (!authUser && onRequestLogin) {
+                  onRequestLogin();
+                } else {
+                  onProceedToCheckout();
+                }
               }}
               className="w-full py-3 bg-[#212121] dark:bg-blue-600 hover:bg-[#333333] dark:hover:bg-blue-700 text-white font-bold rounded-full text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>Proceed to Checkout</span>
+              <span>{authUser ? 'Proceed to Checkout' : 'Sign in with Google to Checkout'}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
 

@@ -116,6 +116,7 @@ export function mapRowToOrder(row: any): Order {
     status: row.status || 'Confirmed',
     estimatedDelivery: row.estimated_delivery || '3-5 Business Days',
     paymentId: row.payment_id || undefined,
+    userId: row.user_id || undefined,
   };
 }
 
@@ -325,6 +326,68 @@ export async function createOrderInDB(order: Order): Promise<boolean> {
     return true;
   } catch (err) {
     console.error('[Supabase] Failed to save order to Supabase:', err);
+    return false;
+  }
+}
+
+/**
+ * Fetch orders for a specific authenticated user by their email
+ */
+export async function fetchUserOrdersFromDB(email: string): Promise<Order[]> {
+  try {
+    if (!email || !email.trim()) return [];
+    const cleanEmail = email.trim().toLowerCase();
+
+    const { data, error } = await supabase
+      .from('orders')
+      .select('*')
+      .ilike('customer_email', cleanEmail)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.warn('[Supabase] Failed to fetch user orders by email:', error.message);
+      return [];
+    }
+
+    return (data || []).map(mapRowToOrder);
+  } catch (err) {
+    console.warn('[Supabase] Error fetching user orders:', err);
+    return [];
+  }
+}
+
+/**
+ * Sign in using Supabase Google OAuth
+ */
+export async function signInWithGoogleOAuth(): Promise<{ success: boolean; url?: string; error?: string }> {
+  try {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin,
+      },
+    });
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+    return { success: true, url: data.url };
+  } catch (err: any) {
+    return { success: false, error: err?.message || 'Failed to initiate Google sign in' };
+  }
+}
+
+/**
+ * Sign out current user
+ */
+export async function signOutUser(): Promise<boolean> {
+  try {
+    await supabase.auth.signOut();
+    localStorage.removeItem('djn_auth_user');
+    return true;
+  } catch (err) {
+    console.error('[Supabase] Sign out error:', err);
+    localStorage.removeItem('djn_auth_user');
     return false;
   }
 }

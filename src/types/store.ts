@@ -51,6 +51,14 @@ export interface CartItem {
   selectedCondition: Condition;
 }
 
+export interface AuthUser {
+  id: string;
+  email: string;
+  fullName: string;
+  avatarUrl?: string;
+  provider: 'google' | 'demo';
+}
+
 export interface OrderCustomerInfo {
   fullName: string;
   phone: string;
@@ -62,6 +70,7 @@ export interface OrderCustomerInfo {
   paymentMethod: 'cod' | 'upi' | 'card' | 'razorpay';
   paymentId?: string;
   notes?: string;
+  userId?: string;
 }
 
 export interface Order {
@@ -76,6 +85,7 @@ export interface Order {
   status: 'Confirmed' | 'Dispatched' | 'Out for Delivery' | 'Delivered';
   estimatedDelivery: string;
   paymentId?: string;
+  userId?: string;
 }
 
 export interface TradeInItem {

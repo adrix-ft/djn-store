@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import {
   X,
   ShieldCheck,
@@ -17,7 +18,8 @@ import {
   Sparkles,
   Lock,
 } from 'lucide-react';
-import { CartItem, Order, OrderCustomerInfo, SiteConfig } from '../types/store';
+import { AuthUser, CartItem, Order, OrderCustomerInfo, SiteConfig } from '../types/store';
+import { GoogleLogoIcon } from './GoogleLogoIcon';
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -29,6 +31,8 @@ interface CheckoutModalProps {
   total: number;
   onOrderSuccess: (order: Order) => void;
   siteConfig?: SiteConfig;
+  authUser?: AuthUser | null;
+  onRequestLogin?: () => void;
 }
 
 export const INDIAN_STATES = [
@@ -145,18 +149,33 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   total,
   onOrderSuccess,
   siteConfig,
+  authUser,
+  onRequestLogin,
 }) => {
   const [formData, setFormData] = useState<OrderCustomerInfo>({
-    fullName: '',
+    fullName: authUser?.fullName || '',
     phone: '',
-    email: '',
+    email: authUser?.email || '',
     address: '',
     city: '',
     state: 'Maharashtra',
     pincode: '',
     paymentMethod: 'razorpay',
     notes: '',
+    userId: authUser?.id,
   });
+
+  // Sync with authUser when user logs in
+  useEffect(() => {
+    if (authUser) {
+      setFormData((prev) => ({
+        ...prev,
+        fullName: prev.fullName || authUser.fullName || '',
+        email: authUser.email || prev.email || '',
+        userId: authUser.id,
+      }));
+    }
+  }, [authUser]);
 
   // Track touched fields for instant validation errors
   const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -293,8 +312,11 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       discount,
       shipping,
       total,
+      userId: authUser?.id,
       customer: {
         ...formData,
+        userId: authUser?.id,
+        email: authUser?.email || formData.email,
         paymentMethod: method || formData.paymentMethod,
         paymentId: paymentId || undefined,
       },
@@ -314,6 +336,12 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   // Submit Handler
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!authUser) {
+      setErrorMessage('Google Sign-In is required to place an order.');
+      if (onRequestLogin) onRequestLogin();
+      return;
+    }
 
     // Mark all fields touched to show all errors
     setTouched({
@@ -392,7 +420,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     }
   };
 
-  return (
+  const modalContent = (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs overflow-y-auto flex items-start justify-center p-3 sm:p-6 animate-in fade-in duration-200">
       <div className="relative w-full max-w-3xl bg-white dark:bg-[#111827] border border-[#e5e7eb] dark:border-[#1e293b] rounded-2xl shadow-2xl overflow-hidden my-6 text-[#212121] dark:text-gray-100">
         {/* Modal Top Header */}
@@ -426,18 +454,85 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
-          <div className="p-6 grid grid-cols-1 md:grid-cols-12 gap-8 text-xs text-[#424242] dark:text-gray-300">
-            {/* Left Column: Delivery Details & Payment */}
-            <div className="md:col-span-7 space-y-4">
-              <div className="flex items-center justify-between pb-1 border-b border-gray-100 dark:border-gray-800">
-                <h3 className="font-bold text-[#212121] dark:text-white text-sm">
-                  1. Customer & Delivery Address
-                </h3>
-                <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5" /> Verified Details
+        {!authUser ? (
+          <div className="p-8 sm:p-12 text-center max-w-lg mx-auto space-y-6">
+            <div className="w-16 h-16 rounded-3xl bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 flex items-center justify-center mx-auto shadow-md">
+              <GoogleLogoIcon className="w-9 h-9" />
+            </div>
+
+            <div className="space-y-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                Google Login Required to Order
+              </span>
+              <h3 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">
+                Sign in with Google to Place Order
+              </h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                To guarantee priority delivery, activate your 7-day replacement warranty, and provide real-time order tracking updates on WhatsApp and Email, please sign in with your Google account.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={onRequestLogin}
+              className="w-full py-4 px-6 rounded-2xl bg-white dark:bg-[#1a2333] border-2 border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-3 cursor-pointer group active:scale-[0.99]"
+            >
+              <GoogleLogoIcon className="w-6 h-6 group-hover:scale-110 transition-transform" />
+              <span className="text-sm font-black text-gray-900 dark:text-white">
+                Continue with Google
+              </span>
+            </button>
+
+            <div className="grid grid-cols-2 gap-3 text-left pt-2">
+              <div className="p-3 rounded-xl bg-gray-50 dark:bg-[#161f30] border border-gray-100 dark:border-gray-800">
+                <p className="text-[11px] font-bold text-gray-800 dark:text-gray-200">Live Order Updates</p>
+                <p className="text-[10px] text-gray-400 mt-0.5">Track shipment milestone stages from packaging to delivery.</p>
+              </div>
+              <div className="p-3 rounded-xl bg-gray-50 dark:bg-[#161f30] border border-gray-100 dark:border-gray-800">
+                <p className="text-[11px] font-bold text-gray-800 dark:text-gray-200">Fast Autofill</p>
+                <p className="text-[10px] text-gray-400 mt-0.5">Instantly sync your name and verified email address.</p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={onClose}
+              className="text-xs text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 font-semibold cursor-pointer"
+            >
+              ← Return to Cart
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            {/* Authenticated Account Bar */}
+            <div className="mx-6 mt-4 p-3 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 flex items-center justify-between text-xs text-blue-900 dark:text-blue-200">
+              <div className="flex items-center gap-2.5">
+                <GoogleLogoIcon className="w-4 h-4 shrink-0" />
+                <span>
+                  Ordering as <strong>{authUser.fullName}</strong> ({authUser.email})
                 </span>
               </div>
+              <button
+                type="button"
+                onClick={onRequestLogin}
+                className="text-blue-600 dark:text-blue-400 font-bold hover:underline cursor-pointer"
+              >
+                Switch
+              </button>
+            </div>
+
+            <div className="p-6 grid grid-cols-1 md:grid-cols-12 gap-8 text-xs text-[#424242] dark:text-gray-300">
+              {/* Left Column: Delivery Details & Payment */}
+              <div className="md:col-span-7 space-y-4">
+                <div className="flex items-center justify-between pb-1 border-b border-gray-100 dark:border-gray-800">
+                  <h3 className="font-bold text-[#212121] dark:text-white text-sm">
+                    1. Customer & Delivery Address
+                  </h3>
+                  <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5" /> Verified Details
+                  </span>
+                </div>
 
               {/* Full Name */}
               <div>
@@ -792,7 +887,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             </div>
           </div>
         </form>
+        )}
       </div>
     </div>
   );
+
+  return typeof document !== 'undefined' ? createPortal(modalContent, document.body) : modalContent;
 };

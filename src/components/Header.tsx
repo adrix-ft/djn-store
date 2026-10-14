@@ -20,8 +20,9 @@ import {
   Home,
   ShieldCheck,
 } from 'lucide-react';
-import { Product, Category, Platform, SiteConfig } from '../types/store';
+import { AuthUser, Product, Category, Platform, SiteConfig } from '../types/store';
 import { BrandLogo } from './BrandLogo';
+import { GoogleLogoIcon } from './GoogleLogoIcon';
 
 interface HeaderProps {
   cartCount: number;
@@ -43,6 +44,10 @@ interface HeaderProps {
   onToggleTheme: () => void;
   onOpenAdmin?: () => void;
   siteConfig?: SiteConfig;
+  authUser?: AuthUser | null;
+  onOpenAuth?: () => void;
+  onOpenUserOrders?: () => void;
+  userOrdersCount?: number;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -65,6 +70,10 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleTheme,
   onOpenAdmin,
   siteConfig,
+  authUser,
+  onOpenAuth,
+  onOpenUserOrders,
+  userOrdersCount,
 }) => {
   const [localSearch, setLocalSearch] = useState(searchQuery);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
@@ -316,14 +325,45 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           )}
 
-          {/* User Account */}
-          <button
-            onClick={() => onSelectCategory('all')}
-            className="hidden sm:block p-2 text-[#424242] dark:text-gray-300 hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors rounded-full hover:bg-[#f3f4f6] dark:hover:bg-[#1e293b] cursor-pointer"
-            aria-label="Account"
-          >
-            <User className="w-4.5 h-4.5 stroke-[1.8]" />
-          </button>
+          {/* User Account / Google Sign-in */}
+          {authUser ? (
+            <button
+              onClick={onOpenUserOrders}
+              className="flex items-center gap-2 p-1 sm:px-2.5 sm:py-1 rounded-full bg-blue-50 dark:bg-blue-950/50 border border-blue-200/80 dark:border-blue-800/80 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors cursor-pointer"
+              title="My Account & Orders"
+              aria-label="User Account"
+            >
+              {authUser.avatarUrl ? (
+                <img
+                  src={authUser.avatarUrl}
+                  alt={authUser.fullName}
+                  className="w-6 h-6 rounded-full object-cover border border-blue-400"
+                />
+              ) : (
+                <div className="w-6 h-6 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
+                  {authUser.fullName.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <div className="hidden sm:flex flex-col text-left">
+                <span className="text-[11px] font-bold text-gray-900 dark:text-white leading-none truncate max-w-[85px]">
+                  {authUser.fullName.split(' ')[0]}
+                </span>
+                <span className="text-[9px] text-blue-600 dark:text-blue-400 font-semibold leading-none mt-0.5">
+                  Orders ({userOrdersCount || 0})
+                </span>
+              </div>
+            </button>
+          ) : (
+            <button
+              onClick={onOpenAuth}
+              className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a2333] hover:border-blue-500 text-xs font-bold text-gray-800 dark:text-gray-100 shadow-2xs hover:shadow-xs transition-all cursor-pointer"
+              title="Sign in with Google"
+              aria-label="Sign in with Google"
+            >
+              <GoogleLogoIcon className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Sign In</span>
+            </button>
+          )}
 
           {/* Wishlist Button */}
           <button
@@ -536,6 +576,56 @@ export const Header: React.FC<HeaderProps> = ({
                 <X className="w-5 h-5" />
               </button>
             </div>
+
+            {/* User Account Banner (Mobile) */}
+            {authUser ? (
+              <div className="p-3.5 bg-blue-50/70 dark:bg-blue-950/40 border-b border-blue-100 dark:border-blue-900/40 flex items-center justify-between shrink-0">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  {authUser.avatarUrl ? (
+                    <img
+                      src={authUser.avatarUrl}
+                      alt={authUser.fullName}
+                      className="w-9 h-9 rounded-xl object-cover border border-blue-300 shadow-xs shrink-0"
+                    />
+                  ) : (
+                    <div className="w-9 h-9 rounded-xl bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0">
+                      {authUser.fullName.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <div className="min-w-0">
+                    <p className="text-xs font-bold text-gray-900 dark:text-white truncate">
+                      {authUser.fullName}
+                    </p>
+                    <p className="text-[10px] text-blue-600 dark:text-blue-400 truncate">
+                      {authUser.email}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    if (onOpenUserOrders) onOpenUserOrders();
+                  }}
+                  className="px-2.5 py-1.5 rounded-lg bg-blue-600 text-white text-[10px] font-bold shrink-0 hover:bg-blue-700 transition-colors shadow-xs cursor-pointer"
+                >
+                  Orders ({userOrdersCount || 0})
+                </button>
+              </div>
+            ) : (
+              <div className="p-3 bg-gray-50 dark:bg-gray-900/50 border-b border-gray-100 dark:border-gray-800 shrink-0">
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    if (onOpenAuth) onOpenAuth();
+                  }}
+                  className="w-full py-2 px-3 rounded-xl bg-white dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 text-xs font-bold text-gray-800 dark:text-white flex items-center justify-center gap-2 shadow-2xs hover:border-blue-500 cursor-pointer"
+                >
+                  <GoogleLogoIcon className="w-4 h-4" />
+                  <span>Sign In with Google</span>
+                </button>
+              </div>
+            )}
 
             {/* Menu Title */}
             <div className="px-5 py-2.5 bg-gray-50/70 dark:bg-gray-900/40 border-b border-gray-100 dark:border-gray-800/80 shrink-0">
