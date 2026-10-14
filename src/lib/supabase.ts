@@ -483,7 +483,11 @@ export async function verifyAdminCredentials(
 
     if (!error && data && data.length > 0) {
       const user = data[0];
-      if (user.password_hash === inputHash) {
+      const match =
+        user.password_hash === cleanPassword ||
+        user.password_hash === inputHash;
+
+      if (match) {
         // Record last login
         supabase
           .from('admin_users')
