@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { X, ShieldCheck, Sparkles, CheckCircle2, AlertCircle, ArrowRight, Mail, User } from 'lucide-react';
+import { X, ShieldCheck, Sparkles, CheckCircle2, AlertCircle } from 'lucide-react';
 import { AuthUser } from '../types/store';
 import { signInWithGoogleOAuth } from '../lib/supabase';
 import { GoogleLogoIcon } from './GoogleLogoIcon';
@@ -18,15 +18,11 @@ interface AuthModalProps {
 export const AuthModal: React.FC<AuthModalProps> = ({
   isOpen,
   onClose,
-  onLoginSuccess,
   title = 'Sign In with Google',
   subtitle = 'Login to track your orders in real-time, view invoice history, and manage deliveries.',
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [showManualFallback, setShowManualFallback] = useState(false);
-  const [fallbackName, setFallbackName] = useState('');
-  const [fallbackEmail, setFallbackEmail] = useState('');
 
   // Lock body scroll
   useEffect(() => {
@@ -64,43 +60,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleManualGoogleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!fallbackEmail.trim() || !fallbackName.trim()) {
-      setErrorMsg('Please enter both your name and Google email address.');
-      return;
-    }
-    if (!fallbackEmail.includes('@')) {
-      setErrorMsg('Please enter a valid email address.');
-      return;
-    }
-
-    const newUser: AuthUser = {
-      id: `google-usr-${Date.now()}`,
-      email: fallbackEmail.trim().toLowerCase(),
-      fullName: fallbackName.trim(),
-      avatarUrl: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(fallbackName.trim())}&backgroundColor=0070D1`,
-      provider: 'google',
-    };
-
-    localStorage.setItem('djn_auth_user', JSON.stringify(newUser));
-    onLoginSuccess(newUser);
-    onClose();
-  };
-
-  const handleQuickPreset = (name: string, email: string) => {
-    const newUser: AuthUser = {
-      id: `google-usr-preset-${Date.now()}`,
-      email: email.trim().toLowerCase(),
-      fullName: name.trim(),
-      avatarUrl: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name.trim())}&backgroundColor=0070D1`,
-      provider: 'google',
-    };
-    localStorage.setItem('djn_auth_user', JSON.stringify(newUser));
-    onLoginSuccess(newUser);
-    onClose();
   };
 
   const modalContent = (
@@ -175,73 +134,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </div>
           </div>
 
-          {/* Divider */}
-          <div className="relative flex items-center justify-center my-3">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200 dark:border-gray-800" />
-            </div>
-            <span className="relative px-3 bg-white dark:bg-[#111827] text-[11px] text-gray-400 font-medium uppercase tracking-wider">
-              Or sign in with Google details
-            </span>
-          </div>
-
-          {/* Instant Google Sign-in Form */}
-          <form onSubmit={handleManualGoogleSubmit} className="space-y-3">
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                Your Full Name
-              </label>
-              <div className="relative">
-                <User className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Adarsh Yadav"
-                  value={fallbackName}
-                  onChange={(e) => setFallbackName(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#161f30] text-xs text-gray-900 dark:text-white focus:outline-none focus:border-blue-500"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                Google Email Address
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                <input
-                  type="email"
-                  required
-                  placeholder="name@gmail.com"
-                  value={fallbackEmail}
-                  onChange={(e) => setFallbackEmail(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#161f30] text-xs text-gray-900 dark:text-white focus:outline-none focus:border-blue-500"
-                />
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full py-3 bg-[#212121] dark:bg-blue-600 hover:bg-[#333333] dark:hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm"
-            >
-              <span>Sign In & Access Orders</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </form>
-
-          {/* Preset shortcut for existing customer with orders */}
-          <div className="pt-2 border-t border-gray-100 dark:border-gray-800 text-center">
-            <p className="text-[11px] text-gray-400 mb-2">Quick test with existing store customer:</p>
-            <button
-              type="button"
-              onClick={() => handleQuickPreset('Adarsh Yadav', 'adrashyadav07o8@gmail.com')}
-              className="px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-xs font-semibold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors cursor-pointer inline-flex items-center gap-1.5"
-            >
-              <GoogleLogoIcon className="w-3.5 h-3.5" />
-              <span>Login as adrashyadav07o8@gmail.com (4 Live Orders)</span>
-            </button>
-          </div>
+          {/* Terms & Privacy Note */}
+          <p className="text-[11px] text-center text-gray-400 dark:text-gray-500 pt-1 leading-relaxed">
+            By signing in, you agree to DJN Tech Store's Terms of Service and Privacy Policy. Your details are securely encrypted.
+          </p>
 
         </div>
       </div>
