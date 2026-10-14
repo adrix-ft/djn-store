@@ -703,19 +703,19 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             </div>
           </div>
 
-          {/* KPI 4: Active Store Promotions */}
+          {/* KPI 4: Shipping Policy */}
           <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs relative overflow-hidden group hover:border-purple-500/40 transition-colors">
             <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-2">
-              <span className="text-xs font-semibold uppercase tracking-wider">Active Promo Code</span>
+              <span className="text-xs font-semibold uppercase tracking-wider">Free Shipping</span>
               <div className="w-8 h-8 rounded-lg bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center">
-                <Tag className="w-4 h-4" />
+                <Truck className="w-4 h-4" />
               </div>
             </div>
             <div className="text-xl sm:text-2xl font-black text-purple-600 dark:text-purple-400 tracking-tight">
-              {siteConfig.promoCode}
+              Above ₹{siteConfig.freeShippingThreshold.toLocaleString('en-IN')}
             </div>
             <div className="text-[11px] text-gray-500 dark:text-gray-400 font-medium mt-2">
-              {siteConfig.promoDiscountPercent}% OFF at checkout
+              Standard ₹{siteConfig.standardShippingFee} for smaller orders
             </div>
           </div>
         </div>
@@ -1253,16 +1253,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               </div>
             </div>
 
-            {/* Announcement Ticker & Promo Code */}
+            {/* Announcement Ticker */}
             <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4">
               <div className="flex items-center gap-2.5 pb-2 border-b border-gray-100 dark:border-gray-800">
-                <Tag className="w-5 h-5 text-purple-600" />
+                <Sparkles className="w-5 h-5 text-purple-600" />
                 <div>
                   <h3 className="font-bold text-sm text-gray-900 dark:text-white">
-                    Announcement Marquee & Promo Code
+                    Announcement Marquee
                   </h3>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Update the infinite scrolling ticker bar and active checkout coupon code.
+                    Update the infinite scrolling ticker announcement displayed across the site.
                   </p>
                 </div>
               </div>
@@ -1274,39 +1274,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                     rows={2}
                     value={configForm.marqueeAnnouncement}
                     onChange={(e) => setConfigForm({ ...configForm, marqueeAnnouncement: e.target.value })}
-                    placeholder="⚡ FLAT 10% OFF ON ALL PRE-OWNED PS4 & PS5 GAMES · USE CODE: DJN10 · FREE SHIPPING ACROSS INDIA"
+                    placeholder="⚡ FREE DELIVERY ON ORDERS ABOVE ₹1,000 · 100% TESTED PRE-OWNED GAMES & CONSOLES"
                     className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   {/* Live Marquee Ticker Preview */}
                   <div className="mt-2 p-2 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200/50 dark:border-blue-900/40 text-[11px] text-blue-700 dark:text-blue-300 overflow-hidden whitespace-nowrap">
                     <strong>Preview: </strong> {configForm.marqueeAnnouncement}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="font-semibold block mb-1">Active Coupon Code *</label>
-                    <input
-                      type="text"
-                      required
-                      value={configForm.promoCode}
-                      onChange={(e) => setConfigForm({ ...configForm, promoCode: e.target.value.toUpperCase() })}
-                      placeholder="DJN10"
-                      className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs uppercase font-mono font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="font-semibold block mb-1">Promo Discount Percentage (%) *</label>
-                    <input
-                      type="number"
-                      min={1}
-                      max={90}
-                      required
-                      value={configForm.promoDiscountPercent}
-                      onChange={(e) => setConfigForm({ ...configForm, promoDiscountPercent: Number(e.target.value) })}
-                      className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold"
-                    />
                   </div>
                 </div>
               </div>

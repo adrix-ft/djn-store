@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, ShieldCheck, Tag, Check } from 'lucide-react';
+import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, ShieldCheck, Check } from 'lucide-react';
 import { CartItem } from '../types/store';
 import { ProductVisualizer } from './ProductVisualizer';
 
@@ -11,9 +11,6 @@ interface CartDrawerProps {
   onUpdateQuantity: (productId: string, quantity: number) => void;
   onRemoveItem: (productId: string) => void;
   onProceedToCheckout: () => void;
-  appliedCoupon: string | null;
-  onApplyCoupon: (code: string) => boolean;
-  onRemoveCoupon: () => void;
 }
 
 export const CartDrawer: React.FC<CartDrawerProps> = ({
@@ -23,13 +20,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   onUpdateQuantity,
   onRemoveItem,
   onProceedToCheckout,
-  appliedCoupon,
-  onApplyCoupon,
-  onRemoveCoupon,
 }) => {
-  const [couponInput, setCouponInput] = useState('');
-  const [couponError, setCouponError] = useState('');
-
   // Lock background body scroll when cart is open to prevent underlying page from scrolling
   useEffect(() => {
     if (isOpen) {
@@ -46,34 +37,11 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
   const FREE_SHIPPING_THRESHOLD = 1000;
   const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-  
-  let discount = 0;
-  if (appliedCoupon === 'DJN10') {
-    discount = Math.round(subtotal * 0.1);
-  } else if (appliedCoupon === 'GAMEON') {
-    discount = Math.min(250, subtotal);
-  }
-
   const shipping = subtotal >= FREE_SHIPPING_THRESHOLD || subtotal === 0 ? 0 : 99;
-  const finalTotal = Math.max(0, subtotal - discount + shipping);
+  const finalTotal = subtotal + shipping;
 
   const amountNeededForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
   const freeShippingProgress = Math.min(100, Math.round((subtotal / FREE_SHIPPING_THRESHOLD) * 100));
-
-
-  const handleApply = (e: React.FormEvent) => {
-    e.preventDefault();
-    setCouponError('');
-    const code = couponInput.trim().toUpperCase();
-    if (!code) return;
-
-    const success = onApplyCoupon(code);
-    if (!success) {
-      setCouponError('Invalid promo code. Try "DJN10" for 10% off!');
-    } else {
-      setCouponInput('');
-    }
-  };
 
   const drawerContent = (
     <div className="fixed inset-0 z-[9999] flex justify-end">
@@ -208,36 +176,6 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
         {items.length > 0 && (
           <div className="p-5 border-t border-[#e5e7eb] dark:border-[#1e293b] bg-[#fafafa] dark:bg-[#161f30] space-y-3">
             
-            {/* Promo Code Input */}
-            <div>
-              {appliedCoupon ? (
-                <div className="flex items-center justify-between p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-800 dark:text-emerald-300">
-                  <div className="flex items-center gap-1.5 font-mono">
-                    <Tag className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                    <span>Coupon "{appliedCoupon}" applied</span>
-                  </div>
-                  <button onClick={onRemoveCoupon} className="text-[#d0473e] hover:underline font-bold cursor-pointer">
-                    Remove
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleApply} className="flex gap-2">
-                  <input
-                    type="text"
-                    value={couponInput}
-                    onChange={(e) => setCouponInput(e.target.value)}
-                    placeholder="Coupon code (e.g. DJN10)"
-                    className="flex-1 bg-white dark:bg-[#111827] border border-[#cbd5e1] dark:border-gray-700 rounded-full px-3 py-1.5 text-xs text-[#212121] dark:text-white placeholder-[#9e9e9e] dark:placeholder-gray-400 uppercase font-mono focus:outline-none focus:border-[#1a73e8]"
-                  />
-                  <button
-                    type="submit"
-                    className="px-4 py-1.5 bg-[#212121] dark:bg-blue-600 hover:bg-[#333333] dark:hover:bg-blue-700 text-white text-xs font-bold rounded-full transition-colors cursor-pointer"
-                  >
-                    Apply
-                  </button>
-                </form>
-              )}
-            </div>
 
             {/* Calculations */}
             <div className="space-y-1 text-xs text-[#64748b] dark:text-gray-400">
@@ -245,12 +183,6 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                 <span>Subtotal:</span>
                 <span className="font-mono text-[#212121] dark:text-white font-semibold tabular-nums">₹{subtotal.toLocaleString('en-IN')}.00</span>
               </div>
-              {discount > 0 && (
-                <div className="flex justify-between text-[#10b981] font-mono">
-                  <span>Discount:</span>
-                  <span>-₹{discount.toLocaleString('en-IN')}.00</span>
-                </div>
-              )}
               <div className="flex justify-between">
                 <span>Shipping:</span>
                 <span className="font-mono tabular-nums">

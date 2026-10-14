@@ -210,7 +210,6 @@ export default function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -354,23 +353,6 @@ export default function App() {
     }
   };
 
-  // Apply Coupon
-  const handleApplyCoupon = (code: string) => {
-    const cleanCode = code.trim().toUpperCase();
-    const targetCode = siteConfig.promoCode.trim().toUpperCase();
-    if (cleanCode === targetCode || cleanCode === 'DJN2026' || cleanCode === 'WELCOME10') {
-      setAppliedCoupon(cleanCode);
-      showToast(`Coupon "${cleanCode}" applied successfully!`);
-      return true;
-    }
-    return false;
-  };
-
-  const handleRemoveCoupon = () => {
-    setAppliedCoupon(null);
-    showToast(`Coupon removed`);
-  };
-
   // Order Placement Success
   const handleOrderSuccess = (order: Order) => {
     setCompletedOrder(order);
@@ -510,14 +492,9 @@ export default function App() {
 
   // Pricing calculations
   const cartSubtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-  const cartDiscount =
-    appliedCoupon === 'DJN10'
-      ? Math.round(cartSubtotal * 0.1)
-      : appliedCoupon === 'GAMEON'
-      ? Math.min(250, cartSubtotal)
-      : 0;
+  const cartDiscount = 0;
   const cartShipping = cartSubtotal >= 1000 || cartSubtotal === 0 ? 0 : 99;
-  const cartTotal = Math.max(0, cartSubtotal - cartDiscount + cartShipping);
+  const cartTotal = Math.max(0, cartSubtotal + cartShipping);
 
 
 
@@ -792,9 +769,6 @@ export default function App() {
             onUpdateQuantity={handleUpdateQuantity}
             onRemoveItem={handleRemoveFromCart}
             onProceedToCheckout={() => setIsCheckoutOpen(true)}
-            appliedCoupon={appliedCoupon}
-            onApplyCoupon={handleApplyCoupon}
-            onRemoveCoupon={handleRemoveCoupon}
           />
         </React.Suspense>
       )}
