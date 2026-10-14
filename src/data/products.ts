@@ -1,36 +1,36 @@
 import { Product } from '../types/store';
 
 export const PRODUCTS: Product[] = [
-  // --- HERO CONSOLE ---
+  // 1. PS5 Slim Disc Edition 1TB (₹62,000)
   {
     id: 'ps5-slim-disc',
-    name: 'PlayStation 5 Slim (Disc Edition)',
+    name: 'PlayStation 5 Slim (Disc Edition) 1TB',
     subtitle: '1TB Custom SSD · 4K 120Hz · Ray Tracing · Ultra HD Blu-ray',
     category: 'consoles',
     platform: 'PS5',
     condition: 'Brand New Sealed',
-    mrp: 54990,
-    price: 49990,
-    discountPercent: 9,
+    mrp: 64990,
+    price: 62000,
+    discountPercent: 5,
     rating: 4.9,
-    reviewCount: 42,
+    reviewCount: 58,
     inStock: true,
-    stockCount: 5,
-    badge: 'BESTSELLER',
+    stockCount: 999,
+    badge: 'FLAGSHIP',
     imageUrl: '/hero-ps5-slim.png',
     features: [
       'Slimmer design with 1TB ultra-high speed internal SSD storage',
-      'Ultra HD Blu-ray disc drive included',
+      'Ultra HD Blu-ray optical disc drive included',
       'Haptic feedback and adaptive triggers via DualSense wireless controller',
       'Tempest 3D AudioTech and up to 120 fps with 120Hz output',
       'Official 1 Year Sony India Manufacturer Warranty'
     ],
     description: 'Experience lightning-fast loading with an ultra-high speed SSD, deeper immersion with support for haptic feedback, adaptive triggers and 3D Audio, and an all-new generation of incredible PlayStation games in a sleek, compact slim form factor.',
-    inTheBox: ['PS5 Slim Console (Disc Model)', 'DualSense Wireless Controller (White)', '1TB SSD (Installed)', 'HDMI 2.1 Cable', 'AC Power Cord', 'USB-C Cable', 'Horizontal Stand Feet', 'Astro\'s Playroom pre-installed'],
+    inTheBox: ['PS5 Slim Console (Disc Model)', 'DualSense Wireless Controller (White)', '1TB SSD (Installed)', 'HDMI 2.1 Cable', 'AC Power Cord', 'USB-C Cable', 'Horizontal Stand Feet', "Astro's Playroom pre-installed"],
     warranty: '1 Year Official Sony Warranty + DJN Tech Assured Support',
     themeColor: '#00439c',
     storage: '1TB SSD',
-    edition: 'Standard Slim Disc',
+    edition: 'Slim Disc Edition 1TB',
     reviews: [
       {
         id: 'rev-c1',
@@ -42,37 +42,202 @@ export const PRODUCTS: Product[] = [
         comment: 'Received brand new sealed box with original Indian warranty seal. Delivery was super fast within 48 hours. DJN Tech is 100% trustworthy for consoles!',
         verifiedBuyer: true,
         platformPlayed: 'PS5'
-      },
+      }
+    ]
+  },
+
+  // 2. PS5 Standard Disc Edition 825GB (₹55,000)
+  {
+    id: 'ps5-standard-disc-preowned',
+    name: 'PlayStation 5 Standard (Disc Edition) 825GB',
+    subtitle: '825GB High-Speed SSD · 4K HDR Blu-Ray · DJN 25-Point Bench Tested · Grade A+',
+    category: 'consoles',
+    platform: 'PS5',
+    condition: 'Brand New Sealed',
+    mrp: 59900,
+    price: 55000,
+    discountPercent: 8,
+    rating: 4.8,
+    reviewCount: 44,
+    inStock: true,
+    stockCount: 999,
+    badge: 'ORIGINAL FAT',
+    imageUrl: 'https://gmedia.playstation.com/is/image/SIEPDC/ps5-product-thumbnail-01-en-14sep21',
+    features: [
+      'Original launch revision with massive copper thermal cooling heat-sink',
+      '825GB ultra-high speed SSD with expandable M.2 slot',
+      'Ultra HD Blu-ray optical disc drive with 100% optical seek accuracy',
+      'Includes official Sony DualSense wireless controller',
+      'Protected under DJN Tech Comprehensive Hardware Guarantee'
+    ],
+    description: 'The iconic original PlayStation 5 Standard Disc Edition. Built with high-grade thermal engineering, whisper-quiet liquid metal cooling, and ultra-high-speed SSD architecture.',
+    inTheBox: ['PlayStation 5 Standard Disc Console', 'Official DualSense Wireless Controller', 'HDMI 2.1 Cable', 'Power Cable', 'Vertical/Horizontal Stand'],
+    warranty: '1 Year Manufacturer / DJN Hardware Warranty + 7-Day Replacement Guarantee',
+    themeColor: '#00439c',
+    storage: '825GB SSD',
+    edition: 'Standard Disc Edition 825GB',
+    reviews: [
       {
-        id: 'rev-c2',
+        id: 'rev-ps5-fat-1',
         userName: 'Naveen Kumar',
         userLocation: 'Bengaluru',
         rating: 5,
         date: '1 week ago',
-        title: 'Silent and sleek machine',
-        comment: 'Runs quiet and the 1TB SSD gives much needed space over original launch model. Great customer service on WhatsApp.',
+        title: 'Heavy duty cooling and silent',
+        comment: 'Console arrived in immaculate condition. Plays all my disc games without a glitch.',
         verifiedBuyer: true,
         platformPlayed: 'PS5'
       }
     ]
   },
 
-  // --- HERO CONTROLLER ---
+  // 3. PS4 Slim 1TB (₹22,000)
+  {
+    id: 'ps4-slim-1tb-preowned',
+    name: 'PlayStation 4 Slim (1TB Console)',
+    subtitle: '1TB Storage · Whisper Quiet · HDR Ready · Complete Kit with DualShock 4',
+    category: 'consoles',
+    platform: 'PS4',
+    condition: 'Pre-Owned Grade A+',
+    mrp: 29990,
+    price: 22000,
+    discountPercent: 27,
+    rating: 4.9,
+    reviewCount: 85,
+    inStock: true,
+    stockCount: 999,
+    badge: 'TOP SELLER',
+    imageUrl: 'https://images.unsplash.com/photo-1507457379470-08b800bebc67?auto=format&fit=crop&w=1000&q=80',
+    features: [
+      'Massive 1TB internal HDD holding 25+ blockbuster PlayStation games',
+      'Energy-efficient slim architecture that runs cool and whisper-quiet',
+      'Full HDR support for vibrant color reproduction on compatible TVs',
+      'Includes original Sony DualShock 4 V2 wireless controller',
+      '100% optical laser seek and motherboard diagnostic pass'
+    ],
+    description: 'The golden standard for PlayStation gaming. The PS4 Slim 1TB delivers exceptional reliability, an immense library of award-winning titles, and effortless plug-and-play entertainment.',
+    inTheBox: ['PlayStation 4 Slim 1TB Console', 'DualShock 4 Wireless Controller (Original V2)', 'HDMI Cable', 'Power Cable', 'USB Charging Cable'],
+    warranty: '1-Month DJN Tech Hardware Warranty + 7-Day Doorstep Replacement Guarantee',
+    themeColor: '#003791',
+    storage: '1TB HDD',
+    edition: 'Slim Edition (1TB)',
+    reviews: []
+  },
+
+  // 4. PS4 Slim 500GB (₹21,000)
+  {
+    id: 'ps4-slim-500gb-preowned',
+    name: 'PlayStation 4 Slim (500GB Console)',
+    subtitle: '500GB HDD · Compact & Energy Efficient · HDR Ready · DJN Certified',
+    category: 'consoles',
+    platform: 'PS4',
+    condition: 'Pre-Owned Grade A+',
+    mrp: 27990,
+    price: 21000,
+    discountPercent: 25,
+    rating: 4.8,
+    reviewCount: 53,
+    inStock: true,
+    stockCount: 999,
+    badge: 'VALUE PICK',
+    imageUrl: 'https://images.unsplash.com/photo-1507457379470-08b800bebc67?auto=format&fit=crop&w=1000&q=80',
+    features: [
+      'Affordable entry into the legendary PlayStation ecosystem',
+      '500GB internal storage expandable via external USB 3.0 drive',
+      'Plays the entire catalog of PS4 masterpieces with smooth 1080p output',
+      'Includes 1 original Sony DualShock 4 controller and all connection cables',
+      'Complete 25-point hardware bench stress-testing verified'
+    ],
+    description: 'The most cost-effective way to play GTA V, God of War, The Last of Us, and FC 24 with authentic console performance.',
+    inTheBox: ['PlayStation 4 Slim 500GB Console', 'DualShock 4 Wireless Controller', 'HDMI Cable', 'Power Cable', 'USB Controller Cable'],
+    warranty: '1-Month DJN Tech Hardware Warranty + 7-Day Doorstep Replacement Guarantee',
+    themeColor: '#003791',
+    storage: '500GB HDD',
+    edition: 'Slim Edition (500GB)',
+    reviews: []
+  },
+
+  // 5. PS4 Standard 500GB (₹18,000)
+  {
+    id: 'ps4-standard-500gb-preowned',
+    name: 'PlayStation 4 Standard (500GB Console)',
+    subtitle: 'Classic Angled Design · Optical Audio Out · 500GB HDD · DJN Certified Grade A+',
+    category: 'consoles',
+    platform: 'PS4',
+    condition: 'Pre-Owned Grade A+',
+    mrp: 24990,
+    price: 18000,
+    discountPercent: 28,
+    rating: 4.7,
+    reviewCount: 38,
+    inStock: true,
+    stockCount: 999,
+    badge: 'BUDGET CHAMPION',
+    imageUrl: '/ps4-standard.jpg',
+    features: [
+      'Original launch chassis with dual matte and gloss architectural styling',
+      'Built-in optical TOSLINK audio output port for dedicated sound systems',
+      '500GB internal hard drive holding favorite games',
+      'Includes authentic DualShock 4 wireless controller',
+      'Ultrasonic cleaned, fresh thermal paste serviced, and stress bench tested'
+    ],
+    description: 'The iconic original PlayStation 4 that launched an era of gaming classics. Certified Grade A+ pre-owned unit thoroughly bench-tested and serviced.',
+    inTheBox: ['PlayStation 4 Standard Console (Jet Black)', 'DualShock 4 Wireless Controller', 'HDMI Cable', 'AC Power Cord', 'Micro-USB Cable'],
+    warranty: '1-Month DJN Tech Hardware Warranty + 7-Day Doorstep Replacement Guarantee',
+    themeColor: '#003791',
+    storage: '500GB HDD',
+    edition: 'Original Standard "Fat" Edition',
+    reviews: []
+  },
+
+  // 6. DualSense White (₹4,100)
+  {
+    id: 'dualsense-white',
+    name: 'PlayStation 5 DualSense Wireless Controller (White)',
+    subtitle: 'Haptic Feedback · Dynamic Adaptive Triggers · Built-in Microphone · 3.5mm Jack',
+    category: 'controllers',
+    platform: 'PS5',
+    condition: 'Brand New Sealed',
+    mrp: 5990,
+    price: 4100,
+    discountPercent: 32,
+    rating: 4.9,
+    reviewCount: 74,
+    inStock: true,
+    stockCount: 999,
+    badge: 'POPULAR',
+    imageUrl: '/dualsense-white.jpg',
+    features: [
+      'Immersive haptic feedback brings in-game actions alive in your hands',
+      'Dynamic adaptive triggers with customizable resistance levels',
+      'Integrated microphone and 3.5mm headset jack for seamless team chat',
+      'Create button to record and broadcast your most epic gaming moments'
+    ],
+    description: 'Discover a deeper, highly immersive gaming experience with the iconic two-tone White PS5 DualSense wireless controller.',
+    inTheBox: ['PS5 DualSense Wireless Controller (White)', 'Quick-Start User Manual', 'Warranty Card'],
+    warranty: '1 Year Official Sony India Warranty + DJN Assured Support',
+    color: 'White',
+    themeColor: '#00439c',
+    edition: 'Standard White Edition',
+    reviews: []
+  },
+
+  // 7. DualSense Midnight Black (₹4,200)
   {
     id: 'dualsense-midnight-black',
-    name: 'PS5 DualSense Wireless Controller (Midnight Black)',
+    name: 'PlayStation 5 DualSense Wireless Controller (Midnight Black)',
     subtitle: 'Haptic Feedback · Dynamic Adaptive Triggers · Built-in Microphone',
     category: 'controllers',
     platform: 'PS5',
     condition: 'Brand New Sealed',
     mrp: 6390,
-    price: 4990,
-    discountPercent: 22,
+    price: 4200,
+    discountPercent: 34,
     rating: 4.9,
     reviewCount: 56,
     inStock: true,
-    stockCount: 14,
-    badge: 'POPULAR COLOR',
+    stockCount: 999,
+    badge: 'BESTSELLER',
     imageUrl: '/hero-dualsense.png',
     features: [
       'Immersive haptic feedback brings in-game actions to life in your hands',
@@ -81,24 +246,110 @@ export const PRODUCTS: Product[] = [
       'Create button to broadcast your epic gaming moments',
       'Signature comfortable design with enhanced stick grips'
     ],
-    description: 'Discover a deeper, highly immersive gaming experience that brings the action to life in the palms of your hands. The DualSense wireless controller features immersive haptic feedback and dynamic adaptive triggers in a sleek Midnight Black finish.',
+    description: 'Discover a deeper, highly immersive gaming experience that brings the action to life in the palms of your hands in a sleek Midnight Black finish.',
     inTheBox: ['DualSense Wireless Controller (Midnight Black)', 'Instruction Manual'],
     warranty: '1 Year Official Sony Warranty',
     color: 'Midnight Black',
     themeColor: '#090d16',
-    reviews: [
-      {
-        id: 'rev-c-mb1',
-        userName: 'Prashant Iyer',
-        userLocation: 'Chennai',
-        rating: 5,
-        date: '4 days ago',
-        title: 'Tactile triggers and stealth finish',
-        comment: 'Midnight Black looks far better in person than standard white. Triggers work brilliantly with Astro Bot and Gran Turismo 7. 100% genuine Sony packaging.',
-        verifiedBuyer: true,
-        platformPlayed: 'PS5'
-      }
-    ]
+    edition: 'Midnight Black Edition',
+    reviews: []
+  },
+
+  // 8. Xbox Series Controller (₹4,200)
+  {
+    id: 'xbox-series-controller',
+    name: 'Xbox Wireless Controller (Series X|S)',
+    subtitle: 'Textured Grip · Hybrid D-Pad · Bluetooth & Xbox Wireless · 40hr Battery Life',
+    category: 'controllers',
+    platform: 'Xbox',
+    condition: 'Brand New Sealed',
+    mrp: 5990,
+    price: 4200,
+    discountPercent: 30,
+    rating: 4.8,
+    reviewCount: 42,
+    inStock: true,
+    stockCount: 999,
+    badge: 'CROSS-PLATFORM',
+    imageUrl: '/xbox-series-controller.jpg',
+    features: [
+      'Sculpted surfaces and refined geometry for enhanced hand comfort during gameplay',
+      'Hybrid D-pad and textured grip on triggers, bumpers, and back-case',
+      'Seamlessly capture and share screenshots and clips with dedicated Share button',
+      'Xbox Wireless and Bluetooth technology for gaming on console, PC, mobile'
+    ],
+    description: 'Experience the modernized design of the Xbox Wireless Controller, featuring sculpted surfaces and refined geometry for enhanced comfort.',
+    inTheBox: ['Xbox Wireless Controller', '2 AA Alkaline Batteries', 'Setup Guide'],
+    warranty: '1 Year Official Microsoft India Warranty',
+    color: 'Carbon Black',
+    themeColor: '#107c10',
+    edition: 'Series X|S Edition',
+    reviews: []
+  },
+
+  // 9. PlayStation 5 Disc Drive (₹9,000)
+  {
+    id: 'ps5-disc-drive',
+    name: 'PlayStation 5 Disc Drive (for PS5 Slim & Pro)',
+    subtitle: 'Ultra HD Blu-ray Optical Disc Player · Snap-In Installation · Official Sony Unit',
+    category: 'accessories',
+    platform: 'PS5',
+    condition: 'Brand New Sealed',
+    mrp: 10990,
+    price: 9000,
+    discountPercent: 18,
+    rating: 4.9,
+    reviewCount: 29,
+    inStock: true,
+    stockCount: 999,
+    badge: 'OFFICIAL SONY',
+    imageUrl: '/ps5-disc-drive.jpg',
+    features: [
+      'Official Sony Ultra HD Blu-ray optical disc drive add-on for PS5 Slim & PS5 Pro',
+      'Tool-free snap-in installation directly into console bay',
+      'Play 4K Ultra HD Blu-ray discs, standard Blu-ray discs, and DVDs',
+      'Enables pre-owned and physical game disc playback on digital slim consoles'
+    ],
+    description: 'Upgrade your PlayStation 5 Digital Slim console to play physical disc games and 4K Ultra HD Blu-ray movies. Features seamless tool-free installation.',
+    inTheBox: ['PS5 Disc Drive Add-on Unit', 'Original White Matching Cover Panel', '2 Horizontal Stand Feet (Long)', 'Instruction Manual'],
+    warranty: '1 Year Official Sony India Warranty',
+    color: 'White',
+    themeColor: '#00439c',
+    edition: 'Official Disc Drive Add-On',
+    reviews: []
+  },
+
+  // 10. Xbox Rechargeable Battery Pack (₹800)
+  {
+    id: 'xbox-rechargeable-battery-pack',
+    name: 'Xbox Rechargeable Battery Pack (+ USB-C Cable)',
+    subtitle: 'Up to 30 Hours Battery Life · Play While Charging · Includes 9ft Braided USB-C Cable',
+    category: 'accessories',
+    platform: 'Xbox',
+    condition: 'Brand New Sealed',
+    mrp: 1499,
+    price: 800,
+    discountPercent: 47,
+    rating: 4.8,
+    reviewCount: 61,
+    inStock: true,
+    stockCount: 999,
+    badge: 'MUST HAVE',
+    imageUrl: '/xbox-battery-pack.jpg',
+    features: [
+      'Rechargeable high-density lithium-ion battery pack for Xbox Wireless Controllers',
+      'Provides up to 30 hours of continuous gameplay on a full charge',
+      'Fully charges in under 4 hours, even when console is on standby',
+      'Includes long 9-foot durable USB-C charging cable',
+      'Say goodbye to expensive disposable AA batteries forever'
+    ],
+    description: 'Keep the action going with the Xbox Rechargeable Battery Pack + USB-C Cable. Recharge while you play or afterwards.',
+    inTheBox: ['Xbox Rechargeable Lithium-Ion Battery Pack', '9-foot USB-C Braided Cable', 'Quick Start Guide'],
+    warranty: '6-Month DJN Tech Hardware Warranty',
+    color: 'Black',
+    themeColor: '#107c10',
+    edition: 'Play & Charge Kit',
+    reviews: []
   },
 
   // --- HERO PRE-OWNED DISC ---
@@ -115,7 +366,7 @@ export const PRODUCTS: Product[] = [
     rating: 4.9,
     reviewCount: 88,
     inStock: true,
-    stockCount: 5,
+    stockCount: 999,
     badge: 'GAME OF THE YEAR',
     imageUrl: '/hero-elden-ring.png',
     features: [
@@ -130,18 +381,6 @@ export const PRODUCTS: Product[] = [
     discCondition: 'Grade A+ (Clean, verified installation test)',
     genre: 'Action RPG / Souls-like',
     themeColor: '#b45309',
-    reviews: [
-      {
-        id: 'rev-er-1',
-        userName: 'Murugan G',
-        userLocation: 'Madurai',
-        rating: 5,
-        date: '1 week ago',
-        title: 'Very reasonable price and authentic item',
-        comment: 'Price was way cheaper than local store. Product exactly matches photos. Fast courier dispatch and helpful WhatsApp support.',
-        verifiedBuyer: true,
-        platformPlayed: 'PS5'
-      }
-    ]
+    reviews: []
   }
 ];

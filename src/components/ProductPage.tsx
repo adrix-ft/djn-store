@@ -55,9 +55,6 @@ export const ProductPage: React.FC<ProductPageProps> = ({
   const [pincodeChecked, setPincodeChecked] = useState(true);
   const [copiedLink, setCopiedLink] = useState(false);
 
-  const isOutOfStock = !product.inStock || (typeof product.stockCount === 'number' && product.stockCount <= 0);
-  const isLowStock = !isOutOfStock && typeof product.stockCount === 'number' && product.stockCount > 0 && product.stockCount <= 3;
-
   // Scroll to top on product change
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -139,19 +136,11 @@ export const ProductPage: React.FC<ProductPageProps> = ({
             <div className="lg:col-span-5 flex flex-col items-center">
               
               {/* Main Image Box with Zoom Container */}
-              <div className={`relative w-full aspect-square bg-[#fbfcfd] dark:bg-[#161f30] border border-[#eaedf0] dark:border-[#2d3748] rounded-2xl p-4 sm:p-6 flex items-center justify-center overflow-hidden group ${
-                isOutOfStock ? 'grayscale-[20%]' : ''
-              }`}>
-                {/* Condition Badge or Out of Stock Badge */}
-                {isOutOfStock ? (
-                  <span className="absolute top-4 left-4 z-10 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-red-600 text-white shadow-xs">
-                    Out of Stock
-                  </span>
-                ) : (
-                  <span className="absolute top-4 left-4 z-10 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-white dark:bg-[#1e293b] text-[#111827] dark:text-white border border-[#eaedf0] dark:border-gray-700 shadow-xs">
-                    {product.condition}
-                  </span>
-                )}
+              <div className="relative w-full aspect-square bg-[#fbfcfd] dark:bg-[#161f30] border border-[#eaedf0] dark:border-[#2d3748] rounded-2xl p-4 sm:p-6 flex items-center justify-center overflow-hidden group">
+                {/* Condition Badge */}
+                <span className="absolute top-4 left-4 z-10 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-white dark:bg-[#1e293b] text-[#111827] dark:text-white border border-[#eaedf0] dark:border-gray-700 shadow-xs">
+                  {product.condition}
+                </span>
 
                 {/* Wishlist Button */}
                 <button
@@ -185,62 +174,38 @@ export const ProductPage: React.FC<ProductPageProps> = ({
 
               {/* Primary Sticky Buy & Cart Buttons (Flipkart/Amazon Style) */}
               <div className="grid grid-cols-2 gap-3.5 w-full mt-6">
-                {isOutOfStock ? (
-                  <>
-                    <button
-                      disabled
-                      className="py-3.5 px-4 rounded-xl font-bold text-sm bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed flex items-center justify-center gap-2 border border-gray-200 dark:border-gray-700"
-                    >
-                      <ShoppingCart className="w-4 h-4" />
-                      <span>Out of Stock</span>
-                    </button>
+                <button
+                  onClick={() => onAddToCart(product)}
+                  className={`py-3.5 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs ${
+                    isInCart
+                      ? 'bg-[#10b981] hover:bg-[#059669] text-white'
+                      : 'bg-[#ff9f00] hover:bg-[#f59400] text-white'
+                  }`}
+                >
+                  <ShoppingCart className="w-4 h-4" />
+                  <span>{isInCart ? 'Added in Cart ✓' : 'Add to Cart'}</span>
+                </button>
 
-                    <button
-                      disabled
-                      className="py-3.5 px-4 rounded-xl font-bold text-sm bg-gray-200 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed flex items-center justify-center gap-2"
-                    >
-                      <Zap className="w-4 h-4" />
-                      <span>Unavailable</span>
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => onAddToCart(product)}
-                      className={`py-3.5 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs ${
-                        isInCart
-                          ? 'bg-[#10b981] hover:bg-[#059669] text-white'
-                          : 'bg-[#ff9f00] hover:bg-[#f59400] text-white'
-                      }`}
-                    >
-                      <ShoppingCart className="w-4 h-4" />
-                      <span>{isInCart ? 'Added in Cart ✓' : 'Add to Cart'}</span>
-                    </button>
-
-                    <button
-                      onClick={() => onBuyNow(product)}
-                      className="py-3.5 px-4 rounded-xl font-bold text-sm bg-[#fb641b] hover:bg-[#ea550a] text-white flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs"
-                    >
-                      <Zap className="w-4 h-4" />
-                      <span>Buy Now</span>
-                    </button>
-                  </>
-                )}
+                <button
+                  onClick={() => onBuyNow(product)}
+                  className="py-3.5 px-4 rounded-xl font-bold text-sm bg-[#fb641b] hover:bg-[#ea550a] text-white flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs"
+                >
+                  <Zap className="w-4 h-4" />
+                  <span>Buy Now</span>
+                </button>
               </div>
 
-              {/* WhatsApp Quick Order or Inquire Link */}
+              {/* WhatsApp Quick Order Link */}
               <a
                 href={`https://wa.me/918446439374?text=${encodeURIComponent(
-                  isOutOfStock
-                    ? `Hi DJN Tech, I see that "${product.name}" (₹${product.price}) is currently Out of Stock. Could you let me know when it will be restocked or can I reserve one?`
-                    : `Hi DJN Tech, I am interested in purchasing: ${product.name} (₹${product.price}). Is it available for delivery?`
+                  `Hi DJN Tech, I am interested in purchasing: ${product.name} (₹${product.price}). Is it available for delivery?`
                 )}`}
                 target="_blank"
                 rel="noreferrer"
                 className="w-full mt-3 py-2.5 px-4 rounded-xl font-semibold text-xs text-[#075e54] dark:text-emerald-300 bg-[#25d366]/10 dark:bg-emerald-950/30 border border-[#25d366]/30 dark:border-emerald-800 hover:bg-[#25d366]/20 transition-colors flex items-center justify-center gap-2"
               >
                 <MessageCircle className="w-4 h-4 text-[#25d366]" />
-                <span>{isOutOfStock ? 'Inquire Restock via WhatsApp (+91 84464 39374)' : 'Order via WhatsApp (+91 84464 39374)'}</span>
+                <span>Order via WhatsApp (+91 84464 39374)</span>
               </a>
 
             </div>
@@ -306,33 +271,12 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                 </p>
               </div>
 
-              {/* Live Inventory & Stock Status */}
+              {/* Product Availability & Shipping Status */}
               <div className="py-3 border-b border-[#f3f4f6] dark:border-[#1e293b]">
-                {isOutOfStock ? (
-                  <div className="p-3 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 flex items-start gap-2.5">
-                    <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
-                    <div>
-                      <p className="text-xs font-bold text-red-700 dark:text-red-300">
-                        Currently Out of Stock
-                      </p>
-                      <p className="text-[11px] text-red-600/90 dark:text-red-400/80 mt-0.5">
-                        This item is temporarily unavailable for direct checkout. You can message us on WhatsApp for restocking timeline or pre-booking reservation.
-                      </p>
-                    </div>
-                  </div>
-                ) : isLowStock ? (
-                  <div className="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-                    <span className="text-xs font-bold text-amber-800 dark:text-amber-300">
-                      Only {product.stockCount} {product.stockCount === 1 ? 'unit' : 'units'} left in stock — order soon!
-                    </span>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2 text-xs font-semibold text-[#059669] dark:text-emerald-400">
-                    <CheckCircle2 className="w-4 h-4" />
-                    <span>In Stock ({product.stockCount || 'Multiple'} units available) · Ready for immediate dispatch</span>
-                  </div>
-                )}
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#059669] dark:text-emerald-400">
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>Ready for immediate dispatch · Express Delivery available</span>
+                </div>
               </div>
 
               {/* Bank & Promotional Offers */}

@@ -213,11 +213,7 @@ export const Header: React.FC<HeaderProps> = ({
                           <span className="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-800/50">
                             {prod.platform}
                           </span>
-                          {!prod.inStock || (typeof prod.stockCount === 'number' && prod.stockCount <= 0) ? (
-                            <span className="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/50">
-                              Out of Stock
-                            </span>
-                          ) : prod.badge ? (
+                          {prod.badge ? (
                             <span className="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-400 border border-amber-200/50 dark:border-amber-800/40 truncate max-w-[120px]">
                               {prod.badge}
                             </span>
@@ -433,11 +429,6 @@ export const Header: React.FC<HeaderProps> = ({
                   <div className="flex-1 min-w-0 text-left">
                     <div className="flex items-center gap-1.5">
                       <p className="font-semibold text-gray-900 dark:text-white truncate text-xs">{prod.name}</p>
-                      {(!prod.inStock || (typeof prod.stockCount === 'number' && prod.stockCount <= 0)) && (
-                        <span className="px-1.5 py-0.2 rounded text-[8px] font-bold uppercase bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 border border-red-200/60 shrink-0">
-                          Out of Stock
-                        </span>
-                      )}
                     </div>
                     <div className="flex items-center gap-2 mt-0.5 text-[11px]">
                       <span className="font-bold text-gray-900 dark:text-gray-100">₹{prod.price.toLocaleString('en-IN')}</span>

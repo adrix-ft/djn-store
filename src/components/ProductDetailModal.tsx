@@ -142,25 +142,16 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 <label className="text-xs font-semibold text-[#424242] block">
                   Select Condition / Edition:
                 </label>
-                <div className="grid grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-1 gap-2.5">
                   <button
                     onClick={() => setSelectedCondition(product.condition)}
-                    className={`p-3 rounded-xl border text-left transition-all ${
-                      selectedCondition === product.condition
-                        ? 'border-[#1a73e8] bg-blue-50/50 shadow-xs'
-                        : 'border-[#e2e8f0] bg-white hover:border-[#cbd5e1]'
-                    }`}
+                    className="p-3 rounded-xl border text-left transition-all border-[#1a73e8] bg-blue-50/50 shadow-xs"
                   >
                     <p className="text-xs font-bold text-[#212121]">{product.condition}</p>
                     <p className="text-[11px] text-[#1a73e8] font-mono font-semibold mt-0.5">
                       ₹{product.price.toLocaleString('en-IN')}.00
                     </p>
                   </button>
-
-                  <div className="p-3 rounded-xl border border-[#e2e8f0] bg-[#f8fafc] text-left opacity-60">
-                    <p className="text-xs font-semibold text-[#64748b]">Brand New Sealed</p>
-                    <p className="text-[11px] text-[#94a3b8] font-mono mt-0.5">Out of Stock</p>
-                  </div>
                 </div>
               </div>
 

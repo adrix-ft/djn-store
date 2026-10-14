@@ -330,26 +330,6 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       return;
     }
 
-    const invalidStockItems = items.filter(
-      (it) => !it.product.inStock || (typeof it.product.stockCount === 'number' && it.product.stockCount <= 0)
-    );
-    if (invalidStockItems.length > 0) {
-      setErrorMessage(
-        `Cannot place order: "${invalidStockItems.map((i) => i.product.name).join(', ')}" is out of stock. Please remove it from your cart.`
-      );
-      return;
-    }
-
-    const exceededStockItems = items.filter(
-      (it) => typeof it.product.stockCount === 'number' && it.quantity > it.product.stockCount
-    );
-    if (exceededStockItems.length > 0) {
-      setErrorMessage(
-        `Cannot place order: Quantity requested for "${exceededStockItems.map((i) => i.product.name).join(', ')}" exceeds current inventory.`
-      );
-      return;
-    }
-
     setErrorMessage(null);
     setIsSubmitting(true);
 

@@ -104,8 +104,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
   // Search & Filters for Products
   const [productSearch, setProductSearch] = useState('');
-  const [stockFilter, setStockFilter] = useState<'all' | 'in' | 'out' | 'low'>('all');
-  const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc' | 'stock-desc' | 'name-asc'>('featured');
+  const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc' | 'name-asc'>('featured');
 
   // Pagination for Products Table (20 items per page)
   const [currentPage, setCurrentPage] = useState(1);
@@ -144,7 +143,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     rating: 4.8,
     reviewCount: 15,
     inStock: true,
-    stockCount: 5,
+    stockCount: 999,
     badge: 'NEW ARRIVAL',
     features: ['100% Genuine Certified', 'Bench tested and verified by DJN Tech'],
     description: 'High quality gaming product inspected and verified by DJN Tech.',
@@ -201,9 +200,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
   // Key Metrics
   const totalProducts = products.length;
-  const inStockCount = products.filter((p) => p.inStock).length;
-  const outOfStockCount = totalProducts - inStockCount;
-  const totalStockUnits = products.reduce((sum, p) => sum + (p.stockCount || 0), 0);
+  const hardwareCount = products.filter((p) => p.category !== 'preowned_games').length;
+  const gamesCount = products.filter((p) => p.category === 'preowned_games').length;
   const totalOrders = orders.length;
   const totalRevenue = orders.reduce((acc, o) => acc + (o.total || 0), 0);
 
@@ -283,22 +281,15 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           (p.subtitle && p.subtitle.toLowerCase().includes(q)) ||
           p.id.toLowerCase().includes(q);
 
-        // Stock status
-        let matchesStock = true;
-        if (stockFilter === 'in') matchesStock = p.inStock;
-        else if (stockFilter === 'out') matchesStock = !p.inStock;
-        else if (stockFilter === 'low') matchesStock = p.inStock && (p.stockCount || 0) <= 2;
-
-        return matchesTab && matchesSearch && matchesStock;
+        return matchesTab && matchesSearch;
       })
       .sort((a, b) => {
         if (sortBy === 'price-asc') return a.price - b.price;
         if (sortBy === 'price-desc') return b.price - a.price;
-        if (sortBy === 'stock-desc') return (b.stockCount || 0) - (a.stockCount || 0);
         if (sortBy === 'name-asc') return a.name.localeCompare(b.name);
         return 0; // default featured
       });
-  }, [products, activeProductTab, productSearch, stockFilter, sortBy]);
+  }, [products, activeProductTab, productSearch, sortBy]);
 
   // Paginated Slices
   const totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
@@ -403,50 +394,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     }
 
     setIsProductModalOpen(false);
-  };
-
-  // Quick In-Stock Toggle
-  const handleToggleStock = (productId: string) => {
-    let updatedTarget: Product | undefined;
-    const nextProducts = products.map((p) => {
-      if (p.id === productId) {
-        const nextInStock = !p.inStock;
-        const nextStockCount = nextInStock ? (p.stockCount && p.stockCount > 0 ? p.stockCount : 1) : 0;
-        updatedTarget = { ...p, inStock: nextInStock, stockCount: nextStockCount };
-        return updatedTarget;
-      }
-      return p;
-    });
-    onUpdateProducts(nextProducts);
-    if (updatedTarget) {
-      upsertProductToDB(updatedTarget).catch(console.error);
-    }
-    const target = products.find((p) => p.id === productId);
-    showToast(
-      `${target?.name || 'Product'} marked ${target?.inStock ? 'Out of Stock' : 'In Stock'}`
-    );
-  };
-
-  // Quick Inline Stock Quantity Adjuster (+1 / -1)
-  const handleAdjustStockUnits = (productId: string, delta: number) => {
-    let updatedTarget: Product | undefined;
-    const nextProducts = products.map((p) => {
-      if (p.id === productId) {
-        const newCount = Math.max(0, (p.stockCount || 0) + delta);
-        updatedTarget = {
-          ...p,
-          stockCount: newCount,
-          inStock: newCount > 0,
-        };
-        return updatedTarget;
-      }
-      return p;
-    });
-    onUpdateProducts(nextProducts);
-    if (updatedTarget) {
-      upsertProductToDB(updatedTarget).catch(console.error);
-    }
-    showToast(`Updated stock count to ${updatedTarget?.stockCount || 0} units`);
   };
 
   // Delete product
@@ -671,7 +618,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           <div className="hidden lg:flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400 font-medium">
             <span>Currency: <strong className="text-gray-800 dark:text-gray-200">INR (₹)</strong></span>
             <span>·</span>
-            <span>Total Physical Units: <strong className="text-blue-600 dark:text-blue-400">{totalStockUnits}</strong></span>
+            <span>Catalog: <strong className="text-blue-600 dark:text-blue-400">{totalProducts} Products</strong></span>
           </div>
         </div>
       </div>
@@ -682,7 +629,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         {/* EXECUTIVE KPI DASHBOARD STATS */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           
-          {/* KPI 1: Total Catalog & Physical Units */}
+          {/* KPI 1: Total Catalog Titles */}
           <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs relative overflow-hidden group hover:border-blue-500/40 transition-colors">
             <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-2">
               <span className="text-xs font-semibold uppercase tracking-wider">Catalog Titles</span>
@@ -695,7 +642,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             </div>
             <div className="flex items-center gap-1.5 text-[11px] font-semibold text-blue-600 dark:text-blue-400 mt-2">
               <TrendingUp className="w-3.5 h-3.5" />
-              <span>{totalStockUnits} physical discs & units in inventory</span>
+              <span>{hardwareCount} Hardware & Accessories · {gamesCount} Games</span>
             </div>
           </div>
 
@@ -715,23 +662,19 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             </div>
           </div>
 
-          {/* KPI 3: Stock Status Health */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs relative overflow-hidden group hover:border-amber-500/40 transition-colors">
+          {/* KPI 3: Store Availability */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs relative overflow-hidden group hover:border-emerald-500/40 transition-colors">
             <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-2">
-              <span className="text-xs font-semibold uppercase tracking-wider">Stock Health</span>
+              <span className="text-xs font-semibold uppercase tracking-wider">Availability</span>
               <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
                 <CheckCircle2 className="w-4 h-4" />
               </div>
             </div>
             <div className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400 tracking-tight">
-              {inStockCount} Active
+              100% Available
             </div>
             <div className="text-[11px] text-gray-500 dark:text-gray-400 font-medium mt-2">
-              {outOfStockCount > 0 ? (
-                <span className="text-red-500 font-bold">{outOfStockCount} out of stock</span>
-              ) : (
-                <span className="text-emerald-600 dark:text-emerald-400">100% catalog in stock</span>
-              )}
+              All {totalProducts} products open for checkout
             </div>
           </div>
 
@@ -822,21 +765,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   )}
                 </div>
 
-                {/* Stock Status Filter */}
-                <select
-                  value={stockFilter}
-                  onChange={(e) => {
-                    setStockFilter(e.target.value as any);
-                    setCurrentPage(1);
-                  }}
-                  className="px-3 py-2 rounded-xl text-xs bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-                >
-                  <option value="all">All Stock Status</option>
-                  <option value="in">In Stock Only</option>
-                  <option value="out">Out of Stock Only</option>
-                  <option value="low">Low Stock (≤ 2 units)</option>
-                </select>
-
                 {/* Sort Option */}
                 <select
                   value={sortBy}
@@ -846,7 +774,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   <option value="featured">Sort: Featured</option>
                   <option value="price-asc">Price: Low to High</option>
                   <option value="price-desc">Price: High to Low</option>
-                  <option value="stock-desc">Stock Quantity (High first)</option>
                   <option value="name-asc">Title: A to Z</option>
                 </select>
               </div>
@@ -871,14 +798,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                       <th className="py-3.5 px-3">Category</th>
                       <th className="py-3.5 px-3">Condition</th>
                       <th className="py-3.5 px-3">Price & MRP</th>
-                      <th className="py-3.5 px-4">Inventory Stepper</th>
                       <th className="py-3.5 px-4 text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 dark:divide-gray-800/60">
                     {paginatedProducts.length === 0 ? (
                       <tr>
-                        <td colSpan={6} className="py-16 text-center text-gray-400 dark:text-gray-500">
+                        <td colSpan={5} className="py-16 text-center text-gray-400 dark:text-gray-500">
                           <Package className="w-12 h-12 mx-auto mb-3 opacity-30 stroke-[1.5]" />
                           <p className="text-sm font-bold text-gray-700 dark:text-gray-300">
                             No products found matching filters
@@ -967,47 +893,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                                 </span>
                               </div>
                             )}
-                          </td>
-
-                          {/* Inventory Stepper & Quick Toggle */}
-                          <td className="py-3.5 px-4 whitespace-nowrap">
-                            <div className="flex items-center gap-2">
-                              {/* Stock Count Stepper */}
-                              <div className="inline-flex items-center border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800/80 p-0.5">
-                                <button
-                                  type="button"
-                                  onClick={() => handleAdjustStockUnits(p.id, -1)}
-                                  title="Decrease stock unit by 1"
-                                  className="w-6 h-6 flex items-center justify-center rounded text-gray-600 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-700 cursor-pointer font-bold transition-colors"
-                                >
-                                  -
-                                </button>
-                                <span className="w-8 text-center font-bold text-xs text-gray-900 dark:text-white">
-                                  {p.stockCount || 0}
-                                </span>
-                                <button
-                                  type="button"
-                                  onClick={() => handleAdjustStockUnits(p.id, 1)}
-                                  title="Increase stock unit by 1"
-                                  className="w-6 h-6 flex items-center justify-center rounded text-gray-600 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-700 cursor-pointer font-bold transition-colors"
-                                >
-                                  +
-                                </button>
-                              </div>
-
-                              {/* In/Out Pill */}
-                              <button
-                                type="button"
-                                onClick={() => handleToggleStock(p.id)}
-                                className={`px-2.5 py-1 rounded-full text-[10px] font-bold cursor-pointer transition-colors ${
-                                  p.inStock
-                                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 hover:bg-emerald-200'
-                                    : 'bg-red-100 text-red-800 dark:bg-red-950/80 dark:text-red-300 hover:bg-red-200'
-                                }`}
-                              >
-                                {p.inStock ? 'In Stock' : 'Out of Stock'}
-                              </button>
-                            </div>
                           </td>
 
                           {/* Actions */}
@@ -1774,7 +1659,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                     {editingProduct ? `Edit: ${editingProduct.name}` : 'Add New Product to Store'}
                   </h3>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Configure specifications, price, inventory stock, and media
+                    Configure specifications, price, features, and media
                   </p>
                 </div>
               </div>
@@ -1791,7 +1676,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             <div className="px-6 pt-3 pb-0 border-b border-gray-100 dark:border-gray-800 flex items-center gap-2 overflow-x-auto shrink-0 bg-white dark:bg-[#111827]">
               {[
                 { id: 'basic' as const, label: '1. Basic Info & Image' },
-                { id: 'pricing' as const, label: '2. Pricing & Stock' },
+                { id: 'pricing' as const, label: '2. Pricing & Offers' },
                 { id: 'specs' as const, label: '3. Features & In The Box' },
                 { id: 'warranty' as const, label: '4. Warranty & Details' },
               ].map((tab) => (
@@ -1963,39 +1848,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                           ? `${Math.round(((productForm.mrp - productForm.price) / productForm.mrp) * 100)}% OFF`
                           : '0% OFF'}
                       </strong>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4 pt-2">
-                      <div>
-                        <label className="font-bold text-gray-800 dark:text-gray-200 block mb-1">
-                          Physical Stock Quantity
-                        </label>
-                        <input
-                          type="number"
-                          min={0}
-                          value={productForm.stockCount}
-                          onChange={(e) =>
-                            setProductForm({
-                              ...productForm,
-                              stockCount: Number(e.target.value),
-                              inStock: Number(e.target.value) > 0,
-                            })
-                          }
-                          className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </div>
-
-                      <div className="flex flex-col justify-end">
-                        <label className="flex items-center gap-2 p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={productForm.inStock}
-                            onChange={(e) => setProductForm({ ...productForm, inStock: e.target.checked })}
-                            className="w-4 h-4 text-blue-600 rounded"
-                          />
-                          <span className="font-bold text-gray-900 dark:text-white">Mark In Stock</span>
-                        </label>
-                      </div>
                     </div>
                   </div>
                 )}

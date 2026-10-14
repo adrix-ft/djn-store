@@ -156,7 +156,7 @@ export const AdminPinModal: React.FC<AdminPinModalProps> = ({
               DJN Tech Command Center
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-xs">
-              Enter authorized administrator credentials to manage products, pricing, stock, and customer orders.
+              Enter authorized administrator credentials to manage products, pricing, and customer orders.
             </p>
 
             {/* Security Guard Chip */}
