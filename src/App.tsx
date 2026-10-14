@@ -389,6 +389,18 @@ export default function App() {
     }
   };
 
+  // Support direct #admin navigation
+  useEffect(() => {
+    const handleHash = () => {
+      if (window.location.hash === '#admin') {
+        handleOpenAdmin();
+      }
+    };
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, [isAdminAuthenticated]);
+
   const handleAdminPinSuccess = () => {
     setIsAdminAuthenticated(true);
     setIsAdminPinModalOpen(false);

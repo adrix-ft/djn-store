@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import {
   Product,
   Category,
@@ -40,6 +40,7 @@ import {
   Tag,
   ShieldAlert,
   ArrowLeft,
+  ArrowRight,
   DollarSign,
   Layers,
   Sparkles,
@@ -64,6 +65,7 @@ import {
   KeyRound,
   User,
   Lock,
+  Menu,
 } from 'lucide-react';
 
 interface AdminPanelProps {
@@ -102,6 +104,31 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<AdminTab>('analytics');
   const [activeProductTab, setActiveProductTab] = useState<ProductNavTab>('all');
+  const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
+
+  // Smooth touch navigation refs
+  const adminMobileRibbonRef = useRef<HTMLDivElement>(null);
+  const productTabsRef = useRef<HTMLDivElement>(null);
+
+  // Auto-center active admin tab in mobile ribbon
+  useEffect(() => {
+    if (adminMobileRibbonRef.current) {
+      const activeEl = adminMobileRibbonRef.current.querySelector<HTMLElement>(`[data-admin-tab="${activeTab}"]`);
+      if (activeEl) {
+        activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }
+  }, [activeTab]);
+
+  // Auto-center active category tab in catalog ribbon
+  useEffect(() => {
+    if (productTabsRef.current) {
+      const activeEl = productTabsRef.current.querySelector<HTMLElement>(`[data-prod-tab="${activeProductTab}"]`);
+      if (activeEl) {
+        activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }
+  }, [activeProductTab]);
 
   // Search & Filters for Products
   const [productSearch, setProductSearch] = useState('');
@@ -545,36 +572,37 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       
       {/* TOP EXECUTIVE HEADER BAR */}
       <header className="shrink-0 h-16 z-40 bg-white/95 dark:bg-[#111827]/95 backdrop-blur-md border-b border-gray-200/80 dark:border-gray-800 shadow-2xs">
-        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+        <div className="w-full max-w-[1920px] mx-auto px-3.5 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
           
-          {/* Brand & Live Connection Indicator */}
-          <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-sm shadow-md shadow-blue-500/20">
+          {/* Brand & Connection Indicator */}
+          <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-xs sm:text-sm shadow-md shadow-blue-500/20 shrink-0">
               DJN
             </div>
-            <div>
-              <h1 className="text-sm sm:text-base font-extrabold text-gray-900 dark:text-white leading-none tracking-tight">
+            <div className="min-w-0">
+              <h1 className="text-xs sm:text-base font-extrabold text-gray-900 dark:text-white leading-none tracking-tight truncate">
                 Store Management
               </h1>
-              <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
+              <p className="text-[10px] sm:text-[11px] text-gray-500 dark:text-gray-400 mt-0.5 truncate hidden xs:block">
                 Catalog, inventory, and customer orders
               </p>
             </div>
           </div>
 
           {/* Quick Actions & Exit Controls */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             <button
               onClick={handleOpenAddProduct}
-              className="flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold shadow-md shadow-blue-600/20 transition-all cursor-pointer"
+              className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold shadow-md shadow-blue-600/20 transition-all cursor-pointer"
             >
               <Plus className="w-4 h-4 stroke-[2.5]" />
               <span className="hidden sm:inline">Add Product</span>
+              <span className="sm:hidden text-[11px]">Add</span>
             </button>
 
             <button
               onClick={onExit}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-xs font-semibold text-gray-700 dark:text-gray-200 transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-xs font-semibold text-gray-700 dark:text-gray-200 transition-colors cursor-pointer"
               title="Return to customer store view"
             >
               <ExternalLink className="w-3.5 h-3.5" />
@@ -583,30 +611,86 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
             <button
               onClick={onLogout}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-red-200 dark:border-red-900/50 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs font-semibold text-red-600 dark:text-red-400 transition-colors cursor-pointer"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl border border-red-200 dark:border-red-900/50 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs font-semibold text-red-600 dark:text-red-400 transition-colors cursor-pointer"
               title="Lock & Exit Admin"
             >
               <LogOut className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Logout</span>
+              <span>Logout</span>
+            </button>
+
+            {/* Mobile More Sheet Trigger */}
+            <button
+              onClick={() => setIsMobileMoreOpen(true)}
+              className="md:hidden p-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 cursor-pointer"
+              aria-label="Open Admin System Menu"
+            >
+              <Menu className="w-4.5 h-4.5 stroke-[2]" />
             </button>
           </div>
         </div>
       </header>
 
+      {/* MOBILE HORIZONTAL SCROLLABLE TABS RIBBON (Touch-optimized swipeable navigation) */}
+      <div className="md:hidden shrink-0 bg-white dark:bg-[#0f172a] border-b border-gray-200/80 dark:border-gray-800/80 px-3 py-2 z-20 shadow-2xs">
+        <div
+          ref={adminMobileRibbonRef}
+          className="flex items-center gap-2 overflow-x-auto overscroll-x-contain no-scrollbar"
+          style={{ WebkitOverflowScrolling: 'touch' }}
+        >
+          {[
+            { id: 'analytics' as AdminTab, label: 'Analytics', count: null, icon: TrendingUp },
+            { id: 'products' as AdminTab, label: 'Catalog', count: products.length, icon: Package },
+            { id: 'orders' as AdminTab, label: 'Orders', count: orders.length, icon: ShoppingBag },
+            { id: 'content' as AdminTab, label: 'Banners', count: null, icon: Settings },
+            { id: 'backup' as AdminTab, label: 'Backup', count: null, icon: Database },
+            { id: 'security' as AdminTab, label: 'Security', count: null, icon: KeyRound },
+          ].map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                data-admin-tab={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer select-none whitespace-nowrap active:scale-95 ${
+                  isActive
+                    ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/20'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                }`}
+              >
+                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-gray-400'}`} />
+                <span>{tab.label}</span>
+                {tab.count !== null && (
+                  <span
+                    className={`px-1.5 py-0.2 rounded-full text-[10px] font-extrabold ${
+                      isActive
+                        ? 'bg-white/25 text-white'
+                        : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+                    }`}
+                  >
+                    {tab.count}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* BODY WITH VERTICAL SIDEBAR + MAIN WORKSPACE */}
       <div className="flex-1 w-full max-w-[1920px] mx-auto flex flex-col md:flex-row overflow-hidden min-h-0">
         
-        {/* VERTICAL SIDEBAR NAVIGATION (LOCKED / STATIONARY) */}
-        <aside className="w-full md:w-64 lg:w-72 shrink-0 bg-white dark:bg-[#0f172a] border-b md:border-b-0 md:border-r border-gray-200/80 dark:border-gray-800/80 flex flex-col p-3 sm:p-4 md:p-5 h-auto md:h-full md:overflow-y-auto no-scrollbar z-10">
+        {/* VERTICAL SIDEBAR NAVIGATION (DESKTOP ONLY - STATIONARY & LOCKED) */}
+        <aside className="hidden md:flex md:w-64 lg:w-72 shrink-0 bg-white dark:bg-[#0f172a] border-r border-gray-200/80 dark:border-gray-800/80 flex-col p-4 md:p-5 h-full overflow-y-auto no-scrollbar z-10">
           
-          <div className="mb-3 px-2 hidden md:block">
+          <div className="mb-3 px-2">
             <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
               Navigation
             </span>
           </div>
 
           {/* Vertical Tabs List */}
-          <nav className="flex flex-row md:flex-col gap-1.5 overflow-x-auto md:overflow-visible pb-1 md:pb-0 no-scrollbar">
+          <nav className="flex flex-col gap-1.5">
             {[
               { id: 'analytics' as AdminTab, label: 'Analytics & Insights', shortLabel: 'Analytics', count: null, icon: TrendingUp },
               { id: 'products' as AdminTab, label: 'Product Catalog', shortLabel: 'Catalog', count: products.length, icon: Package },
@@ -621,20 +705,19 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex md:w-full items-center justify-between px-3 md:px-3.5 py-2 md:py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap md:whitespace-normal group ${
+                  className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all cursor-pointer group ${
                     isActive
-                      ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20 md:scale-[1.02]'
+                      ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20 scale-[1.02]'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800/60'
                   }`}
                 >
-                  <div className="flex items-center gap-2 md:gap-3 min-w-0">
+                  <div className="flex items-center gap-3 min-w-0">
                     <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-blue-500'}`} />
-                    <span className="hidden md:inline truncate">{tab.label}</span>
-                    <span className="md:hidden truncate">{tab.shortLabel}</span>
+                    <span className="truncate">{tab.label}</span>
                   </div>
                   {tab.count !== null && (
                     <span
-                      className={`px-1.5 md:px-2 py-0.5 rounded-full text-[10px] font-extrabold shrink-0 ml-1.5 md:ml-2 ${
+                      className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold shrink-0 ml-2 ${
                         isActive
                           ? 'bg-white/25 text-white'
                           : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400'
@@ -648,8 +731,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             })}
           </nav>
 
-          {/* Sidebar Bottom Status Card (Desktop Only) */}
-          <div className="mt-auto pt-4 hidden md:block space-y-3 border-t border-gray-100 dark:border-gray-800">
+          {/* Sidebar Bottom Status Card */}
+          <div className="mt-auto pt-4 space-y-3 border-t border-gray-100 dark:border-gray-800">
             <div className="p-3 rounded-2xl bg-gray-50 dark:bg-[#111827] border border-gray-200/60 dark:border-gray-800 space-y-1.5 text-xs">
               <div className="flex items-center justify-between text-gray-500 dark:text-gray-400">
                 <span>Currency:</span>
@@ -671,8 +754,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           </div>
         </aside>
 
-        {/* MAIN ADMIN WORKSPACE (INDEPENDENTLY SCROLLABLE) */}
-        <main className="flex-1 min-w-0 h-full overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6">
+        {/* MAIN ADMIN WORKSPACE (INDEPENDENTLY SCROLLABLE WITH PADDING FOR MOBILE BOTTOM NAV) */}
+        <main className="flex-1 min-w-0 h-full overflow-y-auto p-3.5 sm:p-6 lg:p-8 space-y-5 pb-24 md:pb-8">
 
         {/* ========================================================================= */}
         {/* TAB 0: ADVANCED ANALYTICS, GRAPHS & STORE INTELLIGENCE */}
@@ -763,14 +846,19 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         {activeTab === 'products' && (
           <div className="space-y-4">
             
-            {/* Category Navigation Ribbon (1:1 Mirror of Store Navigation) */}
-            <div className="p-1.5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+            {/* Category Navigation Ribbon (1:1 Mirror of Store Navigation with smooth touch scrolling) */}
+            <div
+              ref={productTabsRef}
+              className="p-1.5 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs flex items-center gap-1.5 overflow-x-auto overscroll-x-contain no-scrollbar"
+              style={{ WebkitOverflowScrolling: 'touch' }}
+            >
               {productNavTabs.map((tab) => {
                 const Icon = tab.icon;
                 const isActive = activeProductTab === tab.id;
                 return (
                   <button
                     key={tab.id}
+                    data-prod-tab={tab.id}
                     type="button"
                     onClick={() => handleTabChange(tab.id)}
                     className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 ${
@@ -850,9 +938,113 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               </button>
             </div>
 
-            {/* Products Data Table */}
+            {/* Products Catalog Display: Mobile Responsive Cards + Desktop Data Table */}
             <div className="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-xs overflow-hidden">
-              <div className="overflow-x-auto">
+              
+              {/* MOBILE FIRST CARD VIEW (md:hidden) - Instant touch access to Edit, Delete & Pricing */}
+              <div className="md:hidden divide-y divide-gray-100 dark:divide-gray-800/80">
+                {paginatedProducts.length === 0 ? (
+                  <div className="py-16 text-center text-gray-400 dark:text-gray-500 px-4">
+                    <Package className="w-12 h-12 mx-auto mb-3 opacity-30 stroke-[1.5]" />
+                    <p className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                      No products found matching filters
+                    </p>
+                    <p className="text-xs mt-1 text-gray-500">
+                      Try resetting search keywords or switching category tabs.
+                    </p>
+                  </div>
+                ) : (
+                  paginatedProducts.map((p) => (
+                    <div key={p.id} className="p-3.5 space-y-2.5 hover:bg-gray-50/60 dark:hover:bg-[#161f30]/50 transition-colors">
+                      <div className="flex items-start gap-3">
+                        <div className="w-14 h-16 rounded-xl bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 overflow-hidden shrink-0 flex items-center justify-center shadow-2xs">
+                          {p.imageUrl ? (
+                            <img
+                              src={p.imageUrl}
+                              alt={p.name}
+                              loading="lazy"
+                              referrerPolicy="no-referrer"
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.currentTarget as HTMLImageElement).src =
+                                  'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg';
+                              }}
+                            />
+                          ) : (
+                            <Package className="w-6 h-6 text-gray-400" />
+                          )}
+                        </div>
+
+                        <div className="min-w-0 flex-1">
+                          <div className="font-bold text-gray-900 dark:text-white text-xs leading-snug">
+                            {p.name}
+                          </div>
+                          <div className="text-[11px] text-gray-500 dark:text-gray-400 truncate mt-0.5">
+                            {p.subtitle || p.category}
+                          </div>
+                          <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+                            <span className="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-800/40">
+                              {p.platform}
+                            </span>
+                            <span className="px-1.5 py-0.5 rounded text-[9px] font-semibold bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                              {p.condition}
+                            </span>
+                            {p.badge && (
+                              <span className="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200/50 dark:border-amber-800/40">
+                                {p.badge}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Price & Action Buttons Row */}
+                      <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-800/60">
+                        <div>
+                          <div className="font-extrabold text-gray-900 dark:text-white text-sm font-mono">
+                            ₹{p.price.toLocaleString('en-IN')}
+                          </div>
+                          {p.mrp > p.price && (
+                            <div className="flex items-center gap-1.5 text-[10px]">
+                              <span className="text-gray-400 line-through">
+                                ₹{p.mrp.toLocaleString('en-IN')}
+                              </span>
+                              <span className="text-emerald-600 dark:text-emerald-400 font-bold">
+                                {p.discountPercent}% OFF
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleOpenEditProduct(p)}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 text-xs font-bold transition-colors cursor-pointer active:scale-95"
+                          >
+                            <Edit2 className="w-3.5 h-3.5" />
+                            <span>Edit</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setProductToDelete(p)}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 text-xs font-bold transition-colors cursor-pointer active:scale-95"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            <span>Delete</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {/* DESKTOP DATA TABLE (hidden md:block) with smooth horizontal scrolling */}
+              <div
+                className="hidden md:block overflow-x-auto overscroll-x-contain"
+                style={{ WebkitOverflowScrolling: 'touch' }}
+              >
                 <table className="w-full text-left text-xs border-collapse">
                   <thead>
                     <tr className="bg-gray-50/80 dark:bg-[#161f30] text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider text-[11px] border-b border-gray-200/80 dark:border-gray-800">
@@ -1719,7 +1911,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             </div>
 
             {/* Modal Body & Live Preview Split */}
-            <form onSubmit={handleSaveProduct} className="flex-1 overflow-y-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 text-xs">
+            <form id="product-admin-form" onSubmit={handleSaveProduct} className="flex-1 overflow-y-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 text-xs overscroll-contain">
               
               {/* Form Input Columns (Left / 7 cols) */}
               <div className="lg:col-span-7 space-y-4">
@@ -2013,26 +2205,37 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                     </div>
                   </div>
                 </div>
-
-                {/* Modal Footer Controls */}
-                <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-end gap-2.5">
-                  <button
-                    type="button"
-                    onClick={() => setIsProductModalOpen(false)}
-                    className="px-4 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 cursor-pointer"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-600/20 active:scale-95 transition-all cursor-pointer flex items-center gap-1.5"
-                  >
-                    <Save className="w-4 h-4" />
-                    <span>Save to Store</span>
-                  </button>
-                </div>
               </div>
             </form>
+
+            {/* Modal Sticky Footer Bar - ALWAYS visible and accessible on mobile & desktop */}
+            <div className="px-5 sm:px-6 py-3 border-t border-gray-100 dark:border-gray-800 bg-gray-50/95 dark:bg-[#161f30]/95 backdrop-blur-sm flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                  {modalTab === 'basic' && 'Step 1/4: Basic Info'}
+                  {modalTab === 'pricing' && 'Step 2/4: Pricing & MRP'}
+                  {modalTab === 'specs' && 'Step 3/4: Specs & In The Box'}
+                  {modalTab === 'warranty' && 'Step 4/4: Warranty & Policy'}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsProductModalOpen(false)}
+                  className="px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 cursor-pointer active:scale-95"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  form="product-admin-form"
+                  className="px-4 sm:px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-xs shadow-md shadow-blue-600/20 transition-all cursor-pointer flex items-center gap-1.5"
+                >
+                  <Save className="w-4 h-4" />
+                  <span>Save to Store</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -2068,6 +2271,272 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 className="px-5 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-md shadow-red-600/20 cursor-pointer"
               >
                 Yes, Delete Item
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MOBILE STICKY BOTTOM NAVIGATION BAR FOR ADMIN */}
+      <nav
+        aria-label="Admin Mobile Navigation"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-xl border-t border-gray-200/80 dark:border-gray-800/80 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] dark:shadow-[0_-4px_25px_rgba(0,0,0,0.5)] transition-colors"
+        style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+      >
+        <div className="grid grid-cols-5 h-14 items-center px-1">
+          {/* 1. Analytics */}
+          <button
+            onClick={() => setActiveTab('analytics')}
+            className={`flex flex-col items-center justify-center py-1 transition-colors cursor-pointer select-none ${
+              activeTab === 'analytics'
+                ? 'text-blue-600 dark:text-blue-400 font-bold'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+            }`}
+          >
+            <TrendingUp className={`w-5 h-5 ${activeTab === 'analytics' ? 'stroke-[2.5]' : 'stroke-[1.8]'}`} />
+            <span className="text-[10px] mt-0.5 leading-none">Analytics</span>
+          </button>
+
+          {/* 2. Catalog */}
+          <button
+            onClick={() => setActiveTab('products')}
+            className={`flex flex-col items-center justify-center py-1 transition-colors cursor-pointer select-none relative ${
+              activeTab === 'products'
+                ? 'text-blue-600 dark:text-blue-400 font-bold'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+            }`}
+          >
+            <div className="relative">
+              <Package className={`w-5 h-5 ${activeTab === 'products' ? 'stroke-[2.5]' : 'stroke-[1.8]'}`} />
+              <span className="absolute -top-1 -right-2 min-w-4 h-4 px-1 rounded-full bg-blue-600 text-white text-[9px] font-bold flex items-center justify-center">
+                {products.length}
+              </span>
+            </div>
+            <span className="text-[10px] mt-0.5 leading-none">Catalog</span>
+          </button>
+
+          {/* 3. Orders */}
+          <button
+            onClick={() => setActiveTab('orders')}
+            className={`flex flex-col items-center justify-center py-1 transition-colors cursor-pointer select-none relative ${
+              activeTab === 'orders'
+                ? 'text-blue-600 dark:text-blue-400 font-bold'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+            }`}
+          >
+            <div className="relative">
+              <ShoppingBag className={`w-5 h-5 ${activeTab === 'orders' ? 'stroke-[2.5]' : 'stroke-[1.8]'}`} />
+              {orders.length > 0 && (
+                <span className="absolute -top-1 -right-2 min-w-4 h-4 px-1 rounded-full bg-emerald-600 text-white text-[9px] font-bold flex items-center justify-center">
+                  {orders.length}
+                </span>
+              )}
+            </div>
+            <span className="text-[10px] mt-0.5 leading-none">Orders</span>
+          </button>
+
+          {/* 4. Marketing */}
+          <button
+            onClick={() => setActiveTab('content')}
+            className={`flex flex-col items-center justify-center py-1 transition-colors cursor-pointer select-none ${
+              activeTab === 'content'
+                ? 'text-blue-600 dark:text-blue-400 font-bold'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+            }`}
+          >
+            <Settings className={`w-5 h-5 ${activeTab === 'content' ? 'stroke-[2.5]' : 'stroke-[1.8]'}`} />
+            <span className="text-[10px] mt-0.5 leading-none">Banners</span>
+          </button>
+
+          {/* 5. More */}
+          <button
+            onClick={() => setIsMobileMoreOpen(true)}
+            className={`flex flex-col items-center justify-center py-1 transition-colors cursor-pointer select-none ${
+              activeTab === 'backup' || activeTab === 'security' || isMobileMoreOpen
+                ? 'text-blue-600 dark:text-blue-400 font-bold'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+            }`}
+          >
+            <Menu className="w-5 h-5 stroke-[1.8]" />
+            <span className="text-[10px] mt-0.5 leading-none">More</span>
+          </button>
+        </div>
+      </nav>
+
+      {/* MOBILE ADMINISTRATIVE BOTTOM SHEET DRAWER */}
+      {isMobileMoreOpen && (
+        <div className="fixed inset-0 z-50 md:hidden flex flex-col justify-end">
+          {/* Backdrop */}
+          <div
+            onClick={() => setIsMobileMoreOpen(false)}
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity animate-in fade-in"
+          />
+
+          {/* Sheet */}
+          <div className="relative w-full max-h-[85vh] bg-white dark:bg-[#0f172a] rounded-t-3xl border-t border-gray-200 dark:border-gray-800 p-5 space-y-4 overflow-y-auto shadow-2xl z-10 animate-in slide-in-from-bottom duration-200">
+            {/* Sheet Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-gray-800">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
+                  DJN
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-gray-900 dark:text-white leading-tight">Admin System & Controls</h3>
+                  <p className="text-[10px] text-gray-400">Settings, backup & store navigation</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsMobileMoreOpen(false)}
+                className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-gray-700 dark:hover:text-white cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Quick Actions List */}
+            <div className="space-y-1.5">
+              <button
+                onClick={() => {
+                  setActiveTab('analytics');
+                  setIsMobileMoreOpen(false);
+                }}
+                className={`w-full flex items-center justify-between p-3 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+                  activeTab === 'analytics'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-50 dark:bg-gray-800/60 text-gray-800 dark:text-gray-200 hover:bg-gray-100'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <TrendingUp className="w-4 h-4 text-blue-500" />
+                  <span>Analytics & Financial Intelligence</span>
+                </div>
+              </button>
+
+              <button
+                onClick={() => {
+                  setActiveTab('products');
+                  setIsMobileMoreOpen(false);
+                }}
+                className={`w-full flex items-center justify-between p-3 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+                  activeTab === 'products'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-50 dark:bg-gray-800/60 text-gray-800 dark:text-gray-200 hover:bg-gray-100'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <Package className="w-4 h-4 text-indigo-500" />
+                  <span>Product Catalog</span>
+                </div>
+                <span className="text-[10px] bg-white/20 dark:bg-gray-700 px-2 py-0.5 rounded-full">
+                  {products.length} Items
+                </span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setActiveTab('orders');
+                  setIsMobileMoreOpen(false);
+                }}
+                className={`w-full flex items-center justify-between p-3 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+                  activeTab === 'orders'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-50 dark:bg-gray-800/60 text-gray-800 dark:text-gray-200 hover:bg-gray-100'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <ShoppingBag className="w-4 h-4 text-emerald-500" />
+                  <span>Customer Orders & WhatsApp</span>
+                </div>
+                <span className="text-[10px] bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 px-2 py-0.5 rounded-full font-bold">
+                  {orders.length}
+                </span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setActiveTab('content');
+                  setIsMobileMoreOpen(false);
+                }}
+                className={`w-full flex items-center justify-between p-3 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+                  activeTab === 'content'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-50 dark:bg-gray-800/60 text-gray-800 dark:text-gray-200 hover:bg-gray-100'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <Settings className="w-4 h-4 text-amber-500" />
+                  <span>Banners & Marketing Settings</span>
+                </div>
+              </button>
+
+              <button
+                onClick={() => {
+                  setActiveTab('backup');
+                  setIsMobileMoreOpen(false);
+                }}
+                className={`w-full flex items-center justify-between p-3 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+                  activeTab === 'backup'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-50 dark:bg-gray-800/60 text-gray-800 dark:text-gray-200 hover:bg-gray-100'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <Database className="w-4 h-4 text-purple-500" />
+                  <span>Backup & Restore (JSON Export)</span>
+                </div>
+              </button>
+
+              <button
+                onClick={() => {
+                  setActiveTab('security');
+                  setIsMobileMoreOpen(false);
+                }}
+                className={`w-full flex items-center justify-between p-3 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+                  activeTab === 'security'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-50 dark:bg-gray-800/60 text-gray-800 dark:text-gray-200 hover:bg-gray-100'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <KeyRound className="w-4 h-4 text-rose-500" />
+                  <span>Admin Security & PIN Code</span>
+                </div>
+              </button>
+            </div>
+
+            {/* Quick Utility Actions */}
+            <div className="pt-2 border-t border-gray-100 dark:border-gray-800 space-y-2">
+              <button
+                onClick={() => {
+                  setIsMobileMoreOpen(false);
+                  handleOpenAddProduct();
+                }}
+                className="w-full py-2.5 px-3 rounded-xl bg-blue-600 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Add New Product to Store</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setIsMobileMoreOpen(false);
+                  onExit();
+                }}
+                className="w-full py-2.5 px-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>Return to Storefront View</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setIsMobileMoreOpen(false);
+                  onLogout();
+                }}
+                className="w-full py-2.5 px-3 rounded-xl border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>Lock & Logout</span>
               </button>
             </div>
           </div>

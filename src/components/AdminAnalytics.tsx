@@ -423,23 +423,24 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
 
           <div className="flex flex-wrap items-center gap-2.5 shrink-0">
             {/* Timeframe Filter */}
-            <div className="bg-black/25 backdrop-blur-md p-1 rounded-2xl border border-white/15 flex items-center gap-1">
+            <div className="w-full sm:w-auto bg-black/25 backdrop-blur-md p-1 rounded-2xl border border-white/15 grid grid-cols-4 sm:flex items-center gap-1">
               {[
-                { id: '7d', label: 'Last 7 Days' },
-                { id: '30d', label: 'Last 30 Days' },
-                { id: '90d', label: '90 Days' },
-                { id: 'all', label: 'All Time' },
+                { id: '7d', label: 'Last 7 Days', shortLabel: '7D' },
+                { id: '30d', label: 'Last 30 Days', shortLabel: '30D' },
+                { id: '90d', label: '90 Days', shortLabel: '90D' },
+                { id: 'all', label: 'All Time', shortLabel: 'All' },
               ].map((tf) => (
                 <button
                   key={tf.id}
                   onClick={() => setTimeframe(tf.id as any)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  className={`px-2 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer text-center ${
                     timeframe === tf.id
                       ? 'bg-white text-blue-700 shadow-md scale-105'
                       : 'text-white/80 hover:text-white hover:bg-white/10'
                   }`}
                 >
-                  {tf.label}
+                  <span className="hidden sm:inline">{tf.label}</span>
+                  <span className="sm:hidden">{tf.shortLabel}</span>
                 </button>
               ))}
             </div>
@@ -447,7 +448,7 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
             {/* Export Business CSV */}
             <button
               onClick={handleExportOwnerCSV}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-white text-blue-700 hover:bg-blue-50 font-bold text-xs shadow-md transition-all active:scale-95 cursor-pointer"
+              className="w-full sm:w-auto justify-center flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-white text-blue-700 hover:bg-blue-50 font-bold text-xs shadow-md transition-all active:scale-95 cursor-pointer"
               title="Download customer orders spreadsheet"
             >
               <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
@@ -688,7 +689,10 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
         </div>
 
         {/* SVG Chart */}
-        <div className="relative w-full overflow-x-auto no-scrollbar pt-2">
+        <div
+          className="relative w-full overflow-x-auto overscroll-x-contain pt-2 no-scrollbar"
+          style={{ WebkitOverflowScrolling: 'touch' }}
+        >
           <div className="min-w-[680px]">
             <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="w-full h-auto select-none">
               <defs>
@@ -733,13 +737,14 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
               {/* Bar View */}
               {chartView === 'bar' &&
                 points.map((pt, i) => {
-                  const barW = Math.max(32, innerW / (points.length * 2.2));
-                  const barH = Math.max(4, padTop + innerH - pt.y);
+                  const barW = Math.max(28, innerW / (points.length * 2.2));
+                  const barH = Math.max(6, padTop + innerH - pt.y);
+                  const barY = pt.revenue > 0 ? pt.y : padTop + innerH - barH;
                   return (
                     <rect
                       key={i}
                       x={pt.x - barW / 2}
-                      y={pt.y}
+                      y={barY}
                       width={barW}
                       height={barH}
                       rx="6"
@@ -747,6 +752,7 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
                       className="transition-all hover:brightness-110 cursor-pointer"
                       onMouseEnter={() => setHoveredPoint(i)}
                       onMouseLeave={() => setHoveredPoint(null)}
+                      onClick={() => setHoveredPoint(hoveredPoint === i ? null : i)}
                     />
                   );
                 })}
@@ -771,6 +777,7 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
                     key={i}
                     onMouseEnter={() => setHoveredPoint(i)}
                     onMouseLeave={() => setHoveredPoint(null)}
+                    onClick={() => setHoveredPoint(hoveredPoint === i ? null : i)}
                     className="cursor-pointer"
                   >
                     <circle
