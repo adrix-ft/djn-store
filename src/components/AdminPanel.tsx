@@ -385,12 +385,22 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         p.id === editingProduct.id ? updatedProduct : p
       );
       onUpdateProducts(nextProducts);
-      upsertProductToDB(updatedProduct).catch(console.error);
-      showToast(`Updated "${updatedProduct.name}" in catalog`);
+      upsertProductToDB(updatedProduct).then((success) => {
+        if (!success) {
+          showToast(`⚠️ Database update blocked by Supabase policy. Please run the policy query.`);
+        } else {
+          showToast(`✓ Updated "${updatedProduct.name}" in live database!`);
+        }
+      });
     } else {
       onUpdateProducts([updatedProduct, ...products]);
-      upsertProductToDB(updatedProduct).catch(console.error);
-      showToast(`Added new product "${updatedProduct.name}"`);
+      upsertProductToDB(updatedProduct).then((success) => {
+        if (!success) {
+          showToast(`⚠️ Database insert blocked by Supabase policy. Please run the policy query.`);
+        } else {
+          showToast(`✓ Added "${updatedProduct.name}" to live database!`);
+        }
+      });
     }
 
     setIsProductModalOpen(false);
@@ -401,8 +411,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     if (!productToDelete) return;
     const nextProducts = products.filter((p) => p.id !== productToDelete.id);
     onUpdateProducts(nextProducts);
-    deleteProductFromDB(productToDelete.id).catch(console.error);
-    showToast(`Deleted "${productToDelete.name}" from catalog`);
+    deleteProductFromDB(productToDelete.id).then((success) => {
+      if (!success) {
+        showToast(`⚠️ Database delete blocked by Supabase policy.`);
+      } else {
+        showToast(`✓ Deleted "${productToDelete.name}" from live database!`);
+      }
+    });
     setProductToDelete(null);
   };
 
@@ -410,8 +425,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const handleUpdateOrderStatus = (orderId: string, status: Order['status']) => {
     const nextOrders = orders.map((o) => (o.id === orderId ? { ...o, status } : o));
     onUpdateOrders(nextOrders);
-    updateOrderStatusInDB(orderId, status).catch(console.error);
-    showToast(`Order #${orderId} marked as ${status}`);
+    updateOrderStatusInDB(orderId, status).then((success) => {
+      if (!success) {
+        showToast(`⚠️ Order status update blocked by Supabase policy.`);
+      } else {
+        showToast(`✓ Order #${orderId} updated to ${status} in database!`);
+      }
+    });
   };
 
   // Open WhatsApp Customer Notification
@@ -431,8 +451,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const handleSaveSiteConfig = (e: React.FormEvent) => {
     e.preventDefault();
     onUpdateSiteConfig(configForm);
-    upsertSiteConfigToDB(configForm).catch(console.error);
-    showToast('Website banners, promo codes & contact details saved!');
+    upsertSiteConfigToDB(configForm).then((success) => {
+      if (!success) {
+        showToast(`⚠️ Site config update blocked by Supabase policy.`);
+      } else {
+        showToast('✓ Website settings saved to live database!');
+      }
+    });
   };
 
   // Export JSON
