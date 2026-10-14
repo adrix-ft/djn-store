@@ -214,7 +214,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               </div>
 
               <p className="text-center text-[11px] text-[#64748b]">
-                Free replacement within 7 days · Cash on Delivery available
+                Free replacement within 7 days · Express Shipping Available
               </p>
             </div>
 

@@ -386,15 +386,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
       setIsSubmitting(false);
       setErrorMessage(
-        'Unable to initialize Razorpay payment gateway. Please select Cash on Delivery or contact DJN Tech support.'
+        'Unable to initialize Razorpay payment gateway. Please check your internet connection or contact DJN Tech support.'
       );
       return;
     }
-
-    // CASH ON DELIVERY (COD)
-    setTimeout(() => {
-      finalizeOrder(undefined, 'cod');
-    }, 1000);
   };
 
   return (
@@ -710,33 +705,6 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                             Visa / Mastercard
                           </span>
                         </div>
-                      </div>
-                    </div>
-                  </label>
-
-                  {/* Option 2: Cash on Delivery */}
-                  <label
-                    className={`flex items-start justify-between p-3.5 rounded-xl border cursor-pointer transition-all ${
-                      formData.paymentMethod === 'cod'
-                        ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-950/40 ring-1 ring-blue-500/20 shadow-xs'
-                        : 'border-[#e2e8f0] dark:border-gray-700 bg-white dark:bg-[#161f30] hover:bg-gray-50/50'
-                    }`}
-                  >
-                    <div className="flex items-start gap-3">
-                      <input
-                        type="radio"
-                        name="payment_choice"
-                        checked={formData.paymentMethod === 'cod'}
-                        onChange={() => setFormData({ ...formData, paymentMethod: 'cod' })}
-                        className="mt-1 accent-blue-600"
-                      />
-                      <div>
-                        <p className="font-bold text-[#212121] dark:text-white text-xs sm:text-sm">
-                          Cash on Delivery (Doorstep Delivery)
-                        </p>
-                        <p className="text-[11px] text-[#64748b] dark:text-gray-400 mt-0.5">
-                          Pay by cash or scan courier UPI QR code upon doorstep delivery.
-                        </p>
                       </div>
                     </div>
                   </label>

@@ -174,7 +174,7 @@ export default function App() {
           city: 'Mumbai',
           state: 'Maharashtra',
           pincode: '400050',
-          paymentMethod: 'cod',
+          paymentMethod: 'razorpay',
         },
         status: 'Dispatched',
         estimatedDelivery: '14 Oct 2026',

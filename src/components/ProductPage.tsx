@@ -304,7 +304,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                 {pincodeChecked && (
                   <p className="mt-2 text-[#059669] dark:text-emerald-400 font-medium flex items-center gap-1.5">
                     <Check className="w-3.5 h-3.5" />
-                    <span>Delivery within 2–4 Business Days · Cash on Delivery Available</span>
+                    <span>Delivery within 2–4 Business Days · Express Shipping Across India</span>
                   </p>
                 )}
               </div>

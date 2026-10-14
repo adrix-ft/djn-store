@@ -137,7 +137,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({ type, onClose }) => {
               <ul className="list-disc pl-5 space-y-2">
                 <li>All products listed are guaranteed 100% genuine and sourced through authorized channels or verified pre-owned inspections.</li>
                 <li>Prices displayed are in Indian Rupees (INR) inclusive of applicable taxes.</li>
-                <li>Orders are confirmed upon receipt of valid payment or confirmed Cash on Delivery authorization.</li>
+                <li>Orders are confirmed upon receipt of valid online payment verification.</li>
                 <li>DJN Tech reserves the right to cancel suspicious bulk orders intended for unauthorized commercial scalping.</li>
               </ul>
             </div>

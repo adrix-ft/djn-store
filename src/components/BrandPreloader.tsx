@@ -157,7 +157,7 @@ export const BrandPreloader: React.FC<BrandPreloaderProps> = ({
       {/* Bottom Footer Trust Row */}
       <div className="pb-4 text-center">
         <p className="text-[10px] sm:text-[11px] text-slate-500 tracking-wide font-medium">
-          PS5 · PS4 · Xbox Consoles · Tested Pre-Owned Games · Cash on Delivery
+          PS5 · PS4 · Xbox Consoles · Tested Pre-Owned Games · Express Delivery
         </p>
       </div>
 

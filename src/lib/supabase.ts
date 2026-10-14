@@ -109,7 +109,7 @@ export function mapRowToOrder(row: any): Order {
       city: row.city || '',
       state: row.state || '',
       pincode: row.pincode || '',
-      paymentMethod: row.payment_method || 'cod',
+      paymentMethod: row.payment_method || 'razorpay',
       paymentId: row.payment_id || undefined,
       notes: row.notes || undefined,
     },
