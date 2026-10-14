@@ -51,6 +51,24 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     try {
       const res = await signInWithGoogleOAuth();
       if (res.success && res.url) {
+        // Pre-check if provider is enabled in Supabase to avoid raw JSON 400 page
+        try {
+          const testRes = await fetch(res.url, { method: 'GET' });
+          if (!testRes.ok) {
+            const body = await testRes.json().catch(() => ({}));
+            if (body?.msg?.includes('provider is not enabled') || testRes.status === 400) {
+              setIsLoading(false);
+              setShowManualFallback(true);
+              setErrorMsg(
+                'Google Provider is not enabled yet in your Supabase Dashboard. To enable real Google accounts, go to Supabase Dashboard > Authentication > Providers > Google and toggle it ON. In the meantime, sign in below with your Google details to test!'
+              );
+              return;
+            }
+          }
+        } catch {
+          // If pre-check is blocked by browser network policy, continue to redirect
+        }
+
         // Redirection to Google Auth provider
         window.location.href = res.url;
         return;
@@ -60,11 +78,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       if (res.error) {
         console.warn('[Auth] Google OAuth warning:', res.error);
         setShowManualFallback(true);
-        setErrorMsg('Live Google OAuth is currently pending provider credentials in Supabase Dashboard. You can sign in below with your Google email to instantly test live order tracking!');
+        setErrorMsg('Google OAuth is pending provider credentials in Supabase Dashboard. Sign in below with your Google email to test live order tracking!');
       }
     } catch (err: any) {
       setShowManualFallback(true);
-      setErrorMsg('Connection to Google Auth provider unavailable. You can sign in below directly with your Google email.');
+      setErrorMsg('Connection to Google Auth provider unavailable. Sign in below with your Google email.');
     } finally {
       setIsLoading(false);
     }
