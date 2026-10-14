@@ -234,19 +234,42 @@ export default function App() {
   const [isUserOrdersOpen, setIsUserOrdersOpen] = useState(false);
   const [userOrders, setUserOrders] = useState<Order[]>([]);
 
-  // Supabase Auth Session listener
+  // Helper to accurately extract Google profile details (avatar, name, email)
+  const parseGoogleUser = (u: any): AuthUser => {
+    const meta = u.user_metadata || {};
+    const identityMeta = (u.identities?.[0]?.identity_data as any) || {};
+
+    const avatarUrl =
+      meta.avatar_url ||
+      meta.picture ||
+      meta.avatar ||
+      identityMeta.avatar_url ||
+      identityMeta.picture ||
+      `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(u.email || 'Customer')}&backgroundColor=0070D1`;
+
+    const fullName =
+      meta.full_name ||
+      meta.name ||
+      identityMeta.full_name ||
+      identityMeta.name ||
+      u.email?.split('@')[0] ||
+      'Customer';
+
+    return {
+      id: u.id,
+      email: (u.email || '').toLowerCase(),
+      fullName,
+      avatarUrl,
+      provider: 'google',
+    };
+  };
+
+  // Auth Session listener
   useEffect(() => {
     // 1. Initial session check
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        const u = session.user;
-        const parsed: AuthUser = {
-          id: u.id,
-          email: (u.email || '').toLowerCase(),
-          fullName: u.user_metadata?.full_name || u.user_metadata?.name || u.email?.split('@')[0] || 'Customer',
-          avatarUrl: u.user_metadata?.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(u.email || 'Customer')}&backgroundColor=0070D1`,
-          provider: 'google',
-        };
+        const parsed = parseGoogleUser(session.user);
         setAuthUser(parsed);
         localStorage.setItem('djn_auth_user', JSON.stringify(parsed));
       }
@@ -256,18 +279,13 @@ export default function App() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session?.user) {
-        const u = session.user;
-        const parsed: AuthUser = {
-          id: u.id,
-          email: (u.email || '').toLowerCase(),
-          fullName: u.user_metadata?.full_name || u.user_metadata?.name || u.email?.split('@')[0] || 'Customer',
-          avatarUrl: u.user_metadata?.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(u.email || 'Customer')}&backgroundColor=0070D1`,
-          provider: 'google',
-        };
+      if ((event === 'SIGNED_IN' || event === 'USER_UPDATED') && session?.user) {
+        const parsed = parseGoogleUser(session.user);
         setAuthUser(parsed);
         localStorage.setItem('djn_auth_user', JSON.stringify(parsed));
-        showToast(`Welcome, ${parsed.fullName}!`);
+        if (event === 'SIGNED_IN') {
+          showToast(`Welcome, ${parsed.fullName}!`);
+        }
       } else if (event === 'SIGNED_OUT') {
         setAuthUser(null);
         localStorage.removeItem('djn_auth_user');
@@ -957,8 +975,10 @@ export default function App() {
             onClose={() => setIsUserOrdersOpen(false)}
             user={authUser}
             orders={userOrders}
+            wishlist={wishlist}
             onSignOut={handleSignOutUser}
             onContinueShopping={() => setIsUserOrdersOpen(false)}
+            onAddToCart={handleAddToCart}
           />
         </React.Suspense>
       )}

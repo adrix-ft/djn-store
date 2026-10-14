@@ -329,27 +329,28 @@ export const Header: React.FC<HeaderProps> = ({
           {authUser ? (
             <button
               onClick={onOpenUserOrders}
-              className="flex items-center gap-2 p-1 sm:px-2.5 sm:py-1 rounded-full bg-blue-50 dark:bg-blue-950/50 border border-blue-200/80 dark:border-blue-800/80 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors cursor-pointer"
-              title="My Account & Orders"
-              aria-label="User Account"
+              className="flex items-center gap-2 p-1 sm:pl-1.5 sm:pr-3 sm:py-1 rounded-full bg-blue-50 hover:bg-blue-100/80 dark:bg-blue-950/50 dark:hover:bg-blue-900/50 border border-blue-200 dark:border-blue-800 transition-all cursor-pointer shadow-2xs hover:shadow-xs group"
+              title="Open My Dashboard"
+              aria-label="User Account Dashboard"
             >
               {authUser.avatarUrl ? (
                 <img
                   src={authUser.avatarUrl}
                   alt={authUser.fullName}
-                  className="w-6 h-6 rounded-full object-cover border border-blue-400"
+                  referrerPolicy="no-referrer"
+                  className="w-7 h-7 rounded-full object-cover border-1.5 border-blue-500 shadow-2xs group-hover:scale-105 transition-transform"
                 />
               ) : (
-                <div className="w-6 h-6 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
+                <div className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center shadow-2xs">
                   {authUser.fullName.charAt(0).toUpperCase()}
                 </div>
               )}
               <div className="hidden sm:flex flex-col text-left">
-                <span className="text-[11px] font-bold text-gray-900 dark:text-white leading-none truncate max-w-[85px]">
+                <span className="text-[11px] font-bold text-gray-900 dark:text-white leading-none truncate max-w-[90px]">
                   {authUser.fullName.split(' ')[0]}
                 </span>
                 <span className="text-[9px] text-blue-600 dark:text-blue-400 font-semibold leading-none mt-0.5">
-                  Orders ({userOrdersCount || 0})
+                  Dashboard
                 </span>
               </div>
             </button>
@@ -585,6 +586,7 @@ export const Header: React.FC<HeaderProps> = ({
                     <img
                       src={authUser.avatarUrl}
                       alt={authUser.fullName}
+                      referrerPolicy="no-referrer"
                       className="w-9 h-9 rounded-xl object-cover border border-blue-300 shadow-xs shrink-0"
                     />
                   ) : (
@@ -607,9 +609,14 @@ export const Header: React.FC<HeaderProps> = ({
                     setIsMobileMenuOpen(false);
                     if (onOpenUserOrders) onOpenUserOrders();
                   }}
-                  className="px-2.5 py-1.5 rounded-lg bg-blue-600 text-white text-[10px] font-bold shrink-0 hover:bg-blue-700 transition-colors shadow-xs cursor-pointer"
+                  className="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-[11px] font-bold shrink-0 hover:bg-blue-700 transition-colors shadow-xs cursor-pointer flex items-center gap-1.5"
                 >
-                  Orders ({userOrdersCount || 0})
+                  <span>Dashboard</span>
+                  {userOrdersCount && userOrdersCount > 0 ? (
+                    <span className="bg-white/20 px-1.5 py-0.2 rounded-full text-[10px]">
+                      {userOrdersCount}
+                    </span>
+                  ) : null}
                 </button>
               </div>
             ) : (

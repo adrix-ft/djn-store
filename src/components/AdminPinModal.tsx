@@ -149,7 +149,7 @@ export const AdminPinModal: React.FC<AdminPinModalProps> = ({
             {/* Security Guard Chip */}
             <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800/60 text-[11px] font-semibold text-blue-700 dark:text-blue-300">
               <ShieldCheck className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-              <span>Supabase Database Auth Guard</span>
+              <span>Enterprise Security Guard</span>
             </div>
           </div>
 
@@ -257,7 +257,7 @@ export const AdminPinModal: React.FC<AdminPinModalProps> = ({
               {isSubmitting ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Verifying Database Credentials...</span>
+                  <span>Verifying Store Credentials...</span>
                 </>
               ) : (
                 <>
@@ -271,7 +271,7 @@ export const AdminPinModal: React.FC<AdminPinModalProps> = ({
           {/* Footer Notice */}
           <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800/80 text-center">
             <p className="text-[11px] text-slate-400 dark:text-slate-500 leading-relaxed">
-              Authorized access only. All administrative logins are verified against your secure Supabase database instance.
+              Authorized store management only. Protected by enterprise cloud security protocols.
             </p>
           </div>
         </div>

@@ -152,30 +152,49 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   authUser,
   onRequestLogin,
 }) => {
-  const [formData, setFormData] = useState<OrderCustomerInfo>({
-    fullName: authUser?.fullName || '',
-    phone: '',
-    email: authUser?.email || '',
-    address: '',
-    city: '',
-    state: 'Maharashtra',
-    pincode: '',
-    paymentMethod: 'razorpay',
-    notes: '',
-    userId: authUser?.id,
+  const [formData, setFormData] = useState<OrderCustomerInfo>(() => {
+    let savedAddr: any = null;
+    try {
+      const local = localStorage.getItem('djn_saved_address');
+      if (local) savedAddr = JSON.parse(local);
+    } catch {}
+
+    return {
+      fullName: authUser?.fullName || savedAddr?.fullName || '',
+      phone: savedAddr?.phone || '',
+      email: authUser?.email || '',
+      address: savedAddr?.address || '',
+      city: savedAddr?.city || '',
+      state: savedAddr?.state || 'Maharashtra',
+      pincode: savedAddr?.pincode || '',
+      paymentMethod: 'razorpay',
+      notes: '',
+      userId: authUser?.id,
+    };
   });
 
-  // Sync with authUser when user logs in
+  // Sync with authUser and saved profile address when modal opens or user logs in
   useEffect(() => {
-    if (authUser) {
+    let savedAddr: any = null;
+    try {
+      const local = localStorage.getItem('djn_saved_address');
+      if (local) savedAddr = JSON.parse(local);
+    } catch {}
+
+    if (authUser || savedAddr) {
       setFormData((prev) => ({
         ...prev,
-        fullName: prev.fullName || authUser.fullName || '',
-        email: authUser.email || prev.email || '',
-        userId: authUser.id,
+        fullName: prev.fullName || authUser?.fullName || savedAddr?.fullName || '',
+        email: authUser?.email || prev.email || '',
+        phone: prev.phone || savedAddr?.phone || '',
+        address: prev.address || savedAddr?.address || '',
+        city: prev.city || savedAddr?.city || '',
+        state: prev.state || savedAddr?.state || 'Maharashtra',
+        pincode: prev.pincode || savedAddr?.pincode || '',
+        userId: authUser?.id || prev.userId,
       }));
     }
-  }, [authUser]);
+  }, [authUser, isOpen]);
 
   // Track touched fields for instant validation errors
   const [touched, setTouched] = useState<Record<string, boolean>>({});
