@@ -98,36 +98,17 @@ export const Hero: React.FC<HeroProps> = ({
               <span className="hidden sm:inline">PlayStation 5, controllers & certified games.</span>
             </h1>
 
-            {/* Subline */}
-            <p className="mt-3 sm:mt-4 lg:mt-5 text-xs sm:text-base md:text-lg text-[#6b7280] dark:text-gray-300 font-normal leading-relaxed max-w-xl">
+            {/* Subline with improved contrast */}
+            <p className="mt-3 sm:mt-4 lg:mt-5 text-xs sm:text-base md:text-lg text-gray-700 dark:text-gray-200 font-medium leading-relaxed max-w-xl">
               <span className="sm:hidden">Consoles, accessories & verified pre-owned games.</span>
               <span className="hidden sm:inline">Brand new consoles, genuine accessories, and verified pre-owned games with a 7-day replacement guarantee.</span>
             </p>
 
-            {/* Category Switcher Tabs */}
-            <div className="mt-5 sm:mt-7 max-w-full overflow-x-auto no-scrollbar py-0.5">
-              <div className="inline-flex items-center gap-1 sm:gap-1.5 p-1 rounded-full bg-slate-200/60 dark:bg-slate-800/60 backdrop-blur-md">
-                {HERO_ITEMS.map((item, idx) => (
-                  <button
-                    key={item.id}
-                    onClick={() => setActiveIndex(idx)}
-                    className={`px-3.5 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-bold whitespace-nowrap transition-all cursor-pointer select-none shrink-0 ${
-                      idx === activeIndex
-                        ? 'bg-white dark:bg-blue-600 text-slate-900 dark:text-white shadow-sm'
-                        : 'text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Action CTA Buttons */}
-            <div className="mt-6 sm:mt-8 flex items-center gap-3 sm:gap-5">
+            {/* Action CTA Buttons (Stacked on mobile for clean thumb alignment) */}
+            <div className="mt-5 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-5 w-full max-w-md sm:max-w-none">
               <button
                 onClick={onExploreConsoles}
-                className="px-6 sm:px-8 py-3 bg-[#111827] dark:bg-blue-600 hover:bg-black dark:hover:bg-blue-700 text-white text-xs sm:text-sm font-bold rounded-full transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg flex items-center gap-2 active:scale-[0.98]"
+                className="w-full sm:w-auto justify-center px-6 sm:px-8 py-3.5 sm:py-3 bg-[#111827] dark:bg-blue-600 hover:bg-black dark:hover:bg-blue-700 text-white text-xs sm:text-sm font-bold rounded-full transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg flex items-center gap-2 active:scale-[0.98]"
               >
                 <span>Shop Consoles</span>
                 <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -135,7 +116,7 @@ export const Hero: React.FC<HeroProps> = ({
 
               <button
                 onClick={onExploreGames}
-                className="px-3 py-2 text-xs sm:text-sm font-bold text-[#111827] dark:text-gray-200 hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors cursor-pointer flex items-center gap-1 group"
+                className="w-full sm:w-auto justify-center px-4 py-2 sm:py-2 text-xs sm:text-sm font-bold text-[#111827] dark:text-gray-200 hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors cursor-pointer flex items-center gap-1 group"
               >
                 <span>Browse Discs</span>
                 <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-0.5" />
@@ -196,29 +177,32 @@ export const Hero: React.FC<HeroProps> = ({
                 </motion.div>
               </AnimatePresence>
 
-              {/* Stylish Floating Info Pill (Completely Borderless & Frameless) */}
+              {/* Product Price Card with full name visible & prominent deal pricing */}
               <motion.div
                 key={`pill-${currentItem.id}`}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className="mt-2 sm:mt-3 inline-flex items-center gap-3 px-4 sm:px-5 py-2.5 rounded-full bg-white/85 dark:bg-[#111827]/85 backdrop-blur-xl shadow-[0_12px_36px_rgba(0,0,0,0.10)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.55)] transition-all group-hover:scale-105 group-hover:shadow-xl"
+                className="mt-2 sm:mt-3 inline-flex flex-col sm:flex-row items-center gap-1.5 sm:gap-3 px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl sm:rounded-full bg-white/90 dark:bg-[#111827]/90 backdrop-blur-xl border border-gray-100 dark:border-gray-800 shadow-[0_12px_36px_rgba(0,0,0,0.10)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.55)] transition-all group-hover:scale-105 group-hover:shadow-xl max-w-[94vw] sm:max-w-none text-center sm:text-left"
               >
                 <div className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                  <span className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white truncate max-w-[160px] sm:max-w-[240px]">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                  <span className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white leading-tight">
                     {currentItem.title}
                   </span>
                 </div>
 
-                <div className="h-3.5 w-px bg-slate-300/60 dark:bg-slate-700/60" />
+                <div className="hidden sm:block h-3.5 w-px bg-slate-300/60 dark:bg-slate-700/60" />
 
-                <div className="flex items-center gap-1.5 shrink-0">
-                  <span className="text-xs sm:text-sm font-extrabold text-blue-600 dark:text-blue-400 font-mono">
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className="text-sm sm:text-base font-black text-blue-600 dark:text-blue-400 font-mono tracking-tight">
                     {currentItem.price}
                   </span>
-                  <span className="text-[10px] sm:text-xs text-gray-400 line-through">
+                  <span className="text-xs text-gray-400 line-through">
                     {currentItem.mrp}
+                  </span>
+                  <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-1.5 py-0.5 rounded-md">
+                    {currentItem.discount}
                   </span>
                 </div>
 

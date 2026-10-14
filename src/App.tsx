@@ -992,6 +992,10 @@ export default function App() {
         onNavigateHome={handleNavigateHome}
         onSelectCategory={handleNavigateCategory}
         onNavigateSellConsoles={handleNavigateSellConsoles}
+        authUser={authUser}
+        onOpenAuth={() => setIsAuthModalOpen(true)}
+        onOpenUserOrders={() => setIsUserOrdersOpen(true)}
+        userOrdersCount={userOrders.length}
       />
 
     </div>

@@ -299,11 +299,11 @@ export const Header: React.FC<HeaderProps> = ({
             <Search className="w-4.5 h-4.5 stroke-[1.8]" />
           </button>
 
-          {/* Theme Toggle Button */}
+          {/* Theme Toggle Button (Desktop only, available in mobile drawer) */}
           <button
             onClick={onToggleTheme}
             title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            className="p-2 text-[#424242] dark:text-gray-200 hover:text-[#1a73e8] dark:hover:text-[#f59e0b] transition-all rounded-full hover:bg-[#f3f4f6] dark:hover:bg-[#1e293b] cursor-pointer"
+            className="hidden md:flex p-2 text-[#424242] dark:text-gray-200 hover:text-[#1a73e8] dark:hover:text-[#f59e0b] transition-all rounded-full hover:bg-[#f3f4f6] dark:hover:bg-[#1e293b] cursor-pointer"
             aria-label="Toggle theme"
           >
             {theme === 'dark' ? (
@@ -325,11 +325,11 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           )}
 
-          {/* User Account / Google Sign-in */}
+          {/* User Account / Google Sign-in (Desktop only, available in drawer & bottom nav) */}
           {authUser ? (
             <button
               onClick={onOpenUserOrders}
-              className="flex items-center gap-2 p-1 sm:pl-1.5 sm:pr-3 sm:py-1 rounded-full bg-blue-50 hover:bg-blue-100/80 dark:bg-blue-950/50 dark:hover:bg-blue-900/50 border border-blue-200 dark:border-blue-800 transition-all cursor-pointer shadow-2xs hover:shadow-xs group"
+              className="hidden md:flex items-center gap-2 p-1 sm:pl-1.5 sm:pr-3 sm:py-1 rounded-full bg-blue-50 hover:bg-blue-100/80 dark:bg-blue-950/50 dark:hover:bg-blue-900/50 border border-blue-200 dark:border-blue-800 transition-all cursor-pointer shadow-2xs hover:shadow-xs group"
               title="Open My Dashboard"
               aria-label="User Account Dashboard"
             >
@@ -357,7 +357,7 @@ export const Header: React.FC<HeaderProps> = ({
           ) : (
             <button
               onClick={onOpenAuth}
-              className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a2333] hover:border-blue-500 text-xs font-bold text-gray-800 dark:text-gray-100 shadow-2xs hover:shadow-xs transition-all cursor-pointer"
+              className="hidden md:flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a2333] hover:border-blue-500 text-xs font-bold text-gray-800 dark:text-gray-100 shadow-2xs hover:shadow-xs transition-all cursor-pointer"
               title="Sign in with Google"
               aria-label="Sign in with Google"
             >
@@ -366,10 +366,10 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           )}
 
-          {/* Wishlist Button */}
+          {/* Wishlist Button (Desktop only, available in mobile drawer) */}
           <button
             onClick={onOpenWishlist}
-            className="relative p-2 text-[#424242] dark:text-gray-300 hover:text-[#d0473e] dark:hover:text-[#f87171] transition-colors rounded-full hover:bg-[#f3f4f6] dark:hover:bg-[#1e293b] cursor-pointer"
+            className="hidden md:flex relative p-2 text-[#424242] dark:text-gray-300 hover:text-[#d0473e] dark:hover:text-[#f87171] transition-colors rounded-full hover:bg-[#f3f4f6] dark:hover:bg-[#1e293b] cursor-pointer"
             aria-label="Wishlist"
           >
             <Heart className="w-4.5 h-4.5 stroke-[1.8]" />
@@ -757,7 +757,26 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
 
             {/* Bottom Footer Area */}
-            <div className="p-4 border-t border-[#e5e7eb] dark:border-[#1e293b] bg-gray-50/50 dark:bg-[#0c121e] space-y-2.5 shrink-0">
+            <div className="p-4 border-t border-[#e5e7eb] dark:border-[#1e293b] bg-gray-50/50 dark:bg-[#0c121e] space-y-2 shrink-0">
+              {/* Appearance / Dark Mode Toggle */}
+              <button
+                onClick={onToggleTheme}
+                className="w-full flex items-center justify-between py-2 px-3 rounded-lg text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+                aria-label="Toggle dark/light theme"
+              >
+                <div className="flex items-center gap-2.5">
+                  {theme === 'dark' ? (
+                    <Sun className="w-4 h-4 text-amber-400" />
+                  ) : (
+                    <Moon className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+                  )}
+                  <span>{theme === 'dark' ? 'Light Appearance' : 'Dark Appearance'}</span>
+                </div>
+                <span className="text-[10px] uppercase font-bold text-gray-500 bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-full">
+                  {theme === 'dark' ? 'Dark' : 'Light'}
+                </span>
+              </button>
+
               <button
                 onClick={() => {
                   onOpenWishlist();
@@ -765,7 +784,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }}
                 className="w-full flex items-center justify-between py-2 px-3 rounded-lg text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5">
                   <Heart className="w-4 h-4 text-[#d0473e]" />
                   <span>Wishlist</span>
                 </div>
