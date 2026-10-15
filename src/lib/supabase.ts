@@ -195,9 +195,63 @@ export function mapSiteConfigToRow(config: SiteConfig) {
     promo_code: config.promoCode,
     promo_discount_percent: config.promoDiscountPercent,
     free_shipping_threshold: config.freeShippingThreshold,
+    standard_shipping_fee: config.standardShippingFee ?? 99,
     razorpay_key_id: config.razorpayKeyId || null,
     razorpay_enabled: Boolean(config.razorpayEnabled),
+    maintenance_mode: Boolean(config.maintenanceMode),
+    maintenance_headline: config.maintenanceHeadline || null,
+    maintenance_message: config.maintenanceMessage || null,
+    maintenance_estimated_return: config.maintenanceEstimatedReturn || null,
     updated_at: new Date().toISOString(),
+  };
+}
+
+/**
+ * Parses maintenance return string to extract target date for timer and display text
+ */
+export function parseMaintenanceReturn(raw?: string): { targetDate: Date | null; displayText: string; isoString: string } {
+  if (!raw) {
+    const defaultDate = new Date(Date.now() + 4 * 60 * 60 * 1000);
+    return {
+      targetDate: defaultDate,
+      displayText: 'Back Today at 6:00 PM IST',
+      isoString: defaultDate.toISOString(),
+    };
+  }
+
+  if (raw.includes('||')) {
+    const [iso, text] = raw.split('||');
+    const d = new Date(iso);
+    const valid = !isNaN(d.getTime());
+    return {
+      targetDate: valid ? d : null,
+      displayText: text || iso,
+      isoString: valid ? d.toISOString() : '',
+    };
+  }
+
+  const d = new Date(raw);
+  if (!isNaN(d.getTime()) && raw.includes('-')) {
+    const formatted = d.toLocaleString('en-IN', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+      timeZone: 'Asia/Kolkata',
+    });
+    return {
+      targetDate: d,
+      displayText: `Reopening ${formatted} IST`,
+      isoString: d.toISOString(),
+    };
+  }
+
+  return {
+    targetDate: null,
+    displayText: raw,
+    isoString: '',
   };
 }
 

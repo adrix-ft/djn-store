@@ -29,6 +29,7 @@ import { BrandLogo } from './BrandLogo';
 import { Marquee } from './Marquee';
 import { Footer } from './Footer';
 import type { PolicyType } from './PolicyModal';
+import { parseMaintenanceReturn } from '../lib/supabase';
 
 interface MaintenancePageProps {
   siteConfig: SiteConfig;
@@ -53,28 +54,40 @@ export const MaintenancePage: React.FC<MaintenancePageProps> = ({
   onToggleTheme,
   onOpenPolicy = () => {},
 }) => {
-  // Live Ticking Countdown
-  const [timeLeft, setTimeLeft] = useState({
-    hours: 3,
-    minutes: 45,
-    seconds: 20,
+  // Parse target date and display text dynamically
+  const parsedReturn = React.useMemo(() => {
+    return parseMaintenanceReturn(siteConfig.maintenanceEstimatedReturn);
+  }, [siteConfig.maintenanceEstimatedReturn]);
+
+  // Live Ticking Countdown based on targetDate
+  const [timeLeft, setTimeLeft] = useState(() => {
+    const target = parsedReturn.targetDate || new Date(Date.now() + 3.75 * 60 * 60 * 1000);
+    const diff = Math.max(0, target.getTime() - Date.now());
+    return {
+      hours: Math.floor(diff / (1000 * 60 * 60)),
+      minutes: Math.floor((diff / (1000 * 60)) % 60),
+      seconds: Math.floor((diff / 1000) % 60),
+      isExpired: diff <= 0,
+    };
   });
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev.seconds > 0) {
-          return { ...prev, seconds: prev.seconds - 1 };
-        } else if (prev.minutes > 0) {
-          return { ...prev, minutes: 59, seconds: 59 };
-        } else if (prev.hours > 0) {
-          return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        }
-        return { hours: 0, minutes: 0, seconds: 0 };
+    const updateTimer = () => {
+      const target = parsedReturn.targetDate;
+      if (!target) return;
+      const diff = Math.max(0, target.getTime() - Date.now());
+      setTimeLeft({
+        hours: Math.floor(diff / (1000 * 60 * 60)),
+        minutes: Math.floor((diff / (1000 * 60)) % 60),
+        seconds: Math.floor((diff / 1000) % 60),
+        isExpired: diff <= 0,
       });
-    }, 1000);
+    };
+
+    updateTimer();
+    const timer = setInterval(updateTimer, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [parsedReturn]);
 
   // Notification Subscription state
   const [notifyInput, setNotifyInput] = useState('');
@@ -295,7 +308,9 @@ export const MaintenancePage: React.FC<MaintenancePageProps> = ({
             </div>
 
             <div className="text-xs text-[#1a73e8] dark:text-blue-400 font-medium mt-3">
-              {siteConfig.maintenanceEstimatedReturn || 'Target Window: Today, 6:00 PM IST'}
+              {timeLeft.isExpired
+                ? 'Finalizing System Updates · Opening Imminently'
+                : (parsedReturn.displayText || 'Target Window: Today, 6:00 PM IST')}
             </div>
           </div>
 

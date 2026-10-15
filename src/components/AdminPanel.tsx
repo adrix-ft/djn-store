@@ -15,6 +15,7 @@ import {
   upsertSiteConfigToDB,
   updateOrderStatusInDB,
   updateAdminCredentials,
+  parseMaintenanceReturn,
 } from '../lib/supabase';
 import { AdminAnalytics } from './AdminAnalytics';
 import {
@@ -69,6 +70,7 @@ import {
   Wrench,
   Power,
   AlertTriangle,
+  Calendar,
 } from 'lucide-react';
 
 interface AdminPanelProps {
@@ -1625,20 +1627,161 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   </span>
                 </div>
 
-                <div>
-                  <label className="font-semibold block mb-1">Estimated Re-launch Window *</label>
-                  <input
-                    type="text"
-                    value={configForm.maintenanceEstimatedReturn || ''}
-                    onChange={(e) =>
-                      setConfigForm({ ...configForm, maintenanceEstimatedReturn: e.target.value })
-                    }
-                    placeholder="Back Today at 6:00 PM IST"
-                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <span className="text-[10px] text-gray-400 mt-1 block">
-                    Displayed alongside the live countdown widget.
-                  </span>
+                <div className="sm:col-span-2 p-4 rounded-xl bg-gray-50 dark:bg-[#1a2333]/50 border border-gray-200 dark:border-gray-700/80 space-y-3">
+                  <div className="flex items-center gap-2 pb-2 border-b border-gray-200 dark:border-gray-700">
+                    <Calendar className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                    <span className="font-bold text-xs text-gray-900 dark:text-white">
+                      Store Reopening Date & Time (Controls Live Countdown Clock)
+                    </span>
+                  </div>
+
+                  {/* Date Time Picker & Customer Notice */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div>
+                      <label className="font-semibold block mb-1 text-gray-700 dark:text-gray-300">
+                        Target Date & Time *
+                      </label>
+                      <input
+                        type="datetime-local"
+                        value={(() => {
+                          const parsed = parseMaintenanceReturn(configForm.maintenanceEstimatedReturn);
+                          const d = parsed.targetDate || new Date(Date.now() + 4 * 60 * 60 * 1000);
+                          const pad = (n: number) => String(n).padStart(2, '0');
+                          return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+                        })()}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          if (!val) return;
+                          const d = new Date(val);
+                          if (!isNaN(d.getTime())) {
+                            const now = new Date();
+                            const isToday = now.toDateString() === d.toDateString();
+                            const tomorrow = new Date(now);
+                            tomorrow.setDate(tomorrow.getDate() + 1);
+                            const isTomorrow = tomorrow.toDateString() === d.toDateString();
+                            const timeStr = d.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', hour12: true });
+                            const prefix = isToday ? 'Back Today at ' : isTomorrow ? 'Back Tomorrow at ' : `Back ${d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })} at `;
+                            const display = `${prefix}${timeStr} IST`;
+                            setConfigForm({
+                              ...configForm,
+                              maintenanceEstimatedReturn: `${d.toISOString()}||${display}`,
+                            });
+                          }
+                        }}
+                        className="w-full bg-white dark:bg-[#111827] border border-gray-300 dark:border-gray-600 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                      />
+                      <span className="text-[10px] text-gray-400 mt-1 block">
+                        The live countdown timer on the maintenance page will tick down to this exact minute.
+                      </span>
+                    </div>
+
+                    <div>
+                      <label className="font-semibold block mb-1 text-gray-700 dark:text-gray-300">
+                        Customer Display Notice *
+                      </label>
+                      <input
+                        type="text"
+                        value={(() => {
+                          const parsed = parseMaintenanceReturn(configForm.maintenanceEstimatedReturn);
+                          return parsed.displayText;
+                        })()}
+                        onChange={(e) => {
+                          const parsed = parseMaintenanceReturn(configForm.maintenanceEstimatedReturn);
+                          const iso = parsed.isoString || new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString();
+                          setConfigForm({
+                            ...configForm,
+                            maintenanceEstimatedReturn: `${iso}||${e.target.value}`,
+                          });
+                        }}
+                        placeholder="Back Today at 6:00 PM IST"
+                        className="w-full bg-white dark:bg-[#111827] border border-gray-300 dark:border-gray-600 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                      <span className="text-[10px] text-gray-400 mt-1 block">
+                        Displayed right below the countdown blocks.
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* 1-Tap Quick Preset Buttons */}
+                  <div>
+                    <span className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 block mb-1.5">
+                      1-Tap Quick Presets:
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {[
+                        { label: '+1 Hour', hours: 1 },
+                        { label: '+2 Hours', hours: 2 },
+                        { label: '+4 Hours', hours: 4 },
+                        { label: '+8 Hours', hours: 8 },
+                      ].map((preset) => (
+                        <button
+                          key={preset.label}
+                          type="button"
+                          onClick={() => {
+                            const d = new Date(Date.now() + preset.hours * 60 * 60 * 1000);
+                            d.setMinutes(Math.round(d.getMinutes() / 5) * 5, 0, 0);
+                            const now = new Date();
+                            const isToday = now.toDateString() === d.toDateString();
+                            const tomorrow = new Date(now);
+                            tomorrow.setDate(tomorrow.getDate() + 1);
+                            const isTomorrow = tomorrow.toDateString() === d.toDateString();
+                            const timeStr = d.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', hour12: true });
+                            const prefix = isToday ? 'Back Today at ' : isTomorrow ? 'Back Tomorrow at ' : `Back ${d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })} at `;
+                            const display = `${prefix}${timeStr} IST`;
+                            setConfigForm({
+                              ...configForm,
+                              maintenanceEstimatedReturn: `${d.toISOString()}||${display}`,
+                            });
+                          }}
+                          className="px-2.5 py-1 rounded-lg bg-white dark:bg-[#111827] hover:bg-blue-50 dark:hover:bg-blue-950/40 border border-gray-200 dark:border-gray-700 text-[11px] font-medium text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                        >
+                          {preset.label}
+                        </button>
+                      ))}
+
+                      {[
+                        { label: 'Today 9:00 PM', hour24: 21, dayOffset: 0 },
+                        { label: 'Tomorrow 10:00 AM', hour24: 10, dayOffset: 1 },
+                        { label: 'Tomorrow 6:00 PM', hour24: 18, dayOffset: 1 },
+                      ].map((preset) => (
+                        <button
+                          key={preset.label}
+                          type="button"
+                          onClick={() => {
+                            const d = new Date();
+                            d.setDate(d.getDate() + preset.dayOffset);
+                            d.setHours(preset.hour24, 0, 0, 0);
+                            const now = new Date();
+                            const isToday = now.toDateString() === d.toDateString();
+                            const tomorrow = new Date(now);
+                            tomorrow.setDate(tomorrow.getDate() + 1);
+                            const isTomorrow = tomorrow.toDateString() === d.toDateString();
+                            const timeStr = d.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', hour12: true });
+                            const prefix = isToday ? 'Back Today at ' : isTomorrow ? 'Back Tomorrow at ' : `Back ${d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })} at `;
+                            const display = `${prefix}${timeStr} IST`;
+                            setConfigForm({
+                              ...configForm,
+                              maintenanceEstimatedReturn: `${d.toISOString()}||${display}`,
+                            });
+                          }}
+                          className="px-2.5 py-1 rounded-lg bg-white dark:bg-[#111827] hover:bg-blue-50 dark:hover:bg-blue-950/40 border border-gray-200 dark:border-gray-700 text-[11px] font-medium text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                        >
+                          {preset.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Live Timer Preview Strip */}
+                  <div className="p-2.5 rounded-lg bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/40 text-[11px] text-blue-800 dark:text-blue-300 flex items-center justify-between">
+                    <span className="font-semibold flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                      <span>Live Site Display Notice:</span>
+                    </span>
+                    <span className="font-bold">
+                      {parseMaintenanceReturn(configForm.maintenanceEstimatedReturn).displayText}
+                    </span>
+                  </div>
                 </div>
 
                 <div className="sm:col-span-2">
