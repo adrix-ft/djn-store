@@ -111,7 +111,12 @@ export interface SiteConfig {
   promoCode: string;
   promoDiscountPercent: number;
   freeShippingThreshold: number;
+  standardShippingFee?: number;
   razorpayKeyId?: string;
   razorpayEnabled?: boolean;
+  maintenanceMode?: boolean;
+  maintenanceHeadline?: string;
+  maintenanceMessage?: string;
+  maintenanceEstimatedReturn?: string;
 }
 

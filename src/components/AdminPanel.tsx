@@ -66,6 +66,9 @@ import {
   User,
   Lock,
   Menu,
+  Wrench,
+  Power,
+  AlertTriangle,
 } from 'lucide-react';
 
 interface AdminPanelProps {
@@ -834,7 +837,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 Above ₹{siteConfig.freeShippingThreshold.toLocaleString('en-IN')}
               </div>
               <div className="text-[11px] text-gray-500 dark:text-gray-400 font-medium mt-2">
-                Standard ₹{siteConfig.standardShippingFee} for smaller orders
+                Standard ₹{siteConfig.standardShippingFee ?? 99} for smaller orders
               </div>
             </div>
           </div>
@@ -1548,6 +1551,107 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   <span>
                     When configured, customers can pay directly with UPI, Cards, NetBanking or EMI.
                   </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Store Maintenance Mode Control */}
+            <div className={`p-5 sm:p-6 rounded-2xl border transition-all space-y-4 ${
+              configForm.maintenanceMode
+                ? 'bg-amber-500/5 dark:bg-amber-500/10 border-amber-300 dark:border-amber-600/50'
+                : 'bg-white dark:bg-[#111827] border-gray-200/80 dark:border-gray-800'
+            }`}>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-gray-100 dark:border-gray-800">
+                <div className="flex items-center gap-2.5">
+                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${
+                    configForm.maintenanceMode 
+                      ? 'bg-amber-500/20 text-amber-600 dark:text-amber-400' 
+                      : 'bg-blue-500/10 text-blue-600 dark:text-blue-400'
+                  }`}>
+                    <Wrench className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-sm text-gray-900 dark:text-white flex items-center gap-2">
+                      <span>Store Maintenance Mode</span>
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                        configForm.maintenanceMode
+                          ? 'bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30'
+                          : 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30'
+                      }`}>
+                        {configForm.maintenanceMode ? 'Active (Maintenance Screen Live)' : 'Disabled (Store Online)'}
+                      </span>
+                    </h3>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                      When enabled, regular visitors see the Under Maintenance screen with WhatsApp ordering & countdown.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Master Switch */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    setConfigForm({
+                      ...configForm,
+                      maintenanceMode: !configForm.maintenanceMode,
+                    })
+                  }
+                  className={`px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-sm ${
+                    configForm.maintenanceMode
+                      ? 'bg-amber-600 hover:bg-amber-700 text-white shadow-amber-600/20'
+                      : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200'
+                  }`}
+                >
+                  <Power className="w-4 h-4" />
+                  <span>{configForm.maintenanceMode ? 'Turn OFF Maintenance' : 'Turn ON Maintenance'}</span>
+                </button>
+              </div>
+
+              {/* Maintenance Details */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs pt-1">
+                <div>
+                  <label className="font-semibold block mb-1">Maintenance Headline *</label>
+                  <input
+                    type="text"
+                    value={configForm.maintenanceHeadline || ''}
+                    onChange={(e) =>
+                      setConfigForm({ ...configForm, maintenanceHeadline: e.target.value })
+                    }
+                    placeholder="Upgrading the Gaming Experience"
+                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <span className="text-[10px] text-gray-400 mt-1 block">
+                    Large title banner displayed on the maintenance screen.
+                  </span>
+                </div>
+
+                <div>
+                  <label className="font-semibold block mb-1">Estimated Re-launch Window *</label>
+                  <input
+                    type="text"
+                    value={configForm.maintenanceEstimatedReturn || ''}
+                    onChange={(e) =>
+                      setConfigForm({ ...configForm, maintenanceEstimatedReturn: e.target.value })
+                    }
+                    placeholder="Back Today at 6:00 PM IST"
+                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <span className="text-[10px] text-gray-400 mt-1 block">
+                    Displayed alongside the live countdown widget.
+                  </span>
+                </div>
+
+                <div className="sm:col-span-2">
+                  <label className="font-semibold block mb-1">Customer Notice / Explanation</label>
+                  <textarea
+                    rows={2}
+                    value={configForm.maintenanceMessage || ''}
+                    onChange={(e) =>
+                      setConfigForm({ ...configForm, maintenanceMessage: e.target.value })
+                    }
+                    placeholder="We are currently performing scheduled maintenance, optimizing server performance, and restocking our verified PlayStation & Xbox inventory. We will be back online shortly!"
+                    className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
                 </div>
               </div>
             </div>

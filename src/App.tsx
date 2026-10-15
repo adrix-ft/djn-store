@@ -31,6 +31,7 @@ const OrderConfirmationModal = React.lazy(() => import('./components/OrderConfir
 const PolicyModal = React.lazy(() => import('./components/PolicyModal').then(m => ({ default: m.PolicyModal })));
 const AuthModal = React.lazy(() => import('./components/AuthModal').then(m => ({ default: m.AuthModal })));
 const UserOrdersModal = React.lazy(() => import('./components/UserOrdersModal').then(m => ({ default: m.UserOrdersModal })));
+const MaintenancePage = React.lazy(() => import('./components/MaintenancePage').then(m => ({ default: m.MaintenancePage })));
 import { DEFAULT_SITE_CONFIG } from './data/siteConfig';
 import {
   fetchProductsFromDB,
@@ -41,6 +42,7 @@ import {
   supabase,
   createOrderInDB,
   upsertProductToDB,
+  upsertSiteConfigToDB,
 } from './lib/supabase';
 import { Check } from 'lucide-react';
 
@@ -62,13 +64,24 @@ export default function App() {
     const saved = localStorage.getItem('djn_site_config');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        return {
+          ...DEFAULT_SITE_CONFIG,
+          ...parsed,
+          maintenanceMode:
+            parsed.maintenanceMode !== undefined
+              ? parsed.maintenanceMode
+              : DEFAULT_SITE_CONFIG.maintenanceMode,
+        };
       } catch (e) {
         console.error(e);
       }
     }
     return DEFAULT_SITE_CONFIG;
   });
+
+  // Maintenance Bypass State for Admin Testing
+  const [adminBypassMaintenance, setAdminBypassMaintenance] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('djn_site_config', JSON.stringify(siteConfig));
@@ -676,9 +689,120 @@ export default function App() {
     );
   }
 
+  // Maintenance View Render (Default when maintenanceMode is true and not bypassed by admin)
+  if (siteConfig.maintenanceMode && !adminBypassMaintenance) {
+    return (
+      <div className={`min-h-screen flex flex-col bg-white dark:bg-[#0b0f17] text-[#212121] dark:text-gray-100 transition-colors duration-200 ${theme === 'dark' ? 'dark' : ''}`}>
+        <React.Suspense
+          fallback={
+            <div className="min-h-screen flex items-center justify-center bg-white dark:bg-[#0b0f17] text-gray-500">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                <span className="text-xs font-semibold text-gray-500">Loading DJN Tech...</span>
+              </div>
+            </div>
+          }
+        >
+          <MaintenancePage
+            siteConfig={siteConfig}
+            onOpenAdmin={() => setIsAdminPinModalOpen(true)}
+            isAdminAuthenticated={isAdminAuthenticated}
+            onEnterAdmin={() => {
+              setCurrentPage('admin');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            onBypassMaintenance={() => {
+              setAdminBypassMaintenance(true);
+              showToast('Browsing live store in Admin Mode');
+            }}
+            onToggleMaintenance={(enabled) => {
+              const updated = { ...siteConfig, maintenanceMode: enabled };
+              setSiteConfig(updated);
+              upsertSiteConfigToDB(updated);
+              showToast(enabled ? 'Maintenance mode enabled' : 'Store is now live!');
+            }}
+            theme={theme}
+            onToggleTheme={handleToggleTheme}
+            onOpenPolicy={(p) => setActivePolicy(p)}
+          />
+        </React.Suspense>
+
+        {/* Customer Policy & Information Modal */}
+        {activePolicy && (
+          <React.Suspense fallback={null}>
+            <PolicyModal
+              type={activePolicy}
+              onClose={() => setActivePolicy(null)}
+            />
+          </React.Suspense>
+        )}
+
+        {/* Admin PIN Modal accessible from Maintenance Page */}
+        {isAdminPinModalOpen && (
+          <React.Suspense fallback={null}>
+            <AdminPinModal
+              isOpen={isAdminPinModalOpen}
+              onClose={() => setIsAdminPinModalOpen(false)}
+              onSuccess={handleAdminPinSuccess}
+            />
+          </React.Suspense>
+        )}
+
+        {/* Toast Notification */}
+        {toastMessage && (
+          <div className="fixed bottom-6 right-6 z-50 bg-[#111827] dark:bg-gray-800 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-bottom-4 duration-200 text-xs sm:text-sm font-medium border border-gray-700">
+            <Check className="w-4 h-4 text-[#10b981]" />
+            <span>{toastMessage}</span>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-[#0b0f17] text-[#212121] dark:text-gray-100 transition-colors duration-200">
       
+      {/* Admin Maintenance Bypass Banner (Solid colors, zero gradients) */}
+      {siteConfig.maintenanceMode && adminBypassMaintenance && (
+        <div className="sticky top-0 z-50 bg-amber-600 dark:bg-amber-700 text-white px-4 py-2 text-xs font-medium shadow-sm border-b border-amber-700 dark:border-amber-800">
+          <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <span className="flex h-2 w-2 rounded-full bg-white animate-ping" />
+              <span className="font-bold">Maintenance Mode is ACTIVE for public visitors.</span>
+              <span className="hidden sm:inline text-amber-100">You are browsing the live store in Admin Bypass mode.</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setAdminBypassMaintenance(false)}
+                className="px-2.5 py-1 rounded-lg bg-black/20 hover:bg-black/30 font-semibold cursor-pointer"
+              >
+                Back to Maintenance Page
+              </button>
+              <button
+                type="button"
+                onClick={() => setCurrentPage('admin')}
+                className="px-2.5 py-1 rounded-lg bg-white text-gray-900 font-bold hover:bg-gray-100 cursor-pointer"
+              >
+                Admin Panel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const updated = { ...siteConfig, maintenanceMode: false };
+                  setSiteConfig(updated);
+                  upsertSiteConfigToDB(updated);
+                  showToast('Store is now live!');
+                }}
+                className="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 font-bold text-white cursor-pointer"
+              >
+                Turn OFF Maintenance
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Brand Splash Screen with Animated Progress Bar */}
       {isSiteLoading && (
         <BrandPreloader onComplete={() => setIsSiteLoading(false)} />

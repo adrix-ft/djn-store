@@ -166,8 +166,13 @@ export function mapRowToSiteConfig(row: any): SiteConfig {
     promoCode: row.promo_code || DEFAULT_SITE_CONFIG.promoCode,
     promoDiscountPercent: Number(row.promo_discount_percent) || DEFAULT_SITE_CONFIG.promoDiscountPercent,
     freeShippingThreshold: Number(row.free_shipping_threshold) || DEFAULT_SITE_CONFIG.freeShippingThreshold,
+    standardShippingFee: Number(row.standard_shipping_fee) || DEFAULT_SITE_CONFIG.standardShippingFee,
     razorpayKeyId: row.razorpay_key_id || DEFAULT_SITE_CONFIG.razorpayKeyId,
     razorpayEnabled: row.razorpay_enabled ?? DEFAULT_SITE_CONFIG.razorpayEnabled,
+    maintenanceMode: row.maintenance_mode !== undefined ? Boolean(row.maintenance_mode) : (DEFAULT_SITE_CONFIG.maintenanceMode ?? true),
+    maintenanceHeadline: row.maintenance_headline || DEFAULT_SITE_CONFIG.maintenanceHeadline,
+    maintenanceMessage: row.maintenance_message || DEFAULT_SITE_CONFIG.maintenanceMessage,
+    maintenanceEstimatedReturn: row.maintenance_estimated_return || DEFAULT_SITE_CONFIG.maintenanceEstimatedReturn,
   };
 }
 
