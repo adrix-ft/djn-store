@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, Mail, Facebook, Instagram, Youtube, MessageCircle, ShieldCheck, Truck } from 'lucide-react';
+import { Phone, Mail, Facebook, Instagram, Youtube, MessageCircle, ShieldCheck, Truck, MapPin } from 'lucide-react';
 import { Category, SiteConfig } from '../types/store';
 import { BrandLogo } from './BrandLogo';
 import { PolicyType } from './PolicyModal';
@@ -62,6 +62,15 @@ export const Footer: React.FC<FooterProps> = ({
             >
               <Mail className="w-3.5 h-3.5 text-[#1a73e8] dark:text-[#60a5fa]" />
               <span>{siteConfig?.email || 'djntechofficial@gmail.com'}</span>
+            </a>
+            <a
+              href="https://share.google/9rz8FY2PBoxccfNV4"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-start gap-2 text-[#64748b] dark:text-gray-400 hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors pt-0.5"
+            >
+              <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0 mt-0.5" />
+              <span>Lower Parel, Mumbai (Google Maps)</span>
             </a>
           </div>
 
