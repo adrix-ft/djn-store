@@ -3,111 +3,104 @@ import React, { useEffect, useRef } from 'react';
 export const GoogleReviewsSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Ensure Elfsight platform script is dynamically initialized and watermark is removed
   useEffect(() => {
+    const WIDGET_ID = 'c242b803-88d2-488d-b013-8b66750f43f1';
     const scriptSrc = 'https://elfsightcdn.com/platform.js';
-    const existing = document.querySelector(`script[src="${scriptSrc}"]`);
 
-    if (!existing) {
-      const script = document.createElement('script');
+    // 1. Ensure platform script is loaded
+    let script = document.querySelector(`script[src="${scriptSrc}"]`) as HTMLScriptElement | null;
+    if (!script) {
+      script = document.createElement('script');
       script.src = scriptSrc;
       script.async = true;
-      document.body.appendChild(script);
-    } else {
+      document.head.appendChild(script);
+    }
+
+    // 2. If platform is already in memory, signal it to require the widget
+    const win = window as any;
+    if (win.eapps?.platform?.requireWidget) {
       try {
-        const win = window as any;
-        if (win.elfsight && typeof win.elfsight.init === 'function') {
-          win.elfsight.init();
-        }
-      } catch (err) {
+        win.eapps.platform.requireWidget(WIDGET_ID);
+      } catch {
         // ignore
       }
     }
 
-    // Comprehensive function to remove / hide watermark from both standard DOM and Shadow DOM
-    const purgeWatermark = () => {
-      // 1. Regular DOM search
+    // 3. Inject CSS to completely hide watermark/badge inside Shadow DOM without deleting nodes
+    // Deleting nodes (el.remove) crashes the Elfsight Lit/React reconciliation lifecycle!
+    const shadowCss = `
+      a[href*="elfsight.com"],
+      a[href*="free-widget"],
+      a[href*="utm_campaign"],
+      [class*="Badge"],
+      [class*="badge"],
+      [class*="Watermark"],
+      [class*="watermark"],
+      [class*="eapps-link"],
+      [class*="OwnerPanel"],
+      [class*="owner-panel"],
+      [class*="WidgetToolbar"],
+      [class*="toolbar"] {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        max-height: 0 !important;
+        width: 0 !important;
+        max-width: 0 !important;
+        pointer-events: none !important;
+        position: absolute !important;
+        left: -9999px !important;
+        top: -9999px !important;
+        overflow: hidden !important;
+      }
+    `;
+
+    const applyCleanStyles = () => {
+      // Hide in standard DOM (CSS display/visibility only, no DOM node deletion)
       document.querySelectorAll('a[href*="elfsight.com"], a[href*="utm_campaign=free-widget"]').forEach((el) => {
-        (el as HTMLElement).style.setProperty('display', 'none', 'important');
-        (el as HTMLElement).style.setProperty('opacity', '0', 'important');
-        (el as HTMLElement).style.setProperty('visibility', 'hidden', 'important');
-        try {
-          el.remove();
-        } catch {
-          // ignore
-        }
+        const htmlEl = el as HTMLElement;
+        htmlEl.style.setProperty('display', 'none', 'important');
+        htmlEl.style.setProperty('opacity', '0', 'important');
+        htmlEl.style.setProperty('visibility', 'hidden', 'important');
+        htmlEl.style.setProperty('pointer-events', 'none', 'important');
       });
 
-      // 2. Piercing Shadow DOM (Elfsight renders widgets inside open shadow roots)
+      // Piercing Shadow DOM
       const hosts = document.querySelectorAll('[class*="elfsight-app"]');
       hosts.forEach((host) => {
         if (host && host.shadowRoot) {
           const shadow = host.shadowRoot;
-
-          // Inject persistent style tag into shadow root
-          if (!shadow.querySelector('#purge-elfsight-badge')) {
+          if (!shadow.querySelector('#purge-elfsight-style')) {
             const style = document.createElement('style');
-            style.id = 'purge-elfsight-badge';
-            style.textContent = `
-              a[href*="elfsight.com"],
-              a[href*="utm_campaign=free-widget"],
-              [class*="Badge"],
-              [class*="badge"],
-              [class*="Watermark"],
-              [class*="watermark"],
-              [class*="eapps-link"],
-              [class*="OwnerPanel"],
-              [class*="WidgetToolbar"],
-              [class*="toolbar"] {
-                display: none !important;
-                opacity: 0 !important;
-                visibility: hidden !important;
-                height: 0 !important;
-                width: 0 !important;
-                overflow: hidden !important;
-                pointer-events: none !important;
-                position: absolute !important;
-                left: -9999px !important;
-              }
-            `;
+            style.id = 'purge-elfsight-style';
+            style.textContent = shadowCss;
             shadow.appendChild(style);
           }
 
-          // Directly remove any matched anchor or badge elements in shadow DOM
           shadow.querySelectorAll('a[href*="elfsight.com"], a[href*="utm_campaign=free-widget"], [class*="eapps-link"], [class*="badge"], [class*="Badge"]').forEach((el) => {
-            (el as HTMLElement).style.setProperty('display', 'none', 'important');
-            try {
-              el.remove();
-            } catch {
-              // ignore
-            }
+            const htmlEl = el as HTMLElement;
+            htmlEl.style.setProperty('display', 'none', 'important');
+            htmlEl.style.setProperty('opacity', '0', 'important');
+            htmlEl.style.setProperty('visibility', 'hidden', 'important');
+            htmlEl.style.setProperty('pointer-events', 'none', 'important');
           });
         }
       });
     };
 
-    purgeWatermark();
-    const interval = setInterval(purgeWatermark, 300);
+    applyCleanStyles();
+    const interval = setInterval(applyCleanStyles, 400);
 
-    // MutationObserver to catch immediate element injection
-    const observer = new MutationObserver(() => {
-      purgeWatermark();
-    });
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current, {
-        childList: true,
-        subtree: true,
-      });
-    }
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-    });
+    // Stop frequent polling after 12 seconds to save CPU cycles
+    const timer = setTimeout(() => {
+      clearInterval(interval);
+      setInterval(applyCleanStyles, 2500);
+    }, 12000);
 
     return () => {
       clearInterval(interval);
-      observer.disconnect();
+      clearTimeout(timer);
     };
   }, []);
 
@@ -118,10 +111,7 @@ export const GoogleReviewsSection: React.FC = () => {
         ref={containerRef}
         className="w-full rounded-2xl bg-white dark:bg-[#111827] border border-[#e5e7eb] dark:border-[#1e293b] p-2 sm:p-6 shadow-xs overflow-hidden"
       >
-        <div
-          className="elfsight-app-c242b803-88d2-488d-b013-8b66750f43f1 min-h-[220px]"
-          data-elfsight-app-lazy
-        />
+        <div className="elfsight-app-c242b803-88d2-488d-b013-8b66750f43f1 min-h-[260px]" />
       </div>
     </section>
   );
