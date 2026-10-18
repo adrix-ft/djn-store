@@ -425,51 +425,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({
           </div>
         </div>
 
-        {/* Customer Reviews Section */}
-        {product.reviews && product.reviews.length > 0 && (
-          <div className="bg-white dark:bg-[#111827] rounded-2xl border border-[#e5e7eb] dark:border-[#1e293b] shadow-xs p-6 sm:p-8 mb-12">
-            <h2 className="text-xl font-bold text-[#111827] dark:text-white mb-6 flex items-center gap-2">
-              <span>Verified Customer Reviews</span>
-              <span className="text-xs px-2 py-0.5 rounded bg-[#f3f4f6] dark:bg-[#161f30] text-[#6b7280] dark:text-gray-400">
-                {product.reviews.length}
-              </span>
-            </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {product.reviews.map((rev) => (
-                <div
-                  key={rev.id}
-                  className="p-4 rounded-xl bg-[#f9fafb] dark:bg-[#161f30] border border-[#eaedf0] dark:border-[#2d3748] space-y-2"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1">
-                      {[1, 2, 3, 4, 5].map((s) => (
-                        <Star
-                          key={s}
-                          className={`w-3.5 h-3.5 ${
-                            s <= rev.rating ? 'fill-amber-400 text-amber-400' : 'text-gray-300 dark:text-gray-600'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <span className="text-[11px] text-[#9ca3af] dark:text-gray-500">{rev.date}</span>
-                  </div>
-
-                  <h4 className="text-xs font-bold text-[#111827] dark:text-white">{rev.title}</h4>
-                  <p className="text-xs text-[#4b5563] dark:text-gray-300 leading-relaxed">"{rev.comment}"</p>
-
-                  <div className="pt-1 flex items-center gap-2 text-[11px] text-[#6b7280] dark:text-gray-400">
-                    <span className="font-semibold text-[#111827] dark:text-white">{rev.userName}</span>
-                    <span>· {rev.userLocation}</span>
-                    {rev.verifiedBuyer && (
-                      <span className="text-[#059669] dark:text-emerald-400 font-medium">Verified Buyer</span>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* FLIPKART & AMAZON: RECOMMENDED PRODUCTS SECTION */}
         <section className="mt-8 mb-16">
