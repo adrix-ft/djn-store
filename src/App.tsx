@@ -52,12 +52,13 @@ export default function App() {
       localStorage.removeItem('djn_products_v6');
       const saved = localStorage.getItem('djn_products_v7');
       if (saved) {
-        return JSON.parse(saved);
+        const parsed: Product[] = JSON.parse(saved);
+        return parsed.map((p) => ({ ...p, inStock: true, stockCount: 999 }));
       }
     } catch (e) {
       console.error(e);
     }
-    return PRODUCTS;
+    return PRODUCTS.map((p) => ({ ...p, inStock: true, stockCount: 999 }));
   });
 
   // Dynamic Site Configuration
@@ -99,8 +100,13 @@ export default function App() {
         ]);
         if (isMounted) {
           if (dbProducts && dbProducts.length > 0) {
-            const hasTest = dbProducts.some((p) => p.id === TEST_PRODUCT.id || p.price === 1);
-            setProducts(hasTest ? dbProducts : [TEST_PRODUCT, ...dbProducts]);
+            const guaranteed = dbProducts.map((p) => ({
+              ...p,
+              inStock: true,
+              stockCount: 999,
+            }));
+            const hasTest = guaranteed.some((p) => p.id === TEST_PRODUCT.id || p.price === 1);
+            setProducts(hasTest ? guaranteed : [TEST_PRODUCT, ...guaranteed]);
           }
           if (dbConfig) {
             setSiteConfig(dbConfig);

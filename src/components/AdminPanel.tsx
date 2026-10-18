@@ -406,6 +406,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
     const updatedProduct: Product = {
       ...productForm,
+      inStock: true,
+      stockCount: 999,
       discountPercent: calculatedDiscount,
       features: featuresText
         .split('\n')
@@ -530,10 +532,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     try {
       const parsed = JSON.parse(importJsonText);
       if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].id) {
-        onUpdateProducts(parsed);
+        const sanitized = parsed.map((p) => ({ ...p, inStock: true, stockCount: 999 }));
+        onUpdateProducts(sanitized);
         setImportJsonText('');
         setImportError(null);
-        showToast(`Successfully imported ${parsed.length} products!`);
+        showToast(`Successfully imported ${sanitized.length} products!`);
       } else {
         setImportError('Invalid format: JSON must be an array of Product objects.');
       }

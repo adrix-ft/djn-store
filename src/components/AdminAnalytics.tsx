@@ -68,11 +68,8 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
       products.reduce((sum, p) => sum + (p.discountPercent || 0), 0) / (products.length || 1)
     );
 
-    // 3. URGENT SHOP ACTION ITEMS
-    // Low stock items (stockCount <= 2 or out of stock)
-    const lowStockItems = products.filter(
-      (p) => !p.inStock || (p.stockCount !== undefined && p.stockCount <= 2)
-    );
+    // 3. STORE ACTION ITEMS (All products are permanently available)
+    const lowStockItems: Product[] = [];
 
     // 4. REAL SALES & TOP EARNERS LEADERBOARD
     const itemSalesMap = new Map<
@@ -516,38 +513,19 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
           </div>
         </div>
 
-        {/* Action 2: Low Stock Warning */}
-        <div
-          className={`p-4 sm:p-5 rounded-3xl border transition-all ${
-            stats.lowStockItems.length > 0
-              ? 'bg-red-50/80 dark:bg-red-950/30 border-red-200 dark:border-red-900/60 shadow-xs'
-              : 'bg-gray-50 dark:bg-[#111827] border-gray-200/80 dark:border-gray-800'
-          }`}
-        >
+        {/* Action 2: Catalog Availability Status */}
+        <div className="p-4 sm:p-5 rounded-3xl border transition-all bg-emerald-50/70 dark:bg-emerald-950/20 border-emerald-200/80 dark:border-emerald-900/50 shadow-xs">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-start gap-3">
-              <div
-                className={`p-2.5 rounded-2xl shrink-0 ${
-                  stats.lowStockItems.length > 0
-                    ? 'bg-red-500 text-white shadow-md shadow-red-500/20'
-                    : 'bg-blue-500 text-white'
-                }`}
-              >
-                <Boxes className="w-5 h-5" />
+              <div className="p-2.5 rounded-2xl shrink-0 bg-emerald-500 text-white shadow-md shadow-emerald-500/20">
+                <CheckCircle2 className="w-5 h-5" />
               </div>
               <div>
                 <h3 className="font-bold text-sm text-gray-900 dark:text-white">
-                  {stats.lowStockItems.length > 0
-                    ? `Low Stock Items (${stats.lowStockItems.length})`
-                    : 'Stock Levels Normal'}
+                  Catalog Status: All Items Available ({products.length})
                 </h3>
                 <p className="text-xs text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
-                  {stats.lowStockItems.length > 0
-                    ? `${stats.lowStockItems
-                        .slice(0, 2)
-                        .map((p) => p.name)
-                        .join(', ')} running low.`
-                    : 'All catalog titles currently have stock.'}
+                  Every product is in stock and immediately available for customer orders.
                 </p>
               </div>
             </div>
@@ -557,7 +535,7 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
                 onClick={() => onNavigateTab('products')}
                 className="px-3.5 py-2 rounded-xl text-xs font-bold shrink-0 bg-white dark:bg-gray-800 hover:bg-gray-100 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white transition-all cursor-pointer flex items-center gap-1"
               >
-                <span>View Stock</span>
+                <span>View Catalog</span>
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
             )}
@@ -622,9 +600,9 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
           </div>
           <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 text-xs">
             <span className="text-gray-600 dark:text-gray-300 font-semibold text-[11px]">
-              {products.length} units in stock
+              {products.length} active products
             </span>
-            <span className="text-gray-400 text-[11px]">Available now</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-semibold text-[11px]">100% available</span>
           </div>
         </div>
 

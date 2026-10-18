@@ -31,8 +31,8 @@ export function mapRowToProduct(row: any): Product {
     discountPercent: Number(row.discount_percent) || 0,
     rating: Number(row.rating) || 4.5,
     reviewCount: Number(row.review_count) || 0,
-    inStock: Boolean(row.in_stock),
-    stockCount: Number(row.stock_count) || 0,
+    inStock: true,
+    stockCount: 999,
     badge: row.badge || undefined,
     features: Array.isArray(row.features) ? row.features : [],
     description: row.description || '',
@@ -65,8 +65,8 @@ export function mapProductToRow(prod: Product) {
     discount_percent: prod.discountPercent,
     rating: prod.rating,
     review_count: prod.reviewCount,
-    in_stock: prod.inStock,
-    stock_count: prod.stockCount,
+    in_stock: true,
+    stock_count: 999,
     badge: prod.badge || null,
     features: prod.features || [],
     description: prod.description || '',
@@ -268,18 +268,47 @@ export async function fetchProductsFromDB(): Promise<Product[]> {
 
     if (error || !data || data.length === 0) {
       if (error) console.warn('[Supabase] Products query error:', error.message);
-      // Fallback to local storage or defaults
+      // Fallback to local storage or defaults with inStock guaranteed
       const local = localStorage.getItem('djn_products_v7');
-      return local ? JSON.parse(local) : PRODUCTS;
+      if (local) {
+        try {
+          const parsed: Product[] = JSON.parse(local);
+          return parsed.map((p) => ({ ...p, inStock: true, stockCount: 999 }));
+        } catch {
+          // ignore
+        }
+      }
+      return PRODUCTS.map((p) => ({ ...p, inStock: true, stockCount: 999 }));
     }
 
     const mapped = data.map(mapRowToProduct);
     localStorage.setItem('djn_products_v7', JSON.stringify(mapped));
+
+    // Self-healing: verify all cloud DB products are marked permanently available
+    supabase
+      .from('products')
+      .update({ in_stock: true, stock_count: 999 })
+      .or('in_stock.eq.false,stock_count.lte.2')
+      .then(({ error: syncErr }) => {
+        if (!syncErr) {
+          console.log('[Supabase] Verified all catalog products are active and in-stock.');
+        }
+      })
+      .catch(() => {});
+
     return mapped;
   } catch (err) {
     console.warn('[Supabase] Failed to fetch products, using offline cache:', err);
     const local = localStorage.getItem('djn_products_v7');
-    return local ? JSON.parse(local) : PRODUCTS;
+    if (local) {
+      try {
+        const parsed: Product[] = JSON.parse(local);
+        return parsed.map((p) => ({ ...p, inStock: true, stockCount: 999 }));
+      } catch {
+        // ignore
+      }
+    }
+    return PRODUCTS.map((p) => ({ ...p, inStock: true, stockCount: 999 }));
   }
 }
 
