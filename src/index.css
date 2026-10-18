@@ -156,6 +156,8 @@ a[href*="elfsight.com"],
 a[href*="elfsight.com?utm_campaign="],
 a[href*="utm_campaign=free-widget"],
 a[href*="free-widget"],
+[title*="Remove Elfsight"],
+[aria-label*="Elfsight"],
 [class*="eapps-link"],
 [class*="eapps-widget-toolbar"],
 [class*="WidgetToolbar"],
@@ -163,7 +165,10 @@ a[href*="free-widget"],
 [class*="owner-panel"],
 [class*="toolbar-container"],
 [class*="ToolbarContainer"],
-div[data-owner-panel] {
+div[data-owner-panel],
+:has(> a[href*="elfsight.com"]),
+:has(> a[href*="free-widget"]),
+:has(> [title*="Remove Elfsight"]) {
   display: none !important;
   opacity: 0 !important;
   visibility: hidden !important;
