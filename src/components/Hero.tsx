@@ -9,17 +9,18 @@ interface HeroProps {
   onExploreConsoles: () => void;
   featuredProduct: Product;
   onSelectProduct: (product: Product) => void;
+  products?: Product[];
 }
 
 const HERO_ITEMS = [
   {
     id: 'console',
     label: 'Consoles',
-    title: 'PlayStation 5 Slim (Disc Edition)',
+    title: 'PlayStation 5 Slim (Disc Edition) 1TB',
     subtitle: '1TB Custom SSD · 4K 120Hz · Ray Tracing · Ultra HD Blu-ray',
-    price: '₹49,990',
-    mrp: '₹54,990',
-    discount: '9% OFF',
+    price: '₹62,000',
+    mrp: '₹64,990',
+    discount: '5% OFF',
     image: '/hero-ps5-slim.png',
     productId: 'ps5-slim-disc',
     ambientGlow: 'bg-gradient-to-tr from-blue-600/25 via-cyan-400/20 to-blue-500/15 dark:from-blue-600/40 dark:via-cyan-500/30 dark:to-indigo-500/25',
@@ -28,11 +29,11 @@ const HERO_ITEMS = [
   {
     id: 'controller',
     label: 'Controllers',
-    title: 'DualSense Wireless Controller',
+    title: 'PlayStation 5 DualSense Wireless Controller (Midnight Black)',
     subtitle: 'Midnight Black · Haptic Feedback & Adaptive Triggers',
-    price: '₹4,990',
+    price: '₹4,200',
     mrp: '₹6,390',
-    discount: '22% OFF',
+    discount: '34% OFF',
     image: '/hero-dualsense.png',
     productId: 'dualsense-midnight-black',
     ambientGlow: 'bg-gradient-to-tr from-indigo-600/25 via-purple-500/20 to-blue-600/15 dark:from-indigo-600/40 dark:via-purple-600/30 dark:to-cyan-500/25',
@@ -41,7 +42,7 @@ const HERO_ITEMS = [
   {
     id: 'games',
     label: 'Pre-Owned Discs',
-    title: 'Elden Ring: Shadow of the Erdtree',
+    title: 'Elden Ring: Shadow of the Erdtree (PS5 Pre-Owned)',
     subtitle: 'Tested Pre-Owned Disc · Complete in Box',
     price: '₹2,199',
     mrp: '₹4,499',
@@ -58,6 +59,7 @@ export const Hero: React.FC<HeroProps> = ({
   onExploreConsoles,
   featuredProduct,
   onSelectProduct,
+  products = [],
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -69,13 +71,24 @@ export const Hero: React.FC<HeroProps> = ({
     return () => clearInterval(timer);
   }, []);
 
-  const currentItem = HERO_ITEMS[activeIndex];
+  const baseItem = HERO_ITEMS[activeIndex];
+  const matchedProduct =
+    products.find((p) => p.id === baseItem.productId) ||
+    PRODUCTS.find((p) => p.id === baseItem.productId);
+
+  const currentItem = {
+    ...baseItem,
+    title: matchedProduct?.name || baseItem.title,
+    price: matchedProduct ? `₹${matchedProduct.price.toLocaleString('en-IN')}` : baseItem.price,
+    mrp: matchedProduct && matchedProduct.mrp > matchedProduct.price ? `₹${matchedProduct.mrp.toLocaleString('en-IN')}` : baseItem.mrp,
+    discount: matchedProduct && matchedProduct.discountPercent ? `${matchedProduct.discountPercent}% OFF` : baseItem.discount,
+  };
 
   const handleProductClick = () => {
-    const matched =
-      PRODUCTS.find((p) => p.id === currentItem.productId) || featuredProduct;
-    if (matched) {
-      onSelectProduct(matched);
+    if (matchedProduct) {
+      onSelectProduct(matchedProduct);
+    } else if (featuredProduct) {
+      onSelectProduct(featuredProduct);
     }
   };
 

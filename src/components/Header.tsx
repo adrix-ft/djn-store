@@ -136,7 +136,7 @@ export const Header: React.FC<HeaderProps> = ({
     <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#0b0f17]/95 backdrop-blur-md border-b border-[#e5e7eb] dark:border-[#1e293b] shadow-[0_1px_4px_rgba(0,0,0,0.04)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.4)] w-full transition-colors duration-200">
       
       {/* Tier 1: Main Top Brand & Search Bar */}
-      <div className="w-full max-w-[1920px] mx-auto px-3.5 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 h-16 sm:h-18 flex items-center justify-between gap-3 sm:gap-6">
+      <div className="relative z-30 w-full max-w-[1920px] mx-auto px-3.5 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 h-16 sm:h-18 flex items-center justify-between gap-3 sm:gap-6">
         
         {/* Brand Logo */}
         <div className="flex items-center shrink-0">
@@ -154,7 +154,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Center: Search Bar with Autocomplete */}
-        <div ref={searchRef} className="relative hidden md:block flex-1 max-w-md lg:max-w-lg xl:max-w-xl mx-4">
+        <div ref={searchRef} className="relative z-50 hidden md:block flex-1 max-w-md lg:max-w-lg xl:max-w-xl mx-4">
           <form onSubmit={handleSearchSubmit} className="relative">
             <input
               type="text"
@@ -178,7 +178,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Live Autocomplete Dropdown with Verified Cover Images */}
           {showSearchDropdown && localSearch.trim() && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#111827] rounded-2xl shadow-2xl border border-[#e5e7eb] dark:border-[#1e293b] p-2 z-50 animate-in fade-in-50 zoom-in-95 duration-150 max-h-[490px] overflow-y-auto no-scrollbar">
+            <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#111827] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.18)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.85)] border border-[#e5e7eb] dark:border-[#1e293b] p-2 z-50 animate-in fade-in-50 zoom-in-95 duration-150 max-h-[490px] overflow-y-auto no-scrollbar">
               {filteredSuggestions.length > 0 ? (
                 <>
                   <div className="px-2.5 py-1.5 flex items-center justify-between text-[11px] font-semibold text-gray-400 dark:text-gray-500 border-b border-gray-100 dark:border-gray-800/80 mb-1">
@@ -484,7 +484,7 @@ export const Header: React.FC<HeaderProps> = ({
       )}
 
       {/* Tier 2: Clean Navigation Ribbon (Hidden on mobile for ultra clean look) */}
-      <div className="hidden md:block w-full border-t border-[#e5e7eb] dark:border-[#1e293b] bg-white dark:bg-[#0c121e]">
+      <div className="relative z-10 hidden md:block w-full border-t border-[#e5e7eb] dark:border-[#1e293b] bg-white dark:bg-[#0c121e]">
         <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 h-11 sm:h-12 flex items-center overflow-x-auto no-scrollbar">
           <nav className="flex items-center gap-1 sm:gap-2 md:gap-3 lg:gap-4 h-full shrink-0">
             {[

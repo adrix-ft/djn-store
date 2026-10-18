@@ -48,13 +48,14 @@ import { Check } from 'lucide-react';
 
 export default function App() {
   const [products, setProducts] = useState<Product[]>(() => {
-    const saved = localStorage.getItem('djn_products_v6');
-    if (saved) {
-      try {
+    try {
+      localStorage.removeItem('djn_products_v6');
+      const saved = localStorage.getItem('djn_products_v7');
+      if (saved) {
         return JSON.parse(saved);
-      } catch (e) {
-        console.error(e);
       }
+    } catch (e) {
+      console.error(e);
     }
     return PRODUCTS;
   });
@@ -356,7 +357,7 @@ export default function App() {
   }, [wishlist]);
 
   useEffect(() => {
-    localStorage.setItem('djn_products_v6', JSON.stringify(products));
+    localStorage.setItem('djn_products_v7', JSON.stringify(products));
   }, [products]);
 
   const showToast = (msg: string) => {
@@ -516,7 +517,7 @@ export default function App() {
 
     // 1. Persist catalog state to localStorage
     setProducts((prevProducts) => {
-      localStorage.setItem('djn_products_v6', JSON.stringify(prevProducts));
+      localStorage.setItem('djn_products_v7', JSON.stringify(prevProducts));
       return prevProducts;
     });
 
@@ -925,6 +926,7 @@ export default function App() {
               onExploreConsoles={() => handleNavigateCategory('consoles')}
               featuredProduct={products[0]}
               onSelectProduct={handleSelectProduct}
+              products={products}
             />
 
             {/* Infinite Running Marquee Ticker */}

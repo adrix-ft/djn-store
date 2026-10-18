@@ -269,16 +269,16 @@ export async function fetchProductsFromDB(): Promise<Product[]> {
     if (error || !data || data.length === 0) {
       if (error) console.warn('[Supabase] Products query error:', error.message);
       // Fallback to local storage or defaults
-      const local = localStorage.getItem('djn_products_v6');
+      const local = localStorage.getItem('djn_products_v7');
       return local ? JSON.parse(local) : PRODUCTS;
     }
 
     const mapped = data.map(mapRowToProduct);
-    localStorage.setItem('djn_products_v6', JSON.stringify(mapped));
+    localStorage.setItem('djn_products_v7', JSON.stringify(mapped));
     return mapped;
   } catch (err) {
     console.warn('[Supabase] Failed to fetch products, using offline cache:', err);
-    const local = localStorage.getItem('djn_products_v6');
+    const local = localStorage.getItem('djn_products_v7');
     return local ? JSON.parse(local) : PRODUCTS;
   }
 }

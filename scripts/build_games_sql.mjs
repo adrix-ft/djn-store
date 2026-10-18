@@ -213,7 +213,36 @@ const RAW_LIST = [
   "God of War (PS4)",
   "Dragon Ball Z: Kakarot (PS4)",
   "Mafia III (PS4)",
-  "Assassin's Creed Valhalla (PS4)"
+  "Assassin's Creed Valhalla (PS4)",
+  "Assassin's Creed Syndicate (Xbox One)",
+  "Assassin's Creed The Ezio Collection (PS4)",
+  "Call of Duty: Infinite Warfare (Xbox One)",
+  "Call of Duty: Infinite Warfare Legacy Edition (PS4)",
+  "Cricket 22 (PS4)",
+  "Cricket 22 (PS4)",
+  "Death Stranding: Special Edition (PS4)",
+  "Demon Slayer -Kimetsu no Yaiba- The Hinokami Chronicles (PS4)",
+  "FIFA 20 (Xbox One)",
+  "FIFA 21 Champions Edition (PS4)",
+  "Gran Turismo Sport Spec II (PS4)",
+  "Gran Turismo Sport Spec II (PS4)",
+  "Gran Turismo Sport Spec II (PS4)",
+  "Grand Theft Auto V (Xbox One)",
+  "Grand Theft Auto V (Xbox One)",
+  "Injustice: Ultimate Edition (PS4)",
+  "Injustice: Ultimate Edition (PS4)",
+  "Injustice: Ultimate Edition (PS4)",
+  "It Takes Two (PS4)",
+  "LEGO City Undercover (PS4)",
+  "Mortal Kombat 11 (PS4)",
+  "Elden Ring: Nightreign (PS4)",
+  "Resident Evil 7: Biohazard (PS4)",
+  "Sonic Forces (Xbox One)",
+  "Tekken 7 (PS4)",
+  "Tom Clancy's Ghost Recon Wildlands Gold Edition (PS4)",
+  "UFC 3 (PS4)",
+  "WWE 2K19 (PS4)",
+  "WWE 2K20 (PS4)"
 ];
 
 // Count frequencies
@@ -327,7 +356,26 @@ const GAME_DETAILS = {
   "Sleeping Dogs: Definitive Edition": { price: 899, mrp: 2499, genre: "Action / Hong Kong Open World", badge: "MARTIAL ARTS" },
   "Mafia III": { price: 899, mrp: 2999, genre: "Action / Crime Drama", badge: "CRIME SAGA" },
   "Nioh": { price: 899, mrp: 2999, genre: "Action RPG / Dark Samurai", badge: "SOULSLIKE" },
-  "Nioh Collection": { price: 2399, mrp: 4999, genre: "Action RPG / Complete Remastered", badge: "DUAL PACK" }
+  "Nioh Collection": { price: 2399, mrp: 4999, genre: "Action RPG / Complete Remastered", badge: "DUAL PACK" },
+  "Assassin's Creed The Ezio Collection": { price: 1199, mrp: 3499, genre: "Action / Renaissance Trilogy", badge: "TRILOGY PACK" },
+  "Call of Duty: Infinite Warfare Legacy Edition": { price: 1199, mrp: 4499, genre: "Shooter / Dual Campaign FPS", badge: "LEGACY EDITION" },
+  "Cricket 22": { price: 1699, mrp: 3999, genre: "Sports / Cricket", badge: "THE ASHES" },
+  "Death Stranding: Special Edition": { price: 1399, mrp: 3999, genre: "Action / Cinematic Sci-Fi", badge: "SPECIAL EDITION" },
+  "Demon Slayer -Kimetsu no Yaiba- The Hinokami Chronicles": { price: 1799, mrp: 3999, genre: "Anime / Arena Fighter", badge: "ANIME HIT" },
+  "FIFA 21 Champions Edition": { price: 1299, mrp: 4499, genre: "Sports / Football", badge: "CHAMPIONS EDITION" },
+  "Gran Turismo Sport Spec II": { price: 1199, mrp: 3999, genre: "Racing / Simulation", badge: "SPEC II EDITION" },
+  "Injustice: Ultimate Edition": { price: 899, mrp: 2499, genre: "Fighting / DC Superheroes", badge: "ULTIMATE EDITION" },
+  "It Takes Two": { price: 1499, mrp: 2999, genre: "Co-op / Adventure Platformer", badge: "GAME OF THE YEAR" },
+  "LEGO City Undercover": { price: 999, mrp: 2499, genre: "Action / Open World Adventure", badge: "FAMILY FAVORITE" },
+  "Mortal Kombat 11": { price: 1199, mrp: 3499, genre: "Fighting / Brutal Combat", badge: "KOMBAT HIT" },
+  "Elden Ring: Nightreign": { price: 2799, mrp: 4499, genre: "Action RPG / Co-op Survival", badge: "2025 RELEASE" },
+  "Nightreign": { price: 2799, mrp: 4499, genre: "Action RPG / Co-op Survival", badge: "2025 RELEASE" },
+  "Resident Evil 7: Biohazard": { price: 1099, mrp: 2999, genre: "Survival Horror / First Person", badge: "SURVIVAL HORROR" },
+  "Tekken 7": { price: 1099, mrp: 2999, genre: "Fighting / 3D Martial Arts", badge: "ICONIC FIGHTER" },
+  "Tom Clancy's Ghost Recon Wildlands Gold Edition": { price: 1199, mrp: 3999, genre: "Tactical Shooter / Open World Co-op", badge: "GOLD EDITION" },
+  "UFC 3": { price: 899, mrp: 2999, genre: "Sports / MMA Combat", badge: "OCTAGON" },
+  "WWE 2K19": { price: 999, mrp: 3499, genre: "Sports / Wrestling", badge: "FAN FAVORITE" },
+  "WWE 2K20": { price: 999, mrp: 3499, genre: "Sports / Wrestling", badge: "SMACKDOWN" }
 };
 
 function slugify(text) {
@@ -354,7 +402,7 @@ async function main() {
 
   let sqlStatements = [];
   sqlStatements.push(`-- ============================================================================
--- DJN TECH - POPULATE PRE-OWNED PS4 & PS5 GAMES INVENTORY WITH HIGH-RES COVER ART
+-- DJN TECH - POPULATE PRE-OWNED PS4, PS5 & XBOX GAMES INVENTORY WITH HIGH-RES COVER ART
 -- Total unique catalog titles: ${distinctTitles.length}
 -- Total physical units inventory: ${RAW_LIST.length}
 -- ============================================================================
@@ -370,14 +418,18 @@ async function main() {
     let platform = 'PS4';
     if (rawTitle.includes('(PS5)')) {
       platform = 'PS5';
+    } else if (rawTitle.includes('(Xbox One)') || rawTitle.includes('(Xbox)')) {
+      platform = 'Xbox';
     }
 
     const isCustomCover = rawTitle.includes('(Custom printed cover)');
 
-    // Clean title without (PS4), (PS5), (Custom printed cover)
+    // Clean title without (PS4), (PS5), (Xbox One), (Xbox), (Custom printed cover)
     let cleanName = rawTitle
       .replace(/\(PS4\)/gi, '')
       .replace(/\(PS5\)/gi, '')
+      .replace(/\(Xbox One\)/gi, '')
+      .replace(/\(Xbox\)/gi, '')
       .replace(/\(Custom printed cover\)/gi, '')
       .trim();
 
@@ -397,7 +449,7 @@ async function main() {
     let basePrice = details ? details.price : 999;
     let mrp = details ? details.mrp : 3499;
     let genre = details ? details.genre : 'Action / Adventure';
-    let badge = details ? details.badge : (platform === 'PS5' ? 'PS5 ENHANCED' : 'PRE-OWNED');
+    let badge = details ? details.badge : (platform === 'PS5' ? 'PS5 ENHANCED' : platform === 'Xbox' ? 'XBOX ONE' : 'PRE-OWNED');
 
     if (platform === 'PS5' && !rawTitle.includes('(PS5)')) {
       basePrice = Math.round(basePrice * 1.35);
@@ -414,30 +466,31 @@ async function main() {
       ? 'Grade A (100% genuine disc, laser tested, custom high-gloss printed cover)'
       : 'Grade A+ (100% genuine disc, optical laser seek verified, original case)';
 
-    const edition = isCustomCover ? 'Custom Printed Case Edition' : 'Standard Pre-Owned Retail Case';
+    const edition = isCustomCover ? 'Custom Printed Case Edition' : (platform === 'Xbox' ? 'Standard Xbox One Retail Case' : 'Standard Pre-Owned Retail Case');
     
     const customTag = isCustomCover ? '-custom-cover' : '';
     const id = `${slugify(cleanName)}-${platform.toLowerCase()}${customTag}-preowned`;
 
-    const fullName = `${cleanName} (${platform}${isCustomCover ? ' - Custom Cover' : ''})`;
+    const fullName = `${cleanName} (${platform === 'Xbox' ? 'Xbox One' : platform}${isCustomCover ? ' - Custom Cover' : ''})`;
     const subtitle = `100% Optical Laser Tested Disc · ${condition} · 7-Day Guarantee`;
 
+    const consoleBrand = platform === 'Xbox' ? 'Microsoft Xbox One' : `Sony PlayStation ${platform}`;
     const features = [
-      `Genuine official Sony PlayStation ${platform} Blu-ray disc`,
+      `Genuine official ${consoleBrand} Blu-ray disc`,
       `25-Point optical seek and complete installation verified`,
-      isCustomCover ? `Comes in sturdy DVD/Blu-ray case with premium custom printed cover art` : `Original retail game case with authentic inlay cover`,
+      isCustomCover ? `Comes in sturdy case with premium custom printed cover art` : `Original retail game case with authentic inlay cover`,
       `Protected under DJN Tech 7-Day Doorstep Replacement Guarantee`
     ];
 
     const inTheBox = [
-      `${platform} Game Disc (${cleanName})`,
-      isCustomCover ? 'High-Gloss Custom Cover Box' : 'Official Retail Case',
+      `${platform === 'Xbox' ? 'Xbox One' : platform} Game Disc (${cleanName})`,
+      isCustomCover ? 'High-Gloss Custom Cover Box' : (platform === 'Xbox' ? 'Official Xbox Retail Case' : 'Official Retail Case'),
       'DJN Hardware QA Certificate'
     ];
 
-    const description = `Immerse yourself in ${cleanName} on PlayStation ${platform}. Every pre-owned disc at DJN Tech is ultrasonic cleaned, bench tested for complete installation pass, and dispatched in protective packaging with tracking.`;
+    const description = `Immerse yourself in ${cleanName} on ${platform === 'Xbox' ? 'Xbox One / Series X' : `PlayStation ${platform}`}. Every pre-owned disc at DJN Tech is ultrasonic cleaned, bench tested for complete installation pass, and dispatched in protective packaging with tracking.`;
 
-    const themeColor = platform === 'PS5' ? '#0070D1' : '#003791';
+    const themeColor = platform === 'PS5' ? '#0070D1' : platform === 'Xbox' ? '#107c10' : '#003791';
 
     // Fetch verified image URL
     const imageUrl = await getGameImageUrl(rawTitle);

@@ -43,6 +43,7 @@ class RootErrorBoundary extends React.Component<{ children: React.ReactNode }, {
             <button
               onClick={() => {
                 localStorage.removeItem('djn_products_v6');
+                localStorage.removeItem('djn_products_v7');
                 localStorage.removeItem('djn_cart');
                 localStorage.removeItem('djn_wishlist');
                 window.location.reload();

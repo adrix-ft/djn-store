@@ -105,7 +105,30 @@ const MANUAL_GAME_IMAGES = {
   "Assassin's Creed Odyssey": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/812140/library_600x900.jpg",
   "Assassin's Creed Valhalla": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2208920/library_600x900.jpg",
   "Assassin's Creed Mirage": "https://images.igdb.com/igdb/image/upload/t_cover_big/co6w8x.jpg",
-  "Assassin's Creed Mirage: Launch Edition": "https://images.igdb.com/igdb/image/upload/t_cover_big/co6w8x.jpg"
+  "Assassin's Creed Mirage: Launch Edition": "https://images.igdb.com/igdb/image/upload/t_cover_big/co6w8x.jpg",
+  "Assassin's Creed The Ezio Collection": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1nrv.jpg",
+  "Call of Duty: Infinite Warfare - Legacy Edition": "https://images.igdb.com/igdb/image/upload/t_cover_big/co81ge.jpg",
+  "Cricket 22": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1701380/library_600x900.jpg",
+  "Death Stranding: Special Edition": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1190460/library_600x900.jpg",
+  "Demon Slayer -Kimetsu no Yaiba- The Hinokami Chronicles": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2928600/library_600x900.jpg",
+  "FIFA 21 Champions Edition": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3wm2.jpg",
+  "Gran Turismo Sport - Spec II": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3wk2.jpg",
+  "Gran Turismo Sport Spec II": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3wk2.jpg",
+  "Injustice: Gods Among Us - Ultimate Edition": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1mym.jpg",
+  "Injustice: Ultimate Edition": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1mym.jpg",
+  "It Takes Two": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1426210/library_600x900.jpg",
+  "LEGO City Undercover": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/578330/library_600x900.jpg",
+  "Mortal Kombat 11": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/976310/library_600x900.jpg",
+  "Elden Ring: Nightreign": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2622380/library_600x900.jpg",
+  "Nightreign": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2622380/library_600x900.jpg",
+  "Resident Evil 7: Biohazard": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/418370/library_600x900.jpg",
+  "Tekken 7": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/389730/library_600x900.jpg",
+  "Tom Clancy's Ghost Recon Wildlands - Gold Edition": "https://images.igdb.com/igdb/image/upload/t_cover_big/co23gq.jpg",
+  "Tom Clancy's Ghost Recon Wildlands Gold Edition": "https://images.igdb.com/igdb/image/upload/t_cover_big/co23gq.jpg",
+  "EA Sports UFC 3": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1o2w.jpg",
+  "UFC 3": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1o2w.jpg",
+  "WWE 2K19": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/817130/library_600x900.jpg",
+  "WWE 2K20": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1015500/library_600x900.jpg"
 };
 
 // Function to resolve image URL
@@ -113,6 +136,8 @@ export async function getGameImageUrl(rawTitle) {
   let cleanName = rawTitle
     .replace(/\(PS4\)/gi, '')
     .replace(/\(PS5\)/gi, '')
+    .replace(/\(Xbox One\)/gi, '')
+    .replace(/\(Xbox\)/gi, '')
     .replace(/\(Custom printed cover\)/gi, '')
     .trim();
 
