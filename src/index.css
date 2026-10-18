@@ -165,10 +165,7 @@ a[href*="free-widget"],
 [class*="owner-panel"],
 [class*="toolbar-container"],
 [class*="ToolbarContainer"],
-div[data-owner-panel],
-:has(> a[href*="elfsight.com"]),
-:has(> a[href*="free-widget"]),
-:has(> [title*="Remove Elfsight"]) {
+div[data-owner-panel] {
   display: none !important;
   opacity: 0 !important;
   visibility: hidden !important;

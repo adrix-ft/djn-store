@@ -33,10 +33,6 @@ export const GoogleReviewsSection: React.FC = () => {
       a[href*="utm_campaign"],
       [title*="Remove Elfsight"],
       [aria-label*="Elfsight"],
-      [class*="Badge"],
-      [class*="badge"],
-      [class*="Watermark"],
-      [class*="watermark"],
       [class*="eapps-link"],
       [class*="OwnerPanel"],
       [class*="owner-panel"],
@@ -54,19 +50,6 @@ export const GoogleReviewsSection: React.FC = () => {
         left: -9999px !important;
         top: -9999px !important;
         overflow: hidden !important;
-      }
-
-      /* Hide watermark badge wrapper container */
-      :has(> a[href*="elfsight.com"]),
-      :has(> a[href*="free-widget"]),
-      :has(> [title*="Remove Elfsight"]) {
-        display: none !important;
-        height: 0 !important;
-        max-height: 0 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow: hidden !important;
-        pointer-events: none !important;
       }
     `;
 
@@ -99,14 +82,14 @@ export const GoogleReviewsSection: React.FC = () => {
           const style = document.createElement('style');
           style.id = 'purge-elfsight-style';
           style.textContent = shadowCss;
-          if ('head' in scope && scope.head) {
-            scope.head.appendChild(style);
+          if ('head' in scope && (scope as Document).head) {
+            (scope as Document).head.appendChild(style);
           } else {
             scope.appendChild(style);
           }
         }
 
-        // Direct styling on matched elements and their immediate wrapper
+        // Direct styling strictly on watermark anchors (never parent review containers)
         scope.querySelectorAll(
           'a[href*="elfsight.com"], a[href*="free-widget"], a[href*="utm_campaign"], [title*="Remove Elfsight"], [aria-label*="Elfsight"]'
         ).forEach((el) => {
@@ -120,36 +103,7 @@ export const GoogleReviewsSection: React.FC = () => {
           htmlEl.style.setProperty('pointer-events', 'none', 'important');
           htmlEl.style.setProperty('position', 'absolute', 'important');
           htmlEl.style.setProperty('left', '-9999px', 'important');
-
-          // Also collapse parent wrapper if it solely holds the watermark
-          if (htmlEl.parentElement && htmlEl.parentElement !== (scope as any)) {
-            const parent = htmlEl.parentElement as HTMLElement;
-            parent.style.setProperty('display', 'none', 'important');
-            parent.style.setProperty('height', '0', 'important');
-            parent.style.setProperty('max-height', '0', 'important');
-            parent.style.setProperty('margin', '0', 'important');
-            parent.style.setProperty('padding', '0', 'important');
-            parent.style.setProperty('visibility', 'hidden', 'important');
-            parent.style.setProperty('pointer-events', 'none', 'important');
-          }
-        });
-
-        // Also check any badge elements by text content (e.g., "Free Google Reviews Widget")
-        scope.querySelectorAll('a, div, span').forEach((el) => {
-          const text = (el.textContent || '').trim();
-          if (text.startsWith('Free ') && text.includes('Widget')) {
-            const htmlEl = el as HTMLElement;
-            htmlEl.style.setProperty('display', 'none', 'important');
-            htmlEl.style.setProperty('opacity', '0', 'important');
-            htmlEl.style.setProperty('visibility', 'hidden', 'important');
-            htmlEl.style.setProperty('height', '0', 'important');
-            htmlEl.style.setProperty('pointer-events', 'none', 'important');
-            if (htmlEl.parentElement && htmlEl.parentElement !== (scope as any)) {
-              htmlEl.parentElement.style.setProperty('display', 'none', 'important');
-              htmlEl.parentElement.style.setProperty('height', '0', 'important');
-              htmlEl.parentElement.style.setProperty('visibility', 'hidden', 'important');
-            }
-          }
+          htmlEl.style.setProperty('top', '-9999px', 'important');
         });
       });
     };
