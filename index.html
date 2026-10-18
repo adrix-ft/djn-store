@@ -28,7 +28,87 @@
     <!-- Modern Optimized Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-    <!-- Elfsight Google Reviews CDN -->
+    <!-- Elfsight Google Reviews: Native Branding Suppressor & Platform CDN -->
+    <script>
+      (function() {
+        function patchWidgetData(json) {
+          if (!json || !json.data || !json.data.widgets) return json;
+          for (var key in json.data.widgets) {
+            var w = json.data.widgets[key];
+            if (w && w.data && w.data.preferences) {
+              w.data.preferences.display_free_link = false;
+              w.data.preferences.display_free_link_remove = false;
+              w.data.preferences.free_link_anchor = '';
+              w.data.preferences.free_link_url = '';
+              w.data.preferences.hide_elfsight_logo = 1;
+            }
+            if (w && w.preferences) {
+              w.preferences.display_free_link = false;
+              w.preferences.display_free_link_remove = false;
+              w.preferences.free_link_anchor = '';
+              w.preferences.free_link_url = '';
+              w.preferences.hide_elfsight_logo = 1;
+            }
+          }
+          return json;
+        }
+
+        // Intercept XMLHttpRequest
+        var origOpen = XMLHttpRequest.prototype.open;
+        var origSend = XMLHttpRequest.prototype.send;
+        XMLHttpRequest.prototype.open = function(method, url) {
+          this.__elfsightUrl = url;
+          return origOpen.apply(this, arguments);
+        };
+        XMLHttpRequest.prototype.send = function() {
+          var xhr = this;
+          if (xhr.__elfsightUrl && typeof xhr.__elfsightUrl === 'string' && xhr.__elfsightUrl.indexOf('core.service.elfsight.com/p/boot') !== -1) {
+            var patch = function() {
+              try {
+                if (xhr.status === 200 && xhr.response) {
+                  var raw = typeof xhr.response === 'string' ? xhr.response : JSON.stringify(xhr.response);
+                  var json = JSON.parse(raw);
+                  patchWidgetData(json);
+                  var patched = JSON.stringify(json);
+                  Object.defineProperty(xhr, 'response', { get: function() { return patched; }, configurable: true });
+                  Object.defineProperty(xhr, 'responseText', { get: function() { return patched; }, configurable: true });
+                }
+              } catch (e) {}
+            };
+            xhr.addEventListener('load', patch, false);
+            xhr.addEventListener('readystatechange', function() {
+              if (xhr.readyState === 4) patch();
+            }, false);
+          }
+          return origSend.apply(this, arguments);
+        };
+
+        // Intercept fetch
+        var origFetch = window.fetch;
+        if (origFetch) {
+          window.fetch = function(input, init) {
+            var url = typeof input === 'string' ? input : (input && input.url ? input.url : '');
+            if (url && typeof url === 'string' && url.indexOf('core.service.elfsight.com/p/boot') !== -1) {
+              return origFetch.apply(this, arguments).then(function(res) {
+                return res.text().then(function(raw) {
+                  try {
+                    var json = JSON.parse(raw);
+                    patchWidgetData(json);
+                    raw = JSON.stringify(json);
+                  } catch (e) {}
+                  return new Response(raw, {
+                    status: res.status,
+                    statusText: res.statusText,
+                    headers: res.headers
+                  });
+                });
+              });
+            }
+            return origFetch.apply(this, arguments);
+          };
+        }
+      })();
+    </script>
     <script src="https://elfsightcdn.com/platform.js" async></script>
   </head>
   <body class="bg-white text-[#212121] antialiased selection:bg-[#1a73e8] selection:text-white min-h-screen">
