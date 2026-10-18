@@ -40,12 +40,13 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   if (!isOpen) return null;
 
   const FREE_SHIPPING_THRESHOLD = 1000;
+  const isTestOrder = items.some((item) => item.product.id === 'test-razorpay-1rs' || item.product.price === 1);
   const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-  const shipping = subtotal >= FREE_SHIPPING_THRESHOLD || subtotal === 0 ? 0 : 99;
+  const shipping = isTestOrder || subtotal >= FREE_SHIPPING_THRESHOLD || subtotal === 0 ? 0 : 99;
   const finalTotal = subtotal + shipping;
 
-  const amountNeededForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
-  const freeShippingProgress = Math.min(100, Math.round((subtotal / FREE_SHIPPING_THRESHOLD) * 100));
+  const amountNeededForFreeShipping = isTestOrder ? 0 : Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
+  const freeShippingProgress = isTestOrder ? 100 : Math.min(100, Math.round((subtotal / FREE_SHIPPING_THRESHOLD) * 100));
 
   const drawerContent = (
     <div className="fixed inset-0 z-[9999] flex justify-end">

@@ -1,6 +1,35 @@
 import { Product } from '../types/store';
 
+export const TEST_PRODUCT: Product = {
+  id: 'test-razorpay-1rs',
+  name: 'Razorpay Gateway Test Product',
+  subtitle: '₹1 Live Payment Verification · Free Express Shipping',
+  category: 'accessories',
+  platform: 'Universal',
+  condition: 'Brand New',
+  mrp: 10,
+  price: 1,
+  discountPercent: 90,
+  rating: 5.0,
+  reviewCount: 99,
+  inStock: true,
+  stockCount: 999,
+  badge: 'TEST PAYMENT · ₹1',
+  imageUrl: '/logo-original.png',
+  features: [
+    '₹1 Instant Razorpay Gateway Test',
+    'Zero Shipping Charges Applied Automatically',
+    'Test UPI, Cards, NetBanking, and Wallets',
+    'Immediate Order Confirmation with SMS/Email Tracking',
+  ],
+  description: 'Special ₹1 test product created to verify live Razorpay payment gateway integration, UPI checkout, card authentication, and instant order confirmation without standard shipping fees.',
+  inTheBox: ['1x Digital Verification Receipt'],
+  warranty: 'Instant Online Verification',
+  themeColor: '#00439c',
+};
+
 export const PRODUCTS: Product[] = [
+  TEST_PRODUCT,
   // 1. PS5 Slim Disc Edition 1TB (₹62,000)
   {
     id: 'ps5-slim-disc',

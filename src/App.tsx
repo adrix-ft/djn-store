@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { PRODUCTS } from './data/products';
+import { PRODUCTS, TEST_PRODUCT } from './data/products';
 import { AuthUser, Product, CartItem, Category, Platform, Condition, Order, ProductReview, SiteConfig } from './types/store';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
@@ -99,7 +99,8 @@ export default function App() {
         ]);
         if (isMounted) {
           if (dbProducts && dbProducts.length > 0) {
-            setProducts(dbProducts);
+            const hasTest = dbProducts.some((p) => p.id === TEST_PRODUCT.id || p.price === 1);
+            setProducts(hasTest ? dbProducts : [TEST_PRODUCT, ...dbProducts]);
           }
           if (dbConfig) {
             setSiteConfig(dbConfig);
@@ -649,7 +650,8 @@ export default function App() {
   const cartCount = cart.reduce((acc, it) => acc + it.quantity, 0);
   const cartSubtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   const cartDiscount = 0;
-  const cartShipping = cartSubtotal >= 1000 || cartSubtotal === 0 ? 0 : 99;
+  const isTestOrder = cart.some((it) => it.product.id === 'test-razorpay-1rs' || it.product.price === 1);
+  const cartShipping = isTestOrder || cartSubtotal >= 1000 || cartSubtotal === 0 ? 0 : 99;
   const cartTotal = Math.max(0, cartSubtotal + cartShipping);
 
 
