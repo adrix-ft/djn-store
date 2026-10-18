@@ -393,7 +393,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             currency: 'INR',
             name: siteConfig?.storeName || 'DJN Tech',
             description: `Order of ${items.length} gaming item(s)`,
-            image: '/favicon.png',
+            image: typeof window !== 'undefined' && window.location.origin ? `${window.location.origin}/logo-original.png` : '/logo-original.png',
             prefill: {
               name: formData.fullName,
               email: formData.email,
