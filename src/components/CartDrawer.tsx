@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, ShieldCheck, Check } from 'lucide-react';
-import { AuthUser, CartItem } from '../types/store';
+import { AuthUser, CartItem, SiteConfig } from '../types/store';
 import { ProductVisualizer } from './ProductVisualizer';
 
 interface CartDrawerProps {
@@ -13,6 +13,7 @@ interface CartDrawerProps {
   onProceedToCheckout: () => void;
   authUser?: AuthUser | null;
   onRequestLogin?: () => void;
+  siteConfig?: SiteConfig;
 }
 
 export const CartDrawer: React.FC<CartDrawerProps> = ({
@@ -24,6 +25,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   onProceedToCheckout,
   authUser,
   onRequestLogin,
+  siteConfig,
 }) => {
   // Lock background body scroll when cart is open to prevent underlying page from scrolling
   useEffect(() => {
@@ -39,14 +41,15 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
   if (!isOpen) return null;
 
-  const FREE_SHIPPING_THRESHOLD = 1000;
+  const freeThreshold = siteConfig?.freeShippingThreshold ?? 1000;
+  const standardFee = siteConfig?.standardShippingFee ?? 99;
   const isTestOrder = items.some((item) => item.product.id === 'test-razorpay-1rs' || item.product.price === 1);
   const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-  const shipping = isTestOrder || subtotal >= FREE_SHIPPING_THRESHOLD || subtotal === 0 ? 0 : 99;
+  const shipping = isTestOrder || subtotal >= freeThreshold || subtotal === 0 || standardFee === 0 ? 0 : standardFee;
   const finalTotal = subtotal + shipping;
 
-  const amountNeededForFreeShipping = isTestOrder ? 0 : Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
-  const freeShippingProgress = isTestOrder ? 100 : Math.min(100, Math.round((subtotal / FREE_SHIPPING_THRESHOLD) * 100));
+  const amountNeededForFreeShipping = isTestOrder || standardFee === 0 ? 0 : Math.max(0, freeThreshold - subtotal);
+  const freeShippingProgress = isTestOrder || standardFee === 0 ? 100 : Math.min(100, Math.round((subtotal / freeThreshold) * 100));
 
   const drawerContent = (
     <div className="fixed inset-0 z-[9999] flex justify-end">

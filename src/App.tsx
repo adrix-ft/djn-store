@@ -651,7 +651,9 @@ export default function App() {
   const cartSubtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   const cartDiscount = 0;
   const isTestOrder = cart.some((it) => it.product.id === 'test-razorpay-1rs' || it.product.price === 1);
-  const cartShipping = isTestOrder || cartSubtotal >= 1000 || cartSubtotal === 0 ? 0 : 99;
+  const freeThreshold = siteConfig?.freeShippingThreshold ?? 1000;
+  const standardFee = siteConfig?.standardShippingFee ?? 99;
+  const cartShipping = isTestOrder || cartSubtotal >= freeThreshold || cartSubtotal === 0 || standardFee === 0 ? 0 : standardFee;
   const cartTotal = Math.max(0, cartSubtotal + cartShipping);
 
 
@@ -1051,6 +1053,7 @@ export default function App() {
             }}
             authUser={authUser}
             onRequestLogin={() => setIsAuthModalOpen(true)}
+            siteConfig={siteConfig}
           />
         </React.Suspense>
       )}

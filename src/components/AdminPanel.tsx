@@ -158,6 +158,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   // Site Config Form State
   const [configForm, setConfigForm] = useState<SiteConfig>(siteConfig);
 
+  useEffect(() => {
+    setConfigForm(siteConfig);
+  }, [siteConfig]);
+
   // Backup / Import State
   const [importJsonText, setImportJsonText] = useState('');
   const [importError, setImportError] = useState<string | null>(null);
@@ -1553,6 +1557,82 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   </span>
                   <span>
                     When configured, customers can pay directly with UPI, Cards, NetBanking or EMI.
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Shipping & Delivery Charges Policy */}
+            <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4">
+              <div className="flex items-center gap-2.5 pb-2 border-b border-gray-100 dark:border-gray-800">
+                <Truck className="w-5 h-5 text-blue-600" />
+                <div>
+                  <h3 className="font-bold text-sm text-gray-900 dark:text-white">
+                    Shipping & Delivery Charges Configuration
+                  </h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Control standard delivery fees and the minimum cart value for free express shipping.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                <div>
+                  <label className="font-semibold block mb-1">Standard Shipping Fee (₹)</label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-bold">₹</span>
+                    <input
+                      type="number"
+                      min="0"
+                      value={configForm.standardShippingFee ?? 99}
+                      onChange={(e) => {
+                        const val = Math.max(0, parseInt(e.target.value) || 0);
+                        setConfigForm({ ...configForm, standardShippingFee: val });
+                      }}
+                      placeholder="99 (Set to 0 for storewide free shipping)"
+                      className="w-full pl-8 bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs font-mono text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <span className="text-[11px] text-gray-400 mt-1 block">
+                    Applied on orders below the free shipping threshold. Enter <strong>0</strong> to give free delivery on every order.
+                  </span>
+                </div>
+
+                <div>
+                  <label className="font-semibold block mb-1">Free Shipping Order Threshold (₹)</label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-bold">₹</span>
+                    <input
+                      type="number"
+                      min="0"
+                      value={configForm.freeShippingThreshold ?? 1000}
+                      onChange={(e) => {
+                        const val = Math.max(0, parseInt(e.target.value) || 0);
+                        setConfigForm({ ...configForm, freeShippingThreshold: val });
+                      }}
+                      placeholder="1000"
+                      className="w-full pl-8 bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs font-mono text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <span className="text-[11px] text-gray-400 mt-1 block">
+                    Orders with total cart value equal to or above this amount get free shipping automatically.
+                  </span>
+                </div>
+              </div>
+
+              {/* Dynamic Live Policy Preview Banner */}
+              <div className="p-3.5 rounded-xl bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200/60 dark:border-blue-900/40 text-[11px] text-blue-900 dark:text-blue-200 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                  <span>
+                    <strong>Current Active Rule: </strong> 
+                    {(configForm.standardShippingFee ?? 99) === 0 ? (
+                      <span className="text-emerald-600 dark:text-emerald-400 font-bold">Storewide 100% Free Shipping on all orders!</span>
+                    ) : (
+                      <>
+                        Orders under ₹{(configForm.freeShippingThreshold ?? 1000).toLocaleString('en-IN')} pay ₹{configForm.standardShippingFee ?? 99} delivery. Orders ₹{(configForm.freeShippingThreshold ?? 1000).toLocaleString('en-IN')}+ get <strong className="text-emerald-600 dark:text-emerald-400 font-bold">FREE delivery</strong>.
+                      </>
+                    )}
                   </span>
                 </div>
               </div>
