@@ -150,5 +150,27 @@
   animation: logoShineSweep 3s ease-in-out infinite;
 }
 
-
+/* Clean styling for Elfsight Google Reviews: Hide watermarks, owner toolbars, share buttons & badges */
+.elfsight-app-c242b803-88d2-488d-b013-8b66750f43f1 a[href*="elfsight.com"],
+a[href*="elfsight.com"],
+a[href*="elfsight.com?utm_campaign="],
+a[href*="utm_campaign=free-widget"],
+a[href*="free-widget"],
+[class*="eapps-link"],
+[class*="eapps-widget-toolbar"],
+[class*="WidgetToolbar"],
+[class*="OwnerPanel"],
+[class*="owner-panel"],
+[class*="toolbar-container"],
+[class*="ToolbarContainer"],
+div[data-owner-panel] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  width: 0 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+}
 
