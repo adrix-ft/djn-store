@@ -36,7 +36,7 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
   siteConfig,
   onNavigateTab,
 }) => {
-  const [timeframe, setTimeframe] = useState<'7d' | '30d' | '90d' | 'all'>('30d');
+  const [timeframe, setTimeframe] = useState<'7d' | '30d' | '90d' | 'all'>('7d');
   const [hoveredPoint, setHoveredPoint] = useState<number | null>(null);
   const [chartView, setChartView] = useState<'area' | 'bar'>('bar');
 
@@ -192,8 +192,8 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
         const dateStr = d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
 
         return {
-          label: idx === days - 1 ? `${weekday} (Today)` : weekday,
-          date: dateStr,
+          label: idx === days - 1 ? 'Today' : `${weekday} ${d.getDate()}`,
+          date: `${weekday}, ${dateStr}`,
           revenue: chartView === 'area' ? running : dayRev,
           orders: dayOrders.length,
         };
@@ -206,25 +206,29 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
         );
       }
     } else if (timeframe === '30d') {
-      const weeks = 4;
+      const days = 30;
       let running = 0;
-      trajectoryPoints = Array.from({ length: weeks }).map((_, idx) => {
-        const weekOffset = weeks - 1 - idx;
-        const wStart = now - (weekOffset + 1) * 7 * 86400000;
-        const wEnd = now - weekOffset * 7 * 86400000;
+      trajectoryPoints = Array.from({ length: days }).map((_, idx) => {
+        const dayOffset = days - 1 - idx;
+        const d = new Date(now - dayOffset * 86400000);
+        const dayStart = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+        const dayEnd = dayStart + 86400000;
 
-        const weekOrders = parsedOrders.filter((o) => o.timestamp >= wStart && o.timestamp < wEnd);
-        const weekRev = weekOrders.reduce((sum, o) => sum + (o.total || 0), 0);
-        running += weekRev;
+        const dayOrders = parsedOrders.filter((o) => o.timestamp >= dayStart && o.timestamp < dayEnd);
+        const dayRev = dayOrders.reduce((sum, o) => sum + (o.total || 0), 0);
+        running += dayRev;
 
-        const startStr = new Date(wStart).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
-        const endStr = new Date(wEnd).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
+        const weekday = d.toLocaleDateString('en-IN', { weekday: 'short' });
+        const dateStr = d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
+        const isToday = idx === days - 1;
+        const isFirst = idx === 0;
+        const isTick = idx % 5 === 0;
 
         return {
-          label: `Week ${idx + 1}`,
-          date: `${startStr} - ${endStr}`,
-          revenue: chartView === 'area' ? running : weekRev,
-          orders: weekOrders.length,
+          label: isToday ? 'Today' : (isFirst || isTick ? `${d.getDate()} ${d.toLocaleDateString('en-IN', { month: 'short' })}` : ''),
+          date: `${weekday}, ${dateStr}`,
+          revenue: chartView === 'area' ? running : dayRev,
+          orders: dayOrders.length,
         };
       });
       if (chartView === 'area' && running < totalRevenue) {
@@ -715,9 +719,10 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
               {/* Bar View */}
               {chartView === 'bar' &&
                 points.map((pt, i) => {
-                  const barW = Math.max(28, innerW / (points.length * 2.2));
-                  const barH = Math.max(6, padTop + innerH - pt.y);
-                  const barY = pt.revenue > 0 ? pt.y : padTop + innerH - barH;
+                  const barW = Math.max(10, Math.min(36, innerW / (points.length * 1.5)));
+                  const barH = pt.revenue > 0 ? Math.max(6, padTop + innerH - pt.y) : 3;
+                  const barY = padTop + innerH - barH;
+                  const isHovered = hoveredPoint === i;
                   return (
                     <rect
                       key={i}
@@ -725,9 +730,15 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
                       y={barY}
                       width={barW}
                       height={barH}
-                      rx="6"
-                      fill="url(#ownerBarGrad)"
-                      className="transition-all hover:brightness-110 cursor-pointer"
+                      rx={barW > 20 ? 6 : 3}
+                      fill={pt.revenue > 0 ? 'url(#ownerBarGrad)' : 'currentColor'}
+                      className={`transition-all cursor-pointer ${
+                        pt.revenue > 0
+                          ? isHovered
+                            ? 'brightness-125 filter drop-shadow-md'
+                            : 'hover:brightness-110'
+                          : 'text-gray-200 dark:text-gray-800 hover:text-blue-400'
+                      }`}
                       onMouseEnter={() => setHoveredPoint(i)}
                       onMouseLeave={() => setHoveredPoint(null)}
                       onClick={() => setHoveredPoint(hoveredPoint === i ? null : i)}
@@ -750,6 +761,7 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
               {/* Points & Labels */}
               {points.map((pt, i) => {
                 const isHovered = hoveredPoint === i;
+                const shouldShowCircle = chartView === 'area' || isHovered || pt.revenue > 0;
                 return (
                   <g
                     key={i}
@@ -758,26 +770,30 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({
                     onClick={() => setHoveredPoint(hoveredPoint === i ? null : i)}
                     className="cursor-pointer"
                   >
-                    <circle
-                      cx={pt.x}
-                      cy={pt.y}
-                      r={isHovered ? 7 : 4}
-                      fill="#FFFFFF"
-                      stroke="#2563EB"
-                      strokeWidth="2.5"
-                    />
-                    <text
-                      x={pt.x}
-                      y={padTop + innerH + 20}
-                      textAnchor="middle"
-                      className={`text-[11px] font-semibold ${
-                        isHovered
-                          ? 'fill-blue-600 dark:fill-blue-400 font-bold'
-                          : 'fill-gray-400 dark:fill-gray-500'
-                      }`}
-                    >
-                      {pt.label}
-                    </text>
+                    {shouldShowCircle && (
+                      <circle
+                        cx={pt.x}
+                        cy={pt.y}
+                        r={isHovered ? 6 : (chartView === 'bar' ? 3.5 : 3)}
+                        fill="#FFFFFF"
+                        stroke="#2563EB"
+                        strokeWidth={isHovered ? 2.5 : 2}
+                      />
+                    )}
+                    {pt.label && (
+                      <text
+                        x={pt.x}
+                        y={padTop + innerH + 20}
+                        textAnchor="middle"
+                        className={`text-[10px] sm:text-[11px] font-semibold ${
+                          isHovered
+                            ? 'fill-blue-600 dark:fill-blue-400 font-bold'
+                            : 'fill-gray-400 dark:fill-gray-500'
+                        }`}
+                      >
+                        {pt.label}
+                      </text>
+                    )}
                   </g>
                 );
               })}
