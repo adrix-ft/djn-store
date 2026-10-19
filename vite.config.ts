@@ -1,11 +1,34 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import {defineConfig} from 'vite';
+import {defineConfig, Plugin} from 'vite';
+
+function razorpayDevApiPlugin(): Plugin {
+  return {
+    name: 'razorpay-dev-api',
+    configureServer(server) {
+      server.middlewares.use(async (req, res, next) => {
+        if (req.url && req.url.split('?')[0] === '/api/razorpay') {
+          try {
+            const mod = await server.ssrLoadModule('./api/razorpay.ts');
+            await mod.default(req, res);
+          } catch (err: any) {
+            console.error('[Vite Dev API] Razorpay error:', err);
+            res.statusCode = 500;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ success: false, error: err?.message || 'Server API Error' }));
+          }
+          return;
+        }
+        next();
+      });
+    },
+  };
+}
 
 export default defineConfig(() => {
   return {
-    plugins: [react(), tailwindcss()],
+    plugins: [react(), tailwindcss(), razorpayDevApiPlugin()],
     resolve: {
       alias: {
         '@': path.resolve(import.meta.dirname, '.'),

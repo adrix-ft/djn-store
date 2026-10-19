@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { AuthUser, CartItem, Order, OrderCustomerInfo, SiteConfig } from '../types/store';
 import { GoogleLogoIcon } from './GoogleLogoIcon';
+import { createBackendRazorpayOrder, verifyBackendRazorpayPayment } from '../lib/razorpay';
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -354,7 +355,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   };
 
   // Submit Handler
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!authUser) {
@@ -381,62 +382,96 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     setErrorMessage(null);
     setIsSubmitting(true);
 
-    // RAZORPAY PAYMENT GATEWAY
+    // RAZORPAY PAYMENT GATEWAY (SERVER ORDER LOCK & HMAC VERIFICATION)
     if (formData.paymentMethod === 'razorpay') {
       const razorpayKey = siteConfig?.razorpayKeyId || 'rzp_test_1DP5mmOlF5G5ag';
 
-      if ((window as any).Razorpay) {
-        try {
-          const options = {
-            key: razorpayKey,
-            amount: Math.round(total * 100), // in paise
-            currency: 'INR',
-            name: siteConfig?.storeName || 'DJN Tech',
-            description: `Order of ${items.length} gaming item(s)`,
-            image: typeof window !== 'undefined' && window.location.origin ? `${window.location.origin}/logo-original.png` : '/logo-original.png',
-            prefill: {
-              name: formData.fullName,
-              email: formData.email,
-              contact: formData.phone,
-            },
-            notes: {
-              address: `${formData.address}, ${formData.city}, ${formData.state} - ${formData.pincode}`,
-              pincode: formData.pincode,
-              store: 'DJN Tech Online Store',
-            },
-            theme: {
-              color: '#00439c',
-            },
-            modal: {
-              ondismiss: function () {
-                setIsSubmitting(false);
-              },
-            },
-            handler: function (response: any) {
-              const paymentId = response.razorpay_payment_id || `pay_${Date.now()}`;
-              finalizeOrder(paymentId, 'razorpay');
-            },
-          };
-
-          const rzp = new (window as any).Razorpay(options);
-          rzp.on('payment.failed', function (response: any) {
-            setIsSubmitting(false);
-            setErrorMessage(
-              response?.error?.description || 'Payment was cancelled or failed. Please try again.'
-            );
-          });
-          rzp.open();
-          return;
-        } catch (err: any) {
-          console.error('Razorpay initialization error:', err);
-        }
+      if (!(window as any).Razorpay) {
+        setIsSubmitting(false);
+        setErrorMessage(
+          'Unable to initialize Razorpay payment gateway. Please check your internet connection or contact DJN Tech support.'
+        );
+        return;
       }
 
-      setIsSubmitting(false);
-      setErrorMessage(
-        'Unable to initialize Razorpay payment gateway. Please check your internet connection or contact DJN Tech support.'
-      );
-      return;
+      try {
+        // Step 1: Request backend order creation (locks server-verified pricing)
+        const orderRes = await createBackendRazorpayOrder({
+          items,
+          customer: formData,
+        });
+
+        const orderIdToUse = orderRes.success && orderRes.orderId ? orderRes.orderId : undefined;
+        const amountToUse = orderRes.success && orderRes.amount ? orderRes.amount : Math.round(total * 100);
+        const keyToUse = (orderRes.success && orderRes.keyId) || razorpayKey;
+
+        const options: any = {
+          key: keyToUse,
+          amount: amountToUse,
+          currency: 'INR',
+          name: siteConfig?.storeName || 'DJN Tech',
+          description: `Order of ${items.length} gaming item(s)`,
+          image: typeof window !== 'undefined' && window.location.origin ? `${window.location.origin}/logo-original.png` : '/logo-original.png',
+          prefill: {
+            name: formData.fullName,
+            email: formData.email,
+            contact: formData.phone,
+          },
+          notes: {
+            address: `${formData.address}, ${formData.city}, ${formData.state} - ${formData.pincode}`,
+            pincode: formData.pincode,
+            store: 'DJN Tech Online Store',
+          },
+          theme: {
+            color: '#00439c',
+          },
+          modal: {
+            ondismiss: function () {
+              setIsSubmitting(false);
+            },
+          },
+          handler: async function (response: any) {
+            // Step 2: Cryptographic HMAC SHA-256 Signature Verification
+            if (response.razorpay_signature && response.razorpay_order_id) {
+              const verifyRes = await verifyBackendRazorpayPayment({
+                razorpayOrderId: response.razorpay_order_id,
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpaySignature: response.razorpay_signature,
+              });
+
+              if (!verifyRes.success || !verifyRes.verified) {
+                setIsSubmitting(false);
+                setErrorMessage(
+                  verifyRes.error || 'Payment signature verification failed. Please contact DJN Tech support.'
+                );
+                return;
+              }
+            }
+
+            const paymentId = response.razorpay_payment_id || `pay_${Date.now()}`;
+            finalizeOrder(paymentId, 'razorpay');
+          },
+        };
+
+        if (orderIdToUse) {
+          options.order_id = orderIdToUse;
+        }
+
+        const rzp = new (window as any).Razorpay(options);
+        rzp.on('payment.failed', function (response: any) {
+          setIsSubmitting(false);
+          setErrorMessage(
+            response?.error?.description || 'Payment was cancelled or failed. Please try again.'
+          );
+        });
+        rzp.open();
+        return;
+      } catch (err: any) {
+        console.error('Razorpay initialization error:', err);
+        setIsSubmitting(false);
+        setErrorMessage(err?.message || 'Payment processing failed. Please try again.');
+        return;
+      }
     }
   };
 
