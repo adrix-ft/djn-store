@@ -224,13 +224,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     }
   };
 
+  const isSuperAdmin = authUser?.role === 'superadmin';
+
+  // Security guard: If non-superadmin is on security tab, auto-redirect to analytics
   useEffect(() => {
-    if (activeTab === 'security') {
+    if (activeTab === 'security' && !isSuperAdmin) {
+      setActiveTab('analytics');
+    } else if (activeTab === 'security' && isSuperAdmin) {
       loadUsers();
     }
-  }, [activeTab]);
-
-  const isSuperAdmin = authUser?.role === 'superadmin';
+  }, [activeTab, isSuperAdmin]);
 
   const handleAssignRole = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -693,7 +696,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             { id: 'orders' as AdminTab, label: 'Orders', count: orders.length, icon: ShoppingBag },
             { id: 'content' as AdminTab, label: 'Banners', count: null, icon: Settings },
             { id: 'backup' as AdminTab, label: 'Backup', count: null, icon: Database },
-            { id: 'security' as AdminTab, label: 'Security', count: null, icon: KeyRound },
+            ...(isSuperAdmin
+              ? [{ id: 'security' as AdminTab, label: 'Security', count: null, icon: KeyRound }]
+              : []),
           ].map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -747,7 +752,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               { id: 'orders' as AdminTab, label: 'Customer Orders', shortLabel: 'Orders', count: orders.length, icon: ShoppingBag },
               { id: 'content' as AdminTab, label: 'Banners & Marketing', shortLabel: 'Marketing', count: null, icon: Settings },
               { id: 'backup' as AdminTab, label: 'Backup & Restore', shortLabel: 'Backup', count: null, icon: Database },
-              { id: 'security' as AdminTab, label: 'Admin Security', shortLabel: 'Security', count: null, icon: KeyRound },
+              ...(isSuperAdmin
+                ? [{ id: 'security' as AdminTab, label: 'Admin Security', shortLabel: 'Security', count: null, icon: KeyRound }]
+                : []),
             ].map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -2041,7 +2048,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         {/* ========================================================================= */}
         {/* TAB 5: ADMIN SECURITY & DATABASE CREDENTIALS */}
         {/* ========================================================================= */}
-        {activeTab === 'security' && (
+        {activeTab === 'security' && isSuperAdmin && (
           <div className="space-y-6">
             
             {/* Header Card */}
@@ -2922,7 +2929,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           <button
             onClick={() => setIsMobileMoreOpen(true)}
             className={`flex flex-col items-center justify-center py-1 transition-colors cursor-pointer select-none ${
-              activeTab === 'backup' || activeTab === 'security' || isMobileMoreOpen
+              activeTab === 'backup' || (isSuperAdmin && activeTab === 'security') || isMobileMoreOpen
                 ? 'text-blue-600 dark:text-blue-400 font-bold'
                 : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
             }`}
@@ -3056,22 +3063,24 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 </div>
               </button>
 
-              <button
-                onClick={() => {
-                  setActiveTab('security');
-                  setIsMobileMoreOpen(false);
-                }}
-                className={`w-full flex items-center justify-between p-3 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
-                  activeTab === 'security'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-50 dark:bg-gray-800/60 text-gray-800 dark:text-gray-200 hover:bg-gray-100'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <KeyRound className="w-4 h-4 text-rose-500" />
-                  <span>Admin Security & PIN Code</span>
-                </div>
-              </button>
+              {isSuperAdmin && (
+                <button
+                  onClick={() => {
+                    setActiveTab('security');
+                    setIsMobileMoreOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between p-3 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+                    activeTab === 'security'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-50 dark:bg-gray-800/60 text-gray-800 dark:text-gray-200 hover:bg-gray-100'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <KeyRound className="w-4 h-4 text-rose-500" />
+                    <span>Admin Security & Team Roles</span>
+                  </div>
+                </button>
+              )}
             </div>
 
             {/* Quick Utility Actions */}
