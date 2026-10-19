@@ -181,6 +181,35 @@ export default function App() {
   );
   const isAdminAuthenticated = isAdminUser;
 
+  // Helper to identify internal payment test product(s)
+  const isTestProduct = (p?: Product | null): boolean => {
+    if (!p) return false;
+    return (
+      p.id === 'test-razorpay-1rs' ||
+      p.id === TEST_PRODUCT.id ||
+      p.price === 1 ||
+      Boolean(p.name && p.name.toLowerCase().includes('gateway test'))
+    );
+  };
+
+  // Visible products: normal visitors/customers never see test items; only Admins & Superadmins can
+  const visibleProducts = useMemo(() => {
+    if (isAdminUser) {
+      return products;
+    }
+    return products.filter((p) => !isTestProduct(p));
+  }, [products, isAdminUser]);
+
+  // Guard: If a visitor tries to view the test product URL/page without admin permissions, redirect to home
+  useEffect(() => {
+    if (selectedProduct && isTestProduct(selectedProduct) && !isAdminUser) {
+      setSelectedProduct(null);
+      if (currentPage === 'product-detail') {
+        setCurrentPage('home');
+      }
+    }
+  }, [selectedProduct, isAdminUser, currentPage]);
+
   // Tracked Orders for Admin
   const [orders, setOrders] = useState<Order[]>(() => {
     const saved = localStorage.getItem('djn_admin_orders');
@@ -486,6 +515,10 @@ export default function App() {
   };
 
   const handleSelectProduct = (product: Product) => {
+    if (isTestProduct(product) && !isAdminUser) {
+      showToast('This item is a private test product accessible only to store administrators.');
+      return;
+    }
     setSelectedProduct(product);
     setCurrentPage('product-detail');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -493,6 +526,10 @@ export default function App() {
 
   // Add to Cart
   const handleAddToCart = (product: Product, condition?: Condition) => {
+    if (isTestProduct(product) && !isAdminUser) {
+      showToast('This item is a private test product accessible only to store administrators.');
+      return;
+    }
     const chosenCondition = condition || product.condition;
 
     setCart((prevCart) => {
@@ -578,7 +615,7 @@ export default function App() {
   // Section collections for Home page: Distinct, non-overlapping, and thematic catalogs
   const featuredProducts = useMemo(() => {
     // 1. Hardware first (consoles & controllers)
-    const hardware = products.filter(
+    const hardware = visibleProducts.filter(
       (p) => p.category === 'consoles' || p.category === 'controllers'
     );
 
@@ -600,7 +637,7 @@ export default function App() {
       'elden ring',
     ];
 
-    const flagshipGames = products.filter((p) => {
+    const flagshipGames = visibleProducts.filter((p) => {
       if (p.category !== 'preowned_games') return false;
       const lower = p.name.toLowerCase();
       // Skip custom printed covers in featured to keep it premium standard edition
@@ -609,8 +646,8 @@ export default function App() {
     });
 
     const curated = [...hardware, ...flagshipGames];
-    return curated.length > 0 ? curated : products;
-  }, [products]);
+    return curated.length > 0 ? curated : visibleProducts;
+  }, [visibleProducts]);
 
   const trendingProducts = useMemo(() => {
     const featuredIdSet = new Set(featuredProducts.map((p) => p.id));
@@ -641,7 +678,7 @@ export default function App() {
       'sniper elite',
     ];
 
-    const trending = products.filter((p) => {
+    const trending = visibleProducts.filter((p) => {
       if (featuredIdSet.has(p.id)) return false; // Strictly no duplication with Featured
       const lower = p.name.toLowerCase();
       if (lower.includes('custom printed cover')) return false;
@@ -650,21 +687,21 @@ export default function App() {
 
     // Fill with remaining catalog if more variety is needed
     if (trending.length < 14) {
-      const remaining = products.filter(
+      const remaining = visibleProducts.filter(
         (p) => !featuredIdSet.has(p.id) && !trending.some((t) => t.id === p.id)
       );
       return [...trending, ...remaining].slice(0, 20);
     }
 
     return trending;
-  }, [products, featuredProducts]);
+  }, [visibleProducts, featuredProducts]);
 
   const todaysDeals = useMemo(() => {
     const featuredIdSet = new Set(featuredProducts.map((p) => p.id));
     const trendingIdSet = new Set(trendingProducts.map((p) => p.id));
 
     // Products strictly not shown in Featured or Trending
-    const candidates = products.filter(
+    const candidates = visibleProducts.filter(
       (p) => !featuredIdSet.has(p.id) && !trendingIdSet.has(p.id)
     );
 
@@ -685,17 +722,28 @@ export default function App() {
 
     // Fallback if catalog is small
     if (deals.length === 0) {
-      return [...products].sort((a, b) => b.discountPercent - a.discountPercent);
+      return [...visibleProducts].sort((a, b) => b.discountPercent - a.discountPercent);
     }
 
     return deals;
-  }, [products, featuredProducts, trendingProducts]);
+  }, [visibleProducts, featuredProducts, trendingProducts]);
+
+  // Cart and Wishlist filtered for non-admin visitors
+  const displayCart = useMemo(() => {
+    if (isAdminUser) return cart;
+    return cart.filter((it) => !isTestProduct(it.product));
+  }, [cart, isAdminUser]);
+
+  const displayWishlist = useMemo(() => {
+    if (isAdminUser) return wishlist;
+    return wishlist.filter((p) => !isTestProduct(p));
+  }, [wishlist, isAdminUser]);
 
   // Pricing calculations
-  const cartCount = cart.reduce((acc, it) => acc + it.quantity, 0);
-  const cartSubtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const cartCount = displayCart.reduce((acc, it) => acc + it.quantity, 0);
+  const cartSubtotal = displayCart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   const cartDiscount = 0;
-  const isTestOrder = cart.some((it) => it.product.id === 'test-razorpay-1rs' || it.product.price === 1);
+  const isTestOrder = displayCart.some((it) => isTestProduct(it.product));
   const freeThreshold = siteConfig?.freeShippingThreshold ?? 1000;
   const standardFee = siteConfig?.standardShippingFee ?? 99;
   const cartShipping = isTestOrder || cartSubtotal >= freeThreshold || cartSubtotal === 0 || standardFee === 0 ? 0 : standardFee;
@@ -896,7 +944,7 @@ export default function App() {
           }
         }}
         searchQuery={searchQuery}
-        allProducts={products}
+        allProducts={visibleProducts}
         onSelectProduct={handleSelectProduct}
         theme={theme}
         onToggleTheme={handleToggleTheme}
@@ -919,16 +967,16 @@ export default function App() {
           }
         >
           {/* VIEW 1: DEDICATED PRODUCT PAGE (FLIPKART / AMAZON STYLE) */}
-          {currentPage === 'product-detail' && selectedProduct ? (
+          {currentPage === 'product-detail' && selectedProduct && (!isTestProduct(selectedProduct) || isAdminUser) ? (
             <ProductPage
               product={selectedProduct}
-              allProducts={products}
+              allProducts={visibleProducts}
               onSelectProduct={handleSelectProduct}
               onAddToCart={handleAddToCart}
               onBuyNow={handleBuyNow}
               onToggleWishlist={handleToggleWishlist}
-              isWishlisted={wishlist.some((w) => w.id === selectedProduct.id)}
-              isInCart={cart.some((c) => c.product.id === selectedProduct.id)}
+              isWishlisted={displayWishlist.some((w) => w.id === selectedProduct.id)}
+              isInCart={displayCart.some((c) => c.product.id === selectedProduct.id)}
               onBack={() => {
                 if (activeCategory !== 'all') {
                   setCurrentPage(activeCategory);
@@ -964,12 +1012,12 @@ export default function App() {
             <CategoryPage
               category={currentPage}
               platform={selectedPlatform}
-              products={products}
+              products={visibleProducts}
               onSelectProduct={handleSelectProduct}
               onAddToCart={handleAddToCart}
               onToggleWishlist={handleToggleWishlist}
-              wishlistIds={wishlist.map((w) => w.id)}
-              cartIds={cart.map((c) => c.product.id)}
+              wishlistIds={displayWishlist.map((w) => w.id)}
+              cartIds={displayCart.map((c) => c.product.id)}
               onNavigateHome={handleNavigateHome}
               onSelectCategory={handleNavigateCategory}
             />
@@ -983,9 +1031,9 @@ export default function App() {
             <Hero
               onExploreGames={() => handleNavigateCategory('preowned_games')}
               onExploreConsoles={() => handleNavigateCategory('consoles')}
-              featuredProduct={products[0]}
+              featuredProduct={visibleProducts.find((p) => !isTestProduct(p)) || visibleProducts[0]}
               onSelectProduct={handleSelectProduct}
-              products={products}
+              products={visibleProducts}
             />
 
             {/* Infinite Running Marquee Ticker */}
@@ -1085,7 +1133,7 @@ export default function App() {
           <CartDrawer
             isOpen={isCartOpen}
             onClose={() => setIsCartOpen(false)}
-            items={cart}
+            items={displayCart}
             onUpdateQuantity={handleUpdateQuantity}
             onRemoveItem={handleRemoveFromCart}
             onProceedToCheckout={() => {
@@ -1108,7 +1156,7 @@ export default function App() {
           <WishlistDrawer
             isOpen={isWishlistOpen}
             onClose={() => setIsWishlistOpen(false)}
-            items={wishlist}
+            items={displayWishlist}
             onRemoveItem={(id) => handleToggleWishlist({ id } as any)}
             onAddToCart={(p) => handleAddToCart(p)}
             onSelectProduct={handleSelectProduct}
@@ -1122,7 +1170,7 @@ export default function App() {
           <CheckoutModal
             isOpen={isCheckoutOpen}
             onClose={() => setIsCheckoutOpen(false)}
-            items={cart}
+            items={displayCart}
             subtotal={cartSubtotal}
             discount={cartDiscount}
             shipping={cartShipping}

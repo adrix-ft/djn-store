@@ -229,6 +229,14 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                 </button>
               </div>
 
+              {/* Private Admin Test Notice */}
+              {(product.id === 'test-razorpay-1rs' || product.price === 1) && (
+                <div className="mb-3 px-3.5 py-2.5 rounded-xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800 flex items-center gap-2 text-xs font-bold text-purple-900 dark:text-purple-200">
+                  <ShieldCheck className="w-4 h-4 text-purple-600 dark:text-purple-400 shrink-0" />
+                  <span>Admin & Superadmin Test Item: This ₹1 test product is hidden from normal visitors.</span>
+                </div>
+              )}
+
               {/* Product Title */}
               <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111827] dark:text-white tracking-tight leading-tight">
                 {product.name}
