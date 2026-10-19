@@ -58,7 +58,22 @@ AS $$
   );
 $$;
 
+CREATE OR REPLACE FUNCTION public.is_superadmin()
+RETURNS BOOLEAN
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+STABLE
+AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.users
+    WHERE LOWER(email) = LOWER(auth.jwt() ->> 'email')
+    AND role = 'superadmin'
+  );
+$$;
+
 GRANT EXECUTE ON FUNCTION public.is_admin() TO anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.is_superadmin() TO anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.get_current_user_role() TO anon, authenticated;
 
 -- 4. Automatic sync when any user logs in via Supabase / Google OAuth
@@ -100,11 +115,21 @@ TO authenticated
 USING (LOWER(email) = LOWER(auth.jwt() ->> 'email'));
 
 DROP POLICY IF EXISTS "Admins can view and manage all users" ON public.users;
-CREATE POLICY "Admins can view and manage all users" 
+DROP POLICY IF EXISTS "Admins can view users" ON public.users;
+DROP POLICY IF EXISTS "Superadmins can manage users" ON public.users;
+
+-- Admins & Superadmins can view the team / user accounts
+CREATE POLICY "Admins can view users" 
+ON public.users FOR SELECT 
+TO authenticated 
+USING (public.is_admin());
+
+-- ONLY Superadmins can insert, update, or delete in users table (assign or change roles)
+CREATE POLICY "Superadmins can manage users" 
 ON public.users FOR ALL 
 TO authenticated 
-USING (public.is_admin()) 
-WITH CHECK (public.is_admin());
+USING (public.is_superadmin()) 
+WITH CHECK (public.is_superadmin());
 
 -- 6. RLS POLICIES FOR PRODUCTS TABLE
 ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;

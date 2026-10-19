@@ -204,45 +204,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const [featuresText, setFeaturesText] = useState('');
   const [inTheBoxText, setInTheBoxText] = useState('');
 
-  // Admin Security & Database Credentials
-  const [secUsername, setSecUsername] = useState(() => {
-    return localStorage.getItem('djn_admin_active_user') || 'admin';
-  });
-  const [secNewPassword, setSecNewPassword] = useState('');
-  const [secConfirmPassword, setSecConfirmPassword] = useState('');
-  const [showSecPassword, setShowSecPassword] = useState(false);
-  const [secLoading, setSecLoading] = useState(false);
-  const [secMessage, setSecMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-
-  const handleUpdateAdminSecurity = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!secUsername.trim()) {
-      setSecMessage({ type: 'error', text: 'Username cannot be empty.' });
-      return;
-    }
-    if (secNewPassword.length < 6) {
-      setSecMessage({ type: 'error', text: 'Password must be at least 6 characters long.' });
-      return;
-    }
-    if (secNewPassword !== secConfirmPassword) {
-      setSecMessage({ type: 'error', text: 'New password and confirmation do not match.' });
-      return;
-    }
-
-    setSecLoading(true);
-    setSecMessage(null);
-
-    const res = await updateAdminCredentials(secUsername, secNewPassword);
-    setSecLoading(false);
-    if (res.success) {
-      setSecMessage({ type: 'success', text: res.message || 'Credentials updated successfully!' });
-      setSecNewPassword('');
-      setSecConfirmPassword('');
-      showToast('Admin credentials updated and synced to database');
-    } else {
-      setSecMessage({ type: 'error', text: res.message || 'Failed to update credentials.' });
-    }
-  };
 
   // User Accounts & Role Management State
   const [usersList, setUsersList] = useState<UserRoleRecord[]>([]);
@@ -269,8 +230,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     }
   }, [activeTab]);
 
+  const isSuperAdmin = authUser?.role === 'superadmin';
+
   const handleAssignRole = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isSuperAdmin) {
+      showToast('Permission Denied: Only Superadmins can assign or authorize roles.');
+      return;
+    }
     if (!newAdminEmail.trim() || !newAdminEmail.includes('@')) {
       showToast('Please enter a valid Gmail / email address');
       return;
@@ -288,6 +255,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   };
 
   const handleChangeRole = async (userId: string, targetRole: UserRole, email: string) => {
+    if (!isSuperAdmin) {
+      showToast('Permission Denied: Only Superadmins can change or revoke user roles.');
+      return;
+    }
+    if (email.trim().toLowerCase() === authUser?.email?.trim().toLowerCase()) {
+      showToast('Action Blocked: You cannot modify your own active Superadmin account.');
+      return;
+    }
     const success = await updateUserRole(userId, targetRole);
     if (success) {
       showToast(`Role updated to ${targetRole} for ${email}`);
@@ -2157,44 +2132,56 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 </div>
               </div>
 
-              {/* Add New Authorized Gmail Form */}
-              <form onSubmit={handleAssignRole} className="p-4 rounded-xl bg-gray-50 dark:bg-[#161f30] border border-gray-200 dark:border-gray-700/80 space-y-3">
-                <h4 className="text-xs font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
-                  <Plus className="w-4 h-4 text-blue-600" />
-                  <span>Authorize New Gmail Account</span>
-                </h4>
-                <div className="flex flex-col sm:flex-row items-stretch gap-2.5">
-                  <div className="relative flex-1">
-                    <Mail className="w-4 h-4 text-gray-400 absolute left-3 top-3 pointer-events-none" />
-                    <input
-                      type="email"
-                      value={newAdminEmail}
-                      onChange={(e) => setNewAdminEmail(e.target.value)}
-                      placeholder="e.g. yourname@gmail.com"
-                      required
-                      className="w-full pl-9 pr-3 py-2 bg-white dark:bg-[#1f293d] border border-gray-200 dark:border-gray-700 rounded-xl text-xs font-medium text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+              {/* Add New Authorized Gmail Form (Superadmin Only) */}
+              {isSuperAdmin ? (
+                <form onSubmit={handleAssignRole} className="p-4 rounded-xl bg-gray-50 dark:bg-[#161f30] border border-gray-200 dark:border-gray-700/80 space-y-3">
+                  <h4 className="text-xs font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
+                    <Plus className="w-4 h-4 text-blue-600" />
+                    <span>Authorize New Gmail Account</span>
+                  </h4>
+                  <div className="flex flex-col sm:flex-row items-stretch gap-2.5">
+                    <div className="relative flex-1">
+                      <Mail className="w-4 h-4 text-gray-400 absolute left-3 top-3 pointer-events-none" />
+                      <input
+                        type="email"
+                        value={newAdminEmail}
+                        onChange={(e) => setNewAdminEmail(e.target.value)}
+                        placeholder="e.g. yourname@gmail.com"
+                        required
+                        className="w-full pl-9 pr-3 py-2 bg-white dark:bg-[#1f293d] border border-gray-200 dark:border-gray-700 rounded-xl text-xs font-medium text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <select
+                      value={newAdminRole}
+                      onChange={(e) => setNewAdminRole(e.target.value as UserRole)}
+                      className="px-3 py-2 bg-white dark:bg-[#1f293d] border border-gray-200 dark:border-gray-700 rounded-xl text-xs font-semibold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="admin">Admin (Full Store Management)</option>
+                      <option value="superadmin">Superadmin (All Privileges)</option>
+                      <option value="staff">Staff (Orders Only)</option>
+                      <option value="customer">Customer (Standard User)</option>
+                    </select>
+                    <button
+                      type="submit"
+                      disabled={isAssigningRole}
+                      className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-xs shadow-md shadow-blue-600/20 transition-all cursor-pointer disabled:opacity-50"
+                    >
+                      <ShieldCheck className="w-3.5 h-3.5" />
+                      <span>{isAssigningRole ? 'Assigning...' : 'Assign Role'}</span>
+                    </button>
                   </div>
-                  <select
-                    value={newAdminRole}
-                    onChange={(e) => setNewAdminRole(e.target.value as UserRole)}
-                    className="px-3 py-2 bg-white dark:bg-[#1f293d] border border-gray-200 dark:border-gray-700 rounded-xl text-xs font-semibold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="admin">Admin (Full Store Management)</option>
-                    <option value="superadmin">Superadmin (All Privileges)</option>
-                    <option value="staff">Staff (Orders Only)</option>
-                    <option value="customer">Customer (Standard User)</option>
-                  </select>
-                  <button
-                    type="submit"
-                    disabled={isAssigningRole}
-                    className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-xs shadow-md shadow-blue-600/20 transition-all cursor-pointer disabled:opacity-50"
-                  >
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    <span>{isAssigningRole ? 'Assigning...' : 'Assign Role'}</span>
-                  </button>
+                </form>
+              ) : (
+                <div className="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 flex items-start sm:items-center gap-3">
+                  <ShieldAlert className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5 sm:mt-0" />
+                  <div className="text-xs text-amber-800 dark:text-amber-200">
+                    <span className="font-bold">Team Role Permissions Restricted:</span>
+                    <span className="ml-1 text-amber-700 dark:text-amber-300">
+                      Only <strong>Superadmins</strong> can authorize new accounts or modify team access roles. As an <strong>Admin</strong>, you have full privileges to manage store catalog, orders, pricing, banners, and settings.
+                    </span>
+                  </div>
                 </div>
-              </form>
+              )}
 
               {/* Users Table */}
               <div className="overflow-x-auto">
@@ -2218,6 +2205,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                       usersList.map((u) => {
                         const isSuper = u.role === 'superadmin';
                         const isAdmin = u.role === 'admin' || isSuper;
+                        const isSelf = u.email.trim().toLowerCase() === authUser?.email?.trim().toLowerCase();
                         return (
                           <tr key={u.id || u.email} className="hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition-colors">
                             <td className="py-3">
@@ -2232,7 +2220,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                                 <div>
                                   <div className="font-semibold text-gray-900 dark:text-white flex items-center gap-1.5">
                                     <span>{u.fullName || u.email.split('@')[0]}</span>
-                                    {u.email === authUser?.email && (
+                                    {isSelf && (
                                       <span className="text-[10px] text-blue-600 dark:text-blue-400 font-bold">(You)</span>
                                     )}
                                   </div>
@@ -2260,7 +2248,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                               {u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'Active'}
                             </td>
                             <td className="py-3 text-right">
-                              {isAdmin ? (
+                              {!isSuperAdmin ? (
+                                <span className="text-[11px] text-gray-400 italic">Superadmin Only</span>
+                              ) : isSelf ? (
+                                <span className="text-[11px] text-blue-600 dark:text-blue-400 font-semibold">(Your Account)</span>
+                              ) : isSuper ? (
+                                <span className="text-[11px] text-purple-600 dark:text-purple-400 font-bold">Protected Superadmin</span>
+                              ) : u.role === 'admin' ? (
                                 <button
                                   type="button"
                                   onClick={() => handleChangeRole(u.id, 'customer', u.email)}
@@ -2287,153 +2281,140 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               </div>
             </div>
 
-            {/* Change Credentials Form */}
+            {/* Role Hierarchy Matrix & Session Security */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               
-              {/* Form Card */}
-              <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-5">
+              {/* Card 1: Role Hierarchy & Permissions Matrix */}
+              <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4">
                 <div className="flex items-center gap-2.5 pb-3 border-b border-gray-100 dark:border-gray-800">
-                  <Lock className="w-5 h-5 text-blue-600" />
+                  <ShieldCheck className="w-5 h-5 text-blue-600" />
                   <div>
                     <h3 className="font-bold text-sm text-gray-900 dark:text-white">
-                      Update Admin Username & Password
+                      Role Hierarchy & Access Matrix
                     </h3>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                      Changes are encrypted with SHA-256 and synchronized directly to the database.
+                      System permissions enforce strict separation between Store Operations and Team Administration.
                     </p>
                   </div>
                 </div>
 
-                <form onSubmit={handleUpdateAdminSecurity} className="space-y-4 text-xs">
-                  <div>
-                    <label className="font-semibold block mb-1 text-gray-700 dark:text-gray-300">
-                      Administrator Username
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                        <User className="w-4 h-4" />
-                      </div>
-                      <input
-                        type="text"
-                        value={secUsername}
-                        onChange={(e) => setSecUsername(e.target.value)}
-                        placeholder="e.g. admin or store email"
-                        required
-                        className="w-full pl-9 pr-3 py-2.5 bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl text-xs font-medium text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
+                <div className="space-y-2.5 text-xs">
+                  {/* Superadmin Tier */}
+                  <div className="p-3.5 rounded-xl bg-purple-50/60 dark:bg-purple-950/20 border border-purple-200/70 dark:border-purple-900/40">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-bold text-purple-900 dark:text-purple-300 flex items-center gap-1.5">
+                        <span>👑 Superadmin (Store Owner)</span>
+                      </span>
+                      <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-purple-200 dark:bg-purple-900 text-purple-800 dark:text-purple-200">
+                        All Privileges
+                      </span>
                     </div>
+                    <p className="text-[11px] text-purple-700 dark:text-purple-300/80">
+                      Full control over store catalog, orders, and financial settings, plus exclusive ability to invite, promote, and revoke Admin accounts.
+                    </p>
                   </div>
 
-                  <div>
-                    <label className="font-semibold block mb-1 text-gray-700 dark:text-gray-300">
-                      New Security Password (Min 6 characters)
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                        <Lock className="w-4 h-4" />
-                      </div>
-                      <input
-                        type={showSecPassword ? 'text' : 'password'}
-                        value={secNewPassword}
-                        onChange={(e) => setSecNewPassword(e.target.value)}
-                        placeholder="Enter strong password"
-                        required
-                        className="w-full pl-9 pr-10 py-2.5 bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl text-xs font-medium text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowSecPassword(!showSecPassword)}
-                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
-                      >
-                        {showSecPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                      </button>
+                  {/* Admin Tier */}
+                  <div className="p-3.5 rounded-xl bg-blue-50/60 dark:bg-blue-950/20 border border-blue-200/70 dark:border-blue-900/40">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-bold text-blue-900 dark:text-blue-300 flex items-center gap-1.5">
+                        <span>🛡️ Admin (Store Manager)</span>
+                      </span>
+                      <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-blue-200 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                        Store Operations
+                      </span>
                     </div>
+                    <p className="text-[11px] text-blue-700 dark:text-blue-300/80">
+                      Can create/edit/delete products, manage customer orders, update banners, and run backups. <strong>Cannot</strong> grant or revoke team roles.
+                    </p>
                   </div>
 
-                  <div>
-                    <label className="font-semibold block mb-1 text-gray-700 dark:text-gray-300">
-                      Confirm New Password
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                        <Lock className="w-4 h-4" />
-                      </div>
-                      <input
-                        type={showSecPassword ? 'text' : 'password'}
-                        value={secConfirmPassword}
-                        onChange={(e) => setSecConfirmPassword(e.target.value)}
-                        placeholder="Re-enter password to confirm"
-                        required
-                        className="w-full pl-9 pr-10 py-2.5 bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl text-xs font-medium text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
+                  {/* Staff Tier */}
+                  <div className="p-3.5 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/20 border border-emerald-200/70 dark:border-emerald-900/40">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-bold text-emerald-900 dark:text-emerald-300 flex items-center gap-1.5">
+                        <span>📦 Staff (Support & Dispatch)</span>
+                      </span>
+                      <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-emerald-200 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200">
+                        Orders Only
+                      </span>
                     </div>
+                    <p className="text-[11px] text-emerald-700 dark:text-emerald-300/80">
+                      Can inspect incoming customer orders and mark fulfillment status. Restricted from editing pricing or catalog items.
+                    </p>
                   </div>
 
-                  {secMessage && (
-                    <div
-                      className={`p-3 rounded-xl border flex items-center gap-2 text-xs font-semibold ${
-                        secMessage.type === 'success'
-                          ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300'
-                          : 'bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-800 text-red-700 dark:text-red-300'
-                      }`}
-                    >
-                      {secMessage.type === 'success' ? (
-                        <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
-                      ) : (
-                        <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
-                      )}
-                      <span>{secMessage.text}</span>
+                  {/* Customer Tier */}
+                  <div className="p-3.5 rounded-xl bg-gray-50 dark:bg-[#1a2333] border border-gray-200/70 dark:border-gray-800/70">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-bold text-gray-800 dark:text-gray-200">
+                        👤 Customer (Store Shopper)
+                      </span>
+                      <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                        Standard
+                      </span>
                     </div>
-                  )}
-
-                  <button
-                    type="submit"
-                    disabled={secLoading}
-                    className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-xs shadow-md shadow-blue-600/20 transition-all cursor-pointer disabled:opacity-50"
-                  >
-                    <Save className="w-4 h-4" />
-                    <span>{secLoading ? 'Syncing with Database...' : 'Save & Sync Credentials to Database'}</span>
-                  </button>
-                </form>
+                    <p className="text-[11px] text-gray-500 dark:text-gray-400">
+                      Standard customer account. Admin button is completely invisible. Can browse, buy, and view their own personal order history.
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              {/* Cloud Security & Data Protection Card */}
+              {/* Card 2: Active Session & Cloud Protection */}
               <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4">
                 <div className="flex items-center gap-2.5 pb-3 border-b border-gray-100 dark:border-gray-800">
-                  <ShieldCheck className="w-5 h-5 text-emerald-600" />
+                  <KeyRound className="w-5 h-5 text-emerald-600" />
                   <div>
                     <h3 className="font-bold text-sm text-gray-900 dark:text-white">
-                      Cloud Security & Data Protection
+                      Active Session & Cloud Encryption
                     </h3>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                      Store credentials and catalog data are protected by bank-grade cloud encryption.
+                      Google OAuth 2.0 with cryptographic JWT session validation.
                     </p>
                   </div>
                 </div>
 
                 <div className="space-y-3 text-xs">
-                  <div className="p-3.5 rounded-xl bg-gray-50 dark:bg-[#1a2333] border border-gray-200/70 dark:border-gray-700/70 space-y-2">
+                  <div className="p-3.5 rounded-xl bg-gray-50 dark:bg-[#1a2333] border border-gray-200/70 dark:border-gray-700/70 space-y-2.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-500 dark:text-gray-400">Status:</span>
-                      <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                        Connected
+                      <span className="text-gray-500 dark:text-gray-400">Current Login:</span>
+                      <span className="font-bold text-gray-900 dark:text-white font-mono text-[11px]">
+                        {authUser?.email || 'Authenticated'}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-500 dark:text-gray-400">Access:</span>
-                      <span className="font-semibold text-blue-600 dark:text-blue-400">
-                        Store Owner
+                      <span className="text-gray-500 dark:text-gray-400">Session Role:</span>
+                      <span className="font-bold uppercase text-xs px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
+                        {authUser?.role || 'Admin'}
                       </span>
                     </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-500 dark:text-gray-400">Row Level Security:</span>
+                      <span className="font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        Enforced in Database
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-500 dark:text-gray-400">Auth Method:</span>
+                      <span className="font-semibold text-gray-700 dark:text-gray-300">
+                        Passwordless Google OAuth (2FA)
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200/60 dark:border-blue-900/40 text-[11px] text-blue-800 dark:text-blue-300">
+                    <strong>Zero Passwords to Maintain:</strong> Because access is tied directly to your verified Google Account, there are no static passwords that can be brute-forced or stolen.
                   </div>
 
                   <button
                     type="button"
                     onClick={onLogout}
-                    className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold text-xs transition-all cursor-pointer"
+                    className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-red-50 hover:bg-red-100 dark:bg-red-950/40 dark:hover:bg-red-900/50 text-red-600 dark:text-red-300 font-bold text-xs border border-red-200 dark:border-red-800/60 transition-all cursor-pointer"
                   >
                     <LogOut className="w-4 h-4" />
-                    <span>Lock Session & Log Out</span>
+                    <span>Sign Out & Lock Session</span>
                   </button>
                 </div>
               </div>
