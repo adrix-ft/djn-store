@@ -232,11 +232,11 @@ export const Footer: React.FC<FooterProps> = ({
                 <Instagram className="w-4 h-4" />
               </a>
               <a
-                href="https://youtube.com"
+                href="https://www.youtube.com/@dannydharia"
                 target="_blank"
                 rel="noreferrer"
                 className="w-8 h-8 rounded-full border border-[#e5e7eb] dark:border-gray-800 flex items-center justify-center text-[#64748b] dark:text-gray-400 hover:text-[#ff0000] hover:border-[#ff0000] transition-colors"
-                aria-label="YouTube"
+                aria-label="YouTube (@dannydharia)"
               >
                 <Youtube className="w-4 h-4" />
               </a>
