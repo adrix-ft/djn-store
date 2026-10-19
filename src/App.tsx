@@ -23,7 +23,6 @@ const CategoryPage = React.lazy(() => import('./components/CategoryPage').then(m
 const SellConsolesPage = React.lazy(() => import('./components/SellConsolesPage').then(m => ({ default: m.SellConsolesPage })));
 const RepairConsolePage = React.lazy(() => import('./components/RepairConsolePage').then(m => ({ default: m.RepairConsolePage })));
 const AdminPanel = React.lazy(() => import('./components/AdminPanel').then(m => ({ default: m.AdminPanel })));
-const AdminPinModal = React.lazy(() => import('./components/AdminPinModal').then(m => ({ default: m.AdminPinModal })));
 const CartDrawer = React.lazy(() => import('./components/CartDrawer').then(m => ({ default: m.CartDrawer })));
 const WishlistDrawer = React.lazy(() => import('./components/WishlistDrawer').then(m => ({ default: m.WishlistDrawer })));
 const CheckoutModal = React.lazy(() => import('./components/CheckoutModal').then(m => ({ default: m.CheckoutModal })));
@@ -38,6 +37,7 @@ import {
   fetchSiteConfigFromDB,
   fetchOrdersFromDB,
   fetchUserOrdersFromDB,
+  fetchCurrentUserRole,
   signOutUser,
   supabase,
   createOrderInDB,
@@ -162,11 +162,24 @@ export default function App() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [completedOrder, setCompletedOrder] = useState<Order | null>(null);
 
-  // Admin Portal & Security PIN State
-  const [isAdminPinModalOpen, setIsAdminPinModalOpen] = useState(false);
-  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => {
-    return localStorage.getItem('djn_admin_authenticated') === 'true';
+  // User Google Authentication State
+  const [authUser, setAuthUser] = useState<AuthUser | null>(() => {
+    const saved = localStorage.getItem('djn_auth_user');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
   });
+
+  // Admin access strictly derived from verified user role (Google OAuth + Supabase users table)
+  const isAdminUser = Boolean(
+    authUser?.role === 'admin' || authUser?.role === 'superadmin'
+  );
+  const isAdminAuthenticated = isAdminUser;
 
   // Tracked Orders for Admin
   const [orders, setOrders] = useState<Order[]>(() => {
@@ -239,19 +252,6 @@ export default function App() {
 
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  // User Google Authentication State
-  const [authUser, setAuthUser] = useState<AuthUser | null>(() => {
-    const saved = localStorage.getItem('djn_auth_user');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        return null;
-      }
-    }
-    return null;
-  });
-
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isUserOrdersOpen, setIsUserOrdersOpen] = useState(false);
   const [userOrders, setUserOrders] = useState<Order[]>([]);
@@ -286,14 +286,27 @@ export default function App() {
     };
   };
 
-  // Auth Session listener
+  // Auth Session listener with role synchronization
   useEffect(() => {
+    const syncUserRole = async (userObj: any, isSignInEvent = false) => {
+      const parsed = parseGoogleUser(userObj);
+      const role = await fetchCurrentUserRole(parsed.email);
+      parsed.role = role;
+      setAuthUser(parsed);
+      localStorage.setItem('djn_auth_user', JSON.stringify(parsed));
+      if (isSignInEvent) {
+        if (role === 'admin' || role === 'superadmin') {
+          showToast(`Welcome Admin, ${parsed.fullName}!`);
+        } else {
+          showToast(`Welcome, ${parsed.fullName}!`);
+        }
+      }
+    };
+
     // 1. Initial session check
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        const parsed = parseGoogleUser(session.user);
-        setAuthUser(parsed);
-        localStorage.setItem('djn_auth_user', JSON.stringify(parsed));
+        syncUserRole(session.user, false);
       }
     });
 
@@ -302,15 +315,11 @@ export default function App() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       if ((event === 'SIGNED_IN' || event === 'USER_UPDATED') && session?.user) {
-        const parsed = parseGoogleUser(session.user);
-        setAuthUser(parsed);
-        localStorage.setItem('djn_auth_user', JSON.stringify(parsed));
-        if (event === 'SIGNED_IN') {
-          showToast(`Welcome, ${parsed.fullName}!`);
-        }
+        syncUserRole(session.user, event === 'SIGNED_IN');
       } else if (event === 'SIGNED_OUT') {
         setAuthUser(null);
         localStorage.removeItem('djn_auth_user');
+        localStorage.removeItem('djn_admin_authenticated');
         setUserOrders([]);
       }
     });
@@ -319,6 +328,19 @@ export default function App() {
       subscription.unsubscribe();
     };
   }, []);
+
+  // Ensure role is fetched if authUser is present but missing role
+  useEffect(() => {
+    if (authUser?.email && !authUser.role) {
+      fetchCurrentUserRole(authUser.email).then((role) => {
+        if (role !== authUser.role) {
+          const updated = { ...authUser, role };
+          setAuthUser(updated);
+          localStorage.setItem('djn_auth_user', JSON.stringify(updated));
+        }
+      });
+    }
+  }, [authUser?.email, authUser?.role]);
 
   // Fetch orders for this customer from Supabase whenever authUser or orders change
   useEffect(() => {
@@ -401,12 +423,15 @@ export default function App() {
 
   // Admin Access Handlers
   const handleOpenAdmin = () => {
-    if (isAdminAuthenticated) {
+    if (isAdminUser) {
       setCurrentPage('admin');
       setSelectedProduct(null);
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (!authUser) {
+      setIsAuthModalOpen(true);
+      showToast('Please sign in with your authorized Google Account');
     } else {
-      setIsAdminPinModalOpen(true);
+      showToast('Access restricted: Only authorized admins can open Command Center');
     }
   };
 
@@ -414,28 +439,42 @@ export default function App() {
   useEffect(() => {
     const handleHash = () => {
       if (window.location.hash === '#admin') {
-        handleOpenAdmin();
+        if (isAdminUser) {
+          setCurrentPage('admin');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else if (!authUser) {
+          setIsAuthModalOpen(true);
+          showToast('Please sign in with your authorized Google Account');
+        } else {
+          showToast('Access restricted: Administrator role required');
+          window.location.hash = '';
+        }
       }
     };
     handleHash();
     window.addEventListener('hashchange', handleHash);
     return () => window.removeEventListener('hashchange', handleHash);
-  }, [isAdminAuthenticated]);
+  }, [isAdminUser, authUser]);
 
-  const handleAdminPinSuccess = () => {
-    setIsAdminAuthenticated(true);
-    setIsAdminPinModalOpen(false);
-    setCurrentPage('admin');
-    setSelectedProduct(null);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    showToast('Welcome to Store Admin Console');
-  };
+  // Route security guard: bounce non-admins out of admin page
+  useEffect(() => {
+    if (currentPage === 'admin' && !isAdminUser) {
+      if (!authUser) {
+        setIsAuthModalOpen(true);
+      } else {
+        showToast('Access restricted: Administrator privileges required');
+        setCurrentPage('home');
+      }
+    }
+  }, [currentPage, isAdminUser, authUser]);
 
-  const handleAdminLogout = () => {
-    setIsAdminAuthenticated(false);
+  const handleAdminLogout = async () => {
+    await signOutUser();
+    setAuthUser(null);
+    localStorage.removeItem('djn_auth_user');
     localStorage.removeItem('djn_admin_authenticated');
     setCurrentPage('home');
-    showToast('Admin session locked');
+    showToast('Admin signed out');
   };
 
   const handleNavigateCategory = (cat: Category | 'all', plat: Platform | 'all' = 'all') => {
@@ -688,6 +727,7 @@ export default function App() {
             onExit={() => setCurrentPage('home')}
             onLogout={handleAdminLogout}
             showToast={showToast}
+            authUser={authUser}
           />
         </React.Suspense>
         {toastMessage && (
@@ -716,8 +756,15 @@ export default function App() {
         >
           <MaintenancePage
             siteConfig={siteConfig}
-            onOpenAdmin={() => setIsAdminPinModalOpen(true)}
-            isAdminAuthenticated={isAdminAuthenticated}
+            onOpenAdmin={() => {
+              if (isAdminUser) {
+                setCurrentPage('admin');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              } else {
+                setIsAuthModalOpen(true);
+              }
+            }}
+            isAdminAuthenticated={isAdminUser}
             onEnterAdmin={() => {
               setCurrentPage('admin');
               window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -748,13 +795,15 @@ export default function App() {
           </React.Suspense>
         )}
 
-        {/* Admin PIN Modal accessible from Maintenance Page */}
-        {isAdminPinModalOpen && (
+        {/* Auth Modal for Admin Login from Maintenance View */}
+        {isAuthModalOpen && (
           <React.Suspense fallback={null}>
-            <AdminPinModal
-              isOpen={isAdminPinModalOpen}
-              onClose={() => setIsAdminPinModalOpen(false)}
-              onSuccess={handleAdminPinSuccess}
+            <AuthModal
+              isOpen={isAuthModalOpen}
+              onClose={() => setIsAuthModalOpen(false)}
+              onLoginSuccess={handleLoginSuccess}
+              title="Admin Authentication"
+              subtitle="Sign in with your authorized Google Account to open the Command Center."
             />
           </React.Suspense>
         )}
@@ -851,7 +900,7 @@ export default function App() {
         onSelectProduct={handleSelectProduct}
         theme={theme}
         onToggleTheme={handleToggleTheme}
-        onOpenAdmin={handleOpenAdmin}
+        onOpenAdmin={isAdminUser ? handleOpenAdmin : undefined}
         siteConfig={siteConfig}
         authUser={authUser}
         onOpenAuth={() => setIsAuthModalOpen(true)}
@@ -1016,7 +1065,7 @@ export default function App() {
         onSelectCategory={handleNavigateCategory}
         onOpenPolicy={(type) => setActivePolicy(type)}
         onOpenCart={() => setIsCartOpen(true)}
-        onOpenAdmin={handleOpenAdmin}
+        onOpenAdmin={isAdminUser ? handleOpenAdmin : undefined}
         siteConfig={siteConfig}
       />
 
@@ -1026,17 +1075,6 @@ export default function App() {
           <PolicyModal
             type={activePolicy}
             onClose={() => setActivePolicy(null)}
-          />
-        </React.Suspense>
-      )}
-
-      {/* Admin Security PIN Modal */}
-      {isAdminPinModalOpen && (
-        <React.Suspense fallback={null}>
-          <AdminPinModal
-            isOpen={isAdminPinModalOpen}
-            onClose={() => setIsAdminPinModalOpen(false)}
-            onSuccess={handleAdminPinSuccess}
           />
         </React.Suspense>
       )}

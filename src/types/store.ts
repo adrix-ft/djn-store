@@ -51,12 +51,25 @@ export interface CartItem {
   selectedCondition: Condition;
 }
 
+export type UserRole = 'customer' | 'staff' | 'admin' | 'superadmin';
+
 export interface AuthUser {
   id: string;
   email: string;
   fullName: string;
   avatarUrl?: string;
   provider: 'google' | 'demo';
+  role?: UserRole;
+}
+
+export interface UserRoleRecord {
+  id: string;
+  email: string;
+  role: UserRole;
+  fullName?: string;
+  avatarUrl?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface OrderCustomerInfo {

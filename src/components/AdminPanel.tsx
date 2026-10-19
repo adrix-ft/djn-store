@@ -6,6 +6,9 @@ import {
   Condition,
   SiteConfig,
   Order,
+  UserRole,
+  UserRoleRecord,
+  AuthUser,
 } from '../types/store';
 import { DEFAULT_SITE_CONFIG } from '../data/siteConfig';
 import { PRODUCTS } from '../data/products';
@@ -16,6 +19,9 @@ import {
   updateOrderStatusInDB,
   updateAdminCredentials,
   parseMaintenanceReturn,
+  fetchAllUsers,
+  updateUserRole,
+  assignUserRoleByEmail,
 } from '../lib/supabase';
 import { AdminAnalytics } from './AdminAnalytics';
 import {
@@ -65,6 +71,7 @@ import {
   Sliders,
   KeyRound,
   User,
+  Users,
   Lock,
   Menu,
   Wrench,
@@ -83,6 +90,7 @@ interface AdminPanelProps {
   onExit: () => void;
   onLogout: () => void;
   showToast: (msg: string) => void;
+  authUser?: AuthUser | null;
 }
 
 type AdminTab = 'analytics' | 'products' | 'orders' | 'content' | 'backup' | 'security';
@@ -106,6 +114,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   onExit,
   onLogout,
   showToast,
+  authUser,
 }) => {
   const [activeTab, setActiveTab] = useState<AdminTab>('analytics');
   const [activeProductTab, setActiveProductTab] = useState<ProductNavTab>('all');
@@ -232,6 +241,59 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       showToast('Admin credentials updated and synced to database');
     } else {
       setSecMessage({ type: 'error', text: res.message || 'Failed to update credentials.' });
+    }
+  };
+
+  // User Accounts & Role Management State
+  const [usersList, setUsersList] = useState<UserRoleRecord[]>([]);
+  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
+  const [newAdminEmail, setNewAdminEmail] = useState('');
+  const [newAdminRole, setNewAdminRole] = useState<UserRole>('admin');
+  const [isAssigningRole, setIsAssigningRole] = useState(false);
+
+  const loadUsers = async () => {
+    setIsLoadingUsers(true);
+    try {
+      const data = await fetchAllUsers();
+      setUsersList(data);
+    } catch (e) {
+      console.warn('Failed to load users:', e);
+    } finally {
+      setIsLoadingUsers(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'security') {
+      loadUsers();
+    }
+  }, [activeTab]);
+
+  const handleAssignRole = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newAdminEmail.trim() || !newAdminEmail.includes('@')) {
+      showToast('Please enter a valid Gmail / email address');
+      return;
+    }
+    setIsAssigningRole(true);
+    const res = await assignUserRoleByEmail(newAdminEmail.trim(), newAdminRole);
+    setIsAssigningRole(false);
+    if (res.success) {
+      showToast(res.message);
+      setNewAdminEmail('');
+      loadUsers();
+    } else {
+      showToast(res.message || 'Failed to assign role');
+    }
+  };
+
+  const handleChangeRole = async (userId: string, targetRole: UserRole, email: string) => {
+    const success = await updateUserRole(userId, targetRole);
+    if (success) {
+      showToast(`Role updated to ${targetRole} for ${email}`);
+      loadUsers();
+    } else {
+      showToast('Failed to update role in database');
     }
   };
 
@@ -2018,14 +2080,210 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                     Administrator Authentication & Database Security
                   </h2>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Manage login credentials, password encryption, and database access controls.
+                    Role-Based Access Control (RBAC) backed by Supabase Google OAuth & Row Level Security.
                   </p>
                 </div>
               </div>
 
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-xs font-semibold text-emerald-700 dark:text-emerald-300 self-start sm:self-auto">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-                <span>Active Session: Authenticated</span>
+                <span>Active Session: Authenticated ({authUser?.role || 'admin'})</span>
+              </div>
+            </div>
+
+            {/* Active Admin Profile Banner */}
+            <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-blue-900/40 via-indigo-900/30 to-purple-900/40 border border-blue-500/30 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="flex items-center gap-3.5">
+                {authUser?.avatarUrl ? (
+                  <img
+                    src={authUser.avatarUrl}
+                    alt={authUser.fullName}
+                    className="w-12 h-12 rounded-2xl border-2 border-blue-400 object-cover shadow-sm"
+                  />
+                ) : (
+                  <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg shadow-sm">
+                    {authUser?.fullName?.[0] || 'A'}
+                  </div>
+                )}
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-bold text-sm text-gray-900 dark:text-white">
+                      {authUser?.fullName || 'Administrator'}
+                    </h3>
+                    <span className="px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-600 dark:text-blue-300 text-[10px] font-black uppercase tracking-wider border border-blue-500/30">
+                      {authUser?.role || 'Superadmin'}
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                    {authUser?.email || 'Logged in via Google OAuth'} · Protected by Supabase Row Level Security (RLS)
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={loadUsers}
+                  disabled={isLoadingUsers}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-gray-700 dark:text-gray-200 border border-white/20 text-xs font-semibold transition-all cursor-pointer"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${isLoadingUsers ? 'animate-spin' : ''}`} />
+                  <span>Refresh Users</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={onLogout}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-semibold transition-all cursor-pointer"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span>Sign Out</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Users & Roles Management Card */}
+            <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#111827] border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-gray-100 dark:border-gray-800">
+                <div className="flex items-center gap-2.5">
+                  <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  <div>
+                    <h3 className="font-bold text-sm text-gray-900 dark:text-white">
+                      Authorized Accounts & Role Management (public.users)
+                    </h3>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      Assign roles to Gmail accounts. Only users with "admin" or "superadmin" can see the admin panel button or modify store data.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Add New Authorized Gmail Form */}
+              <form onSubmit={handleAssignRole} className="p-4 rounded-xl bg-gray-50 dark:bg-[#161f30] border border-gray-200 dark:border-gray-700/80 space-y-3">
+                <h4 className="text-xs font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
+                  <Plus className="w-4 h-4 text-blue-600" />
+                  <span>Authorize New Gmail Account</span>
+                </h4>
+                <div className="flex flex-col sm:flex-row items-stretch gap-2.5">
+                  <div className="relative flex-1">
+                    <Mail className="w-4 h-4 text-gray-400 absolute left-3 top-3 pointer-events-none" />
+                    <input
+                      type="email"
+                      value={newAdminEmail}
+                      onChange={(e) => setNewAdminEmail(e.target.value)}
+                      placeholder="e.g. yourname@gmail.com"
+                      required
+                      className="w-full pl-9 pr-3 py-2 bg-white dark:bg-[#1f293d] border border-gray-200 dark:border-gray-700 rounded-xl text-xs font-medium text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <select
+                    value={newAdminRole}
+                    onChange={(e) => setNewAdminRole(e.target.value as UserRole)}
+                    className="px-3 py-2 bg-white dark:bg-[#1f293d] border border-gray-200 dark:border-gray-700 rounded-xl text-xs font-semibold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="admin">Admin (Full Store Management)</option>
+                    <option value="superadmin">Superadmin (All Privileges)</option>
+                    <option value="staff">Staff (Orders Only)</option>
+                    <option value="customer">Customer (Standard User)</option>
+                  </select>
+                  <button
+                    type="submit"
+                    disabled={isAssigningRole}
+                    className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-xs shadow-md shadow-blue-600/20 transition-all cursor-pointer disabled:opacity-50"
+                  >
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>{isAssigningRole ? 'Assigning...' : 'Assign Role'}</span>
+                  </button>
+                </div>
+              </form>
+
+              {/* Users Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead>
+                    <tr className="border-b border-gray-100 dark:border-gray-800 text-gray-400 text-[11px] font-semibold uppercase tracking-wider">
+                      <th className="pb-2.5">User / Email</th>
+                      <th className="pb-2.5">Assigned Role</th>
+                      <th className="pb-2.5">Registered</th>
+                      <th className="pb-2.5 text-right">Quick Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+                    {usersList.length === 0 ? (
+                      <tr>
+                        <td colSpan={4} className="py-6 text-center text-gray-400">
+                          {isLoadingUsers ? 'Loading accounts from Supabase...' : 'No accounts recorded in public.users yet. Users are automatically added upon Google Sign-In.'}
+                        </td>
+                      </tr>
+                    ) : (
+                      usersList.map((u) => {
+                        const isSuper = u.role === 'superadmin';
+                        const isAdmin = u.role === 'admin' || isSuper;
+                        return (
+                          <tr key={u.id || u.email} className="hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition-colors">
+                            <td className="py-3">
+                              <div className="flex items-center gap-2.5">
+                                {u.avatarUrl ? (
+                                  <img src={u.avatarUrl} alt="" className="w-7 h-7 rounded-full object-cover" />
+                                ) : (
+                                  <div className="w-7 h-7 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center font-bold text-[11px]">
+                                    {u.fullName?.[0] || u.email[0].toUpperCase()}
+                                  </div>
+                                )}
+                                <div>
+                                  <div className="font-semibold text-gray-900 dark:text-white flex items-center gap-1.5">
+                                    <span>{u.fullName || u.email.split('@')[0]}</span>
+                                    {u.email === authUser?.email && (
+                                      <span className="text-[10px] text-blue-600 dark:text-blue-400 font-bold">(You)</span>
+                                    )}
+                                  </div>
+                                  <div className="text-[11px] text-gray-400 font-mono">{u.email}</div>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="py-3">
+                              <span
+                                className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
+                                  isSuper
+                                    ? 'bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border border-purple-300 dark:border-purple-800'
+                                    : isAdmin
+                                    ? 'bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-800'
+                                    : u.role === 'staff'
+                                    ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800'
+                                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300'
+                                }`}
+                              >
+                                {isAdmin && <ShieldCheck className="w-3 h-3" />}
+                                <span className="capitalize">{u.role}</span>
+                              </span>
+                            </td>
+                            <td className="py-3 text-[11px] text-gray-400">
+                              {u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'Active'}
+                            </td>
+                            <td className="py-3 text-right">
+                              {isAdmin ? (
+                                <button
+                                  type="button"
+                                  onClick={() => handleChangeRole(u.id, 'customer', u.email)}
+                                  className="text-[11px] font-semibold text-red-600 dark:text-red-400 hover:underline cursor-pointer"
+                                >
+                                  Revoke Admin
+                                </button>
+                              ) : (
+                                <button
+                                  type="button"
+                                  onClick={() => handleChangeRole(u.id, 'admin', u.email)}
+                                  className="text-[11px] font-semibold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
+                                >
+                                  Grant Admin
+                                </button>
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
 

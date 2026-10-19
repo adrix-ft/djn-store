@@ -33,8 +33,8 @@ import { parseMaintenanceReturn } from '../lib/supabase';
 
 interface MaintenancePageProps {
   siteConfig: SiteConfig;
-  onOpenAdmin: () => void;
-  isAdminAuthenticated: boolean;
+  onOpenAdmin?: () => void;
+  isAdminAuthenticated?: boolean;
   onEnterAdmin?: () => void;
   onBypassMaintenance?: () => void;
   onToggleMaintenance?: (enabled: boolean) => void;
@@ -217,16 +217,18 @@ export const MaintenancePage: React.FC<MaintenancePageProps> = ({
               </button>
             )}
 
-            {/* Staff Portal Login Button */}
-            <button
-              type="button"
-              onClick={isAdminAuthenticated && onEnterAdmin ? onEnterAdmin : onOpenAdmin}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-semibold border border-gray-200 dark:border-gray-700 transition-colors cursor-pointer"
-              title="Store Staff Login"
-            >
-              <Lock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-              <span>{isAdminAuthenticated ? 'Admin Console' : 'Staff Login'}</span>
-            </button>
+            {/* Staff / Admin Portal Login Button */}
+            {onOpenAdmin && (
+              <button
+                type="button"
+                onClick={isAdminAuthenticated && onEnterAdmin ? onEnterAdmin : onOpenAdmin}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-semibold border border-gray-200 dark:border-gray-700 transition-colors cursor-pointer"
+                title="Store Admin Console"
+              >
+                <Lock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                <span>{isAdminAuthenticated ? 'Admin Console' : 'Admin Login'}</span>
+              </button>
+            )}
           </div>
 
         </div>

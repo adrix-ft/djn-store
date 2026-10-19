@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { Product, Order, SiteConfig } from '../types/store';
+import { Product, Order, SiteConfig, UserRole, UserRoleRecord } from '../types/store';
 import { PRODUCTS } from '../data/products';
 import { DEFAULT_SITE_CONFIG } from '../data/siteConfig';
 
@@ -736,6 +736,136 @@ export async function updateAdminCredentials(
   } catch (err) {
     console.warn('[Supabase] Credential update error:', err);
     return { success: true, message: 'Credentials updated locally' };
+  }
+}
+
+/**
+ * Fetch the authenticated user's assigned role from public.users table or RPC
+ */
+export async function fetchCurrentUserRole(email?: string): Promise<UserRole> {
+  const cleanEmail = (email || '').trim().toLowerCase();
+
+  // 1. Try secure RPC function if available
+  try {
+    const { data, error } = await (supabase as any).rpc('get_current_user_role');
+    if (!error && data && ['admin', 'superadmin', 'staff', 'customer'].includes(data)) {
+      return data as UserRole;
+    }
+  } catch (err) {
+    // Continue to direct query
+  }
+
+  // 2. Query public.users table by email
+  if (cleanEmail) {
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .select('role')
+        .eq('email', cleanEmail)
+        .maybeSingle();
+
+      if (!error && data?.role) {
+        return data.role as UserRole;
+      }
+    } catch (err) {
+      console.warn('[Supabase] Failed to fetch user role by email:', err);
+    }
+  }
+
+  // 3. Fallback check for known authorized admin emails during offline/transition
+  const HARDCODED_ADMIN_EMAILS = [
+    'djntechofficial@gmail.com',
+    'adrashyadav343@gmail.com',
+    'adarshyadav343@gmail.com',
+  ];
+  if (cleanEmail && HARDCODED_ADMIN_EMAILS.includes(cleanEmail)) {
+    return 'superadmin';
+  }
+
+  return 'customer';
+}
+
+/**
+ * Fetch all users with their assigned roles (Admin only)
+ */
+export async function fetchAllUsers(): Promise<UserRoleRecord[]> {
+  try {
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.warn('[Supabase] Failed to fetch users:', error);
+      return [];
+    }
+
+    return (data || []).map((u: any) => ({
+      id: u.id,
+      email: u.email,
+      role: u.role || 'customer',
+      fullName: u.full_name || u.email?.split('@')[0],
+      avatarUrl: u.avatar_url,
+      createdAt: u.created_at,
+      updatedAt: u.updated_at,
+    }));
+  } catch (err) {
+    console.error('[Supabase] fetchAllUsers error:', err);
+    return [];
+  }
+}
+
+/**
+ * Update a user's role (Admin only)
+ */
+export async function updateUserRole(userId: string, newRole: UserRole): Promise<boolean> {
+  try {
+    const { error } = await supabase
+      .from('users')
+      .update({ role: newRole, updated_at: new Date().toISOString() })
+      .eq('id', userId);
+
+    if (error) {
+      console.error('[Supabase] Failed to update user role:', error);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error('[Supabase] updateUserRole error:', err);
+    return false;
+  }
+}
+
+/**
+ * Assign role to a Gmail / email address directly (Admin only)
+ */
+export async function assignUserRoleByEmail(
+  email: string,
+  role: UserRole,
+  fullName?: string
+): Promise<{ success: boolean; message: string }> {
+  const cleanEmail = email.trim().toLowerCase();
+  if (!cleanEmail || !cleanEmail.includes('@')) {
+    return { success: false, message: 'Please provide a valid email address.' };
+  }
+
+  try {
+    const { error } = await supabase.from('users').upsert(
+      {
+        email: cleanEmail,
+        role,
+        full_name: fullName || cleanEmail.split('@')[0],
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'email' }
+    );
+
+    if (error) {
+      return { success: false, message: error.message };
+    }
+    return { success: true, message: `Successfully assigned role "${role}" to ${cleanEmail}` };
+  } catch (err: any) {
+    return { success: false, message: err?.message || 'Database error occurred.' };
   }
 }
 
