@@ -98,8 +98,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               <div className="mt-4 w-full p-3 bg-white rounded-xl border border-emerald-200 text-xs flex items-center gap-2.5 shadow-xs">
                 <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0" />
                 <div>
-                  <p className="font-bold text-[#212121]">DJN Verified Pre-Owned Disc</p>
-                  <p className="text-[11px] text-[#64748b]">Tested and verified on retail console. 7-Day Replacement Guarantee.</p>
+                  <p className="font-bold text-[#212121]">DJN Verified Pre-Owned</p>
+                  <p className="text-[11px] text-[#64748b]">
+                    {product.category === 'consoles'
+                      ? '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).'
+                      : 'Tested and verified on retail console with DJN Assured Warranty.'}
+                  </p>
                 </div>
               </div>
             )}
@@ -217,7 +221,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               </div>
 
               <div className="pt-2 text-center text-[10px] text-[#9ca3af] border-t border-[#f1f5f9] leading-tight">
-                <span>Net Qty: 1 N · Country of Origin: {product.platform === 'Xbox' || product.platform === 'PS5' ? 'Imported' : 'India'} · Marketed by DJN Tech, Pune · Grievance: grievance@djntech.in</span>
+                <span>Net Qty: 1 N · Country of Origin: {product.platform === 'Xbox' || product.platform === 'PS5' ? 'Imported' : 'India'} · Marketed by DJN Tech, 101, Chamunda CHS, Delisle Road, Lower Parel East, Mumbai 400011 · Grievance: grievance@djntech.in</span>
               </div>
             </div>
 

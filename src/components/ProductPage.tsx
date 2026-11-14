@@ -353,9 +353,21 @@ export const ProductPage: React.FC<ProductPageProps> = ({
               {/* Trust Badges Strip */}
               <div className="grid grid-cols-3 gap-3 py-4 border-b border-[#f3f4f6] dark:border-[#1e293b] text-center">
                 <div className="p-2.5 rounded-xl bg-[#f9fafb] dark:bg-[#161f30] border border-[#eaedf0] dark:border-[#2d3748]">
-                  <RotateCcw className="w-4 h-4 text-[#1a73e8] dark:text-[#60a5fa] mx-auto mb-1" />
-                  <span className="text-[11px] font-bold text-[#111827] dark:text-white block">7-Day Replacement</span>
-                  <span className="text-[10px] text-[#6b7280] dark:text-gray-400">Hassle-free guarantee</span>
+                  <ShieldCheck className="w-4 h-4 text-[#1a73e8] dark:text-[#60a5fa] mx-auto mb-1" />
+                  <span className="text-[11px] font-bold text-[#111827] dark:text-white block">
+                    {product.category === 'consoles' && (product.condition.toLowerCase().includes('pre-owned') || product.condition.toLowerCase().includes('grade'))
+                      ? '1 Month Warranty'
+                      : product.condition.toLowerCase().includes('brand new')
+                      ? 'Official Warranty'
+                      : 'Shop Warranty'}
+                  </span>
+                  <span className="text-[10px] text-[#6b7280] dark:text-gray-400">
+                    {product.category === 'consoles' && (product.condition.toLowerCase().includes('pre-owned') || product.condition.toLowerCase().includes('grade'))
+                      ? 'Pre-owned consoles'
+                      : product.condition.toLowerCase().includes('brand new')
+                      ? 'Brand coverage'
+                      : 'Verified gear'}
+                  </span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-[#f9fafb] dark:bg-[#161f30] border border-[#eaedf0] dark:border-[#2d3748]">
                   <Truck className="w-4 h-4 text-[#059669] dark:text-emerald-400 mx-auto mb-1" />
@@ -363,7 +375,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                   <span className="text-[10px] text-[#6b7280] dark:text-gray-400">Safe bubble packing</span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-[#f9fafb] dark:bg-[#161f30] border border-[#eaedf0] dark:border-[#2d3748]">
-                  <ShieldCheck className="w-4 h-4 text-[#9333ea] dark:text-purple-400 mx-auto mb-1" />
+                  <Award className="w-4 h-4 text-[#9333ea] dark:text-purple-400 mx-auto mb-1" />
                   <span className="text-[11px] font-bold text-[#111827] dark:text-white block">DJN Assured</span>
                   <span className="text-[10px] text-[#6b7280] dark:text-gray-400">100% Tested gear</span>
                 </div>
@@ -409,10 +421,15 @@ export const ProductPage: React.FC<ProductPageProps> = ({
               )}
 
               {/* Warranty Card */}
-              {product.warranty && (
-                <div className="mt-3 text-xs text-[#4b5563] dark:text-gray-300 flex items-center gap-2">
-                  <Award className="w-4 h-4 text-[#d97706] shrink-0" />
-                  <span><strong>Warranty:</strong> {product.warranty}</span>
+              {(product.warranty || (product.category === 'consoles' && (product.condition.toLowerCase().includes('pre-owned') || product.condition.toLowerCase().includes('grade')))) && (
+                <div className="mt-3 text-xs text-[#4b5563] dark:text-gray-300 flex items-start gap-2 p-2.5 rounded-xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-900/40">
+                  <Award className="w-4 h-4 text-[#d97706] shrink-0 mt-0.5" />
+                  <span className="leading-relaxed">
+                    <strong>Warranty:</strong>{' '}
+                    {product.category === 'consoles' && (product.condition.toLowerCase().includes('pre-owned') || product.condition.toLowerCase().includes('grade'))
+                      ? '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)'
+                      : product.warranty}
+                  </span>
                 </div>
               )}
 
@@ -453,7 +470,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                   </div>
                   <div>
                     <span className="font-semibold text-gray-900 dark:text-gray-100">Marketed & Sold by: </span>
-                    <span>DJN Tech, Baner Road, Pune, Maharashtra 411045</span>
+                    <span>DJN Tech, 101, Chamunda CHS, Delisle Road, Lower Parel East, Mumbai 400011</span>
                   </div>
                   <div className="sm:col-span-2">
                     <span className="font-semibold text-gray-900 dark:text-gray-100">Customer Grievance Care: </span>

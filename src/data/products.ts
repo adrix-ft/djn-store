@@ -146,7 +146,7 @@ export const PRODUCTS: Product[] = [
     ],
     description: 'The golden standard for PlayStation gaming. The PS4 Slim 1TB delivers exceptional reliability, an immense library of award-winning titles, and effortless plug-and-play entertainment.',
     inTheBox: ['PlayStation 4 Slim 1TB Console', 'DualShock 4 Wireless Controller (Original V2)', 'HDMI Cable', 'Power Cable', 'USB Charging Cable'],
-    warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
+    warranty: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)',
     themeColor: '#003791',
     storage: '1TB HDD',
     edition: 'Slim Edition (1TB)',
@@ -179,7 +179,7 @@ export const PRODUCTS: Product[] = [
     ],
     description: 'The most cost-effective way to play GTA V, God of War, The Last of Us, and FC 24 with authentic console performance.',
     inTheBox: ['PlayStation 4 Slim 500GB Console', 'DualShock 4 Wireless Controller', 'HDMI Cable', 'Power Cable', 'USB Controller Cable'],
-    warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
+    warranty: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)',
     themeColor: '#003791',
     storage: '500GB HDD',
     edition: 'Slim Edition (500GB)',
@@ -212,7 +212,7 @@ export const PRODUCTS: Product[] = [
     ],
     description: 'The iconic original PlayStation 4 that launched an era of gaming classics. Certified Grade A+ pre-owned unit thoroughly bench-tested and serviced.',
     inTheBox: ['PlayStation 4 Standard Console (Jet Black)', 'DualShock 4 Wireless Controller', 'HDMI Cable', 'AC Power Cord', 'Micro-USB Cable'],
-    warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
+    warranty: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)',
     themeColor: '#003791',
     storage: '500GB HDD',
     edition: 'Original Standard "Fat" Edition',
@@ -405,7 +405,7 @@ export const PRODUCTS: Product[] = [
       '64GB internal storage with microSD card expansion slot',
       'Enhanced onboard stereo speakers delivering rich soundscapes',
       'Includes White Joy-Con (L/R) controllers, dock, grip, and original cables',
-      '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'
+      '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)'
     ],
     description: 'Immerse yourself in vivid colors and crisp contrast with the Nintendo Switch – OLED Model. Featuring a brilliant 7-inch OLED screen, a wide adjustable stand, a dock with a wired LAN port, 64 GB of internal storage, and enhanced audio. Certified Pre-Owned Grade A+ condition, thoroughly bench-tested and serviced by DJN Tech technicians.',
     inTheBox: [
@@ -417,7 +417,7 @@ export const PRODUCTS: Product[] = [
       'Original AC Power Adapter',
       'Ultra High Speed HDMI Cable'
     ],
-    warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
+    warranty: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)',
     color: 'White',
     themeColor: '#e60012',
     edition: 'OLED Model (64GB)',
@@ -461,7 +461,7 @@ export const PRODUCTS: Product[] = [
     ],
     description: 'Rise, Tarnished, and be guided by grace to brandish the power of the Elden Ring and become an Elden Lord in the Lands Between.',
     inTheBox: ['PS5 Game Case', 'Elden Ring Blu-ray Disc', 'Original Map Insert (subject to availability)'],
-    warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
+    warranty: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)',
     discCondition: 'Grade A+ (Clean, verified installation test)',
     genre: 'Action RPG / Souls-like',
     themeColor: '#b45309',

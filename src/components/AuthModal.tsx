@@ -124,8 +124,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </div>
             <div className="text-center p-2 rounded-xl bg-gray-50 dark:bg-[#161f30] border border-gray-100 dark:border-gray-800">
               <ShieldCheck className="w-4 h-4 text-blue-500 mx-auto mb-1" />
-              <p className="text-[10px] font-bold text-gray-700 dark:text-gray-300">7-Day Warranty</p>
-              <p className="text-[9px] text-gray-400">Doorstep return</p>
+              <p className="text-[10px] font-bold text-gray-700 dark:text-gray-300">Shop Warranty</p>
+              <p className="text-[9px] text-gray-400">1 Month coverage</p>
             </div>
             <div className="text-center p-2 rounded-xl bg-gray-50 dark:bg-[#161f30] border border-gray-100 dark:border-gray-800">
               <Sparkles className="w-4 h-4 text-amber-500 mx-auto mb-1" />

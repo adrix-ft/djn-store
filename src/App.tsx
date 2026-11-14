@@ -209,7 +209,8 @@ export default function App() {
       localStorage.removeItem('djn_products_v6');
       localStorage.removeItem('djn_products_v7');
       localStorage.removeItem('djn_products_v8');
-      const saved = localStorage.getItem('djn_products_v9');
+      localStorage.removeItem('djn_products_v9');
+      const saved = localStorage.getItem('djn_products_v10');
       if (saved) {
         const parsed: Product[] = JSON.parse(saved);
         const savedIds = new Set(parsed.map((p) => p.id));
@@ -645,7 +646,7 @@ export default function App() {
   }, [wishlist]);
 
   useEffect(() => {
-    localStorage.setItem('djn_products_v9', JSON.stringify(products));
+    localStorage.setItem('djn_products_v10', JSON.stringify(products));
   }, [products]);
 
   const showToast = (msg: string) => {
@@ -938,7 +939,7 @@ export default function App() {
 
     // 1. Persist catalog state to localStorage
     setProducts((prevProducts) => {
-      localStorage.setItem('djn_products_v9', JSON.stringify(prevProducts));
+      localStorage.setItem('djn_products_v10', JSON.stringify(prevProducts));
       return prevProducts;
     });
 

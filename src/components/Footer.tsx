@@ -70,7 +70,7 @@ export const Footer: React.FC<FooterProps> = ({
               className="flex items-start gap-2 text-[#64748b] dark:text-gray-400 hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors pt-0.5"
             >
               <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0 mt-0.5" />
-              <span>Lower Parel, Mumbai (Google Maps)</span>
+              <span>101, Chamunda CHS, Delisle Road, Lower Parel East, Mumbai 400011</span>
             </a>
           </div>
 

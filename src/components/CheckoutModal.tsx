@@ -574,7 +574,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 Sign in with Google to Place Order
               </h3>
               <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-                To guarantee priority delivery, activate your 7-day replacement warranty, and provide real-time order tracking updates on WhatsApp and Email, please sign in with your Google account.
+                To guarantee priority delivery, activate your 1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage), and provide real-time order tracking updates on WhatsApp and Email, please sign in with your Google account.
               </p>
             </div>
 
@@ -994,7 +994,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
                 <div className="flex items-center justify-center gap-2 text-[10px] text-gray-400 dark:text-gray-500 pt-1">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-                  <span>7-Day Replacement · RBI & Consumer Protection Compliant</span>
+                  <span>1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage) · RBI Compliant</span>
                 </div>
               </div>
             </div>

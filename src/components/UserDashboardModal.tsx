@@ -204,7 +204,7 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
       },
       {
         title: 'Delivered',
-        desc: '7-Day replacement guarantee active.',
+        desc: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).',
         completed: isDelivered,
         active: order.status === 'Delivered',
       },
@@ -323,7 +323,7 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
             {[
               { id: 'orders' as DashboardTab, label: 'My Orders & Shipments', shortLabel: 'Orders', icon: Package, count: userOrders.length },
               { id: 'profile' as DashboardTab, label: 'Profile & Address', shortLabel: 'Profile', icon: User },
-              { id: 'warranty' as DashboardTab, label: '7-Day Guarantee', shortLabel: 'Guarantee', icon: ShieldCheck },
+              { id: 'warranty' as DashboardTab, label: 'Shop Warranty', shortLabel: 'Warranty', icon: ShieldCheck },
               { id: 'wishlist' as DashboardTab, label: 'Saved Wishlist', shortLabel: 'Wishlist', icon: Heart, count: wishlist.length },
             ].map((tab) => {
               const Icon = tab.icon;
@@ -631,7 +631,7 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
                   </div>
                   <div>
                     <label className="text-gray-400 block mb-1">Account Standing</label>
-                    <p className="font-semibold text-blue-600 dark:text-blue-400">Active · 7-Day Buyer Warranty</p>
+                    <p className="font-semibold text-blue-600 dark:text-blue-400">Active · 1 Month Shop Warranty</p>
                   </div>
                 </div>
               </div>
@@ -750,10 +750,10 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
                   </div>
                   <div>
                     <h3 className="text-base font-black text-gray-900 dark:text-white">
-                      DJN Tech 7-Day Doorstep Replacement Guarantee
+                      DJN Tech 1 Month Shop Warranty & Hardware Guarantee
                     </h3>
                     <p className="text-xs text-blue-700 dark:text-blue-300">
-                      Standard coverage on all PlayStation, Xbox consoles, DualSense controllers, and pre-owned game discs.
+                      1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).
                     </p>
                   </div>
                 </div>
@@ -785,7 +785,7 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
                       Doorstep Reverse Pickup
                     </p>
                     <p className="text-[11px] text-gray-500 dark:text-gray-400">
-                      If an item develops an issue within 7 days, our courier collects it right from your doorstep.
+                      If any preowned console or hardware develops an issue during warranty, our team inspects, repairs, or replaces the unit.
                     </p>
                   </div>
 
@@ -954,7 +954,7 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
                   </p>
                 )}
                 <p className="text-[11px] text-emerald-600 font-semibold mt-1">
-                  7-Day Replacement Guarantee Active
+                  1 Month Shop Warranty Active
                 </p>
               </div>
             </div>

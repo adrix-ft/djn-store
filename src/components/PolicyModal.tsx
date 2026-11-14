@@ -42,23 +42,23 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({ type, onClose }) => {
         };
       case 'refund':
         return {
-          title: 'Refund & 7-Day Replacement Policy',
+          title: 'Refund & Warranty Policy',
           icon: RotateCcw,
           content: (
             <div className="space-y-4 text-sm text-[#4b5563] leading-relaxed">
               <p>
-                We stand behind the quality of every product we sell. All pre-owned game discs, controllers, and consoles come with our certified <strong>7-Day Replacement Guarantee</strong>.
+                We stand behind the quality of every product we sell. All pre-owned game discs, controllers, and consoles come with verified coverage: <strong>1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)</strong>.
               </p>
               <div className="p-4 rounded-xl bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857]">
-                <h4 className="font-bold text-[#065f46] mb-1">7-Day Zero-Hassle Replacement</h4>
-                <p>If any pre-owned disc fails to read, console has any hardware issue, or controller exhibits stick drift, we will arrange a doorstep pickup and send you a replacement or issue a full refund.</p>
+                <h4 className="font-bold text-[#065f46] mb-1">1 Month Shop Warranty & Support</h4>
+                <p>All pre-owned consoles are protected by our 1 Month Shop Warranty (Warranty does not cover physical and liquid damage). If any pre-owned console exhibits a technical hardware fault during the warranty period, we will inspect, service, or replace the unit promptly.</p>
               </div>
-              <h4 className="font-bold text-[#111827] text-base mt-4">How to Claim Replacement</h4>
+              <h4 className="font-bold text-[#111827] text-base mt-4">How to Claim Warranty & Support</h4>
               <ol className="list-decimal pl-5 space-y-1.5">
-                <li>Contact our support team on WhatsApp at <strong>+91 84464 39374</strong> within 7 days of delivery.</li>
-                <li>Share a short photo or video showing the issue along with your Order ID.</li>
-                <li>Our technician will verify and immediately initiate a reverse pickup.</li>
-                <li>Once verified, replacement is dispatched immediately or refund is credited within 24-48 hours.</li>
+                <li>Contact our support team on WhatsApp at <strong>+91 84464 39374</strong> with your Order ID.</li>
+                <li>Share a short photo or video showing the issue.</li>
+                <li>Our technician will verify and guide you through immediate service or reverse pickup.</li>
+                <li>Once verified, replacement/serviced unit is dispatched or refund is credited within 24-48 hours.</li>
               </ol>
             </div>
           )
@@ -138,7 +138,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({ type, onClose }) => {
                 <li><strong>100% Genuine Inventory:</strong> All brand-new consoles and accessories carry official Indian manufacturer warranties. All pre-owned game discs and consoles undergo technical verification and testing before dispatch.</li>
                 <li><strong>Pricing Transparency:</strong> In accordance with Legal Metrology (Packaged Commodities) Rules, every listed price is displayed in Indian National Rupees (INR) and is strictly <strong>inclusive of all statutory taxes (GST)</strong>. No hidden surcharges or drip fees are applied at checkout.</li>
                 <li><strong>Order Confirmation & Payments:</strong> Orders are confirmed upon receipt of valid electronic payment through RBI-compliant, PCI-DSS Level 1 certified gateways (Razorpay).</li>
-                <li><strong>Consumer Protection & Cancellation:</strong> Customers may cancel their order before courier dispatch with a 100% instant refund. Orders already dispatched are covered under our comprehensive 7-Day Doorstep Replacement Guarantee.</li>
+                <li><strong>Consumer Protection & Cancellation:</strong> Customers may cancel their order before courier dispatch with a 100% instant refund. Orders already dispatched are covered under our comprehensive 1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).</li>
                 <li><strong>Anti-Scalping Fair Purchase Policy:</strong> DJN Tech reserves the right to restrict or cancel duplicate bulk orders placed by commercial scalpers or automated bots to protect retail gamers.</li>
               </ul>
             </div>
@@ -192,7 +192,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({ type, onClose }) => {
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-gray-200/60 dark:border-gray-700/60 gap-1">
                   <span className="font-bold text-gray-900 dark:text-white">Registered Address:</span>
-                  <span className="sm:text-right">Baner Road, Pune, Maharashtra - 411045, India</span>
+                  <span className="sm:text-right">101, Chamunda CHS, Delisle Road, Lower Parel East, Mumbai 400011, Maharashtra, India</span>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-gray-200/60 dark:border-gray-700/60 gap-1">
                   <span className="font-bold text-gray-900 dark:text-white">Grievance Email:</span>

@@ -228,7 +228,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             </button>
 
             <p className="text-center text-[10px] text-[#94a3b8] dark:text-gray-400">
-              Free replacement within 7 days · Express Shipping Available
+              1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage) · Express Shipping Available
             </p>
           </div>
         )}
