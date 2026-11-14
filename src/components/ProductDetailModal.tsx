@@ -221,7 +221,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               </div>
 
               <div className="pt-2 text-center text-[10px] text-[#9ca3af] border-t border-[#f1f5f9] leading-tight">
-                <span>Net Qty: 1 N · Country of Origin: {product.platform === 'Xbox' || product.platform === 'PS5' ? 'Imported' : 'India'} · Marketed by DJN Tech, 101, Chamunda CHS, Delisle Road, Lower Parel East, Mumbai 400011 · Grievance: grievance@djntech.in</span>
+                <span>Net Qty: 1 N · Country of Origin: {product.platform === 'Xbox' || product.platform === 'PS5' ? 'Imported' : 'India'} · Marketed by DJN Tech, 101, Chamunda CHS, Delisle Road, Lower Parel East, Mumbai 400011 · Grievance: djntechofficial@gmail.com</span>
               </div>
             </div>
 

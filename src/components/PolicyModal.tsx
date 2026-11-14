@@ -196,8 +196,8 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({ type, onClose }) => {
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-gray-200/60 dark:border-gray-700/60 gap-1">
                   <span className="font-bold text-gray-900 dark:text-white">Grievance Email:</span>
-                  <a href="mailto:grievance@djntech.in" className="text-blue-600 dark:text-blue-400 font-bold hover:underline">
-                    grievance@djntech.in
+                  <a href="mailto:djntechofficial@gmail.com" className="text-blue-600 dark:text-blue-400 font-bold hover:underline">
+                    djntechofficial@gmail.com
                   </a>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-gray-200/60 dark:border-gray-700/60 gap-1">

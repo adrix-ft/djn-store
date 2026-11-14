@@ -474,7 +474,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                   </div>
                   <div className="sm:col-span-2">
                     <span className="font-semibold text-gray-900 dark:text-gray-100">Customer Grievance Care: </span>
-                    <span>+91 84464 39374 · grievance@djntech.in</span>
+                    <span>+91 84464 39374 · djntechofficial@gmail.com</span>
                   </div>
                 </div>
               </div>

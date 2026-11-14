@@ -1521,7 +1521,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                     required
                     value={configForm.email}
                     onChange={(e) => setConfigForm({ ...configForm, email: e.target.value })}
-                    placeholder="contact@djntech.in"
+                    placeholder="djntechofficial@gmail.com"
                     className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
