@@ -142,6 +142,9 @@ export function resolveRouteFromUrl(availableProducts: Product[]): ResolvedRoute
   if (catSlug === 'consoles' || rawHash === '#consoles') {
     return { page: 'consoles', category: 'consoles', platform: 'all', product: null, policy: null };
   }
+  if (catSlug === 'nintendo' || catSlug === 'switch' || rawHash === '#nintendo' || rawHash === '#switch') {
+    return { page: 'consoles', category: 'consoles', platform: 'Nintendo', product: null, policy: null };
+  }
   if (catSlug === 'controllers' || rawHash === '#controllers') {
     return { page: 'controllers', category: 'controllers', platform: 'all', product: null, policy: null };
   }

@@ -1,4 +1,4 @@
-export type Platform = 'PS5' | 'PS4' | 'Xbox' | 'Switch' | 'Universal';
+export type Platform = 'PS5' | 'PS4' | 'Xbox' | 'Switch' | 'Nintendo' | 'Universal';
 
 export type Category = 'consoles' | 'controllers' | 'preowned_games' | 'accessories';
 

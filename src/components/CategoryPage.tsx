@@ -44,8 +44,12 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
         return false;
       }
       // Platform filter
-      if (selectedPlatform !== 'all' && p.platform !== selectedPlatform) {
-        return false;
+      if (selectedPlatform !== 'all') {
+        if (selectedPlatform === 'Nintendo' || selectedPlatform === 'Switch') {
+          if (p.platform !== 'Nintendo' && p.platform !== 'Switch') return false;
+        } else if (p.platform !== selectedPlatform) {
+          return false;
+        }
       }
       // Condition filter
       if (selectedCondition !== 'all') {
@@ -71,36 +75,43 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
       if (selectedPlatform === 'PS5') {
         return {
           title: 'PlayStation 5 Games',
-          subtitle: 'Verified pre-owned PS5 game discs with original cases and 7-Day Replacement Guarantee.',
+          subtitle: 'Verified pre-owned PS5 game discs with original cases and 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
           tag: 'PlayStation 5 Games'
         };
       }
       if (selectedPlatform === 'PS4') {
         return {
           title: 'PlayStation 4 Games',
-          subtitle: 'Tested pre-owned PS4 game discs compatible with PS4 and PS5 systems with 7-Day Replacement Guarantee.',
+          subtitle: 'Tested pre-owned PS4 game discs compatible with PS4 and PS5 systems with 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
           tag: 'PlayStation 4 Games'
         };
       }
       if (selectedPlatform === 'Xbox') {
         return {
           title: 'Xbox Games',
-          subtitle: 'Pre-owned Xbox games with original cases and 7-Day Replacement Guarantee.',
+          subtitle: 'Pre-owned Xbox games with original cases and 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
           tag: 'Xbox Games'
         };
       }
       return {
         title: 'Pre-Owned Games',
-        subtitle: 'Pre-owned games for PlayStation and Xbox with 7-Day Replacement Guarantee.',
+        subtitle: 'Pre-owned games for PlayStation and Xbox with 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
         tag: 'Pre-Owned Games'
       };
     }
 
     switch (category) {
       case 'consoles':
+        if (selectedPlatform === 'Nintendo' || selectedPlatform === 'Switch') {
+          return {
+            title: 'Nintendo Consoles',
+            subtitle: 'Certified Pre-Owned Nintendo Switch OLED systems with 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
+            tag: 'Nintendo'
+          };
+        }
         return {
-          title: 'PlayStation & Xbox Consoles',
-          subtitle: 'Brand new factory-sealed consoles and certified pre-owned systems with warranty.',
+          title: 'PlayStation, Xbox & Nintendo Consoles',
+          subtitle: 'Brand new factory-sealed consoles and certified pre-owned systems with 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
           tag: 'Consoles'
         };
       case 'controllers':
@@ -202,7 +213,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
                   <Filter className="w-3.5 h-3.5" />
                   Platform:
                 </span>
-                {(['all', 'PS5', 'PS4', 'Xbox'] as const).map((plat) => (
+                {(['all', 'PS5', 'PS4', 'Xbox', 'Nintendo'] as const).map((plat) => (
                   <button
                     key={plat}
                     onClick={() => setSelectedPlatform(plat)}

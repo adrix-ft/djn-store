@@ -1,5 +1,5 @@
 import React from 'react';
-import { RotateCcw, Headphones, Truck } from 'lucide-react';
+import { ShieldCheck, Headphones, Truck } from 'lucide-react';
 import { Marquee } from './Marquee';
 import { GoogleReviewsSection } from './GoogleReviewsSection';
 
@@ -20,12 +20,12 @@ export const HomeTrustSections: React.FC<HomeTrustSectionsProps> = ({ onShopNow 
           
           <div className="p-3 sm:p-6 rounded-xl bg-white dark:bg-[#111827] border border-[#e5e7eb] dark:border-[#1e293b] flex flex-row sm:flex-col items-center sm:text-center gap-3 sm:gap-0 sm:space-y-2 shadow-xs">
             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 sm:mb-1">
-              <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" />
+              <ShieldCheck className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             </div>
             <div className="flex-1 sm:flex-none">
-              <h3 className="text-xs sm:text-sm font-bold text-[#111827] dark:text-white">Free Replacement</h3>
+              <h3 className="text-xs sm:text-sm font-bold text-[#111827] dark:text-white">1 Month Shop Warranty</h3>
               <p className="text-[11px] sm:text-xs text-[#6b7280] dark:text-gray-400 max-w-sm leading-tight sm:leading-relaxed mt-0.5 sm:mt-1">
-                Comprehensive 7-day replacement warranty if any defect or issue occurs.
+                1 Month Shop Warranty (Warranty does not cover physical and liquid damage).
               </p>
             </div>
           </div>

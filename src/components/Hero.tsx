@@ -27,6 +27,19 @@ const HERO_ITEMS = [
     badgeText: 'Official Sony 1 Year Warranty',
   },
   {
+    id: 'nintendo',
+    label: 'Nintendo OLED',
+    title: 'Nintendo Switch – OLED Model (White)',
+    subtitle: '7" Vibrant OLED · 64GB · Pre-Owned Grade A+',
+    price: '₹24,000',
+    mrp: '₹34,990',
+    discount: '31% OFF',
+    image: '/nintendo-switch-oled.jpg',
+    productId: 'nintendo-switch-oled-white-preowned',
+    ambientGlow: 'bg-gradient-to-tr from-red-600/25 via-rose-500/20 to-amber-500/15 dark:from-red-600/40 dark:via-rose-600/30 dark:to-orange-500/25',
+    badgeText: '1 Month Shop Warranty',
+  },
+  {
     id: 'controller',
     label: 'Controllers',
     title: 'PlayStation 5 DualSense Wireless Controller (Midnight Black)',
@@ -38,19 +51,6 @@ const HERO_ITEMS = [
     productId: 'dualsense-midnight-black',
     ambientGlow: 'bg-gradient-to-tr from-indigo-600/25 via-purple-500/20 to-blue-600/15 dark:from-indigo-600/40 dark:via-purple-600/30 dark:to-cyan-500/25',
     badgeText: 'Original DualSense',
-  },
-  {
-    id: 'games',
-    label: 'Pre-Owned Discs',
-    title: 'Elden Ring: Shadow of the Erdtree (PS5 Pre-Owned)',
-    subtitle: 'Tested Pre-Owned Disc · Complete in Box',
-    price: '₹2,199',
-    mrp: '₹4,499',
-    discount: '51% OFF',
-    image: '/hero-elden-ring.png',
-    productId: 'elden-ring-ps5',
-    ambientGlow: 'bg-gradient-to-tr from-amber-600/25 via-orange-500/20 to-yellow-500/15 dark:from-amber-600/40 dark:via-orange-600/30 dark:to-red-500/25',
-    badgeText: '7-Day Replacement Guarantee',
   },
 ];
 
@@ -114,7 +114,7 @@ export const Hero: React.FC<HeroProps> = ({
             {/* Subline with improved contrast */}
             <p className="mt-3 sm:mt-4 lg:mt-5 text-xs sm:text-base md:text-lg text-gray-700 dark:text-gray-200 font-medium leading-relaxed max-w-xl">
               <span className="sm:hidden">Consoles, accessories & verified pre-owned games.</span>
-              <span className="hidden sm:inline">Brand new consoles, genuine accessories, and verified pre-owned games with a 7-day replacement guarantee.</span>
+              <span className="hidden sm:inline">Brand new consoles, genuine accessories, and verified pre-owned systems with 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).</span>
             </p>
 
             {/* Action CTA Buttons (Stacked on mobile for clean thumb alignment) */}
@@ -140,9 +140,9 @@ export const Hero: React.FC<HeroProps> = ({
             <div className="hidden sm:flex mt-8 sm:mt-10 pt-4 sm:pt-5 border-t border-slate-200/60 dark:border-slate-800/60 flex-wrap items-center gap-x-3 sm:gap-x-5 gap-y-1.5 text-[11px] sm:text-xs text-[#9ca3af] dark:text-gray-400 font-medium">
               <span>Free delivery over ₹1,000</span>
               <span>·</span>
-              <span>7-Day doorstep replacement</span>
+              <span>1 Month Shop Warranty (Warranty does not cover physical and liquid damage)</span>
               <span>·</span>
-              <span>Verified pre-owned games</span>
+              <span>Verified pre-owned systems</span>
             </div>
 
           </div>

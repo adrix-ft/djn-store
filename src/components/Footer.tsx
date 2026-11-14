@@ -169,7 +169,7 @@ export const Footer: React.FC<FooterProps> = ({
                   onClick={() => onOpenPolicy('refund')}
                   className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors cursor-pointer text-left"
                 >
-                  7-Day Replacement Guarantee
+                  1 Month Shop Warranty
                 </button>
               </li>
               <li>
@@ -251,7 +251,7 @@ export const Footer: React.FC<FooterProps> = ({
           <div className="flex flex-wrap items-center justify-center gap-3 text-[11px]">
             <button onClick={() => onOpenPolicy('shipping')} className="hover:text-[#111827] dark:hover:text-white cursor-pointer">Free Delivery</button>
             <span>·</span>
-            <button onClick={() => onOpenPolicy('refund')} className="hover:text-[#111827] dark:hover:text-white cursor-pointer">7-Day Returns</button>
+            <button onClick={() => onOpenPolicy('refund')} className="hover:text-[#111827] dark:hover:text-white cursor-pointer">1 Month Warranty</button>
             <span>·</span>
             <button onClick={() => onOpenPolicy('grievance')} className="hover:text-[#111827] dark:hover:text-white cursor-pointer font-medium text-blue-600 dark:text-blue-400">Grievance Redressal</button>
             <span>·</span>

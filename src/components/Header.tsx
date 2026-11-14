@@ -498,6 +498,12 @@ export const Header: React.FC<HeaderProps> = ({
                 isActive: currentPage === 'consoles' && (activePlatform === 'all' || !activePlatform)
               },
               {
+                id: 'nintendo-consoles',
+                label: 'Nintendo',
+                onClick: () => onSelectCategory('consoles', 'Nintendo'),
+                isActive: currentPage === 'consoles' && (activePlatform === 'Nintendo' || activePlatform === 'Switch')
+              },
+              {
                 id: 'controllers',
                 label: 'Controllers',
                 onClick: () => onSelectCategory('controllers', 'all'),
@@ -697,6 +703,16 @@ export const Header: React.FC<HeaderProps> = ({
                     setIsMobileMenuOpen(false);
                   },
                   isActive: currentPage === 'consoles' && (activePlatform === 'all' || !activePlatform)
+                },
+                {
+                  id: 'nintendo-consoles',
+                  label: 'Nintendo Consoles',
+                  icon: Gamepad2,
+                  onClick: () => {
+                    onSelectCategory('consoles', 'Nintendo');
+                    setIsMobileMenuOpen(false);
+                  },
+                  isActive: currentPage === 'consoles' && (activePlatform === 'Nintendo' || activePlatform === 'Switch')
                 },
                 {
                   id: 'controllers',
