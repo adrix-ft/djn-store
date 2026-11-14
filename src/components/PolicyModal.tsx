@@ -74,7 +74,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({ type, onClose }) => {
               </p>
               <h4 className="font-bold text-[#111827] text-base">What Makes DJN Tech Different?</h4>
               <ul className="list-disc pl-5 space-y-2">
-                <li><strong>100% Genuine Sealed Units:</strong> Brand new PS5 & Xbox consoles with official Indian manufacturer warranty seals.</li>
+                <li><strong>100% Genuine Inspected Units:</strong> All consoles and gaming hardware are thoroughly inspected, verified, and protected by DJN Tech Store Warranty.</li>
                 <li><strong>Tested Pre-Owned Discs:</strong> Every pre-owned game disc is cleaned and tested on retail consoles before packaging.</li>
                 <li><strong>Transparent Pricing:</strong> Competitive rates with genuine customer support and real-time WhatsApp order tracking.</li>
               </ul>
@@ -135,7 +135,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({ type, onClose }) => {
                 Welcome to <strong>DJN Tech</strong> (djntech.in). By accessing our website, purchasing products, or booking repair and trade-in services, you agree to our terms compliant with the <em>Consumer Protection Act, 2019</em> and the <em>Consumer Protection (E-Commerce) Rules, 2020</em>:
               </p>
               <ul className="list-disc pl-5 space-y-2 text-xs">
-                <li><strong>100% Genuine Inventory:</strong> All brand-new consoles and accessories carry official Indian manufacturer warranties. All pre-owned game discs and consoles undergo technical verification and testing before dispatch.</li>
+                <li><strong>100% Genuine Inventory:</strong> All consoles, controllers, and accessories are covered under our dedicated DJN Tech Store Warranty (including 1 Month Shop Warranty on all Preowned consoles). All pre-owned game discs and consoles undergo technical verification and testing before dispatch.</li>
                 <li><strong>Pricing Transparency:</strong> In accordance with Legal Metrology (Packaged Commodities) Rules, every listed price is displayed in Indian National Rupees (INR) and is strictly <strong>inclusive of all statutory taxes (GST)</strong>. No hidden surcharges or drip fees are applied at checkout.</li>
                 <li><strong>Order Confirmation & Payments:</strong> Orders are confirmed upon receipt of valid electronic payment through RBI-compliant, PCI-DSS Level 1 certified gateways (Razorpay).</li>
                 <li><strong>Consumer Protection & Cancellation:</strong> Customers may cancel their order before courier dispatch with a 100% instant refund. Orders already dispatched are covered under our comprehensive 1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).</li>

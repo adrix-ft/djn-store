@@ -24,7 +24,7 @@ const HERO_ITEMS = [
     image: '/hero-ps5-slim.png',
     productId: 'ps5-slim-disc',
     ambientGlow: 'bg-gradient-to-tr from-blue-600/25 via-cyan-400/20 to-blue-500/15 dark:from-blue-600/40 dark:via-cyan-500/30 dark:to-indigo-500/25',
-    badgeText: 'Official Sony 1 Year Warranty',
+    badgeText: 'DJN Tech Store Warranty',
   },
   {
     id: 'controller',

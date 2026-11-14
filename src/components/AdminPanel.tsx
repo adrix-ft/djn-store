@@ -194,7 +194,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     features: ['100% Genuine Certified', 'Bench tested and verified by DJN Tech'],
     description: 'High quality gaming product inspected and verified by DJN Tech.',
     inTheBox: ['Original Retail Item', 'Verification Certificate'],
-    warranty: '7-Day Replacement Guarantee',
+    warranty: 'DJN Tech Store Warranty',
     themeColor: '#00439c',
     imageUrl: '',
     reviews: [],
@@ -2655,7 +2655,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                         rows={4}
                         value={featuresText}
                         onChange={(e) => setFeaturesText(e.target.value)}
-                        placeholder="Slimmer design with 1TB ultra-high speed internal SSD&#10;Haptic feedback and adaptive triggers&#10;Official 1 Year Sony Warranty"
+                        placeholder="Slimmer design with 1TB ultra-high speed internal SSD&#10;Haptic feedback and adaptive triggers&#10;DJN Tech Store Warranty"
                         className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
@@ -2698,7 +2698,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                         type="text"
                         value={productForm.warranty}
                         onChange={(e) => setProductForm({ ...productForm, warranty: e.target.value })}
-                        placeholder="e.g. 1 Year Official Sony Warranty + DJN Tech Assured Support"
+                        placeholder="e.g. 1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)"
                         className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>

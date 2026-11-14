@@ -740,7 +740,7 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
             </div>
           )}
 
-          {/* TAB 3: 7-DAY GUARANTEE & HARDWARE INSPECTION */}
+          {/* TAB 3: STORE WARRANTY & HARDWARE INSPECTION */}
           {activeTab === 'warranty' && (
             <div className="space-y-5 max-w-2xl">
               <div className="p-6 rounded-3xl bg-gradient-to-tr from-blue-50 to-indigo-50 dark:from-blue-950/40 dark:to-indigo-950/40 border border-blue-200 dark:border-blue-800 space-y-4">
@@ -792,10 +792,10 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
                   <div className="p-3.5 rounded-2xl bg-white dark:bg-[#111827] border border-blue-100 dark:border-blue-900/40 space-y-1">
                     <p className="font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                      Official Manufacturer Warranty
+                      DJN Tech Store Warranty
                     </p>
                     <p className="text-[11px] text-gray-500 dark:text-gray-400">
-                      Brand new PS5 and Xbox units carry standard 1-year Sony / Microsoft manufacturer warranty.
+                      All products are covered by DJN Tech Store Warranty with dedicated technician support.
                     </p>
                   </div>
                 </div>

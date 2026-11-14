@@ -357,16 +357,12 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                   <span className="text-[11px] font-bold text-[#111827] dark:text-white block">
                     {product.category === 'consoles' && (product.condition.toLowerCase().includes('pre-owned') || product.condition.toLowerCase().includes('grade'))
                       ? '1 Month Warranty'
-                      : product.condition.toLowerCase().includes('brand new')
-                      ? 'Official Warranty'
-                      : 'Shop Warranty'}
+                      : 'Store Warranty'}
                   </span>
                   <span className="text-[10px] text-[#6b7280] dark:text-gray-400">
                     {product.category === 'consoles' && (product.condition.toLowerCase().includes('pre-owned') || product.condition.toLowerCase().includes('grade'))
                       ? 'Pre-owned consoles'
-                      : product.condition.toLowerCase().includes('brand new')
-                      ? 'Brand coverage'
-                      : 'Verified gear'}
+                      : 'DJN Tech coverage'}
                   </span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-[#f9fafb] dark:bg-[#161f30] border border-[#eaedf0] dark:border-[#2d3748]">

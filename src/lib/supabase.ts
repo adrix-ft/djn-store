@@ -270,7 +270,7 @@ export async function fetchProductsFromDB(): Promise<Product[]> {
     if (error || !data || data.length === 0) {
       if (error) console.warn('[Supabase] Products query error:', error.message);
       // Fallback to local storage or defaults with inStock guaranteed
-      const local = localStorage.getItem('djn_products_v10');
+      const local = localStorage.getItem('djn_products_v11');
       if (local) {
         try {
           const parsed: Product[] = JSON.parse(local);
@@ -288,7 +288,7 @@ export async function fetchProductsFromDB(): Promise<Product[]> {
     const dbIds = new Set(mapped.map((p) => p.id));
     const missing = PRODUCTS.filter((p) => !dbIds.has(p.id));
     const allProducts = [...mapped, ...missing];
-    localStorage.setItem('djn_products_v10', JSON.stringify(allProducts));
+    localStorage.setItem('djn_products_v11', JSON.stringify(allProducts));
 
     // Self-healing: verify all cloud DB products are marked permanently available
     supabase
@@ -305,7 +305,7 @@ export async function fetchProductsFromDB(): Promise<Product[]> {
     return allProducts;
   } catch (err) {
     console.warn('[Supabase] Failed to fetch products, using offline cache:', err);
-    const local = localStorage.getItem('djn_products_v10');
+    const local = localStorage.getItem('djn_products_v11');
     if (local) {
       try {
         const parsed: Product[] = JSON.parse(local);

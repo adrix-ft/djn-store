@@ -19,9 +19,9 @@ export const Marquee: React.FC<MarqueeProps> = ({ announcementText, onOpenGiveaw
     { icon: Truck, text: 'Free Delivery on Orders Above ₹1,000', isGiveaway: false },
     { icon: ShieldCheck, text: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)', isGiveaway: false },
     { icon: Disc, text: 'Tested & Verified Pre-Owned Game Discs', isGiveaway: false },
-    { icon: Gamepad2, text: 'Brand New Sealed PS5 & Xbox Consoles', isGiveaway: false },
+    { icon: Gamepad2, text: 'Verified PS5, PS4 & Nintendo Consoles', isGiveaway: false },
     { icon: Zap, text: 'Original DualSense Wireless Controllers', isGiveaway: false },
-    { icon: Award, text: '1 Year Manufacturer Warranty on New Units', isGiveaway: false },
+    { icon: Award, text: 'DJN Tech Store Warranty on All Hardware', isGiveaway: false },
   ];
 
   return (

@@ -235,7 +235,7 @@ export const MaintenancePage: React.FC<MaintenancePageProps> = ({
       </header>
 
       {/* 3. INFINITE RUNNING MARQUEE ANNOUNCEMENT TICKER */}
-      <Marquee announcementText="Scheduled Store Maintenance · WhatsApp Ordering & Inquiries Online · 7-Day Replacement Guarantee" />
+      <Marquee announcementText="Scheduled Store Maintenance · WhatsApp Ordering & Inquiries Online · 1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)" />
 
       {/* 4. MAIN OFFICIAL MAINTENANCE NOTICE SECTION */}
       <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 py-10 sm:py-16 flex flex-col items-center">
@@ -482,9 +482,9 @@ export const MaintenancePage: React.FC<MaintenancePageProps> = ({
               <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-2.5">
                 <RotateCcw className="w-4 h-4" />
               </div>
-              <h4 className="font-bold text-xs text-[#111827] dark:text-white">7-Day Guarantee</h4>
+              <h4 className="font-bold text-xs text-[#111827] dark:text-white">DJN Store Warranty</h4>
               <p className="text-[11px] text-[#6b7280] dark:text-gray-400 mt-1 leading-normal">
-                Doorstep replacement warranty on all tested pre-owned game titles.
+                Dedicated store warranty on all consoles and hardware.
               </p>
             </div>
 
