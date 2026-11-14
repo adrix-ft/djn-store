@@ -31,6 +31,7 @@ const PolicyModal = React.lazy(() => import('./components/PolicyModal').then(m =
 const AuthModal = React.lazy(() => import('./components/AuthModal').then(m => ({ default: m.AuthModal })));
 const UserOrdersModal = React.lazy(() => import('./components/UserOrdersModal').then(m => ({ default: m.UserOrdersModal })));
 const MaintenancePage = React.lazy(() => import('./components/MaintenancePage').then(m => ({ default: m.MaintenancePage })));
+const GiveawayModal = React.lazy(() => import('./components/GiveawayModal').then(m => ({ default: m.GiveawayModal })));
 import { DEFAULT_SITE_CONFIG } from './data/siteConfig';
 import {
   fetchProductsFromDB,
@@ -44,7 +45,7 @@ import {
   upsertProductToDB,
   upsertSiteConfigToDB,
 } from './lib/supabase';
-import { Check } from 'lucide-react';
+import { Check, Gift } from 'lucide-react';
 
 export interface ResolvedRoute {
   page: 'home' | 'all' | Category | 'sell-consoles' | 'repair-console' | 'product-detail' | 'admin';
@@ -452,6 +453,51 @@ export default function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isUserOrdersOpen, setIsUserOrdersOpen] = useState(false);
   const [userOrders, setUserOrders] = useState<Order[]>([]);
+
+  // Official DJN Tech Giveaway Modal State
+  const [isGiveawayOpen, setIsGiveawayOpen] = useState(false);
+
+  // Auto-open Giveaway Popup when website opens & preloader finishes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const search = window.location.search || '';
+      const hash = window.location.hash || '';
+      if (search.toLowerCase().includes('giveaway') || hash.toLowerCase().includes('giveaway')) {
+        setIsGiveawayOpen(true);
+        return;
+      }
+    }
+
+    if (!isSiteLoading) {
+      try {
+        const dismissed = sessionStorage.getItem('djn_giveaway_dismissed');
+        if (!dismissed) {
+          const timer = setTimeout(() => {
+            setIsGiveawayOpen(true);
+          }, 700);
+          return () => clearTimeout(timer);
+        }
+      } catch (e) {
+        const timer = setTimeout(() => {
+          setIsGiveawayOpen(true);
+        }, 700);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [isSiteLoading]);
+
+  const handleOpenGiveaway = () => {
+    setIsGiveawayOpen(true);
+  };
+
+  const handleCloseGiveaway = () => {
+    setIsGiveawayOpen(false);
+    try {
+      sessionStorage.setItem('djn_giveaway_dismissed', 'true');
+    } catch (e) {
+      // ignore storage restriction
+    }
+  };
 
   // Helper to accurately extract Google profile details (avatar, name, email)
   const parseGoogleUser = (u: any): AuthUser => {
@@ -1230,6 +1276,7 @@ export default function App() {
         onOpenAuth={() => setIsAuthModalOpen(true)}
         onOpenUserOrders={() => setIsUserOrdersOpen(true)}
         userOrdersCount={userOrders.length}
+        onOpenGiveaway={handleOpenGiveaway}
       />
 
       {/* Main Content Area: Conditional Routing Based on currentPage */}
@@ -1314,7 +1361,7 @@ export default function App() {
             />
 
             {/* Infinite Running Marquee Ticker */}
-            <Marquee announcementText={siteConfig.marqueeAnnouncement} />
+            <Marquee announcementText={siteConfig.marqueeAnnouncement} onOpenGiveaway={handleOpenGiveaway} />
 
 
 
@@ -1496,6 +1543,37 @@ export default function App() {
             onAddToCart={handleAddToCart}
           />
         </React.Suspense>
+      )}
+
+      {/* Official Free Game Giveaway Modal */}
+      {isGiveawayOpen && (
+        <React.Suspense fallback={null}>
+          <GiveawayModal
+            isOpen={isGiveawayOpen}
+            onClose={handleCloseGiveaway}
+            formUrl="https://forms.gle/RtfL5twVXAQ8EYLE6"
+          />
+        </React.Suspense>
+      )}
+
+      {/* Floating Giveaway Quick Launcher Badge */}
+      {!isGiveawayOpen && (
+        <button
+          type="button"
+          onClick={handleOpenGiveaway}
+          className="fixed bottom-20 md:bottom-6 left-4 md:left-6 z-40 flex items-center gap-2.5 px-3.5 py-2.5 rounded-full bg-gradient-to-r from-[#1a73e8] to-[#145fc3] hover:from-blue-600 hover:to-indigo-600 text-white shadow-xl shadow-blue-600/35 border border-white/25 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer group"
+          aria-label="DJN Tech Free Game Giveaway"
+        >
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-400"></span>
+          </span>
+          <Gift className="w-4 h-4 text-amber-300 group-hover:rotate-12 transition-transform" />
+          <span className="text-xs font-bold tracking-tight">Free Game Giveaway</span>
+          <span className="px-1.5 py-0.5 rounded-full bg-red-500 text-white text-[9px] font-black uppercase tracking-wider">
+            WIN
+          </span>
+        </button>
       )}
 
       {/* Mobile Sticky Bottom Icon Navigation Bar */}

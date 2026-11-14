@@ -19,6 +19,7 @@ import {
   Layers,
   Home,
   ShieldCheck,
+  Gift,
 } from 'lucide-react';
 import { AuthUser, Product, Category, Platform, SiteConfig } from '../types/store';
 import { BrandLogo } from './BrandLogo';
@@ -48,6 +49,7 @@ interface HeaderProps {
   onOpenAuth?: () => void;
   onOpenUserOrders?: () => void;
   userOrdersCount?: number;
+  onOpenGiveaway?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -74,6 +76,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenAuth,
   onOpenUserOrders,
   userOrdersCount,
+  onOpenGiveaway,
 }) => {
   const [localSearch, setLocalSearch] = useState(searchQuery);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
@@ -549,6 +552,19 @@ export const Header: React.FC<HeaderProps> = ({
                 {tab.label}
               </button>
             ))}
+
+            {onOpenGiveaway && (
+              <button
+                type="button"
+                onClick={onOpenGiveaway}
+                className="h-full inline-flex items-center gap-1.5 px-3 text-[13px] sm:text-sm font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer whitespace-nowrap border-b-2 border-transparent"
+                aria-label="DJN Tech Giveaway"
+              >
+                <Gift className="w-3.5 h-3.5 text-amber-500 animate-bounce" />
+                <span>Giveaway</span>
+                <span className="px-1.5 py-0.5 rounded-full text-[9px] bg-red-500 text-white font-black tracking-wider uppercase">FREE</span>
+              </button>
+            )}
           </nav>
 
         </div>
@@ -643,6 +659,24 @@ export const Header: React.FC<HeaderProps> = ({
 
             {/* Navbar Buttons as Menu Options */}
             <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-1">
+              {onOpenGiveaway && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    onOpenGiveaway();
+                  }}
+                  className="w-full px-3.5 py-3 rounded-xl text-left flex items-center justify-between transition-all cursor-pointer text-sm bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-blue-500/15 dark:from-blue-900/30 dark:via-indigo-900/30 dark:to-blue-900/40 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 font-bold mb-2 shadow-xs"
+                >
+                  <div className="flex items-center gap-3">
+                    <Gift className="w-5 h-5 text-amber-500 shrink-0 animate-bounce" />
+                    <span>Free Game Giveaway 🎁</span>
+                  </div>
+                  <span className="text-[10px] bg-red-500 text-white px-2 py-0.5 rounded-full font-extrabold uppercase tracking-wider">
+                    FREE
+                  </span>
+                </button>
+              )}
               {[
                 {
                   id: 'home',
