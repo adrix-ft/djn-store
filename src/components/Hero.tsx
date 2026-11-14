@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, ChevronRight, Sparkles } from 'lucide-react';
+import { ArrowRight, ChevronRight, MessageCircle } from 'lucide-react';
 import { Product } from '../types/store';
 import { PRODUCTS } from '../data/products';
 
@@ -12,7 +12,40 @@ interface HeroProps {
   products?: Product[];
 }
 
-const HERO_ITEMS = [
+interface HeroItem {
+  id: string;
+  label: string;
+  title: string;
+  subtitle: string;
+  price: string;
+  mrp: string;
+  discount: string;
+  image: string;
+  productId: string;
+  ambientGlow: string;
+  badgeText: string;
+  isExternalWhatsApp?: boolean;
+  whatsappNumber?: string;
+  whatsappMessage?: string;
+}
+
+const HERO_ITEMS: HeroItem[] = [
+  {
+    id: 'gta6',
+    label: 'Upcoming Pre-Order',
+    title: 'Grand Theft Auto VI (PS5 Disc Edition)',
+    subtitle: 'Rockstar Games · Official PS5 Physical Disc · Pre-Order on WhatsApp',
+    price: 'Pre-Order Now',
+    mrp: '',
+    discount: 'HOT',
+    image: '/hero-gta6.png',
+    productId: 'gta-6-disc',
+    isExternalWhatsApp: true,
+    whatsappNumber: '+91 84464 39374',
+    whatsappMessage: 'Hi DJN Tech, I want to pre-order Grand Theft Auto VI (GTA 6) PS5 Disc Edition. Please share the pricing and booking details.',
+    ambientGlow: 'bg-gradient-to-tr from-fuchsia-600/35 via-pink-500/30 to-amber-400/25 dark:from-fuchsia-600/50 dark:via-pink-600/35 dark:to-orange-500/30',
+    badgeText: 'Pre-Order on WhatsApp',
+  },
   {
     id: 'console',
     label: 'Consoles',
@@ -72,6 +105,18 @@ export const Hero: React.FC<HeroProps> = ({
   };
 
   const handleProductClick = () => {
+    if (baseItem.isExternalWhatsApp) {
+      const message = encodeURIComponent(
+        baseItem.whatsappMessage ||
+          'Hi DJN Tech, I want to pre-order Grand Theft Auto VI (GTA 6) PS5 Disc Edition. Please share the pricing and booking details.'
+      );
+      window.open(
+        `https://wa.me/918446439374?text=${message}`,
+        '_blank',
+        'noopener,noreferrer'
+      );
+      return;
+    }
     if (matchedProduct) {
       onSelectProduct(matchedProduct);
     } else if (featuredProduct) {
@@ -106,13 +151,23 @@ export const Hero: React.FC<HeroProps> = ({
 
             {/* Action CTA Buttons (Stacked on mobile for clean thumb alignment) */}
             <div className="mt-5 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-5 w-full max-w-md sm:max-w-none">
-              <button
-                onClick={onExploreConsoles}
-                className="w-full sm:w-auto justify-center px-6 sm:px-8 py-3.5 sm:py-3 bg-[#111827] dark:bg-blue-600 hover:bg-black dark:hover:bg-blue-700 text-white text-xs sm:text-sm font-bold rounded-full transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg flex items-center gap-2 active:scale-[0.98]"
-              >
-                <span>Shop Consoles</span>
-                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </button>
+              {baseItem.isExternalWhatsApp ? (
+                <button
+                  onClick={handleProductClick}
+                  className="w-full sm:w-auto justify-center px-6 sm:px-8 py-3.5 sm:py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold rounded-full transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg flex items-center gap-2 active:scale-[0.98]"
+                >
+                  <MessageCircle className="w-4 h-4 fill-white" />
+                  <span>Pre-Order on WhatsApp</span>
+                </button>
+              ) : (
+                <button
+                  onClick={onExploreConsoles}
+                  className="w-full sm:w-auto justify-center px-6 sm:px-8 py-3.5 sm:py-3 bg-[#111827] dark:bg-blue-600 hover:bg-black dark:hover:bg-blue-700 text-white text-xs sm:text-sm font-bold rounded-full transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg flex items-center gap-2 active:scale-[0.98]"
+                >
+                  <span>Shop Consoles</span>
+                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </button>
+              )}
 
               <button
                 onClick={onExploreGames}
@@ -177,41 +232,96 @@ export const Hero: React.FC<HeroProps> = ({
                 </motion.div>
               </AnimatePresence>
 
-              {/* Product Price Card with full name visible & prominent deal pricing */}
-              <motion.div
-                key={`pill-${currentItem.id}`}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="mt-2 sm:mt-3 inline-flex flex-col sm:flex-row items-center gap-1.5 sm:gap-3 px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl sm:rounded-full bg-white/90 dark:bg-[#111827]/90 backdrop-blur-xl border border-gray-100 dark:border-gray-800 shadow-[0_12px_36px_rgba(0,0,0,0.10)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.55)] transition-all group-hover:scale-105 group-hover:shadow-xl max-w-[94vw] sm:max-w-none text-center sm:text-left"
-              >
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
-                  <span className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white leading-tight">
-                    {currentItem.title}
-                  </span>
-                </div>
+              {/* Product Price Card / WhatsApp Pre-Order Action Pill */}
+              {baseItem.isExternalWhatsApp ? (
+                <motion.div
+                  key={`pill-${currentItem.id}`}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="mt-2 sm:mt-3 inline-flex flex-col sm:flex-row items-center gap-2 sm:gap-3 px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl sm:rounded-full bg-white/95 dark:bg-[#111827]/95 backdrop-blur-xl border border-emerald-500/30 dark:border-emerald-500/40 shadow-[0_12px_36px_rgba(16,185,129,0.18)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6)] transition-all group-hover:scale-105 group-hover:shadow-xl max-w-[94vw] sm:max-w-none text-center sm:text-left cursor-pointer"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="relative flex h-2.5 w-2.5 shrink-0">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                    </span>
+                    <span className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white leading-tight">
+                      {currentItem.title}
+                    </span>
+                  </div>
 
-                <div className="hidden sm:block h-3.5 w-px bg-slate-300/60 dark:bg-slate-700/60" />
+                  <div className="hidden sm:block h-3.5 w-px bg-slate-300/60 dark:bg-slate-700/60" />
 
-                <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-sm sm:text-base font-black text-blue-600 dark:text-blue-400 font-mono tracking-tight">
-                    {currentItem.price}
-                  </span>
-                  <span className="text-xs text-gray-400 line-through">
-                    {currentItem.mrp}
-                  </span>
-                  <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-1.5 py-0.5 rounded-md">
-                    {currentItem.discount}
-                  </span>
-                </div>
+                  <div className="flex items-center gap-1.5 shrink-0 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/60 dark:border-emerald-800/60 text-emerald-700 dark:text-emerald-400 font-extrabold text-xs sm:text-sm">
+                    <MessageCircle className="w-4 h-4 fill-emerald-500 text-white dark:text-emerald-950" />
+                    <span>Order on WhatsApp: +91 84464 39374</span>
+                  </div>
 
-                <div className="hidden sm:flex items-center gap-1 text-[11px] font-bold text-gray-700 dark:text-gray-300 pl-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  <span>View</span>
-                  <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-                </div>
-              </motion.div>
+                  <div className="hidden sm:flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 pl-1 group-hover:translate-x-0.5 transition-transform">
+                    <span>Chat Now</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key={`pill-${currentItem.id}`}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="mt-2 sm:mt-3 inline-flex flex-col sm:flex-row items-center gap-1.5 sm:gap-3 px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl sm:rounded-full bg-white/90 dark:bg-[#111827]/90 backdrop-blur-xl border border-gray-100 dark:border-gray-800 shadow-[0_12px_36px_rgba(0,0,0,0.10)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.55)] transition-all group-hover:scale-105 group-hover:shadow-xl max-w-[94vw] sm:max-w-none text-center sm:text-left"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                    <span className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white leading-tight">
+                      {currentItem.title}
+                    </span>
+                  </div>
 
+                  <div className="hidden sm:block h-3.5 w-px bg-slate-300/60 dark:bg-slate-700/60" />
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-sm sm:text-base font-black text-blue-600 dark:text-blue-400 font-mono tracking-tight">
+                      {currentItem.price}
+                    </span>
+                    {currentItem.mrp && (
+                      <span className="text-xs text-gray-400 line-through">
+                        {currentItem.mrp}
+                      </span>
+                    )}
+                    {currentItem.discount && (
+                      <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-1.5 py-0.5 rounded-md">
+                        {currentItem.discount}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="hidden sm:flex items-center gap-1 text-[11px] font-bold text-gray-700 dark:text-gray-300 pl-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    <span>View</span>
+                    <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+                  </div>
+                </motion.div>
+              )}
+
+            </div>
+
+            {/* Carousel Slide Switcher Dots */}
+            <div className="mt-3 sm:mt-4 flex items-center justify-center gap-2 z-20">
+              {HERO_ITEMS.map((item, idx) => (
+                <button
+                  key={item.id}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveIndex(idx);
+                  }}
+                  aria-label={`Show ${item.title}`}
+                  className={`transition-all duration-300 rounded-full cursor-pointer ${
+                    activeIndex === idx
+                      ? 'w-6 h-2 bg-blue-600 dark:bg-blue-400'
+                      : 'w-2 h-2 bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-500'
+                  }`}
+                />
+              ))}
             </div>
 
           </div>
