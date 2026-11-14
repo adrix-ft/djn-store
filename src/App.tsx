@@ -207,10 +207,14 @@ export default function App() {
   const [products, setProducts] = useState<Product[]>(() => {
     try {
       localStorage.removeItem('djn_products_v6');
-      const saved = localStorage.getItem('djn_products_v7');
+      localStorage.removeItem('djn_products_v7');
+      localStorage.removeItem('djn_products_v8');
+      const saved = localStorage.getItem('djn_products_v9');
       if (saved) {
         const parsed: Product[] = JSON.parse(saved);
-        return parsed.map((p) => ({ ...p, inStock: true, stockCount: 999 }));
+        const savedIds = new Set(parsed.map((p) => p.id));
+        const missing = PRODUCTS.filter((p) => !savedIds.has(p.id));
+        return [...parsed, ...missing].map((p) => ({ ...p, inStock: true, stockCount: 999 }));
       }
     } catch (e) {
       console.error(e);
@@ -262,9 +266,18 @@ export default function App() {
               inStock: true,
               stockCount: 999,
             }));
-            const hasTest = guaranteed.some((p) => p.id === TEST_PRODUCT.id || p.price === 1);
-            const finalProducts = hasTest ? guaranteed : [TEST_PRODUCT, ...guaranteed];
+            const dbIds = new Set(guaranteed.map((p) => p.id));
+            const missing = PRODUCTS.filter((p) => !dbIds.has(p.id));
+            const merged = [...guaranteed, ...missing];
+            const hasTest = merged.some((p) => p.id === TEST_PRODUCT.id || p.price === 1);
+            const finalProducts = hasTest ? merged : [TEST_PRODUCT, ...merged];
             setProducts(finalProducts);
+
+            if (missing.length > 0) {
+              missing.forEach((prod) => {
+                upsertProductToDB(prod).catch(() => {});
+              });
+            }
 
             // If visitor landed on a product URL that wasn't in local storage, resolve it from Supabase
             if (!selectedProduct && typeof window !== 'undefined') {
@@ -632,7 +645,7 @@ export default function App() {
   }, [wishlist]);
 
   useEffect(() => {
-    localStorage.setItem('djn_products_v7', JSON.stringify(products));
+    localStorage.setItem('djn_products_v9', JSON.stringify(products));
   }, [products]);
 
   const showToast = (msg: string) => {
@@ -925,7 +938,7 @@ export default function App() {
 
     // 1. Persist catalog state to localStorage
     setProducts((prevProducts) => {
-      localStorage.setItem('djn_products_v7', JSON.stringify(prevProducts));
+      localStorage.setItem('djn_products_v9', JSON.stringify(prevProducts));
       return prevProducts;
     });
 

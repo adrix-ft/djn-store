@@ -249,7 +249,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({
               {/* Category & Platform Tag */}
               <div className="flex items-center justify-between gap-3 mb-2">
                 <span className="text-xs font-bold text-[#1a73e8] dark:text-[#60a5fa] uppercase tracking-wider">
-                  {product.platform} · {product.category.replace('_', ' ')}
+                  {(product.platform === 'Switch' || product.platform === 'Nintendo' ? 'Nintendo Switch' : product.platform)} · {product.category.replace('_', ' ')}
                 </span>
                 
                 <button
@@ -446,6 +446,8 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                         ? 'Japan / China (Imported)'
                         : product.platform === 'Xbox'
                         ? 'China / Vietnam (Imported)'
+                        : product.platform === 'Switch' || product.platform === 'Nintendo'
+                        ? 'Japan / Vietnam (Imported)'
                         : 'India'}
                     </span>
                   </div>

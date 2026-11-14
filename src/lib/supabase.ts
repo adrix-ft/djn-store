@@ -59,7 +59,7 @@ export function mapProductToRow(prod: Product) {
     name: prod.name,
     subtitle: prod.subtitle,
     category: prod.category,
-    platform: prod.platform,
+    platform: prod.platform === 'Nintendo' ? 'Switch' : prod.platform,
     condition: prod.condition,
     mrp: prod.mrp,
     price: prod.price,
@@ -270,11 +270,13 @@ export async function fetchProductsFromDB(): Promise<Product[]> {
     if (error || !data || data.length === 0) {
       if (error) console.warn('[Supabase] Products query error:', error.message);
       // Fallback to local storage or defaults with inStock guaranteed
-      const local = localStorage.getItem('djn_products_v7');
+      const local = localStorage.getItem('djn_products_v9');
       if (local) {
         try {
           const parsed: Product[] = JSON.parse(local);
-          return parsed.map((p) => ({ ...p, inStock: true, stockCount: 999 }));
+          const savedIds = new Set(parsed.map((p) => p.id));
+          const missing = PRODUCTS.filter((p) => !savedIds.has(p.id));
+          return [...parsed, ...missing].map((p) => ({ ...p, inStock: true, stockCount: 999 }));
         } catch {
           // ignore
         }
@@ -283,7 +285,10 @@ export async function fetchProductsFromDB(): Promise<Product[]> {
     }
 
     const mapped = data.map(mapRowToProduct);
-    localStorage.setItem('djn_products_v7', JSON.stringify(mapped));
+    const dbIds = new Set(mapped.map((p) => p.id));
+    const missing = PRODUCTS.filter((p) => !dbIds.has(p.id));
+    const allProducts = [...mapped, ...missing];
+    localStorage.setItem('djn_products_v9', JSON.stringify(allProducts));
 
     // Self-healing: verify all cloud DB products are marked permanently available
     supabase
@@ -297,14 +302,16 @@ export async function fetchProductsFromDB(): Promise<Product[]> {
       })
       .catch(() => {});
 
-    return mapped;
+    return allProducts;
   } catch (err) {
     console.warn('[Supabase] Failed to fetch products, using offline cache:', err);
-    const local = localStorage.getItem('djn_products_v7');
+    const local = localStorage.getItem('djn_products_v9');
     if (local) {
       try {
         const parsed: Product[] = JSON.parse(local);
-        return parsed.map((p) => ({ ...p, inStock: true, stockCount: 999 }));
+        const savedIds = new Set(parsed.map((p) => p.id));
+        const missing = PRODUCTS.filter((p) => !savedIds.has(p.id));
+        return [...parsed, ...missing].map((p) => ({ ...p, inStock: true, stockCount: 999 }));
       } catch {
         // ignore
       }

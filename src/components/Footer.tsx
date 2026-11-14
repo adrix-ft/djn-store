@@ -122,7 +122,7 @@ export const Footer: React.FC<FooterProps> = ({
                   onClick={() => onSelectCategory('consoles')}
                   className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors cursor-pointer text-left"
                 >
-                  Consoles (PS5, PS4 & Xbox)
+                  Consoles (PS5, PS4, Xbox & Nintendo)
                 </button>
               </li>
               <li>

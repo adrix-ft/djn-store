@@ -387,7 +387,7 @@ export const PRODUCTS: Product[] = [
     name: 'Nintendo Switch – OLED Model (White)',
     subtitle: '7" Vibrant OLED Screen · 64GB Internal Storage · Enhanced Audio · Pre-Owned Grade A+',
     category: 'consoles',
-    platform: 'Nintendo',
+    platform: 'Switch',
     condition: 'Pre-Owned Grade A+',
     mrp: 34990,
     price: 24000,

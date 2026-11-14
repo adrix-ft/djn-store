@@ -102,11 +102,32 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
 
     switch (category) {
       case 'consoles':
+        if (selectedPlatform === 'PS5') {
+          return {
+            title: 'PlayStation 5 Consoles',
+            subtitle: 'Brand new factory-sealed and verified pre-owned PS5 consoles with 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
+            tag: 'PlayStation 5 Consoles'
+          };
+        }
+        if (selectedPlatform === 'PS4') {
+          return {
+            title: 'PlayStation 4 Consoles',
+            subtitle: 'Tested pre-owned PS4 consoles with 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
+            tag: 'PlayStation 4 Consoles'
+          };
+        }
+        if (selectedPlatform === 'Xbox') {
+          return {
+            title: 'Xbox Consoles',
+            subtitle: 'Xbox Series X and Series S consoles with 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
+            tag: 'Xbox Consoles'
+          };
+        }
         if (selectedPlatform === 'Nintendo' || selectedPlatform === 'Switch') {
           return {
             title: 'Nintendo Consoles',
             subtitle: 'Certified Pre-Owned Nintendo Switch OLED systems with 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
-            tag: 'Nintendo'
+            tag: 'Nintendo Consoles'
           };
         }
         return {
@@ -136,7 +157,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
   };
 
   const { title, subtitle, tag } = getCategoryDetails();
-  const showPlatformFilter = platform === 'all';
+  const showPlatformFilter = category === 'consoles' || category === 'preowned_games' || category === 'all';
 
   return (
     <div className="w-full bg-[#f8f9fa] dark:bg-[#0b0f17] min-h-screen py-6 sm:py-8 text-[#212121] dark:text-gray-100 transition-colors duration-200">
@@ -151,9 +172,24 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
             Home
           </button>
           <ChevronRight className="w-3.5 h-3.5 text-[#9ca3af] dark:text-gray-600" />
-          <span className="text-[#111827] dark:text-white font-semibold">
-            {category === 'all' ? 'All Products' : title}
-          </span>
+          {category === 'consoles' && selectedPlatform !== 'all' ? (
+            <>
+              <button
+                onClick={() => setSelectedPlatform('all')}
+                className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors font-medium cursor-pointer"
+              >
+                Consoles
+              </button>
+              <ChevronRight className="w-3.5 h-3.5 text-[#9ca3af] dark:text-gray-600" />
+              <span className="text-[#111827] dark:text-white font-semibold">
+                {selectedPlatform === 'Switch' ? 'Nintendo' : selectedPlatform}
+              </span>
+            </>
+          ) : (
+            <span className="text-[#111827] dark:text-white font-semibold">
+              {category === 'all' ? 'All Products' : title}
+            </span>
+          )}
         </div>
 
         {/* Category Header Banner */}
@@ -213,19 +249,29 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
                   <Filter className="w-3.5 h-3.5" />
                   Platform:
                 </span>
-                {(['all', 'PS5', 'PS4', 'Xbox', 'Nintendo'] as const).map((plat) => (
-                  <button
-                    key={plat}
-                    onClick={() => setSelectedPlatform(plat)}
-                    className={`px-3 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                      selectedPlatform === plat
-                        ? 'bg-[#111827] dark:bg-blue-600 text-white font-semibold shadow-xs'
-                        : 'bg-[#f4f5f7] dark:bg-[#161f30] text-[#4b5563] dark:text-gray-300 hover:text-[#111827] dark:hover:text-white'
-                    }`}
-                  >
-                    {plat === 'all' ? 'All' : plat}
-                  </button>
-                ))}
+                {(category === 'consoles'
+                  ? (['all', 'PS5', 'PS4', 'Xbox', 'Nintendo'] as const)
+                  : category === 'preowned_games'
+                  ? (['all', 'PS5', 'PS4', 'Xbox'] as const)
+                  : (['all', 'PS5', 'PS4', 'Xbox', 'Nintendo'] as const)
+                ).map((plat) => {
+                  const isPlatActive =
+                    selectedPlatform === plat ||
+                    (plat === 'Nintendo' && selectedPlatform === 'Switch');
+                  return (
+                    <button
+                      key={plat}
+                      onClick={() => setSelectedPlatform(plat)}
+                      className={`px-3 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                        isPlatActive
+                          ? 'bg-[#111827] dark:bg-blue-600 text-white font-semibold shadow-xs'
+                          : 'bg-[#f4f5f7] dark:bg-[#161f30] text-[#4b5563] dark:text-gray-300 hover:text-[#111827] dark:hover:text-white'
+                      }`}
+                    >
+                      {plat === 'all' ? 'All' : plat}
+                    </button>
+                  );
+                })}
 
                 <div className="h-4 w-[1px] bg-[#e5e7eb] dark:bg-gray-800 mx-1 hidden sm:block" />
               </>

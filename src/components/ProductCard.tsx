@@ -103,7 +103,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <div className="space-y-1">
           {/* Metadata: Platform & Condition (Unboxed text) */}
           <div className="flex items-center gap-1.5 text-[11px] text-[#6b7280] dark:text-gray-400">
-            <span>{product.platform}</span>
+            <span>{product.platform === 'Switch' || product.platform === 'Nintendo' ? 'Nintendo Switch' : product.platform}</span>
             <span aria-hidden="true">·</span>
             <span className="line-clamp-1">{product.condition}</span>
           </div>
