@@ -37,7 +37,7 @@ export const ProductVisualizer: React.FC<VisualizerProps> = ({
     ? product.imageUrl 
     : fallbackImages[product.category] || 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=800&q=80';
 
-  const isGame = forceCaseFrame || product.category === 'preowned_games';
+  const isGame = (forceCaseFrame || product.category === 'preowned_games') && product.id !== 'gta-6-disc';
 
   // If this product is a game, automatically frame it in the authentic physical console case!
   if (isGame) {

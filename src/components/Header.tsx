@@ -237,18 +237,26 @@ export const Header: React.FC<HeaderProps> = ({
                         </p>
 
                         <div className="flex items-center gap-2 mt-0.5">
-                          <span className="text-xs font-bold text-[#111827] dark:text-gray-100">
-                            ₹{prod.price.toLocaleString('en-IN')}
-                          </span>
-                          {prod.mrp > prod.price && (
-                            <span className="text-[11px] text-gray-400 line-through">
-                              ₹{prod.mrp.toLocaleString('en-IN')}
+                          {prod.isEnquiryOnly || prod.price === 0 ? (
+                            <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                              Pre-Order / WhatsApp Enquiry
                             </span>
-                          )}
-                          {prod.discountPercent > 0 && (
-                            <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">
-                              {prod.discountPercent}% OFF
-                            </span>
+                          ) : (
+                            <>
+                              <span className="text-xs font-bold text-[#111827] dark:text-gray-100">
+                                ₹{prod.price.toLocaleString('en-IN')}
+                              </span>
+                              {prod.mrp > prod.price && (
+                                <span className="text-[11px] text-gray-400 line-through">
+                                  ₹{prod.mrp.toLocaleString('en-IN')}
+                                </span>
+                              )}
+                              {prod.discountPercent > 0 && (
+                                <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">
+                                  {prod.discountPercent}% OFF
+                                </span>
+                              )}
+                            </>
                           )}
                           <span className="text-[10px] text-gray-400 dark:text-gray-500 hidden sm:inline">
                             · {prod.condition}

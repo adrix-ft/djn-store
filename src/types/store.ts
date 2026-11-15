@@ -43,6 +43,8 @@ export interface Product {
   edition?: string;
   imageUrl?: string;
   reviews: ProductReview[];
+  isEnquiryOnly?: boolean;
+  whatsappMessage?: string;
 }
 
 export interface CartItem {

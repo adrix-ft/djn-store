@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingBag, Heart, Check } from 'lucide-react';
+import { ShoppingBag, Heart, Check, MessageCircle } from 'lucide-react';
 import { Product } from '../types/store';
 import { ProductVisualizer } from './ProductVisualizer';
 
@@ -65,33 +65,46 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <Heart className={`w-3.5 h-3.5 ${isWishlisted ? 'fill-[#ef4444] text-[#ef4444]' : ''}`} />
         </button>
 
-        {/* Quick Add To Cart Hover Action */}
+        {/* Quick Add To Cart / WhatsApp Enquiry Hover Action */}
         <div className={`absolute inset-x-3 bottom-3 transition-all duration-200 z-30 ${
           isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
         }`}>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onAddToCart(product);
-            }}
-            className={`w-full py-2 rounded-md text-xs font-semibold shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-              isInCart
-                ? 'bg-[#10b981] text-white'
-                : 'bg-[#111827] dark:bg-blue-600 hover:bg-[#1f2937] dark:hover:bg-blue-700 text-white'
-            }`}
-          >
-            {isInCart ? (
-              <>
-                <Check className="w-3.5 h-3.5 stroke-[2.5]" />
-                <span>Added to cart</span>
-              </>
-            ) : (
-              <>
-                <ShoppingBag className="w-3.5 h-3.5" />
-                <span>Quick Add</span>
-              </>
-            )}
-          </button>
+          {product.isEnquiryOnly || product.price === 0 ? (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onAddToCart(product);
+              }}
+              className="w-full py-2 rounded-md text-xs font-semibold shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white"
+            >
+              <MessageCircle className="w-3.5 h-3.5 fill-white" />
+              <span>Enquire on WhatsApp</span>
+            </button>
+          ) : (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onAddToCart(product);
+              }}
+              className={`w-full py-2 rounded-md text-xs font-semibold shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                isInCart
+                  ? 'bg-[#10b981] text-white'
+                  : 'bg-[#111827] dark:bg-blue-600 hover:bg-[#1f2937] dark:hover:bg-blue-700 text-white'
+              }`}
+            >
+              {isInCart ? (
+                <>
+                  <Check className="w-3.5 h-3.5 stroke-[2.5]" />
+                  <span>Added to cart</span>
+                </>
+              ) : (
+                <>
+                  <ShoppingBag className="w-3.5 h-3.5" />
+                  <span>Quick Add</span>
+                </>
+              )}
+            </button>
+          )}
         </div>
       </a>
 
@@ -125,19 +138,35 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
         {/* Pricing Row */}
         <div className="mt-2.5 pt-2 border-t border-[#f3f4f6] dark:border-[#1e293b]">
-          <div className="flex items-baseline gap-2">
-            <span className="text-sm font-semibold text-[#111827] dark:text-white tabular-nums">
-              ₹{product.price.toLocaleString('en-IN')}
-            </span>
-            {product.mrp > product.price && (
-              <span className="text-xs text-[#9ca3af] dark:text-gray-500 line-through tabular-nums">
-                ₹{product.mrp.toLocaleString('en-IN')}
+          {product.isEnquiryOnly || product.price === 0 ? (
+            <div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-xs sm:text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                  Pre-Order / Enquiry
+                </span>
+              </div>
+              <span className="text-[10px] text-gray-500 dark:text-gray-400 block mt-0.5">
+                WhatsApp booking · No advance fee
               </span>
-            )}
-          </div>
-          <span className="text-[10px] text-[#9ca3af] dark:text-gray-400 block mt-0.5">
-            Incl. all taxes
-          </span>
+            </div>
+          ) : (
+            <>
+              <div className="flex items-baseline gap-2">
+                <span className="text-sm font-semibold text-[#111827] dark:text-white tabular-nums">
+                  ₹{product.price.toLocaleString('en-IN')}
+                </span>
+                {product.mrp > product.price && (
+                  <span className="text-xs text-[#9ca3af] dark:text-gray-500 line-through tabular-nums">
+                    ₹{product.mrp.toLocaleString('en-IN')}
+                  </span>
+                )}
+              </div>
+              <span className="text-[10px] text-[#9ca3af] dark:text-gray-400 block mt-0.5">
+                Incl. all taxes
+              </span>
+            </>
+          )}
         </div>
       </div>
 

@@ -47,6 +47,10 @@ export function mapRowToProduct(row: any): Product {
     edition: row.edition || undefined,
     imageUrl: row.image_url || undefined,
     reviews: Array.isArray(row.reviews) ? row.reviews : [],
+    isEnquiryOnly: row.id === 'gta-6-disc' || Number(row.price) === 0 || Boolean(row.is_enquiry_only),
+    whatsappMessage: row.id === 'gta-6-disc'
+      ? 'Hi DJN Tech, I want to pre-order / enquire about Grand Theft Auto VI (GTA 6) PS5 Disc Edition. Please share the pricing, release date, and booking details.'
+      : undefined,
   };
 }
 

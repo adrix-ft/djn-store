@@ -83,13 +83,14 @@ export const Hero: React.FC<HeroProps> = ({
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Auto-switch between featured products
+  // Auto-switch between featured products (GTA VI appears first and stays for at least 8.5 seconds)
   useEffect(() => {
-    const timer = setInterval(() => {
+    const duration = HERO_ITEMS[activeIndex].id === 'gta6' ? 8500 : 6000;
+    const timer = setTimeout(() => {
       setActiveIndex((prev) => (prev + 1) % HERO_ITEMS.length);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, []);
+    }, duration);
+    return () => clearTimeout(timer);
+  }, [activeIndex]);
 
   const baseItem = HERO_ITEMS[activeIndex];
   const matchedProduct =
@@ -99,9 +100,21 @@ export const Hero: React.FC<HeroProps> = ({
   const currentItem = {
     ...baseItem,
     title: matchedProduct?.name || baseItem.title,
-    price: matchedProduct ? `₹${matchedProduct.price.toLocaleString('en-IN')}` : baseItem.price,
-    mrp: matchedProduct && matchedProduct.mrp > matchedProduct.price ? `₹${matchedProduct.mrp.toLocaleString('en-IN')}` : baseItem.mrp,
-    discount: matchedProduct && matchedProduct.discountPercent ? `${matchedProduct.discountPercent}% OFF` : baseItem.discount,
+    price: baseItem.isExternalWhatsApp
+      ? baseItem.price
+      : matchedProduct
+      ? `₹${matchedProduct.price.toLocaleString('en-IN')}`
+      : baseItem.price,
+    mrp: baseItem.isExternalWhatsApp
+      ? baseItem.mrp
+      : matchedProduct && matchedProduct.mrp > matchedProduct.price
+      ? `₹${matchedProduct.mrp.toLocaleString('en-IN')}`
+      : baseItem.mrp,
+    discount: baseItem.isExternalWhatsApp
+      ? baseItem.discount
+      : matchedProduct && matchedProduct.discountPercent
+      ? `${matchedProduct.discountPercent}% OFF`
+      : baseItem.discount,
   };
 
   const handleProductClick = () => {

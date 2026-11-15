@@ -185,7 +185,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                   <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
                 </button>
 
-                {product.category === 'preowned_games' ? (
+                {product.category === 'preowned_games' && product.id !== 'gta-6-disc' ? (
                   <GameCaseFrame
                     imageUrl={product.imageUrl}
                     name={product.name}
@@ -204,42 +204,64 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                 )}
               </div>
 
-              {/* Primary Sticky Buy & Cart Buttons (Flipkart/Amazon Style) */}
-              <div className="grid grid-cols-2 gap-2.5 sm:gap-3.5 w-full mt-6">
-                <button
-                  onClick={() => onAddToCart(product)}
-                  className={`py-3 sm:py-3.5 px-3 sm:px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 transition-all cursor-pointer shadow-xs ${
-                    isInCart
-                      ? 'bg-[#10b981] hover:bg-[#059669] text-white'
-                      : 'bg-[#ff9f00] hover:bg-[#f59400] text-white'
-                  }`}
-                >
-                  {isInCart ? <Check className="w-4 h-4 shrink-0" /> : <ShoppingCart className="w-4 h-4 shrink-0" />}
-                  <span>{isInCart ? 'Added' : 'Add to Cart'}</span>
-                </button>
+              {/* Primary Sticky Buy & Cart Buttons OR WhatsApp Pre-Order Action */}
+              {product.isEnquiryOnly || product.price === 0 ? (
+                <div className="w-full mt-6">
+                  <a
+                    href={`https://wa.me/918446439374?text=${encodeURIComponent(
+                      product.whatsappMessage ||
+                        `Hi DJN Tech, I want to pre-order / enquire about: ${product.name}. Please share pricing, release date, and booking details.`
+                    )}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full py-3.5 sm:py-4 px-4 rounded-xl font-extrabold text-sm sm:text-base bg-[#25d366] hover:bg-[#20ba5a] text-white flex items-center justify-center gap-2.5 transition-all shadow-md hover:shadow-lg cursor-pointer active:scale-[0.98]"
+                  >
+                    <MessageCircle className="w-5 h-5 fill-white" />
+                    <span>Pre-Order on WhatsApp (+91 84464 39374)</span>
+                  </a>
+                  <p className="text-[11px] text-center text-gray-500 dark:text-gray-400 mt-2 font-medium">
+                    Zero advance payment required · Instant booking confirmation via WhatsApp
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-2 gap-2.5 sm:gap-3.5 w-full mt-6">
+                    <button
+                      onClick={() => onAddToCart(product)}
+                      className={`py-3 sm:py-3.5 px-3 sm:px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 transition-all cursor-pointer shadow-xs ${
+                        isInCart
+                          ? 'bg-[#10b981] hover:bg-[#059669] text-white'
+                          : 'bg-[#ff9f00] hover:bg-[#f59400] text-white'
+                      }`}
+                    >
+                      {isInCart ? <Check className="w-4 h-4 shrink-0" /> : <ShoppingCart className="w-4 h-4 shrink-0" />}
+                      <span>{isInCart ? 'Added' : 'Add to Cart'}</span>
+                    </button>
 
-                <button
-                  onClick={() => onBuyNow(product)}
-                  className="py-3 sm:py-3.5 px-3 sm:px-4 rounded-xl font-bold text-xs sm:text-sm bg-[#fb641b] hover:bg-[#ea550a] text-white flex items-center justify-center gap-1.5 sm:gap-2 transition-all cursor-pointer shadow-xs"
-                >
-                  <Zap className="w-4 h-4 shrink-0" />
-                  <span>Buy Now</span>
-                </button>
-              </div>
+                    <button
+                      onClick={() => onBuyNow(product)}
+                      className="py-3 sm:py-3.5 px-3 sm:px-4 rounded-xl font-bold text-xs sm:text-sm bg-[#fb641b] hover:bg-[#ea550a] text-white flex items-center justify-center gap-1.5 sm:gap-2 transition-all cursor-pointer shadow-xs"
+                    >
+                      <Zap className="w-4 h-4 shrink-0" />
+                      <span>Buy Now</span>
+                    </button>
+                  </div>
 
-              {/* WhatsApp Quick Order Link */}
-              <a
-                href={`https://wa.me/918446439374?text=${encodeURIComponent(
-                  `Hi DJN Tech, I am interested in purchasing: ${product.name} (₹${product.price}). Is it available for delivery?`
-                )}`}
-                target="_blank"
-                rel="noreferrer"
-                className="w-full mt-2.5 sm:mt-3 py-2.5 px-3 sm:px-4 rounded-xl font-semibold text-xs text-[#075e54] dark:text-emerald-300 bg-[#25d366]/10 dark:bg-emerald-950/30 border border-[#25d366]/30 dark:border-emerald-800 hover:bg-[#25d366]/20 transition-colors flex items-center justify-center gap-2"
-              >
-                <MessageCircle className="w-4 h-4 text-[#25d366] shrink-0" />
-                <span className="hidden sm:inline">Order via WhatsApp (+91 84464 39374)</span>
-                <span className="sm:hidden">Order via WhatsApp</span>
-              </a>
+                  {/* WhatsApp Quick Order Link */}
+                  <a
+                    href={`https://wa.me/918446439374?text=${encodeURIComponent(
+                      `Hi DJN Tech, I am interested in purchasing: ${product.name} (₹${product.price}). Is it available for delivery?`
+                    )}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full mt-2.5 sm:mt-3 py-2.5 px-3 sm:px-4 rounded-xl font-semibold text-xs text-[#075e54] dark:text-emerald-300 bg-[#25d366]/10 dark:bg-emerald-950/30 border border-[#25d366]/30 dark:border-emerald-800 hover:bg-[#25d366]/20 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <MessageCircle className="w-4 h-4 text-[#25d366] shrink-0" />
+                    <span className="hidden sm:inline">Order via WhatsApp (+91 84464 39374)</span>
+                    <span className="sm:hidden">Order via WhatsApp</span>
+                  </a>
+                </>
+              )}
 
             </div>
 
@@ -294,29 +316,49 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                 </span>
               </div>
 
-              {/* Price Block (Amazon/Flipkart Style) */}
-              <div className="py-4 border-b border-[#f3f4f6] dark:border-[#1e293b]">
-                <div className="flex items-baseline gap-3">
-                  <span className="text-3xl sm:text-4xl font-black text-[#111827] dark:text-white">
-                    ₹{product.price.toLocaleString('en-IN')}
-                  </span>
-                  <span className="text-base text-[#9ca3af] dark:text-gray-500 line-through">
-                    ₹{product.mrp.toLocaleString('en-IN')}
-                  </span>
-                  <span className="text-base font-bold text-[#388e3c] dark:text-emerald-400">
-                    {product.discountPercent}% OFF
-                  </span>
+              {/* Price Block (Amazon/Flipkart Style OR WhatsApp Enquiry) */}
+              {product.isEnquiryOnly || product.price === 0 ? (
+                <div className="py-4 border-b border-[#f3f4f6] dark:border-[#1e293b]">
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    <span className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400">
+                      Pre-Order / Enquiry
+                    </span>
+                    <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1 rounded-full">
+                      Zero Advance Checkout
+                    </span>
+                  </div>
+                  <p className="text-xs text-[#6b7280] dark:text-gray-400 mt-2 font-medium leading-relaxed">
+                    Official PS5 Physical Blu-ray Disc Edition. Connect directly on WhatsApp with our store for price updates, release dispatch schedule, and booking confirmation.
+                  </p>
                 </div>
-                <p className="text-[11px] text-[#6b7280] dark:text-gray-400 mt-1">
-                  Inclusive of all taxes · Free express shipping above ₹1,000
-                </p>
-              </div>
+              ) : (
+                <div className="py-4 border-b border-[#f3f4f6] dark:border-[#1e293b]">
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-3xl sm:text-4xl font-black text-[#111827] dark:text-white">
+                      ₹{product.price.toLocaleString('en-IN')}
+                    </span>
+                    <span className="text-base text-[#9ca3af] dark:text-gray-500 line-through">
+                      ₹{product.mrp.toLocaleString('en-IN')}
+                    </span>
+                    <span className="text-base font-bold text-[#388e3c] dark:text-emerald-400">
+                      {product.discountPercent}% OFF
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-[#6b7280] dark:text-gray-400 mt-1">
+                    Inclusive of all taxes · Free express shipping above ₹1,000
+                  </p>
+                </div>
+              )}
 
               {/* Product Availability & Shipping Status */}
               <div className="py-3 border-b border-[#f3f4f6] dark:border-[#1e293b]">
                 <div className="flex items-center gap-2 text-xs font-semibold text-[#059669] dark:text-emerald-400">
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>Ready for immediate dispatch · Express Delivery available</span>
+                  <span>
+                    {product.isEnquiryOnly || product.price === 0
+                      ? 'Pre-Orders Open · Express All-India Doorstep Dispatch on Release'
+                      : 'Ready for immediate dispatch · Express Delivery available'}
+                  </span>
                 </div>
               </div>
 

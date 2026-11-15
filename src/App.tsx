@@ -866,6 +866,14 @@ export default function App() {
 
   // Add to Cart
   const handleAddToCart = (product: Product, condition?: Condition) => {
+    if (product.isEnquiryOnly || product.price === 0) {
+      const message = encodeURIComponent(
+        product.whatsappMessage ||
+          `Hi DJN Tech, I want to pre-order / enquire about: ${product.name}. Please share pricing, release date, and booking details.`
+      );
+      window.open(`https://wa.me/918446439374?text=${message}`, '_blank', 'noopener,noreferrer');
+      return;
+    }
     if (isTestProduct(product) && !isAdminUser) {
       showToast('This item is a private test product accessible only to store administrators.');
       return;
@@ -892,6 +900,10 @@ export default function App() {
 
   // Instant Buy Now (requires login)
   const handleBuyNow = (product: Product, condition?: Condition) => {
+    if (product.isEnquiryOnly || product.price === 0) {
+      handleAddToCart(product, condition);
+      return;
+    }
     handleAddToCart(product, condition);
     if (!authUser) {
       setIsAuthModalOpen(true);
