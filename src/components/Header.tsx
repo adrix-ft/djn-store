@@ -536,6 +536,12 @@ export const Header: React.FC<HeaderProps> = ({
                 isActive: currentPage === 'preowned_games' && activePlatform === 'Xbox'
               },
               {
+                id: 'nintendo-games',
+                label: 'Nintendo Games',
+                onClick: () => onSelectCategory('preowned_games', 'Switch'),
+                isActive: currentPage === 'preowned_games' && (activePlatform === 'Switch' || activePlatform === 'Nintendo')
+              },
+              {
                 id: 'sell-consoles',
                 label: 'Sell Your Consoles',
                 onClick: onNavigateSellConsoles,
@@ -755,6 +761,16 @@ export const Header: React.FC<HeaderProps> = ({
                     setIsMobileMenuOpen(false);
                   },
                   isActive: currentPage === 'preowned_games' && activePlatform === 'Xbox'
+                },
+                {
+                  id: 'nintendo-games',
+                  label: 'Nintendo Games',
+                  icon: Disc,
+                  onClick: () => {
+                    onSelectCategory('preowned_games', 'Switch');
+                    setIsMobileMenuOpen(false);
+                  },
+                  isActive: currentPage === 'preowned_games' && (activePlatform === 'Switch' || activePlatform === 'Nintendo')
                 },
                 {
                   id: 'sell-consoles',

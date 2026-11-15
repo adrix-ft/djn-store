@@ -93,9 +93,16 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
           tag: 'Xbox Games'
         };
       }
+      if (selectedPlatform === 'Switch' || selectedPlatform === 'Nintendo') {
+        return {
+          title: 'Nintendo Switch Games',
+          subtitle: 'Certified pre-owned Nintendo Switch games (Game Cards & Complete Boxed Editions) with 1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).',
+          tag: 'Nintendo Switch Games'
+        };
+      }
       return {
         title: 'Pre-Owned Games',
-        subtitle: 'Pre-owned games for PlayStation and Xbox with 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
+        subtitle: 'Pre-owned games for PlayStation, Xbox, and Nintendo Switch with 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
         tag: 'Pre-Owned Games'
       };
     }
@@ -172,17 +179,17 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
             Home
           </button>
           <ChevronRight className="w-3.5 h-3.5 text-[#9ca3af] dark:text-gray-600" />
-          {category === 'consoles' && selectedPlatform !== 'all' ? (
+          {(category === 'consoles' || category === 'preowned_games') && selectedPlatform !== 'all' ? (
             <>
               <button
                 onClick={() => setSelectedPlatform('all')}
                 className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors font-medium cursor-pointer"
               >
-                Consoles
+                {category === 'consoles' ? 'Consoles' : 'Games'}
               </button>
               <ChevronRight className="w-3.5 h-3.5 text-[#9ca3af] dark:text-gray-600" />
               <span className="text-[#111827] dark:text-white font-semibold">
-                {selectedPlatform === 'Switch' ? 'Nintendo' : selectedPlatform}
+                {selectedPlatform === 'Switch' || selectedPlatform === 'Nintendo' ? 'Nintendo Switch' : selectedPlatform}
               </span>
             </>
           ) : (
@@ -249,12 +256,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
                   <Filter className="w-3.5 h-3.5" />
                   Platform:
                 </span>
-                {(category === 'consoles'
-                  ? (['all', 'PS5', 'PS4', 'Xbox', 'Nintendo'] as const)
-                  : category === 'preowned_games'
-                  ? (['all', 'PS5', 'PS4', 'Xbox'] as const)
-                  : (['all', 'PS5', 'PS4', 'Xbox', 'Nintendo'] as const)
-                ).map((plat) => {
+                {(['all', 'PS5', 'PS4', 'Xbox', 'Nintendo'] as const).map((plat) => {
                   const isPlatActive =
                     selectedPlatform === plat ||
                     (plat === 'Nintendo' && selectedPlatform === 'Switch');
@@ -268,7 +270,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
                           : 'bg-[#f4f5f7] dark:bg-[#161f30] text-[#4b5563] dark:text-gray-300 hover:text-[#111827] dark:hover:text-white'
                       }`}
                     >
-                      {plat === 'all' ? 'All' : plat}
+                      {plat === 'all' ? 'All' : plat === 'Nintendo' ? 'Nintendo Switch' : plat}
                     </button>
                   );
                 })}

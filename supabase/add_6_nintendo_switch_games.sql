@@ -292,3 +292,4 @@ ON CONFLICT (id) DO UPDATE SET
   warranty = EXCLUDED.warranty,
   disc_condition = EXCLUDED.disc_condition,
   image_url = EXCLUDED.image_url;
+

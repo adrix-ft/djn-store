@@ -105,7 +105,8 @@ export function resolveRouteFromUrl(availableProducts: Product[]): ResolvedRoute
       'repair', 'repair-console', 'specials', 'deals', 'terms', 'privacy',
       'shipping', 'refund', 'contact', 'about', 'grievance', 'consoles',
       'controllers', 'games', 'preowned_games', 'preowned-games', 'accessories',
-      'shop', 'all', 'store', 'catalog'
+      'shop', 'all', 'store', 'catalog', 'nintendo-games', 'switch-games',
+      'ps5-games', 'ps4-games', 'xbox-games', 'nintendo', 'switch'
     ];
     if (!systemRoutes.includes(candidateSlug)) {
       targetProductId = candidateSlug;
@@ -144,6 +145,18 @@ export function resolveRouteFromUrl(availableProducts: Product[]): ResolvedRoute
   }
   if (catSlug === 'nintendo' || catSlug === 'switch' || rawHash === '#nintendo' || rawHash === '#switch') {
     return { page: 'consoles', category: 'consoles', platform: 'Nintendo', product: null, policy: null };
+  }
+  if (catSlug === 'nintendo-games' || catSlug === 'switch-games' || rawHash === '#nintendo-games' || rawHash === '#switch-games') {
+    return { page: 'preowned_games', category: 'preowned_games', platform: 'Switch', product: null, policy: null };
+  }
+  if (catSlug === 'ps5-games' || rawHash === '#ps5-games') {
+    return { page: 'preowned_games', category: 'preowned_games', platform: 'PS5', product: null, policy: null };
+  }
+  if (catSlug === 'ps4-games' || rawHash === '#ps4-games') {
+    return { page: 'preowned_games', category: 'preowned_games', platform: 'PS4', product: null, policy: null };
+  }
+  if (catSlug === 'xbox-games' || rawHash === '#xbox-games') {
+    return { page: 'preowned_games', category: 'preowned_games', platform: 'Xbox', product: null, policy: null };
   }
   if (catSlug === 'controllers' || rawHash === '#controllers') {
     return { page: 'controllers', category: 'controllers', platform: 'all', product: null, policy: null };
@@ -701,11 +714,27 @@ export default function App() {
     setCurrentPage(cat);
     setActiveCategory(cat);
     setSelectedPlatform(plat);
-    const catSlug = cat === 'all' ? '/shop' : `/category/${cat}`;
+    const catSlug = cat === 'all'
+      ? '/shop'
+      : cat === 'preowned_games' && (plat === 'Switch' || plat === 'Nintendo')
+      ? '/category/nintendo-games'
+      : cat === 'preowned_games' && plat === 'PS5'
+      ? '/category/ps5-games'
+      : cat === 'preowned_games' && plat === 'PS4'
+      ? '/category/ps4-games'
+      : cat === 'preowned_games' && plat === 'Xbox'
+      ? '/category/xbox-games'
+      : `/category/${cat}`;
     if (window.location.pathname !== catSlug) {
       window.history.pushState({ type: 'category', category: cat, platform: plat }, '', catSlug);
     }
-    const catLabel = cat === 'all' ? 'All Gaming Catalog' : cat.replace('_', ' ').toUpperCase();
+    const catLabel = cat === 'all'
+      ? 'All Gaming Catalog'
+      : cat === 'preowned_games' && (plat === 'Switch' || plat === 'Nintendo')
+      ? 'Nintendo Switch Games'
+      : cat === 'preowned_games' && plat !== 'all'
+      ? `${plat} Games`
+      : cat.replace('_', ' ').toUpperCase();
     document.title = `${catLabel} | DJN Tech Online Store`;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
