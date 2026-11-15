@@ -471,8 +471,8 @@ export const PRODUCTS: Product[] = [
   // --- UPCOMING PRE-ORDER (WHATSAPP ENQUIRY) ---
   {
     id: 'gta-6-disc',
-    name: 'Grand Theft Auto VI (PS5 Disc Edition)',
-    subtitle: 'Rockstar Games · Official PS5 Physical Blu-ray Disc · Brand New Sealed',
+    name: 'Grand Theft Auto VI (PS5 Digital Edition)',
+    subtitle: 'Rockstar Games · Official PS5 Digital Edition · Pre-Order License',
     category: 'preowned_games',
     platform: 'PS5',
     condition: 'Brand New Sealed',
@@ -486,20 +486,20 @@ export const PRODUCTS: Product[] = [
     badge: 'PRE-ORDER',
     imageUrl: '/hero-gta6.png',
     features: [
-      'Official Rockstar Games physical Blu-ray Disc Edition for PlayStation 5',
+      'Official Rockstar Games Digital Edition for PlayStation 5',
       'Set in the neon-soaked streets of Vice City and beyond in the state of Leonida',
       'Dual protagonist story featuring Lucia and Jason',
       'Pre-order enquiry directly via WhatsApp (+91 84464 39374)',
-      'DJN Assured 100% authentic physical game delivery on launch'
+      'DJN Assured 100% authentic digital delivery on launch'
     ],
-    description: 'Grand Theft Auto VI heads to the state of Leonida, home to the neon-soaked streets of Vice City and beyond in the biggest, most immersive evolution of the Grand Theft Auto series yet. Pre-order your physical PS5 disc directly with DJN Tech via WhatsApp enquiry with zero advance payment.',
-    inTheBox: ['PS5 Official Game Case', 'Grand Theft Auto VI Blu-ray Disc', 'Official Vice City Artwork Inlay & Map Insert'],
+    description: 'Grand Theft Auto VI heads to the state of Leonida, home to the neon-soaked streets of Vice City and beyond in the biggest, most immersive evolution of the Grand Theft Auto series yet. Pre-order your official PS5 Digital Edition directly with DJN Tech via WhatsApp enquiry with zero advance payment.',
+    inTheBox: ['Official PS5 Digital Game License / Code', 'Rockstar Games Digital Pre-Order Bonus Pack'],
     warranty: 'DJN Tech Store Warranty',
-    discCondition: 'Brand New Factory Sealed',
+    discCondition: 'Digital Edition',
     genre: 'Action / Open World',
     themeColor: '#c026d3',
     isEnquiryOnly: true,
-    whatsappMessage: 'Hi DJN Tech, I want to pre-order / enquire about Grand Theft Auto VI (GTA 6) PS5 Disc Edition. Please share the pricing, release date, and booking details.',
+    whatsappMessage: 'Hi DJN Tech, I want to pre-order / enquire about Grand Theft Auto VI (GTA 6) PS5 Digital Edition. Please share the pricing, release date, and booking details.',
     reviews: []
   }
 ];

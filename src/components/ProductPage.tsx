@@ -328,7 +328,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                     </span>
                   </div>
                   <p className="text-xs text-[#6b7280] dark:text-gray-400 mt-2 font-medium leading-relaxed">
-                    Official PS5 Physical Blu-ray Disc Edition. Connect directly on WhatsApp with our store for price updates, release dispatch schedule, and booking confirmation.
+                    Official PS5 Digital Edition. Connect directly on WhatsApp with our store for pricing, launch key delivery schedule, and pre-order booking confirmation.
                   </p>
                 </div>
               ) : (

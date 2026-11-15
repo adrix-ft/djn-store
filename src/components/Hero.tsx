@@ -33,8 +33,8 @@ const HERO_ITEMS: HeroItem[] = [
   {
     id: 'gta6',
     label: 'Upcoming Pre-Order',
-    title: 'Grand Theft Auto VI (PS5 Disc Edition)',
-    subtitle: 'Rockstar Games · Official PS5 Physical Disc · Pre-Order on WhatsApp',
+    title: 'Grand Theft Auto VI (PS5 Digital Edition)',
+    subtitle: 'Rockstar Games · Official PS5 Digital Edition · Pre-Order on WhatsApp',
     price: 'Pre-Order Now',
     mrp: '',
     discount: 'HOT',
@@ -42,7 +42,7 @@ const HERO_ITEMS: HeroItem[] = [
     productId: 'gta-6-disc',
     isExternalWhatsApp: true,
     whatsappNumber: '+91 84464 39374',
-    whatsappMessage: 'Hi DJN Tech, I want to pre-order Grand Theft Auto VI (GTA 6) PS5 Disc Edition. Please share the pricing and booking details.',
+    whatsappMessage: 'Hi DJN Tech, I want to pre-order Grand Theft Auto VI (GTA 6) PS5 Digital Edition. Please share the pricing and booking details.',
     ambientGlow: 'bg-gradient-to-tr from-fuchsia-600/35 via-pink-500/30 to-amber-400/25 dark:from-fuchsia-600/50 dark:via-pink-600/35 dark:to-orange-500/30',
     badgeText: 'Pre-Order on WhatsApp',
   },
@@ -121,7 +121,7 @@ export const Hero: React.FC<HeroProps> = ({
     if (baseItem.isExternalWhatsApp) {
       const message = encodeURIComponent(
         baseItem.whatsappMessage ||
-          'Hi DJN Tech, I want to pre-order Grand Theft Auto VI (GTA 6) PS5 Disc Edition. Please share the pricing and booking details.'
+          'Hi DJN Tech, I want to pre-order Grand Theft Auto VI (GTA 6) PS5 Digital Edition. Please share the pricing and booking details.'
       );
       window.open(
         `https://wa.me/918446439374?text=${message}`,
