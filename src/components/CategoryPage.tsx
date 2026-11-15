@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { ChevronRight, SlidersHorizontal, ArrowUpDown, Filter, Sparkles, Gamepad2, Gamepad, Disc, Layers } from 'lucide-react';
+import { ChevronRight, ChevronDown, SlidersHorizontal, ArrowUpDown, Filter, Sparkles, Gamepad2, Gamepad, Disc, Layers } from 'lucide-react';
 import { Product, Category, Platform } from '../types/store';
 import { ProductCard } from './ProductCard';
 
@@ -101,9 +101,9 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
         };
       }
       return {
-        title: 'Pre-Owned Games',
-        subtitle: 'Pre-owned games for PlayStation, Xbox, and Nintendo Switch with 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
-        tag: 'Pre-Owned Games'
+        title: 'Console Games',
+        subtitle: 'Pre-owned and verified console games for PlayStation, Xbox, and Nintendo Switch with 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
+        tag: 'Console Games'
       };
     }
 
@@ -185,7 +185,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
                 onClick={() => setSelectedPlatform('all')}
                 className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors font-medium cursor-pointer"
               >
-                {category === 'consoles' ? 'Consoles' : 'Games'}
+                {category === 'consoles' ? 'Consoles' : 'Console Games'}
               </button>
               <ChevronRight className="w-3.5 h-3.5 text-[#9ca3af] dark:text-gray-600" />
               <span className="text-[#111827] dark:text-white font-semibold">
@@ -246,79 +246,159 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
         </div>
 
         {/* Filter and Sort Toolbar */}
-        <div className="bg-white dark:bg-[#111827] rounded-xl border border-[#e5e7eb] dark:border-[#1e293b] p-4 mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xs">
+        <div className="bg-white dark:bg-[#111827] rounded-xl border border-[#e5e7eb] dark:border-[#1e293b] p-3 sm:p-4 mb-6 sm:mb-8 shadow-xs">
           
-          {/* Platform & Condition Filter Chips */}
-          <div className="flex flex-wrap items-center gap-2">
-            {showPlatformFilter && (
-              <>
-                <span className="text-xs font-bold text-[#6b7280] dark:text-gray-400 mr-1 flex items-center gap-1">
-                  <Filter className="w-3.5 h-3.5" />
-                  Platform:
-                </span>
-                {(['all', 'PS5', 'PS4', 'Xbox', 'Nintendo'] as const).map((plat) => {
-                  const isPlatActive =
-                    selectedPlatform === plat ||
-                    (plat === 'Nintendo' && selectedPlatform === 'Switch');
-                  return (
-                    <button
-                      key={plat}
-                      onClick={() => setSelectedPlatform(plat)}
-                      className={`px-3 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                        isPlatActive
-                          ? 'bg-[#111827] dark:bg-blue-600 text-white font-semibold shadow-xs'
-                          : 'bg-[#f4f5f7] dark:bg-[#161f30] text-[#4b5563] dark:text-gray-300 hover:text-[#111827] dark:hover:text-white'
-                      }`}
+          {/* MOBILE VIEW: Clean Native-styled Dropdowns */}
+          <div className="md:hidden flex flex-col gap-2.5 w-full">
+            <div className={`grid ${showPlatformFilter ? 'grid-cols-2' : 'grid-cols-1'} gap-2 w-full`}>
+              {showPlatformFilter && (
+                <div className="relative">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#6b7280] dark:text-gray-400 mb-1 flex items-center gap-1">
+                    <Gamepad2 className="w-3 h-3 text-[#1a73e8] dark:text-[#60a5fa]" />
+                    Platform
+                  </label>
+                  <div className="relative">
+                    <select
+                      value={selectedPlatform === 'Switch' ? 'Nintendo' : selectedPlatform}
+                      onChange={(e) => setSelectedPlatform(e.target.value as any)}
+                      className="w-full appearance-none pl-3 pr-8 py-2 rounded-lg border border-[#d1d5db] dark:border-gray-700 bg-white dark:bg-[#161f30] text-xs font-semibold text-[#111827] dark:text-white focus:outline-hidden focus:border-[#1a73e8] dark:focus:border-[#60a5fa] cursor-pointer shadow-2xs"
                     >
-                      {plat === 'all' ? 'All' : plat === 'Nintendo' ? 'Nintendo Switch' : plat}
-                    </button>
-                  );
-                })}
+                      <option value="all">All Platforms</option>
+                      <option value="PS5">PlayStation 5</option>
+                      <option value="PS4">PlayStation 4</option>
+                      <option value="Xbox">Xbox</option>
+                      <option value="Nintendo">Nintendo Switch</option>
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2.5 text-gray-500">
+                      <ChevronDown className="w-3.5 h-3.5" />
+                    </div>
+                  </div>
+                </div>
+              )}
 
-                <div className="h-4 w-[1px] bg-[#e5e7eb] dark:bg-gray-800 mx-1 hidden sm:block" />
-              </>
-            )}
+              <div className="relative">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-[#6b7280] dark:text-gray-400 mb-1 flex items-center gap-1">
+                  <Filter className="w-3 h-3 text-[#1a73e8] dark:text-[#60a5fa]" />
+                  Condition
+                </label>
+                <div className="relative">
+                  <select
+                    value={selectedCondition}
+                    onChange={(e) => setSelectedCondition(e.target.value as any)}
+                    className="w-full appearance-none pl-3 pr-8 py-2 rounded-lg border border-[#d1d5db] dark:border-gray-700 bg-white dark:bg-[#161f30] text-xs font-semibold text-[#111827] dark:text-white focus:outline-hidden focus:border-[#1a73e8] dark:focus:border-[#60a5fa] cursor-pointer shadow-2xs"
+                  >
+                    <option value="all">All Conditions</option>
+                    <option value="new">Brand New Sealed</option>
+                    <option value="preowned">Pre-Owned Grade A+</option>
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2.5 text-gray-500">
+                    <ChevronDown className="w-3.5 h-3.5" />
+                  </div>
+                </div>
+              </div>
+            </div>
 
-            <span className="text-xs font-bold text-[#6b7280] dark:text-gray-400 mr-1 flex items-center gap-1">
-              {!showPlatformFilter && <Filter className="w-3.5 h-3.5" />}
-              Condition:
-            </span>
-            {[
-              { id: 'all', label: 'All' },
-              { id: 'new', label: 'Brand New' },
-              { id: 'preowned', label: 'Pre-Owned' }
-            ].map((cond) => (
-              <button
-                key={cond.id}
-                onClick={() => setSelectedCondition(cond.id)}
-                className={`px-3 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                  selectedCondition === cond.id
-                    ? 'bg-[#111827] dark:bg-blue-600 text-white font-semibold shadow-xs'
-                    : 'bg-[#f4f5f7] dark:bg-[#161f30] text-[#4b5563] dark:text-gray-300 hover:text-[#111827] dark:hover:text-white'
-                }`}
-              >
-                {cond.label}
-              </button>
-            ))}
+            {/* Mobile Sort Dropdown */}
+            <div className="relative w-full pt-2 border-t border-[#f3f4f6] dark:border-[#1e293b]">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#6b7280] dark:text-gray-400 flex items-center gap-1 shrink-0">
+                  <ArrowUpDown className="w-3 h-3 text-[#1a73e8] dark:text-[#60a5fa]" />
+                  Sort by
+                </span>
+                <div className="relative flex-1 max-w-[210px]">
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value as any)}
+                    className="w-full appearance-none pl-3 pr-8 py-1.5 rounded-lg border border-[#d1d5db] dark:border-gray-700 bg-white dark:bg-[#161f30] text-xs font-semibold text-[#111827] dark:text-white focus:outline-hidden focus:border-[#1a73e8] dark:focus:border-[#60a5fa] cursor-pointer shadow-2xs text-left"
+                  >
+                    <option value="featured">Featured / Best Sellers</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="rating">Customer Rating</option>
+                    <option value="discount">Biggest Discount</option>
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-500">
+                    <ChevronDown className="w-3.5 h-3.5" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Sort Dropdown */}
-          <div className="flex items-center gap-2 self-end md:self-auto text-xs shrink-0">
-            <span className="text-[#6b7280] dark:text-gray-400 font-medium flex items-center gap-1">
-              <ArrowUpDown className="w-3.5 h-3.5" />
-              Sort by:
-            </span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="px-3 py-1.5 rounded-lg border border-[#d1d5db] dark:border-gray-700 bg-white dark:bg-[#161f30] text-xs font-medium text-[#111827] dark:text-white focus:outline-hidden focus:border-[#1a73e8] dark:focus:border-[#60a5fa] cursor-pointer"
-            >
-              <option value="featured">Featured / Best Sellers</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
-              <option value="rating">Customer Rating</option>
-              <option value="discount">Biggest Discount</option>
-            </select>
+          {/* DESKTOP VIEW: Clean Horizontal Filter Chips & Sort Toolbar */}
+          <div className="hidden md:flex items-center justify-between w-full gap-4">
+            {/* Platform & Condition Filter Chips */}
+            <div className="flex flex-wrap items-center gap-2">
+              {showPlatformFilter && (
+                <>
+                  <span className="text-xs font-bold text-[#6b7280] dark:text-gray-400 mr-1 flex items-center gap-1">
+                    <Filter className="w-3.5 h-3.5" />
+                    Platform:
+                  </span>
+                  {(['all', 'PS5', 'PS4', 'Xbox', 'Nintendo'] as const).map((plat) => {
+                    const isPlatActive =
+                      selectedPlatform === plat ||
+                      (plat === 'Nintendo' && selectedPlatform === 'Switch');
+                    return (
+                      <button
+                        key={plat}
+                        onClick={() => setSelectedPlatform(plat)}
+                        className={`px-3 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                          isPlatActive
+                            ? 'bg-[#111827] dark:bg-blue-600 text-white font-semibold shadow-xs'
+                            : 'bg-[#f4f5f7] dark:bg-[#161f30] text-[#4b5563] dark:text-gray-300 hover:text-[#111827] dark:hover:text-white'
+                        }`}
+                      >
+                        {plat === 'all' ? 'All' : plat === 'Nintendo' ? 'Nintendo Switch' : plat}
+                      </button>
+                    );
+                  })}
+
+                  <div className="h-4 w-[1px] bg-[#e5e7eb] dark:bg-gray-800 mx-1 hidden sm:block" />
+                </>
+              )}
+
+              <span className="text-xs font-bold text-[#6b7280] dark:text-gray-400 mr-1 flex items-center gap-1">
+                {!showPlatformFilter && <Filter className="w-3.5 h-3.5" />}
+                Condition:
+              </span>
+              {[
+                { id: 'all', label: 'All' },
+                { id: 'new', label: 'Brand New' },
+                { id: 'preowned', label: 'Pre-Owned' }
+              ].map((cond) => (
+                <button
+                  key={cond.id}
+                  onClick={() => setSelectedCondition(cond.id)}
+                  className={`px-3 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                    selectedCondition === cond.id
+                      ? 'bg-[#111827] dark:bg-blue-600 text-white font-semibold shadow-xs'
+                      : 'bg-[#f4f5f7] dark:bg-[#161f30] text-[#4b5563] dark:text-gray-300 hover:text-[#111827] dark:hover:text-white'
+                  }`}
+                >
+                  {cond.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Sort Dropdown */}
+            <div className="flex items-center gap-2 self-end md:self-auto text-xs shrink-0">
+              <span className="text-[#6b7280] dark:text-gray-400 font-medium flex items-center gap-1">
+                <ArrowUpDown className="w-3.5 h-3.5" />
+                Sort by:
+              </span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="px-3 py-1.5 rounded-lg border border-[#d1d5db] dark:border-gray-700 bg-white dark:bg-[#161f30] text-xs font-medium text-[#111827] dark:text-white focus:outline-hidden focus:border-[#1a73e8] dark:focus:border-[#60a5fa] cursor-pointer"
+              >
+                <option value="featured">Featured / Best Sellers</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="rating">Customer Rating</option>
+                <option value="discount">Biggest Discount</option>
+              </select>
+            </div>
           </div>
 
         </div>

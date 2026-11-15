@@ -106,7 +106,7 @@ export function resolveRouteFromUrl(availableProducts: Product[]): ResolvedRoute
       'shipping', 'refund', 'contact', 'about', 'grievance', 'consoles',
       'controllers', 'games', 'preowned_games', 'preowned-games', 'accessories',
       'shop', 'all', 'store', 'catalog', 'nintendo-games', 'switch-games',
-      'ps5-games', 'ps4-games', 'xbox-games', 'nintendo', 'switch'
+      'ps5-games', 'ps4-games', 'xbox-games', 'console-games', 'nintendo', 'switch'
     ];
     if (!systemRoutes.includes(candidateSlug)) {
       targetProductId = candidateSlug;
@@ -161,7 +161,7 @@ export function resolveRouteFromUrl(availableProducts: Product[]): ResolvedRoute
   if (catSlug === 'controllers' || rawHash === '#controllers') {
     return { page: 'controllers', category: 'controllers', platform: 'all', product: null, policy: null };
   }
-  if (catSlug === 'games' || catSlug === 'preowned_games' || catSlug === 'preowned-games' || rawHash === '#games') {
+  if (catSlug === 'games' || catSlug === 'console-games' || catSlug === 'preowned_games' || catSlug === 'preowned-games' || rawHash === '#games' || rawHash === '#console-games') {
     return { page: 'preowned_games', category: 'preowned_games', platform: 'all', product: null, policy: null };
   }
   if (catSlug === 'accessories' || rawHash === '#accessories') {
@@ -734,6 +734,8 @@ export default function App() {
       ? 'Nintendo Switch Games'
       : cat === 'preowned_games' && plat !== 'all'
       ? `${plat} Games`
+      : cat === 'preowned_games'
+      ? 'Console Games'
       : cat.replace('_', ' ').toUpperCase();
     document.title = `${catLabel} | DJN Tech Online Store`;
     window.scrollTo({ top: 0, behavior: 'smooth' });

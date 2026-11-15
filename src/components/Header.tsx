@@ -518,28 +518,10 @@ export const Header: React.FC<HeaderProps> = ({
                 isActive: currentPage === 'accessories'
               },
               {
-                id: 'ps5-games',
-                label: 'PS5 Games',
-                onClick: () => onSelectCategory('preowned_games', 'PS5'),
-                isActive: currentPage === 'preowned_games' && activePlatform === 'PS5'
-              },
-              {
-                id: 'ps4-games',
-                label: 'PS4 Games',
-                onClick: () => onSelectCategory('preowned_games', 'PS4'),
-                isActive: currentPage === 'preowned_games' && activePlatform === 'PS4'
-              },
-              {
-                id: 'xbox-games',
-                label: 'XBOX Games',
-                onClick: () => onSelectCategory('preowned_games', 'Xbox'),
-                isActive: currentPage === 'preowned_games' && activePlatform === 'Xbox'
-              },
-              {
-                id: 'nintendo-games',
-                label: 'Nintendo Games',
-                onClick: () => onSelectCategory('preowned_games', 'Switch'),
-                isActive: currentPage === 'preowned_games' && (activePlatform === 'Switch' || activePlatform === 'Nintendo')
+                id: 'console-games',
+                label: 'Console Games',
+                onClick: () => onSelectCategory('preowned_games', 'all'),
+                isActive: currentPage === 'preowned_games'
               },
               {
                 id: 'sell-consoles',
@@ -733,44 +715,14 @@ export const Header: React.FC<HeaderProps> = ({
                   isActive: currentPage === 'accessories'
                 },
                 {
-                  id: 'ps5-games',
-                  label: 'PS5 Games',
+                  id: 'console-games',
+                  label: 'Console Games',
                   icon: Disc,
                   onClick: () => {
-                    onSelectCategory('preowned_games', 'PS5');
+                    onSelectCategory('preowned_games', 'all');
                     setIsMobileMenuOpen(false);
                   },
-                  isActive: currentPage === 'preowned_games' && activePlatform === 'PS5'
-                },
-                {
-                  id: 'ps4-games',
-                  label: 'PS4 Games',
-                  icon: Disc,
-                  onClick: () => {
-                    onSelectCategory('preowned_games', 'PS4');
-                    setIsMobileMenuOpen(false);
-                  },
-                  isActive: currentPage === 'preowned_games' && activePlatform === 'PS4'
-                },
-                {
-                  id: 'xbox-games',
-                  label: 'Xbox Games',
-                  icon: Disc,
-                  onClick: () => {
-                    onSelectCategory('preowned_games', 'Xbox');
-                    setIsMobileMenuOpen(false);
-                  },
-                  isActive: currentPage === 'preowned_games' && activePlatform === 'Xbox'
-                },
-                {
-                  id: 'nintendo-games',
-                  label: 'Nintendo Games',
-                  icon: Disc,
-                  onClick: () => {
-                    onSelectCategory('preowned_games', 'Switch');
-                    setIsMobileMenuOpen(false);
-                  },
-                  isActive: currentPage === 'preowned_games' && (activePlatform === 'Switch' || activePlatform === 'Nintendo')
+                  isActive: currentPage === 'preowned_games'
                 },
                 {
                   id: 'sell-consoles',
