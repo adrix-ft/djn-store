@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, LayoutGrid, Disc, Banknote, User } from 'lucide-react';
+import { Home, Gamepad2, Disc, Banknote, User } from 'lucide-react';
 import { AuthUser, Category, Platform } from '../types/store';
 
 interface MobileBottomNavProps {
@@ -26,11 +26,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   userOrdersCount = 0,
 }) => {
   const isHomeActive = currentPage === 'home';
-  const isCategoriesActive =
-    (currentPage === 'all' && activeCategory === 'all') ||
-    currentPage === 'consoles' ||
-    currentPage === 'controllers' ||
-    currentPage === 'accessories';
+  const isConsolesActive = currentPage === 'consoles';
   const isGamesActive = currentPage === 'preowned_games';
   const isTradeActive = currentPage === 'sell-consoles';
 
@@ -56,18 +52,18 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
           <span className="text-[10px] mt-0.5 leading-none">Home</span>
         </button>
 
-        {/* 2. CATEGORIES (Consoles, Controllers & Accessories consolidated) */}
+        {/* 2. CONSOLES */}
         <button
-          onClick={() => onSelectCategory('all', 'all')}
+          onClick={() => onSelectCategory('consoles', 'all')}
           className={`flex flex-col items-center justify-center py-1 transition-colors cursor-pointer select-none ${
-            isCategoriesActive
+            isConsolesActive
               ? 'text-blue-600 dark:text-blue-400 font-bold'
               : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
           }`}
-          aria-label="Browse All Categories"
+          aria-label="Browse Consoles"
         >
-          <LayoutGrid className={`w-5 h-5 ${isCategoriesActive ? 'stroke-[2.5]' : 'stroke-[1.8]'}`} />
-          <span className="text-[10px] mt-0.5 leading-none">Categories</span>
+          <Gamepad2 className={`w-5 h-5 ${isConsolesActive ? 'stroke-[2.5]' : 'stroke-[1.8]'}`} />
+          <span className="text-[10px] mt-0.5 leading-none">Consoles</span>
         </button>
 
         {/* 3. GAMES (Pre-Owned & Sealed Discs) */}
