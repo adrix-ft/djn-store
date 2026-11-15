@@ -131,6 +131,61 @@ export const OfficialXboxLogo: React.FC<{ className?: string }> = ({ className =
 );
 
 /**
+ * 100% Official Nintendo Switch Logo & Wordmark Vector
+ * Features the signature Nintendo Switch Joy-Con icon and crisp bold branding.
+ */
+export const OfficialSwitchLogo: React.FC<{ className?: string }> = ({ className = 'h-full w-auto' }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 240 50"
+    className={className}
+    fill="currentColor"
+    aria-label="Nintendo Switch Official Logo"
+  >
+    {/* Joy-Con Emblem */}
+    <g transform="translate(2, 3) scale(0.8)">
+      {/* Left solid controller with cutout button */}
+      <path
+        d="M 14 3 C 6.5 3 0.5 9 0.5 16.5 L 0.5 38.5 C 0.5 46 6.5 52 14 52 L 20 52 L 20 3 Z"
+        fill="currentColor"
+      />
+      <circle cx="10.5" cy="18" r="3.2" fill="#e60012" />
+      {/* Right outlined controller with solid button */}
+      <path
+        d="M 28 3 L 34 3 C 41.5 3 47.5 9 47.5 16.5 L 47.5 38.5 C 47.5 46 41.5 52 34 52 L 28 52 Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3.6"
+      />
+      <circle cx="37.5" cy="37" r="3.2" fill="currentColor" />
+    </g>
+    {/* Text Wordmark */}
+    <text
+      x="52"
+      y="22"
+      fontFamily="system-ui, -apple-system, sans-serif"
+      fontSize="16"
+      fontWeight="900"
+      letterSpacing="2.5"
+      fill="currentColor"
+    >
+      NINTENDO
+    </text>
+    <text
+      x="52"
+      y="43"
+      fontFamily="system-ui, -apple-system, sans-serif"
+      fontSize="18"
+      fontWeight="900"
+      letterSpacing="3.5"
+      fill="currentColor"
+    >
+      SWITCH
+    </text>
+  </svg>
+);
+
+/**
  * GameCaseFrame
  * Automatically wraps any game artwork inside an authentic retail physical console case.
  * Accurate Blu-ray Amaray case proportions, translucent royal blue polycarbonate rims,
@@ -149,7 +204,8 @@ export const GameCaseFrame: React.FC<GameCaseFrameProps> = ({
 
   const isXbox = platform?.toLowerCase().includes('xbox');
   const isPS4 = platform?.toLowerCase().includes('ps4');
-  const isPS5 = !isXbox && !isPS4; // Default to PS5 as requested
+  const isSwitch = platform?.toLowerCase().includes('switch') || platform?.toLowerCase().includes('nintendo');
+  const isPS5 = !isXbox && !isPS4 && !isSwitch; // Default to PS5 as requested
 
   // Sizing definitions for case dimensions
   const sizeStyles = {
@@ -191,15 +247,19 @@ export const GameCaseFrame: React.FC<GameCaseFrameProps> = ({
     },
   }[size];
 
-  // Case Casing Colors (Translucent Blue Polycarbonate for PS5/PS4, Emerald for Xbox)
-  const caseBorderColor = isXbox
+  // Case Casing Colors (Translucent Blue for PS5/PS4, Emerald for Xbox, Iconic Red for Nintendo Switch)
+  const caseBorderColor = isSwitch
+    ? 'bg-gradient-to-r from-[#dc2626] via-[#e60012] to-[#b91c1c] border-[#ef4444]/70 shadow-[0_12px_28px_-6px_rgba(230,0,18,0.4)]'
+    : isXbox
     ? 'bg-gradient-to-r from-[#107c10] via-[#16a34a] to-[#0d5c0d] border-[#22c55e]/70 shadow-[0_12px_28px_-6px_rgba(16,124,16,0.35)]'
     : isPS4
     ? 'bg-gradient-to-r from-[#003791] via-[#0050d8] to-[#00286b] border-[#3b82f6]/70 shadow-[0_12px_28px_-6px_rgba(0,55,145,0.4)]'
     : 'bg-gradient-to-r from-[#035fe6] via-[#086ff7] to-[#0142b3] border-[#60a5fa]/60 shadow-[0_14px_32px_-6px_rgba(3,95,230,0.4),0_4px_10px_rgba(0,0,0,0.18)]';
 
   // Banner Background Colors
-  const bannerClasses = isXbox
+  const bannerClasses = isSwitch
+    ? 'bg-[#e60012] text-white border-b border-[#b91c1c]'
+    : isXbox
     ? 'bg-white text-gray-900 border-b border-gray-300'
     : isPS4
     ? 'bg-[#003791] text-white border-b border-[#00286b]'
@@ -224,11 +284,15 @@ export const GameCaseFrame: React.FC<GameCaseFrameProps> = ({
         <div
           className={`relative w-full h-full flex flex-col overflow-hidden bg-white ${sizeStyles.roundedInner} shadow-inner`}
         >
-          {/* 1. Header Banner (The official PS5 / PS4 / Xbox top ribbon) */}
+          {/* 1. Header Banner (The official Switch / PS5 / PS4 / Xbox top ribbon) */}
           <div
             className={`w-full ${sizeStyles.bannerHeight} ${bannerClasses} flex items-center justify-start ${sizeStyles.bannerPadding} shrink-0 z-10 transition-colors`}
           >
-            {isXbox ? (
+            {isSwitch ? (
+              <div className="flex items-center h-full w-full">
+                <OfficialSwitchLogo className={`${sizeStyles.logoHeight} max-w-[65%] text-white`} />
+              </div>
+            ) : isXbox ? (
               <div className="flex items-center h-full w-full">
                 <OfficialXboxLogo className={`${sizeStyles.logoHeight} max-w-[65%]`} />
               </div>

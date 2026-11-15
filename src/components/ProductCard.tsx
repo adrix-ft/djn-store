@@ -44,14 +44,27 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       >
         <ProductVisualizer product={product} size="md" />
 
-        {/* Minimal Discount Tag */}
-        {product.discountPercent > 0 && (
-          <div className="absolute top-2.5 left-2.5 z-20">
-            <span className="text-[10px] font-semibold tracking-tight px-1.5 py-0.5 rounded bg-[#111827] dark:bg-white text-white dark:text-[#111827]">
+        {/* Minimal Discount Tag & Badge */}
+        <div className="absolute top-2.5 left-2.5 z-20 flex flex-col gap-1 items-start">
+          {product.discountPercent > 0 && (
+            <span className="text-[10px] font-semibold tracking-tight px-1.5 py-0.5 rounded bg-[#111827] dark:bg-white text-white dark:text-[#111827] shadow-xs">
               -{product.discountPercent}%
             </span>
-          </div>
-        )}
+          )}
+          {product.badge && (
+            <span
+              className={`text-[9px] font-extrabold tracking-wider uppercase px-1.5 py-0.5 rounded shadow-xs ${
+                product.badge === 'ONLY GAME CARD'
+                  ? 'bg-amber-500 text-white dark:bg-amber-400 dark:text-gray-900'
+                  : product.badge === 'WITH BOX'
+                  ? 'bg-emerald-600 text-white dark:bg-emerald-500 dark:text-white'
+                  : 'bg-blue-600 text-white dark:bg-blue-500 dark:text-white'
+              }`}
+            >
+              {product.badge}
+            </span>
+          )}
+        </div>
 
         {/* Wishlist Icon */}
         <button

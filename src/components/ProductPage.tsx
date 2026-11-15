@@ -169,10 +169,25 @@ export const ProductPage: React.FC<ProductPageProps> = ({
               
               {/* Main Image Box with Zoom Container */}
               <div className="relative w-full aspect-square bg-[#fbfcfd] dark:bg-[#161f30] border border-[#eaedf0] dark:border-[#2d3748] rounded-2xl p-4 sm:p-6 flex items-center justify-center overflow-hidden group">
-                {/* Condition Badge */}
-                <span className="absolute top-4 left-4 z-10 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-white dark:bg-[#1e293b] text-[#111827] dark:text-white border border-[#eaedf0] dark:border-gray-700 shadow-xs">
-                  {product.condition}
-                </span>
+                {/* Condition & Packaging Badges */}
+                <div className="absolute top-4 left-4 z-10 flex flex-col sm:flex-row gap-1.5 items-start">
+                  <span className="px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-white dark:bg-[#1e293b] text-[#111827] dark:text-white border border-[#eaedf0] dark:border-gray-700 shadow-xs">
+                    {product.condition}
+                  </span>
+                  {product.badge && (
+                    <span
+                      className={`px-2.5 py-1 rounded-md text-[11px] font-extrabold uppercase tracking-wider shadow-xs ${
+                        product.badge === 'ONLY GAME CARD'
+                          ? 'bg-amber-500 text-white border border-amber-600'
+                          : product.badge === 'WITH BOX'
+                          ? 'bg-emerald-600 text-white border border-emerald-700'
+                          : 'bg-[#111827] dark:bg-blue-600 text-white border border-transparent'
+                      }`}
+                    >
+                      {product.badge}
+                    </span>
+                  )}
+                </div>
 
                 {/* Wishlist Button */}
                 <button
