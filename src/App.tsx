@@ -377,7 +377,9 @@ export default function App() {
 
   // Admin access strictly derived from verified user role (Google OAuth + Supabase users table)
   const isAdminUser = Boolean(
-    authUser?.role === 'admin' || authUser?.role === 'superadmin'
+    authUser?.role === 'admin' ||
+    authUser?.role === 'superadmin' ||
+    authUser?.role === 'staff'
   );
   const isAdminAuthenticated = isAdminUser;
 
@@ -571,6 +573,8 @@ export default function App() {
       if (isSignInEvent) {
         if (role === 'admin' || role === 'superadmin') {
           showToast(`Welcome Admin, ${parsed.fullName}!`);
+        } else if (role === 'staff') {
+          showToast(`Welcome Staff, ${parsed.fullName}!`);
         } else {
           showToast(`Welcome, ${parsed.fullName}!`);
         }

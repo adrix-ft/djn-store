@@ -685,7 +685,7 @@ export async function verifyAdminCredentials(
     },
     'djntechofficial@gmail.com': {
       hash: 'd9fe582e7a47be0fdef8679f2a732521296a8aa2b266d07b78e6f0d469efd131',
-      role: 'superadmin',
+      role: 'staff',
       user: 'admin',
     },
     aa: {
@@ -785,13 +785,19 @@ export async function fetchCurrentUserRole(email?: string): Promise<UserRole> {
   }
 
   // 3. Fallback check for known authorized admin emails during offline/transition
-  const HARDCODED_ADMIN_EMAILS = [
-    'djntechofficial@gmail.com',
+  const HARDCODED_SUPERADMIN_EMAILS = [
     'adrashyadav343@gmail.com',
     'adarshyadav343@gmail.com',
   ];
-  if (cleanEmail && HARDCODED_ADMIN_EMAILS.includes(cleanEmail)) {
+  if (cleanEmail && HARDCODED_SUPERADMIN_EMAILS.includes(cleanEmail)) {
     return 'superadmin';
+  }
+
+  const HARDCODED_STAFF_EMAILS = [
+    'djntechofficial@gmail.com',
+  ];
+  if (cleanEmail && HARDCODED_STAFF_EMAILS.includes(cleanEmail)) {
+    return 'staff';
   }
 
   return 'customer';

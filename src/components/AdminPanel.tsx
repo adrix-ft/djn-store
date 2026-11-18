@@ -224,7 +224,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     }
   };
 
+  const userEmail = (authUser?.email || '').trim().toLowerCase();
   const isSuperAdmin = authUser?.role === 'superadmin';
+
+  // Catalog permission: djntechofficial@gmail.com and staff role have read-only access to catalog.
+  // They can access admin panel, view analytics, and manage orders, but product additions/edits are hidden & blocked.
+  const isCatalogRestricted =
+    userEmail === 'djntechofficial@gmail.com' ||
+    authUser?.role === 'staff';
+
+  const canManageProducts = !isCatalogRestricted && (authUser?.role === 'admin' || authUser?.role === 'superadmin');
 
   // Security guard: If non-superadmin is on security tab, auto-redirect to analytics
   useEffect(() => {
@@ -383,6 +392,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
   // Open Add Product Modal with smart defaults based on active tab
   const handleOpenAddProduct = () => {
+    if (!canManageProducts) {
+      showToast('Permission Restricted: Your role has view-only access to the product catalog.');
+      return;
+    }
     const newId = `product-${Date.now()}`;
     setEditingProduct(null);
     setModalTab('basic');
@@ -408,6 +421,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     } else if (activeProductTab === 'xbox_games') {
       initialCategory = 'preowned_games';
       initialPlatform = 'Xbox';
+    } else if ((activeProductTab as string) === 'nintendo_games') {
+      initialCategory = 'nintendo_games';
+      initialPlatform = 'Nintendo Switch';
     }
 
     setProductForm({
@@ -423,6 +439,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
   // Open Edit Product Modal
   const handleOpenEditProduct = (product: Product) => {
+    if (!canManageProducts) {
+      showToast('Permission Restricted: Your role has view-only access to the product catalog.');
+      return;
+    }
     setEditingProduct(product);
     setProductForm({ ...product });
     setFeaturesText((product.features || []).join('\n'));
@@ -434,6 +454,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   // Save Product Form
   const handleSaveProduct = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!canManageProducts) {
+      showToast('Permission Restricted: Product catalog changes are disabled for your role.');
+      return;
+    }
     if (!productForm.name.trim()) {
       alert('Product title is required.');
       return;
@@ -488,6 +512,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   // Delete product
   const handleConfirmDelete = () => {
     if (!productToDelete) return;
+    if (!canManageProducts) {
+      showToast('Permission Restricted: Product deletion is disabled for your role.');
+      setProductToDelete(null);
+      return;
+    }
     const nextProducts = products.filter((p) => p.id !== productToDelete.id);
     onUpdateProducts(nextProducts);
     deleteProductFromDB(productToDelete.id).then((success) => {
@@ -644,14 +673,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
           {/* Quick Actions & Exit Controls */}
           <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-            <button
-              onClick={handleOpenAddProduct}
-              className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold shadow-md shadow-blue-600/20 transition-all cursor-pointer"
-            >
-              <Plus className="w-4 h-4 stroke-[2.5]" />
-              <span className="hidden sm:inline">Add Product</span>
-              <span className="sm:hidden text-[11px]">Add</span>
-            </button>
+            {canManageProducts && (
+              <button
+                onClick={handleOpenAddProduct}
+                className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold shadow-md shadow-blue-600/20 transition-all cursor-pointer"
+              >
+                <Plus className="w-4 h-4 stroke-[2.5]" />
+                <span className="hidden sm:inline">Add Product</span>
+                <span className="sm:hidden text-[11px]">Add</span>
+              </button>
+            )}
 
             <button
               onClick={onExit}
@@ -801,13 +832,15 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               </div>
             </div>
 
-            <button
-              onClick={handleOpenAddProduct}
-              className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-blue-50 hover:bg-blue-100/80 dark:bg-blue-950/40 dark:hover:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold text-xs transition-colors cursor-pointer border border-blue-200/60 dark:border-blue-900/40"
-            >
-              <Plus className="w-4 h-4 stroke-[2.5]" />
-              <span>Add Product</span>
-            </button>
+            {canManageProducts && (
+              <button
+                onClick={handleOpenAddProduct}
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-blue-50 hover:bg-blue-100/80 dark:bg-blue-950/40 dark:hover:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold text-xs transition-colors cursor-pointer border border-blue-200/60 dark:border-blue-900/40"
+              >
+                <Plus className="w-4 h-4 stroke-[2.5]" />
+                <span>Add Product</span>
+              </button>
+            )}
           </div>
         </aside>
 
@@ -985,14 +1018,21 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 </select>
               </div>
 
-              {/* Add Product Button */}
-              <button
-                onClick={handleOpenAddProduct}
-                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-xs sm:text-sm shadow-md shadow-blue-600/20 transition-all shrink-0 cursor-pointer"
-              >
-                <Plus className="w-4 h-4 stroke-[2.5]" />
-                <span>Add Product</span>
-              </button>
+              {/* Add Product Button or View Only Badge */}
+              {canManageProducts ? (
+                <button
+                  onClick={handleOpenAddProduct}
+                  className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-xs sm:text-sm shadow-md shadow-blue-600/20 transition-all shrink-0 cursor-pointer"
+                >
+                  <Plus className="w-4 h-4 stroke-[2.5]" />
+                  <span>Add Product</span>
+                </button>
+              ) : (
+                <div className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-800/60 text-xs font-semibold text-amber-700 dark:text-amber-300 shrink-0">
+                  <Eye className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                  <span>View Only Catalog</span>
+                </div>
+              )}
             </div>
 
             {/* Products Catalog Display: Mobile Responsive Cards + Desktop Data Table */}
@@ -1073,24 +1113,26 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                           )}
                         </div>
 
-                        <div className="flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={() => handleOpenEditProduct(p)}
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 text-xs font-bold transition-colors cursor-pointer active:scale-95"
-                          >
-                            <Edit2 className="w-3.5 h-3.5" />
-                            <span>Edit</span>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setProductToDelete(p)}
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 text-xs font-bold transition-colors cursor-pointer active:scale-95"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                            <span>Delete</span>
-                          </button>
-                        </div>
+                        {canManageProducts && (
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => handleOpenEditProduct(p)}
+                              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 text-xs font-bold transition-colors cursor-pointer active:scale-95"
+                            >
+                              <Edit2 className="w-3.5 h-3.5" />
+                              <span>Edit</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setProductToDelete(p)}
+                              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 text-xs font-bold transition-colors cursor-pointer active:scale-95"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                              <span>Delete</span>
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))
@@ -1109,13 +1151,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                       <th className="py-3.5 px-3">Category</th>
                       <th className="py-3.5 px-3">Condition</th>
                       <th className="py-3.5 px-3">Price & MRP</th>
-                      <th className="py-3.5 px-4 text-right">Actions</th>
+                      {canManageProducts && <th className="py-3.5 px-4 text-right">Actions</th>}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 dark:divide-gray-800/60">
                     {paginatedProducts.length === 0 ? (
                       <tr>
-                        <td colSpan={5} className="py-16 text-center text-gray-400 dark:text-gray-500">
+                        <td colSpan={canManageProducts ? 5 : 4} className="py-16 text-center text-gray-400 dark:text-gray-500">
                           <Package className="w-12 h-12 mx-auto mb-3 opacity-30 stroke-[1.5]" />
                           <p className="text-sm font-bold text-gray-700 dark:text-gray-300">
                             No products found matching filters
@@ -1207,25 +1249,27 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                           </td>
 
                           {/* Actions */}
-                          <td className="py-3.5 px-4 text-right whitespace-nowrap">
-                            <div className="flex items-center justify-end gap-1.5">
-                              <button
-                                onClick={() => handleOpenEditProduct(p)}
-                                className="p-1.5 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors cursor-pointer"
-                                title="Edit Product Specs & Pricing"
-                              >
-                                <Edit2 className="w-3.5 h-3.5" />
-                              </button>
+                          {canManageProducts && (
+                            <td className="py-3.5 px-4 text-right whitespace-nowrap">
+                              <div className="flex items-center justify-end gap-1.5">
+                                <button
+                                  onClick={() => handleOpenEditProduct(p)}
+                                  className="p-1.5 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors cursor-pointer"
+                                  title="Edit Product Specs & Pricing"
+                                >
+                                  <Edit2 className="w-3.5 h-3.5" />
+                                </button>
 
-                              <button
-                                onClick={() => setProductToDelete(p)}
-                                className="p-1.5 rounded-lg bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors cursor-pointer"
-                                title="Delete Product"
-                              >
-                                <Trash2 className="w-3.5 h-3.5" />
-                              </button>
-                            </div>
-                          </td>
+                                <button
+                                  onClick={() => setProductToDelete(p)}
+                                  className="p-1.5 rounded-lg bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors cursor-pointer"
+                                  title="Delete Product"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </td>
+                          )}
                         </tr>
                       ))
                     )}
@@ -2133,7 +2177,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                       Authorized Accounts & Role Management (public.users)
                     </h3>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                      Assign roles to Gmail accounts. Only users with "admin" or "superadmin" can see the admin panel button or modify store data.
+                      Assign roles to Gmail accounts. Users with "staff", "admin", or "superadmin" can access the admin panel with role-based privileges.
                     </p>
                   </div>
                 </div>
@@ -2165,7 +2209,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                     >
                       <option value="admin">Admin (Full Store Management)</option>
                       <option value="superadmin">Superadmin (All Privileges)</option>
-                      <option value="staff">Staff (Orders Only)</option>
+                      <option value="staff">Staff (Orders & View-Only Catalog)</option>
                       <option value="customer">Customer (Standard User)</option>
                     </select>
                     <button
@@ -2436,7 +2480,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       {/* ========================================================================= */}
       {/* PRODUCT ADD / EDIT MODAL WITH LIVE CARD PREVIEW */}
       {/* ========================================================================= */}
-      {isProductModalOpen && (
+      {isProductModalOpen && canManageProducts && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-xs overflow-y-auto animate-in fade-in duration-150">
           <div className="relative w-full max-w-4xl max-h-[92vh] rounded-2xl bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-800 shadow-2xl flex flex-col overflow-hidden my-auto">
             
@@ -2818,7 +2862,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       )}
 
       {/* DELETE CONFIRMATION MODAL */}
-      {productToDelete && (
+      {productToDelete && canManageProducts && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
           <div className="relative w-full max-w-md rounded-2xl bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-800 shadow-2xl p-6 text-center space-y-4">
             <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center mx-auto">
@@ -3085,16 +3129,18 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
             {/* Quick Utility Actions */}
             <div className="pt-2 border-t border-gray-100 dark:border-gray-800 space-y-2">
-              <button
-                onClick={() => {
-                  setIsMobileMoreOpen(false);
-                  handleOpenAddProduct();
-                }}
-                className="w-full py-2.5 px-3 rounded-xl bg-blue-600 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-xs cursor-pointer"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Add New Product to Store</span>
-              </button>
+              {canManageProducts && (
+                <button
+                  onClick={() => {
+                    setIsMobileMoreOpen(false);
+                    handleOpenAddProduct();
+                  }}
+                  className="w-full py-2.5 px-3 rounded-xl bg-blue-600 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Add New Product to Store</span>
+                </button>
+              )}
 
               <button
                 onClick={() => {
