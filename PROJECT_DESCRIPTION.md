@@ -204,4 +204,14 @@ flowchart TD
 
 ---
 
+## 🗄️ Database & Catalog Management for AI Agents
+
+For any agent or developer adding or modifying products/games in the database, refer to the mandatory guide:
+- **Guide**: [DATABASE_CATALOG_GUIDE.md](file:///d:/Downloads/djn-tech---consoles,-controllers-&-pre-owned-games-store/DATABASE_CATALOG_GUIDE.md)
+- **Step 1: Search Database**: `node scripts/search_catalog.mjs "<keyword>"` (or `npm run db:search -- "<keyword>"`)
+- **Step 2: Upsert Product**: `node scripts/upsert_product.mjs` (or `npm run db:upsert -- ...`)
+- **Step 3: Sync Local**: Update `src/data/products.ts` and verify with `npm run build`.
+
+---
+
 *Document prepared for the **DJN Tech** project repository. Built with passion for the Indian gaming community.*

@@ -120,7 +120,48 @@ export const PRODUCTS: Product[] = [
     ]
   },
 
-  // 3. PS4 Slim 1TB (₹22,000)
+  // 3. PS4 Pro 1TB White (₹27,000)
+  {
+    id: 'product-1795065292560',
+    name: 'PlayStation 4 Pro 1TB (White)',
+    subtitle: '4K HDR Gaming · 1TB High-Capacity Storage · Enhanced GPU · White Edition',
+    category: 'consoles',
+    platform: 'PS4',
+    condition: 'Pre-Owned Grade A+',
+    mrp: 35000,
+    price: 27000,
+    discountPercent: 23,
+    rating: 4.8,
+    reviewCount: 15,
+    inStock: true,
+    stockCount: 999,
+    badge: 'NEW ARRIVAL',
+    imageUrl: '/ps4-pro-white.jpg',
+    features: [
+      'Massive 1TB internal HDD holding 25+ blockbuster PlayStation games',
+      'Enhanced GPU delivering 4K gaming, faster frame rates, and HDR visuals',
+      'Stunning White chassis edition with 3-tier architectural design',
+      'Includes original matching Sony DualShock 4 V2 wireless controller',
+      '100% optical laser seek, fresh thermal paste, and motherboard diagnostic pass'
+    ],
+    description: 'The powerhouse of the PS4 generation in limited White. Delivers dynamic 4K visuals, high-speed frame rate stabilization, HDR contrast, and double the GPU processing performance of the standard PS4.',
+    inTheBox: [
+      'PlayStation 4 Pro 1TB Console (White)',
+      'DualShock 4 Wireless Controller (Original V2)',
+      'HDMI Cable',
+      'Power Cable',
+      'USB Charging Cable'
+    ],
+    warranty: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)',
+    color: 'White',
+    themeColor: '#00439c',
+    genre: 'Home Gaming Console',
+    storage: '1TB HDD',
+    edition: 'Pro Edition (1TB)',
+    reviews: []
+  },
+
+  // 4. PS4 Slim 1TB (₹22,000)
   {
     id: 'ps4-slim-1tb-preowned',
     name: 'PlayStation 4 Slim (1TB Console)',
