@@ -15,6 +15,7 @@ import { PRODUCTS } from '../data/products';
 import {
   upsertProductToDB,
   deleteProductFromDB,
+  toggleProductAvailabilityInDB,
   upsertSiteConfigToDB,
   updateOrderStatusInDB,
   updateAdminCredentials,
@@ -147,6 +148,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   // Search & Filters for Products
   const [productSearch, setProductSearch] = useState('');
   const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc' | 'name-asc'>('featured');
+  const [stockFilter, setStockFilter] = useState<'all' | 'available' | 'unavailable'>('all');
 
   // Pagination for Products Table (20 items per page)
   const [currentPage, setCurrentPage] = useState(1);
@@ -367,6 +369,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           (p.subtitle && p.subtitle.toLowerCase().includes(q)) ||
           p.id.toLowerCase().includes(q);
 
+        // Availability / Stock filter
+        if (stockFilter === 'available' && p.inStock === false) return false;
+        if (stockFilter === 'unavailable' && p.inStock !== false) return false;
+
         return matchesTab && matchesSearch;
       })
       .sort((a, b) => {
@@ -375,7 +381,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         if (sortBy === 'name-asc') return a.name.localeCompare(b.name);
         return 0; // default featured
       });
-  }, [products, activeProductTab, productSearch, sortBy]);
+  }, [products, activeProductTab, productSearch, sortBy, stockFilter]);
 
   // Paginated Slices
   const totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
@@ -422,8 +428,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       initialCategory = 'preowned_games';
       initialPlatform = 'Xbox';
     } else if ((activeProductTab as string) === 'nintendo_games') {
-      initialCategory = 'nintendo_games';
-      initialPlatform = 'Nintendo Switch';
+      initialCategory = 'preowned_games';
+      initialPlatform = 'Switch';
     }
 
     setProductForm({
@@ -451,6 +457,31 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     setIsProductModalOpen(true);
   };
 
+  // 1-Click Availability / Stock Toggle
+  const handleToggleProductAvailability = async (product: Product, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    if (!canManageProducts) {
+      showToast('Permission Restricted: Changing product availability is disabled for your role.');
+      return;
+    }
+    const nextInStock = product.inStock === false ? true : false;
+    const nextProducts = products.map((p) =>
+      p.id === product.id ? { ...p, inStock: nextInStock, stockCount: nextInStock ? 999 : 0 } : p
+    );
+    onUpdateProducts(nextProducts);
+
+    const success = await toggleProductAvailabilityInDB(product.id, nextInStock);
+    if (!success) {
+      showToast('Database update failed. Check connection.');
+    } else {
+      showToast(
+        nextInStock
+          ? `Marked "${product.name}" as Available (Visible to shoppers)`
+          : `Marked "${product.name}" as Out of Stock (Hidden from store)`
+      );
+    }
+  };
+
   // Save Product Form
   const handleSaveProduct = (e: React.FormEvent) => {
     e.preventDefault();
@@ -470,8 +501,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
     const updatedProduct: Product = {
       ...productForm,
-      inStock: true,
-      stockCount: 999,
+      inStock: productForm.inStock !== false,
+      stockCount: productForm.inStock === false ? 0 : (productForm.stockCount ?? 999),
       discountPercent: calculatedDiscount,
       features: featuresText
         .split('\n')
@@ -601,7 +632,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     try {
       const parsed = JSON.parse(importJsonText);
       if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].id) {
-        const sanitized = parsed.map((p) => ({ ...p, inStock: true, stockCount: 999 }));
+        const sanitized = parsed.map((p) => ({
+          ...p,
+          inStock: p.inStock !== false,
+          stockCount: p.inStock === false ? 0 : (p.stockCount ?? 999),
+        }));
         onUpdateProducts(sanitized);
         setImportJsonText('');
         setImportError(null);
@@ -1016,6 +1051,20 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   <option value="price-desc">Price: High to Low</option>
                   <option value="name-asc">Title: A to Z</option>
                 </select>
+
+                {/* Stock / Availability Filter */}
+                <select
+                  value={stockFilter}
+                  onChange={(e) => {
+                    setStockFilter(e.target.value as any);
+                    setCurrentPage(1);
+                  }}
+                  className="px-3 py-2 rounded-xl text-xs bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                >
+                  <option value="all">Stock: All</option>
+                  <option value="available">🟢 In Stock (Available)</option>
+                  <option value="unavailable">🔴 Out of Stock (Hidden)</option>
+                </select>
               </div>
 
               {/* Add Product Button or View Only Badge */}
@@ -1086,6 +1135,22 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                             <span className="px-1.5 py-0.5 rounded text-[9px] font-semibold bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
                               {p.condition}
                             </span>
+                            <button
+                              type="button"
+                              disabled={!canManageProducts}
+                              onClick={(e) => handleToggleProductAvailability(p, e)}
+                              className={`px-1.5 py-0.5 rounded text-[9px] font-bold uppercase transition-all flex items-center gap-1 ${
+                                canManageProducts ? 'cursor-pointer active:scale-95' : 'cursor-default'
+                              } ${
+                                p.inStock !== false
+                                  ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800'
+                                  : 'bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-800'
+                              }`}
+                              title={canManageProducts ? 'Tap to toggle stock availability' : undefined}
+                            >
+                              <span className={`w-1.5 h-1.5 rounded-full ${p.inStock !== false ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`} />
+                              <span>{p.inStock !== false ? 'In Stock' : 'Out of Stock'}</span>
+                            </button>
                             {p.badge && (
                               <span className="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200/50 dark:border-amber-800/40">
                                 {p.badge}
@@ -1151,13 +1216,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                       <th className="py-3.5 px-3">Category</th>
                       <th className="py-3.5 px-3">Condition</th>
                       <th className="py-3.5 px-3">Price & MRP</th>
+                      <th className="py-3.5 px-3">Availability</th>
                       {canManageProducts && <th className="py-3.5 px-4 text-right">Actions</th>}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 dark:divide-gray-800/60">
                     {paginatedProducts.length === 0 ? (
                       <tr>
-                        <td colSpan={canManageProducts ? 5 : 4} className="py-16 text-center text-gray-400 dark:text-gray-500">
+                        <td colSpan={canManageProducts ? 6 : 5} className="py-16 text-center text-gray-400 dark:text-gray-500">
                           <Package className="w-12 h-12 mx-auto mb-3 opacity-30 stroke-[1.5]" />
                           <p className="text-sm font-bold text-gray-700 dark:text-gray-300">
                             No products found matching filters
@@ -1246,6 +1312,32 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                                 </span>
                               </div>
                             )}
+                          </td>
+
+                          {/* Availability Toggle */}
+                          <td className="py-3.5 px-3 whitespace-nowrap">
+                            <button
+                              type="button"
+                              disabled={!canManageProducts}
+                              onClick={(e) => handleToggleProductAvailability(p, e)}
+                              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                                canManageProducts ? 'cursor-pointer hover:shadow-xs active:scale-95' : 'cursor-default'
+                              } ${
+                                p.inStock !== false
+                                  ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300/80 dark:border-emerald-800/80 hover:bg-emerald-100 dark:hover:bg-emerald-900/50'
+                                  : 'bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border border-rose-300/80 dark:border-rose-800/80 hover:bg-rose-100 dark:hover:bg-rose-900/50'
+                              }`}
+                              title={
+                                canManageProducts
+                                  ? p.inStock !== false
+                                    ? 'Click to mark Out of Stock (Hide from store)'
+                                    : 'Click to mark Available (Show in store)'
+                                  : undefined
+                              }
+                            >
+                              <span className={`w-2 h-2 rounded-full ${p.inStock !== false ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`} />
+                              <span>{p.inStock !== false ? 'Available' : 'Out of Stock'}</span>
+                            </button>
                           </td>
 
                           {/* Actions */}
@@ -2640,6 +2732,37 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                         </select>
                       </div>
                     </div>
+
+                    {/* Store Availability */}
+                    <div className="p-3.5 rounded-xl bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 flex items-center justify-between gap-3">
+                      <div>
+                        <div className="font-bold text-gray-800 dark:text-gray-200 text-xs">
+                          Store Availability & Stock Status
+                        </div>
+                        <div className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
+                          {productForm.inStock !== false
+                            ? '🟢 Available (Item is displayed on website & customers can order)'
+                            : '🔴 Out of Stock (Item is hidden from customer browsing until restocked)'}
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setProductForm({
+                            ...productForm,
+                            inStock: productForm.inStock === false ? true : false,
+                            stockCount: productForm.inStock === false ? 999 : 0,
+                          })
+                        }
+                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 shadow-xs ${
+                          productForm.inStock !== false
+                            ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                            : 'bg-rose-600 hover:bg-rose-700 text-white'
+                        }`}
+                      >
+                        {productForm.inStock !== false ? 'In Stock (Available)' : 'Out of Stock (Hidden)'}
+                      </button>
+                    </div>
                   </div>
                 )}
 
@@ -2684,6 +2807,37 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                           ? `${Math.round(((productForm.mrp - productForm.price) / productForm.mrp) * 100)}% OFF`
                           : '0% OFF'}
                       </strong>
+                    </div>
+
+                    {/* Store Availability & Stock Status */}
+                    <div className="p-3.5 rounded-xl bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 flex items-center justify-between gap-3">
+                      <div>
+                        <div className="font-bold text-gray-800 dark:text-gray-200 text-xs">
+                          Inventory Availability
+                        </div>
+                        <div className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
+                          {productForm.inStock !== false
+                            ? '🟢 Available (Customer can add to cart)'
+                            : '🔴 Out of Stock (Hidden from storefront)'}
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setProductForm({
+                            ...productForm,
+                            inStock: productForm.inStock === false ? true : false,
+                            stockCount: productForm.inStock === false ? 999 : 0,
+                          })
+                        }
+                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 shadow-xs ${
+                          productForm.inStock !== false
+                            ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                            : 'bg-rose-600 hover:bg-rose-700 text-white'
+                        }`}
+                      >
+                        {productForm.inStock !== false ? 'In Stock (Available)' : 'Out of Stock (Hidden)'}
+                      </button>
                     </div>
                   </div>
                 )}

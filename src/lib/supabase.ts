@@ -32,8 +32,8 @@ export function mapRowToProduct(row: any): Product {
     discountPercent: Number(row.discount_percent) || 0,
     rating: Number(row.rating) || 4.5,
     reviewCount: Number(row.review_count) || 0,
-    inStock: true,
-    stockCount: 999,
+    inStock: row.in_stock !== false && (row.stock_count === null || row.stock_count === undefined || Number(row.stock_count) > 0),
+    stockCount: row.stock_count !== undefined && row.stock_count !== null ? Number(row.stock_count) : (row.in_stock === false ? 0 : 999),
     badge: row.badge || undefined,
     features: Array.isArray(row.features) ? row.features : [],
     description: row.description || '',
@@ -70,8 +70,8 @@ export function mapProductToRow(prod: Product) {
     discount_percent: prod.discountPercent,
     rating: prod.rating,
     review_count: prod.reviewCount,
-    in_stock: true,
-    stock_count: 999,
+    in_stock: prod.inStock !== false,
+    stock_count: prod.inStock === false ? 0 : (prod.stockCount ?? 999),
     badge: prod.badge || null,
     features: prod.features || [],
     description: prod.description || '',
@@ -273,19 +273,19 @@ export async function fetchProductsFromDB(): Promise<Product[]> {
 
     if (error || !data || data.length === 0) {
       if (error) console.warn('[Supabase] Products query error:', error.message);
-      // Fallback to local storage or defaults with inStock guaranteed
+      // Fallback to local storage or defaults
       const local = localStorage.getItem('djn_products_v11');
       if (local) {
         try {
           const parsed: Product[] = JSON.parse(local);
           const savedIds = new Set(parsed.map((p) => p.id));
           const missing = PRODUCTS.filter((p) => !savedIds.has(p.id));
-          return [...parsed, ...missing].map((p) => ({ ...p, inStock: true, stockCount: 999 }));
+          return [...parsed, ...missing];
         } catch {
           // ignore
         }
       }
-      return PRODUCTS.map((p) => ({ ...p, inStock: true, stockCount: 999 }));
+      return PRODUCTS;
     }
 
     const mapped = data.map(mapRowToProduct);
@@ -293,18 +293,6 @@ export async function fetchProductsFromDB(): Promise<Product[]> {
     const missing = PRODUCTS.filter((p) => !dbIds.has(p.id));
     const allProducts = [...mapped, ...missing];
     localStorage.setItem('djn_products_v11', JSON.stringify(allProducts));
-
-    // Self-healing: verify all cloud DB products are marked permanently available
-    supabase
-      .from('products')
-      .update({ in_stock: true, stock_count: 999 })
-      .or('in_stock.eq.false,stock_count.lte.2')
-      .then(({ error: syncErr }) => {
-        if (!syncErr) {
-          console.log('[Supabase] Verified all catalog products are active and in-stock.');
-        }
-      })
-      .catch(() => {});
 
     return allProducts;
   } catch (err) {
@@ -315,12 +303,37 @@ export async function fetchProductsFromDB(): Promise<Product[]> {
         const parsed: Product[] = JSON.parse(local);
         const savedIds = new Set(parsed.map((p) => p.id));
         const missing = PRODUCTS.filter((p) => !savedIds.has(p.id));
-        return [...parsed, ...missing].map((p) => ({ ...p, inStock: true, stockCount: 999 }));
+        return [...parsed, ...missing];
       } catch {
         // ignore
       }
     }
-    return PRODUCTS.map((p) => ({ ...p, inStock: true, stockCount: 999 }));
+    return PRODUCTS;
+  }
+}
+
+/**
+ * Toggles product availability / in_stock state in Supabase cloud database
+ */
+export async function toggleProductAvailabilityInDB(id: string, inStock: boolean): Promise<boolean> {
+  try {
+    const { error } = await supabase
+      .from('products')
+      .update({
+        in_stock: inStock,
+        stock_count: inStock ? 999 : 0,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', id);
+
+    if (error) {
+      console.error('[Supabase] Toggle product availability error:', error);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error('[Supabase] Failed to toggle product availability:', err);
+    return false;
   }
 }
 

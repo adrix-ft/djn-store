@@ -394,17 +394,17 @@ export default function App() {
     );
   };
 
-  // Visible products: normal visitors/customers never see test items; only Admins & Superadmins can
+  // Visible products: normal visitors/customers only see active/in-stock non-test items; Admins/Superadmins see all
   const visibleProducts = useMemo(() => {
     if (isAdminUser) {
       return products;
     }
-    return products.filter((p) => !isTestProduct(p));
+    return products.filter((p) => !isTestProduct(p) && p.inStock !== false);
   }, [products, isAdminUser]);
 
-  // Guard: If a visitor tries to view the test product URL/page without admin permissions, redirect to home
+  // Guard: If a visitor tries to view a test product or out-of-stock product without admin permissions, redirect to home
   useEffect(() => {
-    if (selectedProduct && isTestProduct(selectedProduct) && !isAdminUser) {
+    if (selectedProduct && !isAdminUser && (isTestProduct(selectedProduct) || selectedProduct.inStock === false)) {
       setSelectedProduct(null);
       if (currentPage === 'product-detail') {
         setCurrentPage('home');
