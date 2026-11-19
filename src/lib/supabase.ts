@@ -685,7 +685,7 @@ export async function verifyAdminCredentials(
     },
     'djntechofficial@gmail.com': {
       hash: 'd9fe582e7a47be0fdef8679f2a732521296a8aa2b266d07b78e6f0d469efd131',
-      role: 'staff',
+      role: 'admin',
       user: 'admin',
     },
     aa: {
@@ -793,11 +793,13 @@ export async function fetchCurrentUserRole(email?: string): Promise<UserRole> {
     return 'superadmin';
   }
 
-  const HARDCODED_STAFF_EMAILS = [
+  const HARDCODED_ADMIN_EMAILS = [
     'djntechofficial@gmail.com',
+    'adrashyadav07o8@gmail.com',
+    'yadavkajal3279@gmail.com',
   ];
-  if (cleanEmail && HARDCODED_STAFF_EMAILS.includes(cleanEmail)) {
-    return 'staff';
+  if (cleanEmail && HARDCODED_ADMIN_EMAILS.includes(cleanEmail)) {
+    return 'admin';
   }
 
   return 'customer';
