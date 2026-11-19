@@ -229,12 +229,12 @@ export default function App() {
         const parsed: Product[] = JSON.parse(saved);
         const savedIds = new Set(parsed.map((p) => p.id));
         const missing = PRODUCTS.filter((p) => !savedIds.has(p.id));
-        return [...parsed, ...missing].map((p) => ({ ...p, inStock: true, stockCount: 999 }));
+        return [...parsed, ...missing];
       }
     } catch (e) {
       console.error(e);
     }
-    return PRODUCTS.map((p) => ({ ...p, inStock: true, stockCount: 999 }));
+    return PRODUCTS;
   });
 
   // Dynamic Site Configuration
@@ -276,14 +276,9 @@ export default function App() {
         ]);
         if (isMounted) {
           if (dbProducts && dbProducts.length > 0) {
-            const guaranteed = dbProducts.map((p) => ({
-              ...p,
-              inStock: true,
-              stockCount: 999,
-            }));
-            const dbIds = new Set(guaranteed.map((p) => p.id));
+            const dbIds = new Set(dbProducts.map((p) => p.id));
             const missing = PRODUCTS.filter((p) => !dbIds.has(p.id));
-            const merged = [...guaranteed, ...missing];
+            const merged = [...dbProducts, ...missing];
             const hasTest = merged.some((p) => p.id === TEST_PRODUCT.id || p.price === 1);
             const finalProducts = hasTest ? merged : [TEST_PRODUCT, ...merged];
             setProducts(finalProducts);
@@ -394,20 +389,28 @@ export default function App() {
     );
   };
 
-  // Visible products: normal visitors/customers only see active/in-stock non-test items; Admins/Superadmins see all
+  // Visible products for customer storefront: strictly active in-stock items (non-test items)
   const visibleProducts = useMemo(() => {
-    if (isAdminUser) {
-      return products;
-    }
-    return products.filter((p) => !isTestProduct(p) && p.inStock !== false);
+    return products.filter((p) => {
+      // Internal Razorpay gateway test product: only visible to admins
+      if (isTestProduct(p)) {
+        return isAdminUser;
+      }
+      // Public customer store: only available in-stock items are shown (hidden when out-of-stock)
+      return p.inStock !== false;
+    });
   }, [products, isAdminUser]);
 
-  // Guard: If a visitor tries to view a test product or out-of-stock product without admin permissions, redirect to home
+  // Guard: If a visitor tries to view a test product or out-of-stock product, redirect to home
   useEffect(() => {
-    if (selectedProduct && !isAdminUser && (isTestProduct(selectedProduct) || selectedProduct.inStock === false)) {
-      setSelectedProduct(null);
-      if (currentPage === 'product-detail') {
-        setCurrentPage('home');
+    if (selectedProduct) {
+      if (isTestProduct(selectedProduct) && !isAdminUser) {
+        setSelectedProduct(null);
+        if (currentPage === 'product-detail') setCurrentPage('home');
+      } else if (selectedProduct.inStock === false) {
+        setSelectedProduct(null);
+        if (currentPage === 'product-detail') setCurrentPage('home');
+        showToast('That item is currently out of stock.');
       }
     }
   }, [selectedProduct, isAdminUser, currentPage]);
@@ -901,6 +904,10 @@ export default function App() {
 
   // Add to Cart
   const handleAddToCart = (product: Product, condition?: Condition) => {
+    if (product.inStock === false) {
+      showToast('This item is currently out of stock.');
+      return;
+    }
     if (product.isEnquiryOnly || product.price === 0) {
       const message = encodeURIComponent(
         product.whatsappMessage ||

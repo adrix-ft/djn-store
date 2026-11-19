@@ -330,6 +330,21 @@ export async function toggleProductAvailabilityInDB(id: string, inStock: boolean
       console.error('[Supabase] Toggle product availability error:', error);
       return false;
     }
+
+    // Sync to local cache
+    try {
+      const local = localStorage.getItem('djn_products_v11');
+      if (local) {
+        const parsed: Product[] = JSON.parse(local);
+        const updated = parsed.map((p) =>
+          p.id === id ? { ...p, inStock, stockCount: inStock ? 999 : 0 } : p
+        );
+        localStorage.setItem('djn_products_v11', JSON.stringify(updated));
+      }
+    } catch {
+      // ignore
+    }
+
     return true;
   } catch (err) {
     console.error('[Supabase] Failed to toggle product availability:', err);
