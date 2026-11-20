@@ -527,11 +527,11 @@ export const SellConsolesPage: React.FC<SellConsolesPageProps> = ({
                 </a>
               </div>
 
-              {/* Guarantee badges */}
+              {/* Assured value badges */}
               <div className="pt-3 border-t border-[#f0f2f5] dark:border-[#1e293b] text-[11px] text-[#6b7280] dark:text-gray-400 space-y-1.5">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-                  <span>Quote guaranteed for 7 full business days</span>
+                  <span>Quote valid for 7 full business days</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
@@ -564,7 +564,7 @@ export const SellConsolesPage: React.FC<SellConsolesPageProps> = ({
               {
                 step: '01',
                 title: 'Instant Online Quote',
-                desc: 'Select your console model, condition, and accessories to lock in your live guaranteed cash quote.'
+                desc: 'Select your console model, condition, and accessories to lock in your live instant cash quote.'
               },
               {
                 step: '02',

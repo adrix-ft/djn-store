@@ -750,7 +750,7 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
                   </div>
                   <div>
                     <h3 className="text-base font-black text-gray-900 dark:text-white">
-                      DJN Tech 1 Month Shop Warranty & Hardware Guarantee
+                      DJN Tech 1 Month Shop Warranty (Hardware Coverage)
                     </h3>
                     <p className="text-xs text-blue-700 dark:text-blue-300">
                       1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).

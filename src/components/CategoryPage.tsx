@@ -75,34 +75,34 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
       if (selectedPlatform === 'PS5') {
         return {
           title: 'PlayStation 5 Games',
-          subtitle: 'Verified pre-owned PS5 game discs with original cases and 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
+          subtitle: 'Verified pre-owned PS5 game discs with original cases and 1 Day Testing Warranty.',
           tag: 'PlayStation 5 Games'
         };
       }
       if (selectedPlatform === 'PS4') {
         return {
           title: 'PlayStation 4 Games',
-          subtitle: 'Tested pre-owned PS4 game discs compatible with PS4 and PS5 systems with 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
+          subtitle: 'Tested pre-owned PS4 game discs compatible with PS4 and PS5 systems with 1 Day Testing Warranty.',
           tag: 'PlayStation 4 Games'
         };
       }
       if (selectedPlatform === 'Xbox') {
         return {
           title: 'Xbox Games',
-          subtitle: 'Pre-owned Xbox games with original cases and 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
+          subtitle: 'Pre-owned Xbox games with original cases and 1 Day Testing Warranty.',
           tag: 'Xbox Games'
         };
       }
       if (selectedPlatform === 'Switch' || selectedPlatform === 'Nintendo') {
         return {
           title: 'Nintendo Switch Games',
-          subtitle: 'Certified pre-owned Nintendo Switch games (Game Cards & Complete Boxed Editions) with 1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).',
+          subtitle: 'Certified pre-owned Nintendo Switch games (Game Cards & Complete Boxed Editions) with 1 Day Testing Warranty.',
           tag: 'Nintendo Switch Games'
         };
       }
       return {
         title: 'Console Games',
-        subtitle: 'Pre-owned and verified console games for PlayStation, Xbox, and Nintendo Switch with 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
+        subtitle: 'Pre-owned and verified console games for PlayStation, Xbox, and Nintendo Switch with 1 Day Testing Warranty.',
         tag: 'Console Games'
       };
     }

@@ -25,7 +25,7 @@ export const HomeTrustSections: React.FC<HomeTrustSectionsProps> = ({ onShopNow 
             <div className="flex-1 sm:flex-none">
               <h3 className="text-xs sm:text-sm font-bold text-[#111827] dark:text-white">1 Month Shop Warranty</h3>
               <p className="text-[11px] sm:text-xs text-[#6b7280] dark:text-gray-400 max-w-sm leading-tight sm:leading-relaxed mt-0.5 sm:mt-1">
-                1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).
+                1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage). 1 Day Testing Warranty on all pre-owned games.
               </p>
             </div>
           </div>

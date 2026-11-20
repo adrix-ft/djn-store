@@ -574,7 +574,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 Sign in with Google to Place Order
               </h3>
               <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-                To guarantee priority delivery, activate your 1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage), and provide real-time order tracking updates on WhatsApp and Email, please sign in with your Google account.
+                To ensure priority delivery, activate your 1 Month Shop Warranty on pre-owned consoles (Warranty does not cover physical and liquid damage), and provide real-time order tracking updates on WhatsApp and Email, please sign in with your Google account.
               </p>
             </div>
 

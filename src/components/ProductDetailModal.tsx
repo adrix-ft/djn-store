@@ -100,9 +100,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 <div>
                   <p className="font-bold text-[#212121]">DJN Verified Pre-Owned</p>
                   <p className="text-[11px] text-[#64748b]">
-                    {product.category === 'consoles'
-                      ? '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).'
-                      : 'Tested and verified on retail console with DJN Assured Warranty.'}
+                      {product.category === 'consoles'
+                        ? '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).'
+                        : '1 Day Testing Warranty: 100% optical laser tested on retail console.'}
                   </p>
                 </div>
               </div>

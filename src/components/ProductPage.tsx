@@ -414,11 +414,15 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                   <span className="text-[11px] font-bold text-[#111827] dark:text-white block">
                     {product.category === 'consoles' && (product.condition.toLowerCase().includes('pre-owned') || product.condition.toLowerCase().includes('grade'))
                       ? '1 Month Warranty'
+                      : product.category === 'preowned_games'
+                      ? '1 Day Warranty'
                       : 'Store Warranty'}
                   </span>
                   <span className="text-[10px] text-[#6b7280] dark:text-gray-400">
                     {product.category === 'consoles' && (product.condition.toLowerCase().includes('pre-owned') || product.condition.toLowerCase().includes('grade'))
-                      ? 'Pre-owned consoles'
+                      ? '1 Month Shop Warranty'
+                      : product.category === 'preowned_games'
+                      ? '1 Day Testing Warranty'
                       : 'DJN Tech coverage'}
                   </span>
                 </div>
@@ -481,6 +485,8 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                     <strong>Warranty:</strong>{' '}
                     {product.category === 'consoles' && (product.condition.toLowerCase().includes('pre-owned') || product.condition.toLowerCase().includes('grade'))
                       ? '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)'
+                      : product.category === 'preowned_games'
+                      ? (product.warranty || '1 Day Testing Warranty')
                       : product.warranty}
                   </span>
                 </div>

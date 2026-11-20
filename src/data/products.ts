@@ -97,7 +97,7 @@ export const PRODUCTS: Product[] = [
       '825GB ultra-high speed SSD with expandable M.2 slot',
       'Ultra HD Blu-ray optical disc drive with 100% optical seek accuracy',
       'Includes official Sony DualSense wireless controller',
-      'Protected under DJN Tech Comprehensive Hardware Guarantee'
+      'Protected under DJN Tech 1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'
     ],
     description: 'The iconic original PlayStation 5 Standard Disc Edition. Built with high-grade thermal engineering, whisper-quiet liquid metal cooling, and ultra-high-speed SSD architecture.',
     inTheBox: ['PlayStation 5 Standard Disc Console', 'Official DualSense Wireless Controller', 'HDMI 2.1 Cable', 'Power Cable', 'Vertical/Horizontal Stand'],
@@ -498,11 +498,11 @@ export const PRODUCTS: Product[] = [
       'Massive open-world RPG with hundreds of weapons and bosses',
       'Full 60 FPS performance mode on PS5',
       'Pre-owned disc inspected for flawless data installation',
-      'DJN Assured optical disc guarantee'
+      'DJN Assured 1 Day Testing Warranty'
     ],
     description: 'Rise, Tarnished, and be guided by grace to brandish the power of the Elden Ring and become an Elden Lord in the Lands Between.',
     inTheBox: ['PS5 Game Case', 'Elden Ring Blu-ray Disc', 'Original Map Insert (subject to availability)'],
-    warranty: 'DJN Tech Store Warranty',
+    warranty: '1 Day Testing Warranty',
     discCondition: 'Grade A+ (Clean, verified installation test)',
     genre: 'Action RPG / Souls-like',
     themeColor: '#b45309',
@@ -565,11 +565,11 @@ export const PRODUCTS: Product[] = [
       'Authentic Nintendo Switch Game Card (Loose cartridge, retail box not included)',
       '100% verified optical & terminal pin contact test passed',
       'Portable FIFA football action on Nintendo Switch with updated squads and kits',
-      '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)'
+      '1 Day Testing Warranty'
     ],
     description: 'Experience FIFA 20 on Nintendo Switch with authentic kits, clubs, and squads from top leagues around the world. Please note: This item includes the authentic game card only; the original retail plastic case is not included. Fully tested and certified by DJN Tech.',
     inTheBox: ['1x Nintendo Switch Game Card (Only Game Card - No Box)'],
-    warranty: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)',
+    warranty: '1 Day Testing Warranty',
     discCondition: 'Grade A+ (Tested authentic game card, clean pins)',
     genre: 'Sports / Football Simulation',
     themeColor: '#0284c7',
@@ -595,11 +595,11 @@ export const PRODUCTS: Product[] = [
       'Authentic Nintendo Switch Game Card (Loose cartridge, retail box not included)',
       '100% verified terminal pin contact and full game boot test passed',
       'Join Mario and his ally Cappy on a massive 3D sandbox globe-trotting adventure',
-      '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)'
+      '1 Day Testing Warranty'
     ],
     description: 'Embark on a captivating 3D adventure through massive sandbox kingdoms with Mario and his companion Cappy. Please note: This item includes the authentic game card only; the original retail plastic case is not included. Fully tested and certified by DJN Tech.',
     inTheBox: ['1x Nintendo Switch Game Card (Only Game Card - No Box)'],
-    warranty: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)',
+    warranty: '1 Day Testing Warranty',
     discCondition: 'Grade A+ (Tested authentic game card, clean pins)',
     genre: 'Platformer / 3D Adventure',
     themeColor: '#dc2626',
@@ -625,11 +625,11 @@ export const PRODUCTS: Product[] = [
       'Authentic Nintendo Switch Game Card (Loose cartridge, retail box not included)',
       '100% verified terminal pin contact and save data test passed',
       'Explore randomly generated worlds and build grand creations anywhere you go',
-      '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)'
+      '1 Day Testing Warranty'
     ],
     description: 'Create anything you can imagine in Minecraft on Nintendo Switch. Build, explore, and survive on the go. Please note: This item includes the authentic game card only; the original retail plastic case is not included. Fully tested and verified by DJN Tech.',
     inTheBox: ['1x Nintendo Switch Game Card (Only Game Card - No Box)'],
-    warranty: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)',
+    warranty: '1 Day Testing Warranty',
     discCondition: 'Grade A+ (Tested authentic game card, clean pins)',
     genre: 'Sandbox / Survival',
     themeColor: '#16a34a',
@@ -655,11 +655,11 @@ export const PRODUCTS: Product[] = [
       'Authentic Nintendo Switch Game Card (Loose cartridge, retail box not included)',
       '100% verified terminal pin contact and complete match loading test passed',
       'Comprehensive tennis simulation with full career mode and community academy',
-      '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)'
+      '1 Day Testing Warranty'
     ],
     description: 'AO Tennis 2 is the premier tennis experience designed for and by its passionate community. Play on the road with Nintendo Switch. Please note: This item includes the authentic game card only; the original retail plastic case is not included. Fully tested by DJN Tech.',
     inTheBox: ['1x Nintendo Switch Game Card (Only Game Card - No Box)'],
-    warranty: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)',
+    warranty: '1 Day Testing Warranty',
     discCondition: 'Grade A+ (Tested authentic game card, clean pins)',
     genre: 'Sports / Tennis Simulation',
     themeColor: '#0284c7',
@@ -685,11 +685,11 @@ export const PRODUCTS: Product[] = [
       'Complete with original Nintendo Switch retail plastic case and authentic cover artwork',
       'Play Soccer, Volleyball, Bowling, Tennis, Badminton, and Chambara with motion controls',
       '100% verified game card and pristine retail case inspected by DJN Tech',
-      '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)'
+      '1 Day Testing Warranty'
     ],
     description: 'Swing, kick, and spike your way to victory in Nintendo Switch Sports. Complete with original case and game card. Fully tested and certified by DJN Tech.',
     inTheBox: ['1x Nintendo Switch Game Card', '1x Original Nintendo Switch Case with Cover Art'],
-    warranty: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)',
+    warranty: '1 Day Testing Warranty',
     discCondition: 'Grade A+ (Tested, complete in original retail case)',
     genre: 'Sports / Motion Party Game',
     themeColor: '#059669',
@@ -715,11 +715,11 @@ export const PRODUCTS: Product[] = [
       'Complete with original Nintendo Switch retail plastic case and authentic cover artwork',
       'Definitive version of Mario Kart 8 featuring 48 race courses and revamped Battle Mode',
       '100% verified game card and pristine retail case inspected by DJN Tech',
-      '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)'
+      '1 Day Testing Warranty'
     ],
     description: 'Hit the road with the definitive version of Mario Kart 8 Deluxe on Nintendo Switch. Race your friends or battle them in a revised battle mode. Complete with original case and game card. Fully tested by DJN Tech.',
     inTheBox: ['1x Nintendo Switch Game Card', '1x Original Nintendo Switch Case with Cover Art'],
-    warranty: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)',
+    warranty: '1 Day Testing Warranty',
     discCondition: 'Grade A+ (Tested, complete in original retail case)',
     genre: 'Racing / Kart Racing',
     themeColor: '#dc2626',

@@ -211,7 +211,7 @@ export const GiveawayModal: React.FC<GiveawayModalProps> = ({
             </button>
           </div>
 
-          {/* Trust Guarantee Note */}
+          {/* Trust Warranty Note */}
           <div className="pt-2 border-t border-gray-100 dark:border-gray-800/80 flex items-center justify-between text-[11px] text-gray-400 dark:text-gray-500">
             <div className="flex items-center gap-1.5">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />

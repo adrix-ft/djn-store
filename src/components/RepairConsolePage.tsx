@@ -404,7 +404,7 @@ export const RepairConsolePage: React.FC<RepairConsolePageProps> = ({
     },
     {
       q: 'Do you offer a warranty on console repairs?',
-      a: 'Yes! Every repair completed by DJN Tech comes with our comprehensive 90-Day Repair Guarantee. If the same hardware component fails within 90 days, we repair it again completely free of charge.'
+      a: 'Yes! Every repair completed by DJN Tech comes with our comprehensive 90-Day Repair Warranty. If the same hardware component fails within 90 days, we service it under warranty completely free of charge.'
     },
     {
       q: 'How does doorstep pickup work across India?',
@@ -590,7 +590,7 @@ export const RepairConsolePage: React.FC<RepairConsolePageProps> = ({
               
               <div className="border-b border-[#f0f2f5] dark:border-[#1e293b] pb-4">
                 <span className="text-[11px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider block mb-1">
-                  Guaranteed Repair Quote
+                  Fixed Repair Quote
                 </span>
                 <h3 className="text-lg font-extrabold text-[#111827] dark:text-white leading-snug">
                   {currentIssue.title}

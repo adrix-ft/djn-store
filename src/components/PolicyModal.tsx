@@ -47,11 +47,21 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({ type, onClose }) => {
           content: (
             <div className="space-y-4 text-sm text-[#4b5563] leading-relaxed">
               <p>
-                We stand behind the quality of every product we sell. All pre-owned game discs, controllers, and consoles come with verified coverage: <strong>1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)</strong>.
+                We stand behind the quality of every product we sell. All products come with dedicated store warranty coverage:
               </p>
-              <div className="p-4 rounded-xl bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857]">
-                <h4 className="font-bold text-[#065f46] mb-1">1 Month Shop Warranty & Support</h4>
-                <p>All pre-owned consoles are protected by our 1 Month Shop Warranty (Warranty does not cover physical and liquid damage). If any pre-owned console exhibits a technical hardware fault during the warranty period, we will inspect, service, or replace the unit promptly.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="p-3.5 rounded-xl bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857]">
+                  <h4 className="font-bold text-[#065f46] mb-1">🎮 Pre-Owned Consoles</h4>
+                  <p className="text-xs">
+                    Protected by <strong>1 Month Shop Warranty</strong> (Warranty does not cover physical and liquid damage). If any technical hardware fault occurs during this period, we inspect, service, or replace promptly.
+                  </p>
+                </div>
+                <div className="p-3.5 rounded-xl bg-[#eff6ff] border border-[#bfdbfe] text-[#1d4ed8]">
+                  <h4 className="font-bold text-[#1e40af] mb-1">💿 Pre-Owned Game Discs & Cards</h4>
+                  <p className="text-xs">
+                    Protected by <strong>1 Day Testing Warranty</strong>. Test and verify the game disc or game card on your console upon delivery. If you encounter any installation or data reading error, contact us immediately for assistance.
+                  </p>
+                </div>
               </div>
               <h4 className="font-bold text-[#111827] text-base mt-4">How to Claim Warranty & Support</h4>
               <ol className="list-decimal pl-5 space-y-1.5">
@@ -79,7 +89,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({ type, onClose }) => {
                 <li><strong>Transparent Pricing:</strong> Competitive rates with genuine customer support and real-time WhatsApp order tracking.</li>
               </ul>
               <p className="pt-2">
-                Whether you are buying your first PlayStation 5 or expanding your pre-owned game collection, DJN Tech guarantees authenticity, speed, and peace of mind.
+                Whether you are buying your first PlayStation 5 or expanding your pre-owned game collection, DJN Tech ensures authenticity, speed, and peace of mind.
               </p>
             </div>
           )

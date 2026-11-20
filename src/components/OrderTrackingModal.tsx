@@ -64,7 +64,7 @@ export const OrderTrackingModal: React.FC<OrderTrackingModalProps> = ({
     },
     {
       title: 'Delivered to Doorstep',
-      desc: 'Includes 3-month DJN Tech replacement guarantee.',
+      desc: 'Includes DJN Tech Store Warranty coverage.',
       time: 'Expected Tomorrow',
       completed: false,
     },
@@ -180,7 +180,7 @@ export const OrderTrackingModal: React.FC<OrderTrackingModalProps> = ({
                 <div className="sm:text-right shrink-0">
                   <p className="text-xs text-gray-500 dark:text-gray-400">Estimated Delivery</p>
                   <p className="text-base font-bold text-blue-600 dark:text-blue-400">Tomorrow by 1 PM</p>
-                  <p className="text-[11px] text-gray-400 dark:text-gray-500">Air Express Guaranteed</p>
+                  <p className="text-[11px] text-gray-400 dark:text-gray-500">Air Express Priority Delivery</p>
                 </div>
               </div>
 
