@@ -132,14 +132,20 @@ if (!defaultBadge) {
 const defaultFeatures = productInput.features || [
   isOnlyGameCard ? 'Original authentic game cartridge (Only game card, box not included)' : 'Includes original game cartridge / disc and case',
   '100% verified working and tested with console read test',
-  'Protected by DJN Tech Store replacement guarantee'
+  isGame ? '1 Day Testing Warranty' : 'Protected by DJN Tech Warranty'
 ];
 
 const defaultInTheBox = productInput.in_the_box || productInput.inTheBox || [
   isOnlyGameCard ? '1x Authentic Game Cartridge (Only Game Card)' : '1x Game Disc/Cartridge + Original Case Box'
 ];
 
-const defaultWarranty = productInput.warranty || 'DJN Tech Store Testing Guarantee';
+const defaultWarranty = productInput.warranty || (
+  isGame
+    ? '1 Day Testing Warranty'
+    : (isNintendo && !isGame)
+    ? 'Testing Warranty (Warranty does not cover physical and liquid damage)'
+    : '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'
+);
 
 const dbRow = {
   id: id,

@@ -17,7 +17,7 @@ export const Marquee: React.FC<MarqueeProps> = ({ announcementText, onOpenGiveaw
       ? [{ icon: Zap, text: announcementText, isGiveaway: false }]
       : []),
     { icon: Truck, text: 'Free Delivery on Orders Above ₹1,000', isGiveaway: false },
-    { icon: ShieldCheck, text: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)', isGiveaway: false },
+    { icon: ShieldCheck, text: '1 Month Shop Warranty on Consoles & Controllers (Testing Warranty on Nintendo)', isGiveaway: false },
     { icon: Disc, text: 'Tested & Verified Pre-Owned Game Discs', isGiveaway: false },
     { icon: Gamepad2, text: 'Verified PS5, PS4 & Nintendo Consoles', isGiveaway: false },
     { icon: Zap, text: 'Original DualSense Wireless Controllers', isGiveaway: false },

@@ -2896,7 +2896,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                         type="text"
                         value={productForm.warranty}
                         onChange={(e) => setProductForm({ ...productForm, warranty: e.target.value })}
-                        placeholder="e.g. 1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)"
+                        placeholder="e.g. 1 Month Shop Warranty (Warranty does not cover physical and liquid damage)"
                         className="w-full bg-gray-50 dark:bg-[#1a2333] border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>

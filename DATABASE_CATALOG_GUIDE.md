@@ -163,10 +163,12 @@ console.log('Upsert result:', data, error);
   - `stock_count: 999` (to prevent automated out-of-stock lockouts)
 
 ### E. Standard Warranty Strings
-- **Pre-owned Consoles**:
-  `'1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)'`
-- **Pre-owned Games & Accessories**:
-  `'DJN Tech Store Testing Guarantee'`
+- **Consoles & Controllers (PlayStation, Xbox - except Nintendo series)**:
+  `'1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'`
+- **Nintendo Series Consoles**:
+  `'Testing Warranty (Warranty does not cover physical and liquid damage)'`
+- **Pre-owned Games**:
+  `'1 Day Testing Warranty'`
 - **Brand New Items**:
   `'1 Year Official Brand Warranty'`
 

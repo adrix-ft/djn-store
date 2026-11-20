@@ -52,11 +52,11 @@ export const PRODUCTS: Product[] = [
       'Ultra HD Blu-ray optical disc drive included',
       'Haptic feedback and adaptive triggers via DualSense wireless controller',
       'Tempest 3D AudioTech and up to 120 fps with 120Hz output',
-      '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)'
+      '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'
     ],
     description: 'Experience lightning-fast loading with an ultra-high speed SSD, deeper immersion with support for haptic feedback, adaptive triggers and 3D Audio, and an all-new generation of incredible PlayStation games in a sleek, compact slim form factor.',
     inTheBox: ['PS5 Slim Console (Disc Model)', 'DualSense Wireless Controller (White)', '1TB SSD (Installed)', 'HDMI 2.1 Cable', 'AC Power Cord', 'USB-C Cable', 'Horizontal Stand Feet', "Astro's Playroom pre-installed"],
-    warranty: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)',
+    warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
     themeColor: '#00439c',
     storage: '1TB SSD',
     edition: 'Slim Disc Edition 1TB',
@@ -97,11 +97,11 @@ export const PRODUCTS: Product[] = [
       '825GB ultra-high speed SSD with expandable M.2 slot',
       'Ultra HD Blu-ray optical disc drive with 100% optical seek accuracy',
       'Includes official Sony DualSense wireless controller',
-      'Protected under DJN Tech 1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'
+      '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'
     ],
     description: 'The iconic original PlayStation 5 Standard Disc Edition. Built with high-grade thermal engineering, whisper-quiet liquid metal cooling, and ultra-high-speed SSD architecture.',
     inTheBox: ['PlayStation 5 Standard Disc Console', 'Official DualSense Wireless Controller', 'HDMI 2.1 Cable', 'Power Cable', 'Vertical/Horizontal Stand'],
-    warranty: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)',
+    warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
     themeColor: '#00439c',
     storage: '825GB SSD',
     edition: 'Standard Disc Edition 825GB',
@@ -152,7 +152,7 @@ export const PRODUCTS: Product[] = [
       'Power Cable',
       'USB Charging Cable'
     ],
-    warranty: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)',
+    warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
     color: 'White',
     themeColor: '#00439c',
     genre: 'Home Gaming Console',
@@ -187,7 +187,7 @@ export const PRODUCTS: Product[] = [
     ],
     description: 'The golden standard for PlayStation gaming. The PS4 Slim 1TB delivers exceptional reliability, an immense library of award-winning titles, and effortless plug-and-play entertainment.',
     inTheBox: ['PlayStation 4 Slim 1TB Console', 'DualShock 4 Wireless Controller (Original V2)', 'HDMI Cable', 'Power Cable', 'USB Charging Cable'],
-    warranty: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)',
+    warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
     themeColor: '#003791',
     storage: '1TB HDD',
     edition: 'Slim Edition (1TB)',
@@ -220,7 +220,7 @@ export const PRODUCTS: Product[] = [
     ],
     description: 'The most cost-effective way to play GTA V, God of War, The Last of Us, and FC 24 with authentic console performance.',
     inTheBox: ['PlayStation 4 Slim 500GB Console', 'DualShock 4 Wireless Controller', 'HDMI Cable', 'Power Cable', 'USB Controller Cable'],
-    warranty: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)',
+    warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
     themeColor: '#003791',
     storage: '500GB HDD',
     edition: 'Slim Edition (500GB)',
@@ -253,7 +253,7 @@ export const PRODUCTS: Product[] = [
     ],
     description: 'The iconic original PlayStation 4 that launched an era of gaming classics. Certified Grade A+ pre-owned unit thoroughly bench-tested and serviced.',
     inTheBox: ['PlayStation 4 Standard Console (Jet Black)', 'DualShock 4 Wireless Controller', 'HDMI Cable', 'AC Power Cord', 'Micro-USB Cable'],
-    warranty: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)',
+    warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
     themeColor: '#003791',
     storage: '500GB HDD',
     edition: 'Original Standard "Fat" Edition',
@@ -281,11 +281,12 @@ export const PRODUCTS: Product[] = [
       'Immersive haptic feedback brings in-game actions alive in your hands',
       'Dynamic adaptive triggers with customizable resistance levels',
       'Integrated microphone and 3.5mm headset jack for seamless team chat',
-      'Create button to record and broadcast your most epic gaming moments'
+      'Create button to record and broadcast your most epic gaming moments',
+      '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'
     ],
     description: 'Discover a deeper, highly immersive gaming experience with the iconic two-tone White PS5 DualSense wireless controller.',
     inTheBox: ['PS5 DualSense Wireless Controller (White)', 'Quick-Start User Manual'],
-    warranty: 'DJN Tech Store Warranty',
+    warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
     color: 'White',
     themeColor: '#00439c',
     edition: 'Standard White Edition',
@@ -314,11 +315,12 @@ export const PRODUCTS: Product[] = [
       'Dynamic adaptive triggers simulate physical resistance of gear and weapons',
       'Built-in microphone and 3.5mm headset jack for seamless multiplayer voice',
       'Create button to broadcast your epic gaming moments',
-      'Signature comfortable design with enhanced stick grips'
+      'Signature comfortable design with enhanced stick grips',
+      '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'
     ],
     description: 'Discover a deeper, highly immersive gaming experience that brings the action to life in the palms of your hands in a sleek Midnight Black finish.',
     inTheBox: ['DualSense Wireless Controller (Midnight Black)', 'Instruction Manual'],
-    warranty: 'DJN Tech Store Warranty',
+    warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
     color: 'Midnight Black',
     themeColor: '#090d16',
     edition: 'Midnight Black Edition',
@@ -346,11 +348,12 @@ export const PRODUCTS: Product[] = [
       'Sculpted surfaces and refined geometry for enhanced hand comfort during gameplay',
       'Hybrid D-pad and textured grip on triggers, bumpers, and back-case',
       'Seamlessly capture and share screenshots and clips with dedicated Share button',
-      'Xbox Wireless and Bluetooth technology for gaming on console, PC, mobile'
+      'Xbox Wireless and Bluetooth technology for gaming on console, PC, mobile',
+      '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'
     ],
     description: 'Experience the modernized design of the Xbox Wireless Controller, featuring sculpted surfaces and refined geometry for enhanced comfort.',
     inTheBox: ['Xbox Wireless Controller', '2 AA Alkaline Batteries', 'Setup Guide'],
-    warranty: 'DJN Tech Store Warranty',
+    warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
     color: 'Carbon Black',
     themeColor: '#107c10',
     edition: 'Series X|S Edition',
@@ -446,7 +449,7 @@ export const PRODUCTS: Product[] = [
       '64GB internal storage with microSD card expansion slot',
       'Enhanced onboard stereo speakers delivering rich soundscapes',
       'Includes White Joy-Con (L/R) controllers, dock, grip, and original cables',
-      '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)'
+      'Testing Warranty (Warranty does not cover physical and liquid damage)'
     ],
     description: 'Immerse yourself in vivid colors and crisp contrast with the Nintendo Switch – OLED Model. Featuring a brilliant 7-inch OLED screen, a wide adjustable stand, a dock with a wired LAN port, 64 GB of internal storage, and enhanced audio. Certified Pre-Owned Grade A+ condition, thoroughly bench-tested and serviced by DJN Tech technicians.',
     inTheBox: [
@@ -458,7 +461,7 @@ export const PRODUCTS: Product[] = [
       'Original AC Power Adapter',
       'Ultra High Speed HDMI Cable'
     ],
-    warranty: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)',
+    warranty: 'Testing Warranty (Warranty does not cover physical and liquid damage)',
     color: 'White',
     themeColor: '#e60012',
     edition: 'OLED Model (64GB)',

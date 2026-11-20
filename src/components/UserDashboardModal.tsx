@@ -204,7 +204,7 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
       },
       {
         title: 'Delivered',
-        desc: '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).',
+        desc: 'DJN Tech Warranty coverage active from delivery date (Warranty does not cover physical and liquid damage).',
         completed: isDelivered,
         active: order.status === 'Delivered',
       },
@@ -753,7 +753,7 @@ export const UserDashboardModal: React.FC<UserDashboardModalProps> = ({
                       DJN Tech 1 Month Shop Warranty (Hardware Coverage)
                     </h3>
                     <p className="text-xs text-blue-700 dark:text-blue-300">
-                      1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).
+                      1 Month Shop Warranty on Consoles &amp; Controllers (Testing Warranty on Nintendo series; Warranty does not cover physical and liquid damage).
                     </p>
                   </div>
                 </div>

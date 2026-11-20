@@ -51,9 +51,9 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({ type, onClose }) => {
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="p-3.5 rounded-xl bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857]">
-                  <h4 className="font-bold text-[#065f46] mb-1">🎮 Pre-Owned Consoles</h4>
+                  <h4 className="font-bold text-[#065f46] mb-1">🎮 Consoles & Controllers</h4>
                   <p className="text-xs">
-                    Protected by <strong>1 Month Shop Warranty</strong> (Warranty does not cover physical and liquid damage). If any technical hardware fault occurs during this period, we inspect, service, or replace promptly.
+                    Protected by <strong>1 Month Shop Warranty</strong> (Warranty does not cover physical and liquid damage) on all PlayStation &amp; Xbox consoles and controllers. Nintendo series consoles carry a dedicated <strong>Testing Warranty</strong>. If any technical hardware fault occurs during this period, we inspect, service, or replace promptly.
                   </p>
                 </div>
                 <div className="p-3.5 rounded-xl bg-[#eff6ff] border border-[#bfdbfe] text-[#1d4ed8]">
@@ -145,10 +145,10 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({ type, onClose }) => {
                 Welcome to <strong>DJN Tech</strong> (djntech.in). By accessing our website, purchasing products, or booking repair and trade-in services, you agree to our terms compliant with the <em>Consumer Protection Act, 2019</em> and the <em>Consumer Protection (E-Commerce) Rules, 2020</em>:
               </p>
               <ul className="list-disc pl-5 space-y-2 text-xs">
-                <li><strong>100% Genuine Inventory:</strong> All consoles, controllers, and accessories are covered under our dedicated DJN Tech Store Warranty (including 1 Month Shop Warranty on all Preowned consoles). All pre-owned game discs and consoles undergo technical verification and testing before dispatch.</li>
+                <li><strong>100% Genuine Inventory:</strong> All consoles, controllers, and accessories are covered under our dedicated DJN Tech Store Warranty (including 1 Month Shop Warranty on PlayStation & Xbox consoles and controllers, and Testing Warranty on Nintendo series). All pre-owned game discs and consoles undergo technical verification and testing before dispatch.</li>
                 <li><strong>Pricing Transparency:</strong> In accordance with Legal Metrology (Packaged Commodities) Rules, every listed price is displayed in Indian National Rupees (INR) and is strictly <strong>inclusive of all statutory taxes (GST)</strong>. No hidden surcharges or drip fees are applied at checkout.</li>
                 <li><strong>Order Confirmation & Payments:</strong> Orders are confirmed upon receipt of valid electronic payment through RBI-compliant, PCI-DSS Level 1 certified gateways (Razorpay).</li>
-                <li><strong>Consumer Protection & Cancellation:</strong> Customers may cancel their order before courier dispatch with a 100% instant refund. Orders already dispatched are covered under our comprehensive 1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).</li>
+                <li><strong>Consumer Protection & Cancellation:</strong> Customers may cancel their order before courier dispatch with a 100% instant refund. Orders already dispatched are covered under our comprehensive 1 Month Shop Warranty on consoles & controllers (Testing Warranty on Nintendo series; Warranty does not cover physical and liquid damage).</li>
                 <li><strong>Anti-Scalping Fair Purchase Policy:</strong> DJN Tech reserves the right to restrict or cancel duplicate bulk orders placed by commercial scalpers or automated bots to protect retail gamers.</li>
               </ul>
             </div>

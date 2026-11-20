@@ -412,14 +412,18 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                 <div className="p-2.5 rounded-xl bg-[#f9fafb] dark:bg-[#161f30] border border-[#eaedf0] dark:border-[#2d3748]">
                   <ShieldCheck className="w-4 h-4 text-[#1a73e8] dark:text-[#60a5fa] mx-auto mb-1" />
                   <span className="text-[11px] font-bold text-[#111827] dark:text-white block">
-                    {product.category === 'consoles' && (product.condition.toLowerCase().includes('pre-owned') || product.condition.toLowerCase().includes('grade'))
+                    {(product.platform === 'Switch' || product.name.toLowerCase().includes('nintendo')) && product.category === 'consoles'
+                      ? 'Testing Warranty'
+                      : (product.category === 'consoles' || product.category === 'controllers')
                       ? '1 Month Warranty'
                       : product.category === 'preowned_games'
                       ? '1 Day Warranty'
                       : 'Store Warranty'}
                   </span>
                   <span className="text-[10px] text-[#6b7280] dark:text-gray-400">
-                    {product.category === 'consoles' && (product.condition.toLowerCase().includes('pre-owned') || product.condition.toLowerCase().includes('grade'))
+                    {(product.platform === 'Switch' || product.name.toLowerCase().includes('nintendo')) && product.category === 'consoles'
+                      ? 'Testing Warranty'
+                      : (product.category === 'consoles' || product.category === 'controllers')
                       ? '1 Month Shop Warranty'
                       : product.category === 'preowned_games'
                       ? '1 Day Testing Warranty'
@@ -478,16 +482,19 @@ export const ProductPage: React.FC<ProductPageProps> = ({
               )}
 
               {/* Warranty Card */}
-              {(product.warranty || (product.category === 'consoles' && (product.condition.toLowerCase().includes('pre-owned') || product.condition.toLowerCase().includes('grade')))) && (
+              {(product.warranty || product.category === 'consoles' || product.category === 'controllers' || product.category === 'preowned_games') && (
                 <div className="mt-3 text-xs text-[#4b5563] dark:text-gray-300 flex items-start gap-2 p-2.5 rounded-xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-900/40">
                   <Award className="w-4 h-4 text-[#d97706] shrink-0 mt-0.5" />
                   <span className="leading-relaxed">
                     <strong>Warranty:</strong>{' '}
-                    {product.category === 'consoles' && (product.condition.toLowerCase().includes('pre-owned') || product.condition.toLowerCase().includes('grade'))
-                      ? '1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)'
-                      : product.category === 'preowned_games'
-                      ? (product.warranty || '1 Day Testing Warranty')
-                      : product.warranty}
+                    {product.warranty ||
+                      (((product.platform === 'Switch' || product.name.toLowerCase().includes('nintendo')) && product.category === 'consoles')
+                        ? 'Testing Warranty (Warranty does not cover physical and liquid damage)'
+                        : (product.category === 'consoles' || product.category === 'controllers')
+                        ? '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'
+                        : product.category === 'preowned_games'
+                        ? '1 Day Testing Warranty'
+                        : 'DJN Tech Store Warranty')}
                   </span>
                 </div>
               )}

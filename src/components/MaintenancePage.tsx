@@ -235,7 +235,7 @@ export const MaintenancePage: React.FC<MaintenancePageProps> = ({
       </header>
 
       {/* 3. INFINITE RUNNING MARQUEE ANNOUNCEMENT TICKER */}
-      <Marquee announcementText="Scheduled Store Maintenance · WhatsApp Ordering & Inquiries Online · 1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)" />
+      <Marquee announcementText="Scheduled Store Maintenance · WhatsApp Ordering & Inquiries Online · 1 Month Shop Warranty on Consoles & Controllers (Testing Warranty on Nintendo)" />
 
       {/* 4. MAIN OFFICIAL MAINTENANCE NOTICE SECTION */}
       <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 py-10 sm:py-16 flex flex-col items-center">

@@ -159,7 +159,7 @@ export const Hero: React.FC<HeroProps> = ({
             {/* Subline with improved contrast */}
             <p className="mt-3 sm:mt-4 lg:mt-5 text-xs sm:text-base md:text-lg text-gray-700 dark:text-gray-200 font-medium leading-relaxed max-w-xl">
               <span className="sm:hidden">Consoles, accessories & verified pre-owned games.</span>
-              <span className="hidden sm:inline">Brand new consoles, genuine accessories, and verified pre-owned systems with 1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).</span>
+              <span className="hidden sm:inline">Brand new consoles, genuine accessories, and verified pre-owned systems with 1 Month Shop Warranty on consoles &amp; controllers (Testing Warranty on Nintendo series; Warranty does not cover physical and liquid damage).</span>
             </p>
 
             {/* Action CTA Buttons (Stacked on mobile for clean thumb alignment) */}
@@ -195,7 +195,7 @@ export const Hero: React.FC<HeroProps> = ({
             <div className="hidden sm:flex mt-8 sm:mt-10 pt-4 sm:pt-5 border-t border-slate-200/60 dark:border-slate-800/60 flex-wrap items-center gap-x-3 sm:gap-x-5 gap-y-1.5 text-[11px] sm:text-xs text-[#9ca3af] dark:text-gray-400 font-medium">
               <span>Free delivery over ₹1,000</span>
               <span>·</span>
-              <span>1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage)</span>
+              <span>1 Month Shop Warranty on Consoles &amp; Controllers (Testing Warranty on Nintendo)</span>
               <span>·</span>
               <span>Verified pre-owned systems</span>
             </div>

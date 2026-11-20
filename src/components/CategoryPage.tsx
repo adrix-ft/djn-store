@@ -112,40 +112,40 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
         if (selectedPlatform === 'PS5') {
           return {
             title: 'PlayStation 5 Consoles',
-            subtitle: 'Brand new factory-sealed and verified pre-owned PS5 consoles with 1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).',
+            subtitle: 'Brand new factory-sealed and verified pre-owned PS5 consoles with 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
             tag: 'PlayStation 5 Consoles'
           };
         }
         if (selectedPlatform === 'PS4') {
           return {
             title: 'PlayStation 4 Consoles',
-            subtitle: 'Tested pre-owned PS4 consoles with 1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).',
+            subtitle: 'Tested pre-owned PS4 consoles with 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
             tag: 'PlayStation 4 Consoles'
           };
         }
         if (selectedPlatform === 'Xbox') {
           return {
             title: 'Xbox Consoles',
-            subtitle: 'Xbox Series X and Series S consoles with 1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).',
+            subtitle: 'Xbox Series X and Series S consoles with 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
             tag: 'Xbox Consoles'
           };
         }
         if (selectedPlatform === 'Nintendo' || selectedPlatform === 'Switch') {
           return {
             title: 'Nintendo Consoles',
-            subtitle: 'Certified Pre-Owned Nintendo Switch OLED systems with 1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).',
+            subtitle: 'Certified Pre-Owned Nintendo Switch systems with Testing Warranty (Warranty does not cover physical and liquid damage).',
             tag: 'Nintendo Consoles'
           };
         }
         return {
           title: 'PlayStation, Xbox & Nintendo Consoles',
-          subtitle: 'Brand new factory-sealed consoles and certified pre-owned systems with 1 Month Shop Warranty on all Preowned consoles (Warranty does not cover physical and liquid damage).',
+          subtitle: 'Certified pre-owned and sealed consoles with 1 Month Shop Warranty on PlayStation & Xbox, and Testing Warranty on Nintendo series (Warranty does not cover physical and liquid damage).',
           tag: 'Consoles'
         };
       case 'controllers':
         return {
           title: 'Wireless Controllers',
-          subtitle: 'Original DualSense and Xbox wireless controllers with standard warranty.',
+          subtitle: 'Original DualSense and Xbox wireless controllers with 1 Month Shop Warranty (Warranty does not cover physical and liquid damage).',
           tag: 'Controllers'
         };
       case 'accessories':
