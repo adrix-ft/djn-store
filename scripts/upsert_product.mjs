@@ -136,7 +136,7 @@ const defaultFeatures = productInput.features || [
 ];
 
 const defaultInTheBox = productInput.in_the_box || productInput.inTheBox || [
-  isOnlyGameCard ? '1x Authentic Game Cartridge (Only Game Card)' : '1x Game Disc/Cartridge + Original Case Box'
+  isOnlyGameCard ? '1x ' + productInput.name : (isGame ? '1x ' + productInput.name + ' Disc' : productInput.name)
 ];
 
 const defaultWarranty = productInput.warranty || (

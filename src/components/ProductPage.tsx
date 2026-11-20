@@ -447,11 +447,34 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                 <h3 className="font-bold text-sm text-[#111827] dark:text-white mb-2.5">Key Highlights:</h3>
                 <ul className="space-y-2 text-xs text-[#4b5563] dark:text-gray-300">
                   {product.features
-                    .filter(
-                      (feat) =>
-                        !feat.toLowerCase().includes('25-point') &&
-                        !feat.toLowerCase().includes('doorstep replacement')
-                    )
+                    .filter((feat) => {
+                      const featLower = feat.toLowerCase();
+                      const nameLower = product.name.toLowerCase();
+                      if (featLower.includes('25-point') || featLower.includes('doorstep replacement')) return false;
+                      if (product.category === 'consoles') {
+                        if (
+                          (featLower.includes('dualshock') ||
+                            featLower.includes('dualsense') ||
+                            featLower.includes('joy-con') ||
+                            (featLower.includes('includes') && featLower.includes('controller'))) &&
+                          !nameLower.includes('controller') &&
+                          !nameLower.includes('bundle')
+                        ) {
+                          return false;
+                        }
+                        if (
+                          (featLower.includes('connection cables') ||
+                            featLower.includes('original cables') ||
+                            featLower.includes('hdmi') ||
+                            featLower.includes('power cord') ||
+                            featLower.includes('power cable')) &&
+                          !nameLower.includes('cable')
+                        ) {
+                          return false;
+                        }
+                      }
+                      return true;
+                    })
                     .map((feat, idx) => (
                       <li key={idx} className="flex items-start gap-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#1a73e8] dark:bg-[#60a5fa] shrink-0 mt-1.5" />
@@ -462,24 +485,55 @@ export const ProductPage: React.FC<ProductPageProps> = ({
               </div>
 
               {/* In The Box Box */}
-              {product.inTheBox && product.inTheBox.length > 0 && (
-                <div className="mt-5 p-3.5 rounded-xl bg-[#f9fafb] dark:bg-[#161f30] border border-[#eaedf0] dark:border-[#2d3748]">
-                  <span className="text-xs font-bold text-[#111827] dark:text-white block mb-1.5 flex items-center gap-1.5">
-                    <Package className="w-3.5 h-3.5 text-[#1a73e8] dark:text-[#60a5fa]" />
-                    In The Box:
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {product.inTheBox.map((item, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2 py-0.5 rounded text-[11px] bg-white dark:bg-[#111827] border border-[#e5e7eb] dark:border-gray-700 text-[#4b5563] dark:text-gray-300"
-                      >
-                        {item}
-                      </span>
-                    ))}
+              {(() => {
+                const rawItems = product.inTheBox && product.inTheBox.length > 0 ? product.inTheBox : [product.name];
+                const sanitizedItems = rawItems.filter((item) => {
+                  const itemLower = item.toLowerCase();
+                  const nameLower = product.name.toLowerCase();
+                  if (itemLower.includes('qa certificate') || itemLower.includes('verification certificate')) return false;
+                  if (product.category === 'consoles') {
+                    if (
+                      (itemLower.includes('dualshock') ||
+                        itemLower.includes('dualsense') ||
+                        itemLower.includes('controller')) &&
+                      !nameLower.includes('controller') &&
+                      !nameLower.includes('bundle')
+                    ) {
+                      return false;
+                    }
+                    if ((itemLower.includes('cable') || itemLower.includes('cord')) && !nameLower.includes('cable')) {
+                      return false;
+                    }
+                    if (itemLower.includes('stand') && !nameLower.includes('stand')) return false;
+                    if (itemLower.includes('grip') && !nameLower.includes('grip')) return false;
+                  }
+                  if (product.category === 'controllers') {
+                    if (itemLower.includes('batteries') && !nameLower.includes('batteries') && !nameLower.includes('battery')) return false;
+                    if (itemLower.includes('manual') || itemLower.includes('guide')) return false;
+                  }
+                  return true;
+                });
+                const displayItems = sanitizedItems.length > 0 ? sanitizedItems : [product.name];
+
+                return (
+                  <div className="mt-5 p-3.5 rounded-xl bg-[#f9fafb] dark:bg-[#161f30] border border-[#eaedf0] dark:border-[#2d3748]">
+                    <span className="text-xs font-bold text-[#111827] dark:text-white block mb-1.5 flex items-center gap-1.5">
+                      <Package className="w-3.5 h-3.5 text-[#1a73e8] dark:text-[#60a5fa]" />
+                      In The Box:
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {displayItems.map((item, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2 py-0.5 rounded text-[11px] bg-white dark:bg-[#111827] border border-[#e5e7eb] dark:border-gray-700 text-[#4b5563] dark:text-gray-300 font-medium"
+                        >
+                          {item}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                );
+              })()}
 
               {/* Warranty Card */}
               {(product.warranty || product.category === 'consoles' || product.category === 'controllers' || product.category === 'preowned_games') && (

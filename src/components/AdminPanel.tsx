@@ -195,7 +195,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     badge: 'NEW ARRIVAL',
     features: ['100% Genuine Certified', 'Bench tested and verified by DJN Tech'],
     description: 'High quality gaming product inspected and verified by DJN Tech.',
-    inTheBox: ['Original Retail Item', 'Verification Certificate'],
+    inTheBox: ['Original Retail Item'],
     warranty: 'DJN Tech Store Warranty',
     themeColor: '#00439c',
     imageUrl: '',

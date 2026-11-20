@@ -145,7 +145,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               </p>
 
               <p className="text-xs text-[#64748b] mt-3 leading-relaxed">
-                {product.description}
+                {product.description
+                  ? product.description
+                      .replace(/bundled with authentic controller and cables\.?/gi, 'serviced by DJN Tech technicians.')
+                      .replace(/bundled with authentic controller and cables/gi, 'serviced by DJN Tech technicians')
+                  : ''}
               </p>
 
               {/* Condition Choice */}
@@ -169,11 +173,34 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               {/* Highlights Checklist */}
               <div className="mt-5 space-y-1.5 text-xs text-[#424242]">
                 {product.features
-                  .filter(
-                    (feat) =>
-                      !feat.toLowerCase().includes('25-point') &&
-                      !feat.toLowerCase().includes('doorstep replacement')
-                  )
+                  .filter((feat) => {
+                    const featLower = feat.toLowerCase();
+                    const nameLower = product.name.toLowerCase();
+                    if (featLower.includes('25-point') || featLower.includes('doorstep replacement')) return false;
+                    if (product.category === 'consoles') {
+                      if (
+                        (featLower.includes('dualshock') ||
+                          featLower.includes('dualsense') ||
+                          featLower.includes('joy-con') ||
+                          (featLower.includes('includes') && featLower.includes('controller'))) &&
+                        !nameLower.includes('controller') &&
+                        !nameLower.includes('bundle')
+                      ) {
+                        return false;
+                      }
+                      if (
+                        (featLower.includes('connection cables') ||
+                          featLower.includes('original cables') ||
+                          featLower.includes('hdmi') ||
+                          featLower.includes('power cord') ||
+                          featLower.includes('power cable')) &&
+                        !nameLower.includes('cable')
+                      ) {
+                        return false;
+                      }
+                    }
+                    return true;
+                  })
                   .slice(0, 3)
                   .map((feat, idx) => (
                     <div key={idx} className="flex items-center gap-2">

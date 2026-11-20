@@ -50,12 +50,11 @@ export const PRODUCTS: Product[] = [
     features: [
       'Slimmer design with 1TB ultra-high speed internal SSD storage',
       'Ultra HD Blu-ray optical disc drive included',
-      'Haptic feedback and adaptive triggers via DualSense wireless controller',
-      'Tempest 3D AudioTech and up to 120 fps with 120Hz output',
+      'Tempest 3D AudioTech and up to 120 fps 4K gaming performance',
       '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'
     ],
-    description: 'Experience lightning-fast loading with an ultra-high speed SSD, deeper immersion with support for haptic feedback, adaptive triggers and 3D Audio, and an all-new generation of incredible PlayStation games in a sleek, compact slim form factor.',
-    inTheBox: ['PS5 Slim Console (Disc Model)', 'DualSense Wireless Controller (White)', '1TB SSD (Installed)', 'HDMI 2.1 Cable', 'AC Power Cord', 'USB-C Cable', 'Horizontal Stand Feet', "Astro's Playroom pre-installed"],
+    description: 'Experience lightning-fast loading with an ultra-high speed SSD, deeper immersion with support for 3D Audio, and an all-new generation of incredible PlayStation games in a sleek, compact slim form factor.',
+    inTheBox: ['PlayStation 5 Slim (Disc Edition) 1TB'],
     warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
     themeColor: '#00439c',
     storage: '1TB SSD',
@@ -96,11 +95,11 @@ export const PRODUCTS: Product[] = [
       'Original launch revision with massive copper thermal cooling heat-sink',
       '825GB ultra-high speed SSD with expandable M.2 slot',
       'Ultra HD Blu-ray optical disc drive with 100% optical seek accuracy',
-      'Includes official Sony DualSense wireless controller',
+      'Liquid metal cooling architecture and custom heat-pipe thermal engineering',
       '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'
     ],
     description: 'The iconic original PlayStation 5 Standard Disc Edition. Built with high-grade thermal engineering, whisper-quiet liquid metal cooling, and ultra-high-speed SSD architecture.',
-    inTheBox: ['PlayStation 5 Standard Disc Console', 'Official DualSense Wireless Controller', 'HDMI 2.1 Cable', 'Power Cable', 'Vertical/Horizontal Stand'],
+    inTheBox: ['PlayStation 5 Standard (Disc Edition) 825GB'],
     warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
     themeColor: '#00439c',
     storage: '825GB SSD',
@@ -141,17 +140,11 @@ export const PRODUCTS: Product[] = [
       'Massive 1TB internal HDD holding 25+ blockbuster PlayStation games',
       'Enhanced GPU delivering 4K gaming, faster frame rates, and HDR visuals',
       'Stunning White chassis edition with 3-tier architectural design',
-      'Includes original matching Sony DualShock 4 V2 wireless controller',
-      '100% optical laser seek, fresh thermal paste, and motherboard diagnostic pass'
+      '100% optical laser seek, fresh thermal paste, and motherboard diagnostic pass',
+      '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'
     ],
     description: 'The powerhouse of the PS4 generation in limited White. Delivers dynamic 4K visuals, high-speed frame rate stabilization, HDR contrast, and double the GPU processing performance of the standard PS4.',
-    inTheBox: [
-      'PlayStation 4 Pro 1TB Console (White)',
-      'DualShock 4 Wireless Controller (Original V2)',
-      'HDMI Cable',
-      'Power Cable',
-      'USB Charging Cable'
-    ],
+    inTheBox: ['PlayStation 4 Pro 1TB Console (White)'],
     warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
     color: 'White',
     themeColor: '#00439c',
@@ -165,7 +158,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'ps4-slim-1tb-preowned',
     name: 'PlayStation 4 Slim (1TB Console)',
-    subtitle: '1TB Storage · Whisper Quiet · HDR Ready · Complete Kit with DualShock 4',
+    subtitle: '1TB High-Capacity Storage · Whisper Quiet · HDR Ready · Grade A+ Condition',
     category: 'consoles',
     platform: 'PS4',
     condition: 'Pre-Owned Grade A+',
@@ -182,11 +175,11 @@ export const PRODUCTS: Product[] = [
       'Massive 1TB internal HDD holding 25+ blockbuster PlayStation games',
       'Energy-efficient slim architecture that runs cool and whisper-quiet',
       'Full HDR support for vibrant color reproduction on compatible TVs',
-      'Includes original Sony DualShock 4 V2 wireless controller',
-      'Tested and verified console hardware and disc drive'
+      'Tested and verified console hardware and disc drive',
+      '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'
     ],
     description: 'The golden standard for PlayStation gaming. The PS4 Slim 1TB delivers exceptional reliability, an immense library of award-winning titles, and effortless plug-and-play entertainment.',
-    inTheBox: ['PlayStation 4 Slim 1TB Console', 'DualShock 4 Wireless Controller (Original V2)', 'HDMI Cable', 'Power Cable', 'USB Charging Cable'],
+    inTheBox: ['PlayStation 4 Slim (1TB Console)'],
     warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
     themeColor: '#003791',
     storage: '1TB HDD',
@@ -215,11 +208,11 @@ export const PRODUCTS: Product[] = [
       'Affordable entry into the legendary PlayStation ecosystem',
       '500GB internal storage expandable via external USB 3.0 drive',
       'Plays the entire catalog of PS4 masterpieces with smooth 1080p output',
-      'Includes 1 original Sony DualShock 4 controller and all connection cables',
-      'Complete 25-point hardware bench stress-testing verified'
+      'Complete 25-point hardware bench stress-testing verified',
+      '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'
     ],
     description: 'The most cost-effective way to play GTA V, God of War, The Last of Us, and FC 24 with authentic console performance.',
-    inTheBox: ['PlayStation 4 Slim 500GB Console', 'DualShock 4 Wireless Controller', 'HDMI Cable', 'Power Cable', 'USB Controller Cable'],
+    inTheBox: ['PlayStation 4 Slim (500GB Console)'],
     warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
     themeColor: '#003791',
     storage: '500GB HDD',
@@ -248,11 +241,11 @@ export const PRODUCTS: Product[] = [
       'Original launch chassis with dual matte and gloss architectural styling',
       'Built-in optical TOSLINK audio output port for dedicated sound systems',
       '500GB internal hard drive holding favorite games',
-      'Includes authentic DualShock 4 wireless controller',
-      'Ultrasonic cleaned, fresh thermal paste serviced, and stress bench tested'
+      'Ultrasonic cleaned, fresh thermal paste serviced, and stress bench tested',
+      '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'
     ],
     description: 'The iconic original PlayStation 4 that launched an era of gaming classics. Certified Grade A+ pre-owned unit thoroughly bench-tested and serviced.',
-    inTheBox: ['PlayStation 4 Standard Console (Jet Black)', 'DualShock 4 Wireless Controller', 'HDMI Cable', 'AC Power Cord', 'Micro-USB Cable'],
+    inTheBox: ['PlayStation 4 Standard (500GB Console)'],
     warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
     themeColor: '#003791',
     storage: '500GB HDD',
@@ -285,7 +278,7 @@ export const PRODUCTS: Product[] = [
       '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'
     ],
     description: 'Discover a deeper, highly immersive gaming experience with the iconic two-tone White PS5 DualSense wireless controller.',
-    inTheBox: ['PS5 DualSense Wireless Controller (White)', 'Quick-Start User Manual'],
+    inTheBox: ['PlayStation 5 DualSense Wireless Controller (White)'],
     warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
     color: 'White',
     themeColor: '#00439c',
@@ -319,7 +312,7 @@ export const PRODUCTS: Product[] = [
       '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'
     ],
     description: 'Discover a deeper, highly immersive gaming experience that brings the action to life in the palms of your hands in a sleek Midnight Black finish.',
-    inTheBox: ['DualSense Wireless Controller (Midnight Black)', 'Instruction Manual'],
+    inTheBox: ['PlayStation 5 DualSense Wireless Controller (Midnight Black)'],
     warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
     color: 'Midnight Black',
     themeColor: '#090d16',
@@ -352,7 +345,7 @@ export const PRODUCTS: Product[] = [
       '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)'
     ],
     description: 'Experience the modernized design of the Xbox Wireless Controller, featuring sculpted surfaces and refined geometry for enhanced comfort.',
-    inTheBox: ['Xbox Wireless Controller', '2 AA Alkaline Batteries', 'Setup Guide'],
+    inTheBox: ['Xbox Wireless Controller (Series X|S)'],
     warranty: '1 Month Shop Warranty (Warranty does not cover physical and liquid damage)',
     color: 'Carbon Black',
     themeColor: '#107c10',
@@ -384,7 +377,7 @@ export const PRODUCTS: Product[] = [
       'Enables pre-owned and physical game disc playback on digital slim consoles'
     ],
     description: 'Upgrade your PlayStation 5 Digital Slim console to play physical disc games and 4K Ultra HD Blu-ray movies. Features seamless tool-free installation.',
-    inTheBox: ['PS5 Disc Drive Add-on Unit', 'Original White Matching Cover Panel', '2 Horizontal Stand Feet (Long)', 'Instruction Manual'],
+    inTheBox: ['PlayStation 5 Disc Drive (for PS5 Slim & Pro)'],
     warranty: 'DJN Tech Store Warranty',
     color: 'White',
     themeColor: '#00439c',
@@ -417,7 +410,7 @@ export const PRODUCTS: Product[] = [
       'Say goodbye to expensive disposable AA batteries forever'
     ],
     description: 'Keep the action going with the Xbox Rechargeable Battery Pack + USB-C Cable. Recharge while you play or afterwards.',
-    inTheBox: ['Xbox Rechargeable Lithium-Ion Battery Pack', '9-foot USB-C Braided Cable', 'Quick Start Guide'],
+    inTheBox: ['Xbox Rechargeable Lithium-Ion Battery Pack', '9-foot USB-C Braided Cable'],
     warranty: 'DJN Tech Store Warranty',
     color: 'Black',
     themeColor: '#107c10',
@@ -448,19 +441,11 @@ export const PRODUCTS: Product[] = [
       'Wired LAN port built into the Nintendo Switch dock for lag-free online matches',
       '64GB internal storage with microSD card expansion slot',
       'Enhanced onboard stereo speakers delivering rich soundscapes',
-      'Includes White Joy-Con (L/R) controllers, dock, grip, and original cables',
+      'Grade A+ condition bench-tested and verified by DJN Tech technicians',
       'Testing Warranty (Warranty does not cover physical and liquid damage)'
     ],
     description: 'Immerse yourself in vivid colors and crisp contrast with the Nintendo Switch – OLED Model. Featuring a brilliant 7-inch OLED screen, a wide adjustable stand, a dock with a wired LAN port, 64 GB of internal storage, and enhanced audio. Certified Pre-Owned Grade A+ condition, thoroughly bench-tested and serviced by DJN Tech technicians.',
-    inTheBox: [
-      'Nintendo Switch OLED Console',
-      'White Joy-Con (L) and Joy-Con (R) Controllers',
-      'Nintendo Switch Dock (with Wired LAN Port)',
-      'Joy-Con Grip',
-      'Joy-Con Wrist Straps',
-      'Original AC Power Adapter',
-      'Ultra High Speed HDMI Cable'
-    ],
+    inTheBox: ['Nintendo Switch – OLED Model (White)'],
     warranty: 'Testing Warranty (Warranty does not cover physical and liquid damage)',
     color: 'White',
     themeColor: '#e60012',
@@ -504,7 +489,7 @@ export const PRODUCTS: Product[] = [
       'DJN Assured 1 Day Testing Warranty'
     ],
     description: 'Rise, Tarnished, and be guided by grace to brandish the power of the Elden Ring and become an Elden Lord in the Lands Between.',
-    inTheBox: ['PS5 Game Case', 'Elden Ring Blu-ray Disc', 'Original Map Insert (subject to availability)'],
+    inTheBox: ['Elden Ring: Shadow of the Erdtree (PS5 Pre-Owned) Disc'],
     warranty: '1 Day Testing Warranty',
     discCondition: 'Grade A+ (Clean, verified installation test)',
     genre: 'Action RPG / Souls-like',
@@ -537,7 +522,7 @@ export const PRODUCTS: Product[] = [
       'DJN Assured 100% authentic digital delivery on launch'
     ],
     description: 'Grand Theft Auto VI heads to the state of Leonida, home to the neon-soaked streets of Vice City and beyond in the biggest, most immersive evolution of the Grand Theft Auto series yet. Pre-order your official PS5 Digital Edition directly with DJN Tech via WhatsApp enquiry with zero advance payment.',
-    inTheBox: ['Official PS5 Digital Game License / Code', 'Rockstar Games Digital Pre-Order Bonus Pack'],
+    inTheBox: ['Grand Theft Auto VI (PS5) Digital License'],
     warranty: 'DJN Tech Store Warranty',
     discCondition: 'Digital Edition',
     genre: 'Action / Open World',
@@ -691,7 +676,7 @@ export const PRODUCTS: Product[] = [
       '1 Day Testing Warranty'
     ],
     description: 'Swing, kick, and spike your way to victory in Nintendo Switch Sports. Complete with original case and game card. Fully tested and certified by DJN Tech.',
-    inTheBox: ['1x Nintendo Switch Game Card', '1x Original Nintendo Switch Case with Cover Art'],
+    inTheBox: ['Nintendo Switch Sports (Nintendo Switch) (With Box)'],
     warranty: '1 Day Testing Warranty',
     discCondition: 'Grade A+ (Tested, complete in original retail case)',
     genre: 'Sports / Motion Party Game',
@@ -721,7 +706,7 @@ export const PRODUCTS: Product[] = [
       '1 Day Testing Warranty'
     ],
     description: 'Hit the road with the definitive version of Mario Kart 8 Deluxe on Nintendo Switch. Race your friends or battle them in a revised battle mode. Complete with original case and game card. Fully tested by DJN Tech.',
-    inTheBox: ['1x Nintendo Switch Game Card', '1x Original Nintendo Switch Case with Cover Art'],
+    inTheBox: ['Mario Kart 8 Deluxe (Nintendo Switch) (With Box)'],
     warranty: '1 Day Testing Warranty',
     discCondition: 'Grade A+ (Tested, complete in original retail case)',
     genre: 'Racing / Kart Racing',
