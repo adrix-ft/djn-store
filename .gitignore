@@ -7,3 +7,6 @@ coverage/
 .env*
 !.env.example
 .wrangler/
+customer-photos/
+djn-customer-photos/
+*.zip

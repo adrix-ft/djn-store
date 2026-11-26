@@ -45,10 +45,11 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "2 days ago",
     "text": "Great response and support",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 1,
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "2 days ago"
+      "relativeTime": "2026-10-22T17:27:41.000Z"
     }
   },
   {
@@ -63,10 +64,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "3 days ago",
     "text": "I loved the experience ,I genuinely think that you should visit this place or buy titles ,",
     "categoryTag": "Pre-Owned Games & Discs",
+    "helpfulCount": 2,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-055.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks sir 🙏",
-      "relativeTime": "3 days ago"
+      "relativeTime": "2026-10-21T17:21:23.000Z"
     }
   },
   {
@@ -81,10 +86,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "3 days ago",
     "text": "My PS5 was dead and DJ was able to get it up and running pretty quickly.  Definitely recommend",
     "categoryTag": "Console Repair & Service",
+    "helpfulCount": 3,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-056.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks sir 🙏",
-      "relativeTime": "3 days ago"
+      "relativeTime": "2026-10-21T17:20:36.000Z"
     }
   },
   {
@@ -99,10 +108,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "2 weeks ago",
     "text": "Saved my console! The HDMI port on my PS4 Pro was corrupt, and I thought the console was done for. They diagnosed the issue quickly, replaced the port with a clean solder job, and tested it thoroughly before handing it back. It connects to the TV perfectly now. Professional, fast, and reasonably repair priced. Thank you!",
     "categoryTag": "Console Repair & Service",
+    "helpfulCount": 4,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-057.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "2 weeks ago"
+      "relativeTime": "2026-10-21T17:20:57.000Z"
     }
   },
   {
@@ -117,10 +130,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "2 weeks ago",
     "text": "Best Seller ❤️",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 5,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-001.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "2 weeks ago"
+      "relativeTime": "2026-10-06T18:34:18.000Z"
     }
   },
   {
@@ -135,10 +152,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "2 weeks ago",
     "text": "Good guy. Have given my controller for stick drift issue. He helped me with TMR stick. Also bought a disc from him.",
     "categoryTag": "Controllers & Accessories",
+    "helpfulCount": 6,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-058.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "2 weeks ago"
+      "relativeTime": "2026-09-06T11:49:06.000Z"
     }
   },
   {
@@ -153,10 +174,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "3 weeks ago",
     "text": "Recently sell my ps4 he give me best price of my console and owner mr danny is friendly to his customer I'm happy to deal with him...",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 7,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-059.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "3 weeks ago"
+      "relativeTime": "2026-10-06T16:25:03.000Z"
     }
   },
   {
@@ -171,10 +196,11 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "3 weeks ago",
     "text": "soo helpful",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 1,
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "3 weeks ago"
+      "relativeTime": "2026-09-30T18:12:50.000Z"
     }
   },
   {
@@ -189,10 +215,16 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a month ago",
     "text": "Had a great experience selling my PS4 here. The entire process was smooth and hassle-free. They tested the console in front of me, everything was transparent, and I received the payment upfront without any issues. Friendly and professional service. Definitely recommend!",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 2,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-002.jpg",
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-003.jpg",
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-004.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "a month ago"
+      "relativeTime": "2026-09-28T09:02:58.000Z"
     }
   },
   {
@@ -207,10 +239,11 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a month ago",
     "text": "Great place for gaming",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 3,
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "a month ago"
+      "relativeTime": "2026-09-15T17:40:46.000Z"
     }
   },
   {
@@ -225,10 +258,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a month ago",
     "text": "It was a very smooth experience for selling my ps4 fully satisfied",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 4,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-060.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "a month ago"
+      "relativeTime": "2026-09-09T14:49:52.000Z"
     }
   },
   {
@@ -243,10 +280,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a month ago",
     "text": "I should my ps4 to him and he gave me best price of my ps4 slim thanku dj tech",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 5,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-061.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "a month ago"
+      "relativeTime": "2026-09-08T16:23:35.000Z"
     }
   },
   {
@@ -261,10 +302,11 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a month ago",
     "text": "Nice Deals & Great Discount Products",
     "categoryTag": "Pre-Owned Games & Discs",
+    "helpfulCount": 6,
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "a month ago"
+      "relativeTime": "2026-09-08T16:08:53.000Z"
     }
   },
   {
@@ -279,10 +321,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a month ago",
     "text": "Great experience in selling my ps4 . Much recommended. Great person to do business with",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 7,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-062.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "a month ago"
+      "relativeTime": "2026-09-08T02:10:34.000Z"
     }
   },
   {
@@ -297,10 +343,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a month ago",
     "text": "Very good service i sold my ps4 i got the best price",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 1,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-063.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "a month ago"
+      "relativeTime": "2026-09-08T02:10:52.000Z"
     }
   },
   {
@@ -315,10 +365,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a month ago",
     "text": "Danny bhai is genuine person and it was great to deal with you bro",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 2,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-064.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "a month ago"
+      "relativeTime": "2026-09-06T12:01:13.000Z"
     }
   },
   {
@@ -333,10 +387,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "2 months ago",
     "text": "The deal was outstanding with no hassle, trusted and genuine person behind this",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 3,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-065.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "2 months ago"
+      "relativeTime": "2026-07-30T12:01:29.000Z"
     }
   },
   {
@@ -351,10 +409,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "2 months ago",
     "text": "Must visit this shop it is very reasonable and also sales person also well behave and polite i Highly recommend must visit this Game shop",
     "categoryTag": "Pre-Owned Games & Discs",
+    "helpfulCount": 4,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-066.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "2 months ago"
+      "relativeTime": "2026-07-27T18:37:18.000Z"
     }
   },
   {
@@ -369,10 +431,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "3 months ago",
     "text": "I have sold him ps4 slim and game discs at a very good price. Apart from business person is very good at nature suggested me some valuable things as i have also purchased switch lite from him also he is very much reachable 👍🏻👍🏻👍🏻",
     "categoryTag": "Pre-Owned Games & Discs",
+    "helpfulCount": 5,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-067.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother for a wonderful review 🙏",
-      "relativeTime": "3 months ago"
+      "relativeTime": "2026-07-19T16:58:45.000Z"
     }
   },
   {
@@ -387,10 +453,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "3 months ago",
     "text": "I recently sold my nintendo switch to DGN tech ...The process was very smooth and quick without any issues. He immediately paid the money as soon as he got the console. Had a very good deal with him.",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 6,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-005.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother for a wonderful review 🙏",
-      "relativeTime": "3 months ago"
+      "relativeTime": "2026-07-19T16:59:21.000Z"
     }
   },
   {
@@ -405,10 +475,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "3 months ago",
     "text": "I sold 2 ps4 to DJN TECH. Received very good resale value for both the ps4. Best place to sell or purchase any playstation.",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 7,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-068.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "3 months ago"
+      "relativeTime": "2026-07-17T19:13:23.000Z"
     }
   },
   {
@@ -423,10 +497,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "3 months ago",
     "text": "Good Service , good and best products and best quality also all is good I buy more from this thanks",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 1,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-069.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "3 months ago"
+      "relativeTime": "2026-06-19T17:25:58.000Z"
     }
   },
   {
@@ -441,10 +519,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "3 months ago",
     "text": "Good service by djn tech i sold my xbox to them good service provided by them easy process no extra charges from the customer whole expense was done by djn tech good service 👍",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 2,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-070.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Excellent brother...thanks 🙏",
-      "relativeTime": "3 months ago"
+      "relativeTime": "2026-07-10T12:55:32.000Z"
     }
   },
   {
@@ -459,10 +541,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "3 months ago",
     "text": "I sold my xbox one s to them.. And I was really satisfied with them.. The person is really well spoken and knows how to build trust with the customer..  I was very happy with this deal..",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 3,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-071.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Awsome review thanks brother 🙏",
-      "relativeTime": "3 months ago"
+      "relativeTime": "2026-07-10T12:56:12.000Z"
     }
   },
   {
@@ -477,10 +563,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "3 months ago",
     "text": "Dinesh is great person and all his products are top notch quality. I would highly recommend purchasing products from his store",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 4,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-072.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "3 months ago"
+      "relativeTime": "2026-07-04T16:41:00.000Z"
     }
   },
   {
@@ -495,10 +585,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "3 months ago",
     "text": "Sold my ps4 along with 4 games for 16.5k.",
     "categoryTag": "Pre-Owned Games & Discs",
+    "helpfulCount": 5,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-006.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "3 months ago"
+      "relativeTime": "2026-07-10T12:56:24.000Z"
     }
   },
   {
@@ -513,10 +607,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "3 months ago",
     "text": "Had a smooth n stress free experience with djn tech for my ps4 repair .Dinesh Bhai is an absolute honest person backed with amazing knowledge n quick solutions. He explained everything in such detail n always gives time to the customer. He not only fixed the original issue but also helped fix problems caused by the repair guy whom I had given the console earlier...would recommend djn for all console related issues",
     "categoryTag": "Console Repair & Service",
+    "helpfulCount": 6,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-073.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "3 months ago"
+      "relativeTime": "2026-07-10T12:56:49.000Z"
     }
   },
   {
@@ -531,10 +629,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "3 months ago",
     "text": "I had a great experience dealing with DJN Tech. I sold my PS4 through a simple video call verification, and after everything was checked, I received the payment instantly. The entire process was fast, smooth, and hassle-free. I also got a great price for my console. The owner is genuine, friendly, and professional. Highly recommended for anyone looking to sell their gaming console safely and easily!",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 7,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-007.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "3 months ago"
+      "relativeTime": "2026-06-26T17:22:12.000Z"
     }
   },
   {
@@ -549,10 +651,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "4 months ago",
     "text": "Very professional and helpful. Purchased a PS5 and ancillary stuff, would purchase from here again. 10/10 would recommend.",
     "categoryTag": "PlayStation 5 & Gear",
+    "helpfulCount": 1,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-074.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "4 months ago"
+      "relativeTime": "2026-06-25T09:26:41.000Z"
     }
   },
   {
@@ -567,10 +673,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "4 months ago",
     "text": "Such a genuine and kind person I have ever seen.. Giving quick replies and sort queries very quickly .. also helped in critical situations related to ps5 and its accessories…",
     "categoryTag": "PlayStation 5 & Gear",
+    "helpfulCount": 2,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-075.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "4 months ago"
+      "relativeTime": "2026-06-20T19:25:27.000Z"
     }
   },
   {
@@ -585,10 +695,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "4 months ago",
     "text": "Just sold my PS4 to DJN TECH. The Owner (Mr Dinesh) is very honest guy. the process of selling was very easy. Got payment within minute after confirmation.Thank you Bhai...It was a good experience.",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 3,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-076.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "4 months ago"
+      "relativeTime": "2026-06-20T19:25:10.000Z"
     }
   },
   {
@@ -603,10 +717,15 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "4 months ago",
     "text": "Excellent service by DJN TECH! The owner is incredibly genuine, professional, and helpful. They explain everything clearly and deliver top-notch work. If you are looking for reliable and high-quality tech services, this is the absolute best place to go. Completely satisfied with their service!",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 4,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-008.jpg",
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-009.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother awsome review 👌",
-      "relativeTime": "4 months ago"
+      "relativeTime": "2026-06-19T17:41:22.000Z"
     }
   },
   {
@@ -621,10 +740,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "6 months ago",
     "text": "I sold my ps4 fat for good price to DJN TECH and it was genuinely a very good deal for me and the delivery was also very convenient and hassle free",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 5,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-077.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "6 months ago"
+      "relativeTime": "2026-04-09T17:38:35.000Z"
     }
   },
   {
@@ -639,10 +762,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "6 months ago",
     "text": "Best place for selling your consoles. Hassle-free. Plus they pay very considerably. If you have a console to sell I would definitely suggest this.",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 6,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-078.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother for a unique review 🙏",
-      "relativeTime": "6 months ago"
+      "relativeTime": "2026-04-05T17:08:47.000Z"
     }
   },
   {
@@ -657,10 +784,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "6 months ago",
     "text": "Pro level service and repair of controller and personal care experience.",
     "categoryTag": "Console Repair & Service",
+    "helpfulCount": 7,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-079.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "6 months ago"
+      "relativeTime": "2026-04-05T16:28:10.000Z"
     }
   },
   {
@@ -675,10 +806,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "6 months ago",
     "text": "I had a superb experience with DJN Tech. I purchased three PS gaming CDs from them, and the entire process was smooth and enjoyable. They treat customers like family and take the time to explain each and every service in detail. The gaming experience has been excellent so far. Highly recommended for anyone looking for quality gaming products and great customer service.",
     "categoryTag": "Pre-Owned Games & Discs",
+    "helpfulCount": 1,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-080.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "6 months ago"
+      "relativeTime": "2026-04-24T15:08:06.000Z"
     }
   },
   {
@@ -693,10 +828,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "6 months ago",
     "text": "I am sell my ps 4 pro in good price good or genuine person thankyou",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 2,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-081.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "6 months ago"
+      "relativeTime": "2026-04-21T15:46:50.000Z"
     }
   },
   {
@@ -711,10 +850,11 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "6 months ago",
     "text": "Very smooth experience. Very trustworthy",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 3,
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "6 months ago"
+      "relativeTime": "2026-04-20T16:53:38.000Z"
     }
   },
   {
@@ -729,10 +869,16 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "6 months ago",
     "text": "Good exchange of ps4 and games for ps5 controller and money. very good condition second hand ps5 controller with warranty",
     "categoryTag": "Controllers & Accessories",
+    "helpfulCount": 4,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-010.jpg",
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-011.jpg",
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-012.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "6 months ago"
+      "relativeTime": "2026-04-17T13:08:33.000Z"
     }
   },
   {
@@ -747,10 +893,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "6 months ago",
     "text": "Got the PS5 delivered within 1 hour of inquiry at the cheapest rates at the time. Will highly recommend them to anyone",
     "categoryTag": "PlayStation 5 & Gear",
+    "helpfulCount": 5,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-082.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "6 months ago"
+      "relativeTime": "2026-04-16T18:20:17.000Z"
     }
   },
   {
@@ -765,10 +915,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "6 months ago",
     "text": "Nice People Sold My Nintendo Switch Lite To Them Real Nice Guys There Everyone Should Visit them",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 6,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-013.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "6 months ago"
+      "relativeTime": "2026-04-15T15:37:34.000Z"
     }
   },
   {
@@ -783,10 +937,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "6 months ago",
     "text": "A completely seamless and truth worthy process",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 7,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-014.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "6 months ago"
+      "relativeTime": "2026-04-12T14:58:51.000Z"
     }
   },
   {
@@ -801,10 +959,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "6 months ago",
     "text": "Good service by Danny, extremely sweet guy! Highly recommend 👍🏻",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 1,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-015.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "6 months ago"
+      "relativeTime": "2026-04-09T19:40:16.000Z"
     }
   },
   {
@@ -819,10 +981,15 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "I had a great experience selling my PS4 Pro 1TB to DJN Tech. I found them through OLX, and from the very first conversation, they were extremely polite, professional, and easy to communicate with. The whole process was smooth and hassle-free.\nThey offered me a very good and fair price for my console, and everything was handled honestly and quickly. I really appreciate their transparency and friendly behavior throughout the deal.\nHighly recommended if anyone is looking to sell or want to buy their gaming console — trustworthy service and a great overall experience. Thank you, DJN Tech!",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 2,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-016.jpg",
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-017.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-27T01:18:40.000Z"
     }
   },
   {
@@ -837,10 +1004,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Today I bought 2 PS5 game cd's (pre owned ). I got both of them at reasonable rates with perfect condition.\nThank you Danny bhai",
     "categoryTag": "PlayStation 5 & Gear",
+    "helpfulCount": 3,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-083.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-25T01:22:22.000Z"
     }
   },
   {
@@ -855,10 +1026,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Sold my console to Danny Bhai. Great and smooth experience. And the deal Danny bhai will give will not be given by anyone in market.",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 4,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-018.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-24T17:28:50.000Z"
     }
   },
   {
@@ -873,10 +1048,11 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Got an amazing deal for PS-5",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 5,
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-23T14:19:09.000Z"
     }
   },
   {
@@ -891,10 +1067,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Best reliable buyer and seller",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 6,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-019.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-20T15:18:18.000Z"
     }
   },
   {
@@ -909,10 +1089,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Just brought a ps5 and some games from them got it in fabulous condition and their service are at reasonable prices you should definitely checkout",
     "categoryTag": "PlayStation 5 & Gear",
+    "helpfulCount": 7,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-020.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-19T20:21:09.000Z"
     }
   },
   {
@@ -927,10 +1111,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Sell ps4 to DJN Tech bhai was really genuine and gems of person....",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 1,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-084.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-19T16:51:33.000Z"
     }
   },
   {
@@ -945,10 +1133,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Bhai bohot bohot acche youtuber hai bohot support karte hai guide karte hai",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 2,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-085.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-19T12:30:21.000Z"
     }
   },
   {
@@ -963,10 +1155,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "I sold my ps5 for a very good rate .. trustable shop.",
     "categoryTag": "PlayStation 5 & Gear",
+    "helpfulCount": 3,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-021.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-19T12:30:55.000Z"
     }
   },
   {
@@ -981,10 +1177,15 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Just purchased my first product from djn tech! The guy is really great talking to! I have had a nice conversation with danny bhai and he guided me with everything i need to know! Also very active on WhatsApp and polite behaviour! I just bought a ps4 v2 controller it's pre owned but man i feel like i got a brand new controller so thanks a lot danny bhai again and looking forward to buying more gadgets from you buddy👍🏼",
     "categoryTag": "Controllers & Accessories",
+    "helpfulCount": 4,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-022.jpg",
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-023.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-18T14:11:22.000Z"
     }
   },
   {
@@ -999,10 +1200,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "I have sold and purchased multiple games. The process was smooth, and it is a trusted source for quality games.",
     "categoryTag": "Pre-Owned Games & Discs",
+    "helpfulCount": 5,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-086.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-18T14:11:33.000Z"
     }
   },
   {
@@ -1017,10 +1222,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Danny bhai gave me a good deal for my ps4 pro 👍",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 6,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-024.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-14T17:23:46.000Z"
     }
   },
   {
@@ -1035,10 +1244,15 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Amazing service. Genuine products. Totally worth it. Got Nintendo 3ds XL and Nintendo switch oled all in good condition. Products were delivered to Kashmir with ease.",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 7,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-025.jpg",
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-026.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-14T17:24:11.000Z"
     }
   },
   {
@@ -1053,10 +1267,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Amazing service , Trusted and reliable.",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 1,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-027.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-14T17:24:25.000Z"
     }
   },
   {
@@ -1071,10 +1289,16 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Good place to buy consoles. Very reliable",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 2,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-028.jpg",
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-029.jpg",
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-030.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-14T17:24:33.000Z"
     }
   },
   {
@@ -1089,10 +1313,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "I sold my PS5 to DJN Tech. It was so transparent deal from the start to the payment. Everything was flawless.Thanks Danny bhai",
     "categoryTag": "PlayStation 5 & Gear",
+    "helpfulCount": 3,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-031.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-14T17:24:40.000Z"
     }
   },
   {
@@ -1107,10 +1335,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Very genuine, trustworthy channel your gaming needs, highly recommended 👍",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 4,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-087.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-09T18:55:24.000Z"
     }
   },
   {
@@ -1125,10 +1357,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Sold PS4, It was very smooth experience and provide with good price.",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 5,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-088.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-08T09:43:18.000Z"
     }
   },
   {
@@ -1143,10 +1379,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "It is nice service",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 6,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-032.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-07T19:27:53.000Z"
     }
   },
   {
@@ -1161,10 +1401,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Sold my console at a reasonable price 👍🏼 worth it 💯",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 7,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-033.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-07T13:24:24.000Z"
     }
   },
   {
@@ -1179,10 +1423,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Great product!",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 1,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-034.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-06T17:19:15.000Z"
     }
   },
   {
@@ -1197,10 +1445,15 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Had great selling experience",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 2,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-035.jpg",
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-036.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-06T11:30:01.000Z"
     }
   },
   {
@@ -1215,10 +1468,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Best deal",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 3,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-037.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-05T10:54:44.000Z"
     }
   },
   {
@@ -1233,10 +1490,15 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Very nice guy loved having done deal with him.Sold ps4 pro to him at good price you guys can sell it to.",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 4,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-038.jpg",
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-039.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-04T13:25:32.000Z"
     }
   },
   {
@@ -1251,10 +1513,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Thanks a lot for buying from us! Hope you love the product.",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 5,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-040.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-05T10:54:51.000Z"
     }
   },
   {
@@ -1269,10 +1535,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Sold my playstation 4 at a really good price and a really nice and sweet guy loved to do business with him.",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 6,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-041.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-03T16:05:59.000Z"
     }
   },
   {
@@ -1287,10 +1557,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "I recently sold my PS4 to DJN Tech and the whole experience was completely hassle-free. He trusted me and purchased the PS4 directly after a video call without any unnecessary complications. The payment was made on time exactly as promised.",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 7,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-042.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
+      "relativeTime": "2026-03-03T16:06:21.000Z"
     }
   },
   {
@@ -1305,10 +1579,11 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "8 months ago",
     "text": "Nice quality",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 1,
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏...",
-      "relativeTime": "8 months ago"
+      "relativeTime": "2026-02-26T06:20:56.000Z"
     }
   },
   {
@@ -1323,10 +1598,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "8 months ago",
     "text": "Original working disks about to buy few more",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 2,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-043.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏...",
-      "relativeTime": "8 months ago"
+      "relativeTime": "2026-02-26T06:20:42.000Z"
     }
   },
   {
@@ -1341,10 +1620,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "9 months ago",
     "text": "Great guy , great service , repaired my hdmi port and made it like new . Very trustable guy.",
     "categoryTag": "Console Repair & Service",
+    "helpfulCount": 3,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-089.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "9 months ago"
+      "relativeTime": "2026-01-24T08:05:15.000Z"
     }
   },
   {
@@ -1359,10 +1642,11 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "9 months ago",
     "text": "Nice console ....",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 4,
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "9 months ago"
+      "relativeTime": "2026-01-12T19:21:34.000Z"
     }
   },
   {
@@ -1377,10 +1661,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "9 months ago",
     "text": "Very co-operative service, in South Mumbai DJN is a reliable service provider for gaming consoles",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 5,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-090.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "9 months ago"
+      "relativeTime": "2026-01-12T19:21:41.000Z"
     }
   },
   {
@@ -1395,10 +1683,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "10 months ago",
     "text": "Very Honest Person Walked Me Through The Whole Process I Got My Ps4 Slim 9.0 With Good Condition With Only Minor Scratches Running Smoothly For 2 Months. Im Really Happy With The Whole Experience ❤️",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 6,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-091.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏....",
-      "relativeTime": "10 months ago"
+      "relativeTime": "2025-12-10T13:42:52.000Z"
     }
   },
   {
@@ -1413,10 +1705,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "10 months ago",
     "text": "Brilliant. Go for it. You will get the best Console for the best price. Very cool guy. Thank you for the best deal brother.",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 7,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-044.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "10 months ago"
+      "relativeTime": "2025-12-07T11:15:58.000Z"
     }
   },
   {
@@ -1431,10 +1727,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "10 months ago",
     "text": "Best service ever and perfect customer satisfaction djn tech rocks",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 1,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-045.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "10 months ago"
+      "relativeTime": "2025-12-07T11:16:16.000Z"
     }
   },
   {
@@ -1449,10 +1749,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "11 months ago",
     "text": "Bhai awesome bhnda he yaar , aaj ke date me koi bi aisa guard nai krta yeh bhai sab aap ko full support and your amount satisfied wali feeling denge , trust me best banda he bhai ❤️ muje bohot support kiya and me every each games se leke new playstation ine se leta hu and mast conditions me milta he yaar aur jo inki delivered packageing he wo dekh ke hi pata chalega ❤️ best he 10 out of 20% bhai fully satisfied thnqu so much bhai ❤️",
     "categoryTag": "Pre-Owned Games & Discs",
+    "helpfulCount": 2,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-046.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "11 months ago"
+      "relativeTime": "2025-11-18T01:33:16.000Z"
     }
   },
   {
@@ -1467,10 +1771,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "11 months ago",
     "text": "My sweet brother good product give me ❤️❤️im really happy..",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 3,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-047.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏....",
-      "relativeTime": "11 months ago"
+      "relativeTime": "2025-11-21T16:26:07.000Z"
     }
   },
   {
@@ -1485,10 +1793,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "11 months ago",
     "text": "Danny is a gaming console expert. He's also authentic; repairing only what's needed, and if devices have life, he wont unnecessarily fix or charge. The passion driving him is obvious.",
     "categoryTag": "Console Repair & Service",
+    "helpfulCount": 4,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-092.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "11 months ago"
+      "relativeTime": "2025-11-18T10:50:36.000Z"
     }
   },
   {
@@ -1503,10 +1815,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Got Spiderman Miles and morals CD for PS4 from Danny bhai.\nCD working completely fine and Delivered on the 2nd day.\nVery fast delivery, very humble attitude of danny bhai.\nOverall best dealer for you Playstation needs.",
     "categoryTag": "Pre-Owned Games & Discs",
+    "helpfulCount": 5,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-048.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-09-12T17:59:12.000Z"
     }
   },
   {
@@ -1521,10 +1837,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "I sold my PS2 on DJN Tech, and they actually gave me a good price for it according to its condition",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 6,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-093.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-09-08T23:36:34.000Z"
     }
   },
   {
@@ -1539,10 +1859,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Sold my ps2 in good price to this guy buy products from him",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 7,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-049.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-09-08T12:16:27.000Z"
     }
   },
   {
@@ -1557,10 +1881,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Great Service! I wanted to repair my PS5 Controller on a Sunday and Danny did it within 4 hr.",
     "categoryTag": "Console Repair & Service",
+    "helpfulCount": 1,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-094.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-09-08T12:16:41.000Z"
     }
   },
   {
@@ -1575,10 +1903,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Genuine person with good product in excellent condition seems to be new, hassle free contact with full customer support",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 2,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-050.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-08-27T07:14:10.000Z"
     }
   },
   {
@@ -1593,10 +1925,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Just bought Uncharted and Last one of us pre owned games. The quality was good and delivery was quick.",
     "categoryTag": "Pre-Owned Games & Discs",
+    "helpfulCount": 3,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-095.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother....",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-08-18T18:00:29.000Z"
     }
   },
   {
@@ -1611,10 +1947,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Excellent Condition – Worth It!\nI bought a PS4 game second-hand and was honestly surprised by how good the condition was. The disc is super clean with no scratches, it loaded instantly, and the gameplay was smooth. It felt just like buying a new one but at a much better price. Totally satisfied with the deal – highly recommended for any gamer looking for quality at a budget price!\nDJNTECH 🙌",
     "categoryTag": "Pre-Owned Games & Discs",
+    "helpfulCount": 4,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-096.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏...",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-07-31T14:34:34.000Z"
     }
   },
   {
@@ -1629,10 +1969,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Excellent PS5 Service! I had a great experience with the PS5 service from DJN. DINESH is knowledgeable, professional, and very responsive. My console was diagnosed quickly and the issue was resolved without any hassle. It’s running perfectly now. Highly recommend their service for any PlayStation repairs or maintenance!",
     "categoryTag": "Console Repair & Service",
+    "helpfulCount": 5,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-097.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-07-30T18:44:57.000Z"
     }
   },
   {
@@ -1647,10 +1991,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Nobody can beat the rates of Danny brother. Always helpful, very polite person.",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 6,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-098.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-07-30T18:44:20.000Z"
     }
   },
   {
@@ -1665,10 +2013,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Absolutely Worth It – 6 Months of Smooth Gaming! Review for Game Controller Purchase from DJN Tech: I bought a game controller from DJN Tech 6 months ago, and it’s been excellent. The build is solid, buttons responsive, and there's no drift at all. It works perfectly with both my PC and console. Even after long gaming sessions, it still feels brand new. DJN Tech provided fast delivery and great customer service — totally worth it!",
     "categoryTag": "Controllers & Accessories",
+    "helpfulCount": 7,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-051.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother...",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-06-30T14:22:07.000Z"
     }
   },
   {
@@ -1683,10 +2035,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "I liked the ps3 super slim as I got the best delivery experience. I am is in very concern for the delivery but no I got the best transparent delivery. Thankyou DJN tech.",
     "categoryTag": "Express Delivery & Service",
+    "helpfulCount": 1,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-052.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother...",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-06-30T10:03:00.000Z"
     }
   },
   {
@@ -1701,10 +2057,11 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Very helpful bhai guiding properly for product",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 2,
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-06-22T14:37:48.000Z"
     }
   },
   {
@@ -1719,10 +2076,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Bought a ps vita from them . Absolutely good condition and no problems till date . Loving it",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 3,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-099.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother. ..",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-06-12T14:50:27.000Z"
     }
   },
   {
@@ -1737,10 +2098,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Just bought a ps5 and controller from djn tech really the service is fast and the condition of console is A1.",
     "categoryTag": "Controllers & Accessories",
+    "helpfulCount": 4,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-053.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother for supporting....",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-05-19T15:22:29.000Z"
     }
   },
   {
@@ -1755,10 +2120,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "I bought a second-hand PS4 Pro from Danny @ DJNTech about two months ago, and I couldn’t be happier with my purchase. The price was very fair, and the quality of the console was excellent. It runs smoothly, with no issues at all—feels just like new!\n\nDanny was professional, honest, and made the whole process easy. The PS4 Pro was clean, well-maintained, and ready to go right out of the box. I’ve been gaming regularly since then with zero problems.\n\nHighly recommend DJNTech if you’re looking for a reliable second-hand console at a great price. Excellent value and great service!",
     "categoryTag": "Console Buyback & Trade-In",
+    "helpfulCount": 5,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-100.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother....",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-05-17T07:25:22.000Z"
     }
   },
   {
@@ -1773,10 +2142,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Genuine person and quick in response overall good experience buying the product. Excellent knowledge about product pin to pin.",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 6,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-101.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother...",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-05-17T07:25:40.000Z"
     }
   },
   {
@@ -1791,10 +2164,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Great experience. Genuine products with excellent service",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 7,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-102.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother....",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-05-12T16:26:02.000Z"
     }
   },
   {
@@ -1809,10 +2186,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Prompt service and fast delivery and quiz assistance on call for query",
     "categoryTag": "Express Delivery & Service",
+    "helpfulCount": 1,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-103.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother....",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-05-04T08:14:18.000Z"
     }
   },
   {
@@ -1827,10 +2208,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Best console seller mr danny sir so trustly purchase and sale cd amd console",
     "categoryTag": "Pre-Owned Games & Discs",
+    "helpfulCount": 2,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-104.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother....",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-04-20T13:36:27.000Z"
     }
   },
   {
@@ -1845,10 +2230,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Bought a PS5 from Danny bhai, must say he is the go to guy if anyone is looking for any gaming console in Mumbai.\n\nHe explained everything about the gaming console and how to use it as I was a first time user.\n\nEven the after sale support was great, Highly recommend ✌🏻",
     "categoryTag": "PlayStation 5 & Gear",
+    "helpfulCount": 3,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-105.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother...",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-04-20T12:46:48.000Z"
     }
   },
   {
@@ -1863,10 +2252,14 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Owner is very supportive, gives quick response.",
     "categoryTag": "Verified Google Review",
+    "helpfulCount": 4,
+    "photos": [
+      "https://rudqiwifokllmjpfcnbp.supabase.co/storage/v1/object/public/review-photos/photo-054.jpg"
+    ],
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother...",
-      "relativeTime": "a year ago"
+      "relativeTime": "2025-04-17T11:30:39.000Z"
     }
   }
 ];
