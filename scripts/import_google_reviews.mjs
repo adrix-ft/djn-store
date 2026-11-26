@@ -74,7 +74,9 @@ async function run() {
   const formatted = rawReviews.map((item, idx) => {
     const categoryTag = getCategory(item.text);
     const color = colors[idx % colors.length];
-    const photos = Array.isArray(item.reviewImageUrls) && item.reviewImageUrls.length > 0 ? item.reviewImageUrls : [];
+    const photos = Array.isArray(item.reviewImageUrls) && item.reviewImageUrls.length > 0
+      ? item.reviewImageUrls.filter((u) => !u.includes('googleusercontent.com/grass-cs/'))
+      : [];
     const hasPhotos = photos.length > 0;
 
     return {

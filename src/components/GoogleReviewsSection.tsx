@@ -39,6 +39,11 @@ export const GoogleLogoIcon: React.FC<{ className?: string }> = ({ className = '
   </svg>
 );
 
+// Helper to check for expired Google CDN review photos (grass-cs tokens return 403 Forbidden)
+const isBrokenGooglePhoto = (url: string) => {
+  return !url || url.includes('googleusercontent.com/grass-cs/');
+};
+
 // Reviewer Avatar with automatic Google Photo loading and graceful fallback to colored initial
 const ReviewerAvatar: React.FC<{
   name: string;
@@ -77,10 +82,17 @@ export const GoogleReviewsSection: React.FC = () => {
   >('all');
   const [activePhoto, setActivePhoto] = useState<string | null>(null);
   const [expandedReviews, setExpandedReviews] = useState<Record<string, boolean>>({});
+  const [failedPhotos, setFailedPhotos] = useState<Record<string, boolean>>({});
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+
+  // Helper to get valid, non-broken customer photos
+  const getValidPhotos = (photos?: string[], failedMap: Record<string, boolean> = failedPhotos) => {
+    if (!photos || photos.length === 0) return [];
+    return photos.filter((p) => !isBrokenGooglePhoto(p) && !failedMap[p]);
+  };
 
   // Mouse drag refs
   const isDraggingRef = useRef(false);
@@ -92,16 +104,14 @@ export const GoogleReviewsSection: React.FC = () => {
     let isMounted = true;
     fetchGoogleReviewsFromDB().then((dbReviews) => {
       if (isMounted && dbReviews && dbReviews.length > 0) {
-        // Merge Supabase reviews with default genuine reviews without duplicates, prioritising photos
+        // Merge Supabase reviews with default genuine reviews without duplicates
         const map = new Map<string, GoogleReview>();
         REAL_GOOGLE_REVIEWS.forEach((r) => map.set(r.id, r));
-        dbReviews.forEach((r) => map.set(r.id, r));
-        const merged = Array.from(map.values()).sort((a, b) => {
-          const aHas = a.photos && a.photos.length > 0 ? 1 : 0;
-          const bHas = b.photos && b.photos.length > 0 ? 1 : 0;
-          return bHas - aHas;
+        dbReviews.forEach((r) => {
+          const cleanPhotos = (r.photos || []).filter((p) => !isBrokenGooglePhoto(p));
+          map.set(r.id, { ...r, photos: cleanPhotos });
         });
-        setReviews(merged);
+        setReviews(Array.from(map.values()));
       }
     });
     return () => {
@@ -233,10 +243,33 @@ export const GoogleReviewsSection: React.FC = () => {
       );
     }
     if (selectedFilter === 'photos') {
-      return Boolean(r.photos && r.photos.length > 0);
+      return getValidPhotos(r.photos, failedPhotos).length > 0;
     }
     return true;
   });
+
+  const reviewsWithPhotosCount = reviews.filter(
+    (r) => getValidPhotos(r.photos, failedPhotos).length > 0
+  ).length;
+
+  const filterButtons: {
+    id: 'all' | 'buyback' | 'ps5' | 'repair' | 'nintendo' | 'discs' | 'photos';
+    label: string;
+  }[] = [
+    { id: 'all', label: `All Reviews (${reviews.length})` },
+    { id: 'buyback', label: 'Console Buyback' },
+    { id: 'ps5', label: 'PlayStation 5' },
+    { id: 'repair', label: 'Repairs & HDMI' },
+    { id: 'nintendo', label: 'Nintendo & Switch' },
+    { id: 'discs', label: 'Pre-Owned Discs' },
+  ];
+
+  if (reviewsWithPhotosCount > 0) {
+    filterButtons.push({
+      id: 'photos',
+      label: `Customer Photos (${reviewsWithPhotosCount})`,
+    });
+  }
 
   return (
     <section className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-10">
@@ -334,18 +367,7 @@ export const GoogleReviewsSection: React.FC = () => {
           <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider shrink-0 mr-1 hidden sm:inline">
             Filter:
           </span>
-          {[
-            { id: 'all' as const, label: `All Reviews (${reviews.length})` },
-            { id: 'buyback' as const, label: 'Console Buyback' },
-            { id: 'ps5' as const, label: 'PlayStation 5' },
-            { id: 'repair' as const, label: 'Repairs & HDMI' },
-            { id: 'nintendo' as const, label: 'Nintendo & Switch' },
-            { id: 'discs' as const, label: 'Pre-Owned Discs' },
-            {
-              id: 'photos' as const,
-              label: `Customer Photos (${reviews.filter((r) => r.photos && r.photos.length > 0).length})`,
-            },
-          ].map((f) => (
+          {filterButtons.map((f) => (
             <button
               key={f.id}
               onClick={() => setSelectedFilter(f.id)}
@@ -373,6 +395,7 @@ export const GoogleReviewsSection: React.FC = () => {
             const isExpanded = expandedReviews[rev.id];
             const isLong = rev.text && rev.text.length > 150;
             const displayText = isLong && !isExpanded ? `${rev.text.slice(0, 150)}...` : rev.text;
+            const cardPhotos = getValidPhotos(rev.photos, failedPhotos);
 
             return (
               <div
@@ -453,13 +476,13 @@ export const GoogleReviewsSection: React.FC = () => {
                   )}
 
                   {/* Customer Uploaded Verification Photos */}
-                  {rev.photos && rev.photos.length > 0 && (
+                  {cardPhotos.length > 0 && (
                     <div className="mt-3 pt-2.5 border-t border-gray-200/60 dark:border-gray-800">
                       <p className="text-[10px] font-medium text-gray-400 mb-1.5">
-                        Customer Photos ({rev.photos.length}):
+                        Customer Photos ({cardPhotos.length}):
                       </p>
                       <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
-                        {rev.photos.map((photo, i) => (
+                        {cardPhotos.map((photo, i) => (
                           <button
                             key={i}
                             type="button"
@@ -476,6 +499,9 @@ export const GoogleReviewsSection: React.FC = () => {
                               referrerPolicy="no-referrer"
                               className="w-full h-full object-cover group-hover/img:scale-110 transition-transform duration-200"
                               loading="lazy"
+                              onError={() => {
+                                setFailedPhotos((prev) => ({ ...prev, [photo]: true }));
+                              }}
                             />
                           </button>
                         ))}

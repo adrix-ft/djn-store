@@ -934,7 +934,9 @@ export function mapRowToGoogleReview(row: any): GoogleReview {
     text: row.text || '',
     categoryTag: row.category_tag || 'Verified Customer',
     helpfulCount: Number(row.helpful_count) || 0,
-    photos: Array.isArray(row.photos) ? row.photos : [],
+    photos: Array.isArray(row.photos)
+      ? row.photos.filter((p: string) => typeof p === 'string' && !p.includes('googleusercontent.com/grass-cs/'))
+      : [],
     ownerReply: row.owner_reply || undefined,
   };
 }
@@ -953,13 +955,7 @@ export async function fetchGoogleReviewsFromDB(): Promise<GoogleReview[]> {
       return [];
     }
 
-    const reviews = data.map(mapRowToGoogleReview);
-    // Priority: Customer photo reviews always appear at the top
-    return reviews.sort((a, b) => {
-      const aHas = a.photos && a.photos.length > 0 ? 1 : 0;
-      const bHas = b.photos && b.photos.length > 0 ? 1 : 0;
-      return bHas - aHas;
-    });
+    return data.map(mapRowToGoogleReview);
   } catch (err) {
     console.warn('[Supabase] fetchGoogleReviewsFromDB fallback:', err);
     return [];

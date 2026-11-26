@@ -34,900 +34,6 @@ export const GOOGLE_BUSINESS_INFO = {
 
 export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
   {
-    "id": "g-rev-5-sahilshaikh",
-    "authorName": "Sahil Shaikh",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#1E40AF",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjUfI9b9fbM-ao5ckvxJFDZIkCAwdj2BOrrXqLZnaEWBZCaOOG5D=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 2,
-    "rating": 5,
-    "relativeTime": "2 weeks ago",
-    "text": "Best Seller ❤️",
-    "categoryTag": "Console Buyback & Trade-In",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLcMI0WNibv1g7wjZ2VMyFhkL1Kr07vngGdLQ0Wl2g0_77WwV-wfJYYVlhSuFcU7_BbXl9wfsaBny8-rDuVCELjLErXJVFCxyVLfRzvtuGaz7L9ryBj7xlZNYJjS1MxWLKFws9xb1TLzpdo=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "2 weeks ago"
-    }
-  },
-  {
-    "id": "g-rev-9-kishanbhandari",
-    "authorName": "Kishan Bhandari",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#D97706",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjVbBo__DRG5nBH4pTaQiMtfxDXGnma6RrxxK7fdBn2oVB-qnVzY=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 8,
-    "rating": 5,
-    "relativeTime": "a month ago",
-    "text": "Had a great experience selling my PS4 here. The entire process was smooth and hassle-free. They tested the console in front of me, everything was transparent, and I received the payment upfront without any issues. Friendly and professional service. Definitely recommend!",
-    "categoryTag": "Console Buyback & Trade-In",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLe0INk1gQqMvvDtDOWJvnP5Ls8C1Wknc43QhZbi0OeaBxJE82OiGXgDaWYV3Koe775Ar2xPMfgcLXUjeB5KXB2aiY81UZPnZu1BE8MK2h1ET6NUUj21E_sIN1uj5xJBai43J0je2YiohtAW=k-no",
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLchTi6ZcP0RgAezJ9NjtZ5xs0c2j8XVtavU5AE8eCbteosZvvFKykJbTNsu1-StIyMT9lUS768BsNmV5qUGl11_WDH2OEj17HAxFufNBVHGwxoE2Vkvy3bGbexY7gBPyTS4U_k1m9mziLZM=k-no",
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLf1mpS2OgdefL_xQif4YPplQxXyeMWVlFla9v1p76rmCVB--gRXT2X0vYSpakMefeitZhUTZ0zzaOALyL97Holb2Wj3gKSFDjS7nWHPikf_6Rm3POAA1SeF1NeQExAYNvnaRNgP6Z45B12N=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "a month ago"
-    }
-  },
-  {
-    "id": "g-rev-20-rameezmulla",
-    "authorName": "Rameez Mulla",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#EA4335",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocKPpIVbXk1Uu06iu8u86aiyoWBscwg4hnGL915DCmpKPMeXEA=s1920-c-rp-mo-ba12-br100",
-    "isLocalGuide": true,
-    "guideReviewsCount": 20,
-    "rating": 5,
-    "relativeTime": "3 months ago",
-    "text": "I recently sold my nintendo switch to DGN tech ...The process was very smooth and quick without any issues. He immediately paid the money as soon as he got the console. Had a very good deal with him.",
-    "categoryTag": "Console Buyback & Trade-In",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLf1zpj_2LjRbBdypy-AYJiBAn5mfeXwQJThNTfZmHACtGZXrr09w6jkaNJBd8TQPbCyqBGbtZs4LH9ThxS4m25daLQMIZcLM59NaExGTS9o1_jtdgDcOVnluoHAbR-asFvOX_S6JybmZhQ=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother for a wonderful review 🙏",
-      "relativeTime": "3 months ago"
-    }
-  },
-  {
-    "id": "g-rev-26-ojasvaidya",
-    "authorName": "Ojas Vaidya",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#0891B2",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocJIx3Zii0XhVquizVnrDNI_U3HClnSj8XPWFyLlG42xNfgUQQ=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 1,
-    "rating": 5,
-    "relativeTime": "3 months ago",
-    "text": "Sold my ps4 along with 4 games for 16.5k.",
-    "categoryTag": "Pre-Owned Games & Discs",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLeGKS1bez1MnVQHGpbslWwTuVvrOxDRmmuC8SwhBDsbrs1LcSN90lN4bu09k2AuVmCLkCIE9qL7Hvtt5XbfrmzZf4es__qAz9stOixFhscIrufR3CquEwpdKwRtxvlGTgXmd9Xt5lUBH0Ku=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "3 months ago"
-    }
-  },
-  {
-    "id": "g-rev-28-kingrider",
-    "authorName": "King Rider",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#4285F4",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocK0eU8zVgTDGbUc68ixFPoE5oGkjh7RvmOE-bhOcsCL4TR6jQ=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 1,
-    "rating": 5,
-    "relativeTime": "3 months ago",
-    "text": "I had a great experience dealing with DJN Tech. I sold my PS4 through a simple video call verification, and after everything was checked, I received the payment instantly. The entire process was fast, smooth, and hassle-free. I also got a great price for my console. The owner is genuine, friendly, and professional. Highly recommended for anyone looking to sell their gaming console safely and easily!",
-    "categoryTag": "Console Buyback & Trade-In",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLeLRPmPmeA9HXOx17M5Xb_zmdQn7mh_p6sVtSqf0f_fj6T4KEs6Og9m5qt5ZnDmK3T_P1IAE2mgTIWdqp-bv-KQnlnUPLtj76mSOXEeVLnDNOGk1AC3bsk8tjatV9lUgLmVJubAUOEPCf4=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "3 months ago"
-    }
-  },
-  {
-    "id": "g-rev-32-aqdasak",
-    "authorName": "AQDAS AK",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#1E40AF",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjVC-MotIcsHgAmohn2P-TFTJ2NXav8_ZdLz_MTozeHZrHsCLPLq=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 2,
-    "rating": 5,
-    "relativeTime": "4 months ago",
-    "text": "Excellent service by DJN TECH! The owner is incredibly genuine, professional, and helpful. They explain everything clearly and deliver top-notch work. If you are looking for reliable and high-quality tech services, this is the absolute best place to go. Completely satisfied with their service!",
-    "categoryTag": "Verified Google Review",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLcVABVJC4NCH8dvjydQvOdLBd3HmbpxSVNLX1Bm8c-EZu8ttWNzSrZmdRkt8cLBn1q7Pm2qTZWhvOOo-E8WA-Oj_kFT7dklEvnzCKakYGMP1oEsqozfrfmF8SJTtHgrhPosQcrp2SCLjepL=k-no",
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLdpxt925h8wC7q21OvZiUlrBH0X9EpJ0bZDVVrhDVHKJXecrBf2UYNF7rdQYde5ik6qs_CalBvTpLhl97Y4mzFax9qYTBR2DgpRO8KWxZ_qFdNzsWGaAKrhSMDlKyBm_2nNGEUcKkrePtDZ=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother awsome review 👌",
-      "relativeTime": "4 months ago"
-    }
-  },
-  {
-    "id": "g-rev-39-tejjaspersonal",
-    "authorName": "Tejjas Personal",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#FBBC05",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjUwye1V2YUJo89EDTPoDNhz-cCY23ABCA9KVEAhWb1cSjUvSrQ=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 3,
-    "rating": 5,
-    "relativeTime": "6 months ago",
-    "text": "Good exchange of ps4 and games for ps5 controller and money. very good condition second hand ps5 controller with warranty",
-    "categoryTag": "Controllers & Accessories",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLcyvQ6nVNWiZAdx9jvll9U7U2rlYKCeGlMJxWfKqb9-F4D_REeHDvwl5zKx1mpDuabtXXFg9IxjmbCIL3ZYl1y1weBMDanDKW64eN7dIPx2EM_69D2MlPo1rX5KiSFNuEiuHx8awWqIwDw=k-no",
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLeVSr0WzwRltq0CDa7DarRy4U8EVpwEvCmdlMMRnTafj7O8laKO_RHB2eMDHw02EdnYJyByHBoWs1EHjTqEDuqGW8ibrU2SY_vgVX-KQxrsHlsX9tCiskZRze9BkDm7LO7FDwCKiIOFM2Q=k-no",
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLfdmQ8PLzsX3BGEHYkULVIMNOqJSQJMcYEV9p-C9H8I5rvGgR5AjMmQvp4ZFqA5oOoHQicJdwoqB_huqaCiq2UugrNlFgHjKgXowMMvZAKN8Q0Ke0MbA8vxBA62FXf0fFP0p2KAlVH5nfg=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "6 months ago"
-    }
-  },
-  {
-    "id": "g-rev-41-tusharbhoir",
-    "authorName": "Tushar Bhoir",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#1E40AF",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocL4HpogMPn6DJkgmdtxTAMLS81PGPBq9GWOtpLWV1lUH0k_FA=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 3,
-    "rating": 5,
-    "relativeTime": "6 months ago",
-    "text": "Nice People Sold My Nintendo Switch Lite To Them Real Nice Guys There Everyone Should Visit them",
-    "categoryTag": "Console Buyback & Trade-In",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLdBkC1ExPkjJl02bKX3_eZmu0CLDWj9JnaMG5Fpo3HngsaFQOXY8vG0dH6hMJPDcY3x2SItE_7BkSa71BK2vC9IMPuWFGKJouIIXLzRA3jVPd6yBgsU5XVIFxm5RRLt80aCEGVVgVIBNlIS=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "6 months ago"
-    }
-  },
-  {
-    "id": "g-rev-42-drashtashelawala",
-    "authorName": "Drashta Shelawala",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#7C3AED",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjUefQFXktg3UbjcYHw1YGeXq_VjF--Em4QrYVLW16ZWFmBHsl8IxQ=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 8,
-    "rating": 5,
-    "relativeTime": "6 months ago",
-    "text": "A completely seamless and truth worthy process",
-    "categoryTag": "Verified Google Review",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLeFdYNcUVfzT4Bx5jkBDCGjj6FQQNJ2YKdcrdz4T4JlEO000UZuAW32K-ZsmN191SvwG5OTzTX0MGQYxVl2JP0IrnS8L1xfvTC4_7zvHdrf6-cUn9SJ3MT2X5kjwYTNLz8qAWu6mtOTMjlN=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "6 months ago"
-    }
-  },
-  {
-    "id": "g-rev-43-kritikgupta",
-    "authorName": "Kritik Gupta",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#0F9D58",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjWRsQ76qondWfx2O5Sk0w8pRfMvtIE_w7ImmMDh59_a8tcJ42pN=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 7,
-    "rating": 5,
-    "relativeTime": "6 months ago",
-    "text": "Good service by Danny, extremely sweet guy! Highly recommend 👍🏻",
-    "categoryTag": "Verified Google Review",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLdKjjLAB9zl_XUrxLKTVnv4ZQHFHH4GGtPIw5kyduBFb68HNCH4VubK9AUmNPXxlpWubOjwKFaol6fCWL0EYU13uUODtu6Avk-z8YRx6pD0RVZWxJCDwj17hrwI5cFg22rGAxg95CGi6a8S=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "6 months ago"
-    }
-  },
-  {
-    "id": "g-rev-44-rishabhpittalia",
-    "authorName": "Rishabh Pittalia",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#0891B2",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocJrfILdnWvbeIW5kmpRlseseMbOrLxBqqbudL4lTLH3eH_OJw=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 2,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "I had a great experience selling my PS4 Pro 1TB to DJN Tech. I found them through OLX, and from the very first conversation, they were extremely polite, professional, and easy to communicate with. The whole process was smooth and hassle-free.\nThey offered me a very good and fair price for my console, and everything was handled honestly and quickly. I really appreciate their transparency and friendly behavior throughout the deal.\nHighly recommended if anyone is looking to sell or want to buy their gaming console — trustworthy service and a great overall experience. Thank you, DJN Tech!",
-    "categoryTag": "Console Buyback & Trade-In",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLfqxJ6mnU_5uLN1uAr_XnXU7dtRkZRWE74unGTLWIlhKpmmJ5Mn4jqQZQPq19lh6E7wDZEq3RzS-2pYUgrMUuaoa7XYm3HcjdyWN9bKRllFk-50XbJpsLHqJ-O2uwKckCkCdEIOgSg0lFGM=k-no",
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLfSMBUy7ZBvwRLGmMiiQ_b5WLICsncprWw-Ui5t3Ug6O-rTDRdBoNpxZBz9dRD3IgySxAHI3F98-8Bga33GnDNbJcCmO5i4mlSmzXHKULFWiJ55AmUbzccTg1Ur-RsPuN3Bn3UUJa1BeoOs=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-46-harshmeshram",
-    "authorName": "Harsh Meshram",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#4285F4",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocIln4VtK3fc_LTbodbggPV2H12vcetUQC1nsK0H_rhNLvE4yJk=s1920-c-rp-mo-ba12-br100",
-    "isLocalGuide": true,
-    "guideReviewsCount": 16,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "Sold my console to Danny Bhai. Great and smooth experience. And the deal Danny bhai will give will not be given by anyone in market.",
-    "categoryTag": "Console Buyback & Trade-In",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLceLWdtNEwO6EFsGnexCxi6EFVW__veomQVCUac8YUgI1VqaZNkoF4YGfZ6BKOL8ngapdaXvrZxsq0_14qDGn-tYdQwWDMHQSxyRgV-q2LG8plU9yoR9oTNFxcrCW9Yl-Y5m4mKr07JWFQ=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-48-abdullahshaikh",
-    "authorName": "Abdullah Shaikh",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#FBBC05",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocIDFVCoEZ8XVgSuA-QEA-eyZbfPXCs07ZI5wshy2JxhBKHRDNDN=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 8,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "Best reliable buyer and seller",
-    "categoryTag": "Console Buyback & Trade-In",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLcrxtXPzAmf3QFzTXBBJC9xAPC2QVm8t6_A7EFvCf6ccEuQ0b9llO19ebO4dqWI9Ovr0IGGEKS8oAHeu9lDzt1O1wx_K4nBNpTiUQ-gNyeggFnDVoLv_tGTSFxSrtDSED9hxJsdM3iQKoPI=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-49-sheetaljogadiya",
-    "authorName": "Sheetal Jogadiya",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#34A853",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocJYairOnyTIs3Cw-zkmFfu1FtKrFfNLxA4gBFYNC44QyNCjpQ=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 1,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "Just brought a ps5 and some games from them got it in fabulous condition and their service are at reasonable prices you should definitely checkout",
-    "categoryTag": "PlayStation 5 & Gear",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLcSNkIYVquOSoo7XsJIqSXpVB1RZxmiUqGWCAXNfCqvZeupeCJyOjsFOFB5OQ7viEO5wNLJ9UG1jn4Nbg50RVOC5CA5RHgCIwdW1W0xuS356MsqHxLa1cS5NzmOjvxpBGr8bzfXboHTF-Yl=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-52-neilpagariya",
-    "authorName": "NEIL PAGARIYA",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#0F9D58",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjWr_IDssGEMUp2LzKAJ9LrNjymljBB5FNS-YJNuMdN9NaWrnvOS=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 4,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "I sold my ps5 for a very good rate .. trustable shop.",
-    "categoryTag": "PlayStation 5 & Gear",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLdg8m1VoujvFUVwC8nxJbaNcnaJLdXjVtyGsckuu8Iy3Y8DbRKCU3yz04ekMP77r0WYJ8zTj1YW3USPZsAb0Qv7c3_EhHUL5b8jVflciqp12gC-487sWZUb0a-hTPZYsB3J0I08kliA_VY=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-53-damtil",
-    "authorName": "DAM TIL",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#0891B2",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjXp_etnEIqRJ2EjxJHyszaNXnGtE7dRDipJ9ngENDJBIZleYwAn=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 2,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "Just purchased my first product from djn tech! The guy is really great talking to! I have had a nice conversation with danny bhai and he guided me with everything i need to know! Also very active on WhatsApp and polite behaviour! I just bought a ps4 v2 controller it's pre owned but man i feel like i got a brand new controller so thanks a lot danny bhai again and looking forward to buying more gadgets from you buddy👍🏼",
-    "categoryTag": "Controllers & Accessories",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLfnc620t13qoxVyArr7ishwCFsk0xk2uvpZUYx9pnwvZh6yO6aAk884N4llMw9bdg0xaSv5URORQ9boX8XzwOg2czlu6E1a4V_WNkgOZE84arMhg0SQ99d5W8cWCXqnk1eas2PostKAi217=k-no",
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLcZhFhKRYy87nEYb2F9QzO9Jr6SgmJiytQTQfg3mqO93ZcfcB02aLDyj5ley0OHWH987-yrnaVCSQNsjhRhmw48ViH5lpmxhjTszYsoL_pvge69JKd27y2EOQ_TPGDYI70hIF1mGQQsk_s=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-55-utkarshkrishna",
-    "authorName": "Utkarsh Krishna",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#4285F4",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjWtLJwdlHVYgUPx99DkCLUpbxDovCisOZyrdIWMl5I7hdBbRaM=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 6,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "Danny bhai gave me a good deal for my ps4 pro 👍",
-    "categoryTag": "Console Buyback & Trade-In",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLeV7BC0eTxCRs4iMp9-oGiclFd-GiZMuq-IdZlnC5-QamMn0ADsze2UON_Y3MQe67iKJ6uTo41HIXDIlyJPnc4xmu-ehUwCobzuUX477rn0fPSUjMSH4Edbb-Oy-EI2xxNGlxMniGSsBbQC=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-56-amaanfarrukh",
-    "authorName": "Amaan Farrukh",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#EA4335",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocLcflv7iuga0lBMX64jYKACeBHE2zLvkHrvLEi8JSoSTwCwYg=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 1,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "Amazing service. Genuine products. Totally worth it. Got Nintendo 3ds XL and Nintendo switch oled all in good condition. Products were delivered to Kashmir with ease.",
-    "categoryTag": "Console Buyback & Trade-In",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLeJwh6ngOptaE1TQnm_XrjpNdWSffxh83t7cDsPSafhOikLmt0qlKb0SZ8qXIuFIn5fA707hCAABlwevHf2glheONXG8OXVqlzofq37_Ra7tTLCgMRRCojBlnDLZDnCJ_gyfqX4CqLZCWoO=k-no",
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLfN7K62TjLSHxvcrMbXmu_I7z3ll-kI7WhTuwEjr3jHSfsdEkl592H0XKNhT8OFKlHHCsD27bq5mOUsAFYUCBTOqRyXfwCTSHgTvQURlgjNe3Rv_7uWMVD_J87NK43yDiQdIgv5VWEOqii2=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-57-shahilshah",
-    "authorName": "Shahil Shah",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#FBBC05",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocIDjyrbBytS8jkkZ0zGW-ut1MmeV6LkxV3JeWmPmNTsRgUUjQ=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 8,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "Amazing service , Trusted and reliable.",
-    "categoryTag": "Verified Google Review",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLecygzsfIZeZb0u4mW6SZqQonLBbBFs70ehGWdVevLnXQaDzy12EaCXbVLKpouXyAhtkoZIiyFPwbTImcN_k4xjL7HGFy034OROZ-IOVmFsZkCmglL9sDyWPsxS3I1pfWEtVexjDUK4O_Ud=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-58-dhruvthakker",
-    "authorName": "Dhruv Thakker",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#34A853",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocKb5iuReD0KBlZJ6xr5enWu5_yim5dsTstral0NIwDehU562GM=s1920-c-rp-mo-ba12-br100",
-    "isLocalGuide": true,
-    "guideReviewsCount": 5,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "Good place to buy consoles. Very reliable",
-    "categoryTag": "Verified Google Review",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLcGr_XWACjsSHSuv3S7tj6KijgyiIv6j5VBgag3mIGagdon_aTTB73GGyKVsicxUHjYma19MPqKRK7hzpv0ahtFbUPo0vEQcAQb7dB3voyrlbA-gODboy3NHL-Xzs_zmZuO556vkyhiPDdH=k-no",
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLcY5AW67D3l-WQt9V5K3pxqQ3S3rQTDa29YdU7i2FgyHhQznmAgCmLQ7n5hpWhWHp772YieHaEaWA3VqYc3H-pUqIKfp6apTsNw9LBx_ndA7LVTLwKgSQWsLIZqEF-9j4sTszDtrcFyTQU=k-no",
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLdprKx2D5j10zOshMZ_BR5awQHUpHvhVrtfNjg6ZzFTyVBOTpL1GJjZHKpAqKGoTVcJzF93UbjV24dmAJ0BoQCLxi6f2xEUhNu1MVTrh8s3uC_9ShrEAG66R_W2QTNaJY8ByihN3v5FyJLj=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-59-pranavnar",
-    "authorName": "Pranav Nar",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#1E40AF",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjXfbNoAXMx08GQtrhUaHLeh_EFtRvHwwm3eST49ZM3s9MPz3k3PXQ=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 5,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "I sold my PS5 to DJN Tech. It was so transparent deal from the start to the payment. Everything was flawless.Thanks Danny bhai",
-    "categoryTag": "PlayStation 5 & Gear",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLczPWdtwLrLxPdMT2aqjkym3FceE6pnNJz1bIBDxeTW8JcD9Moi0P1ycNs_FZgBEw0n_eD_lfjTYT6HNxlfTLzIJ6Emyt7rWjy-5kqjppgFy2lFAQqWuEccQ07dKeM33MmktdtrA35Nlr0H=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-62-sonupawar",
-    "authorName": "Sonu Pawar",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#0891B2",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjVJduMJWvsbz6BPUo4dP61Gl6XeLb_jh5safDIZwSMbm9iW3oV_=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 2,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "It is nice service",
-    "categoryTag": "Verified Google Review",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLeiPe_a7Wdb5yjjZLwqN1B_8ISnEYAkmLDD4sQy48LcOJYiHvCnfkCXl6DXq7nyP2GLDmzMxuNcQAGc7E1rEY_zD4N25pIDmsBCbUzXkw0vUsV-325kc__KpRGI9zTm1IsX65LbckYsnLg=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-63-tanishqpadhi",
-    "authorName": "Tanishq Padhi",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#D97706",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjWQ4cDeoEhc3bTxq-tcZndtEg_ISsKDfjmCvYS83Ll7vSMaQHE=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 2,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "Sold my console at a reasonable price 👍🏼 worth it 💯",
-    "categoryTag": "Console Buyback & Trade-In",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLfFzCSHcrKHm2H5L-h-jteq3DmQIXjplwCRFpMnH2vLM5fQ64SAqR8OkVSKjJi9p0qRJLyMPrHmz_nM7dOKGb6Yv05JA2MKpivlG15nIFohY9fW7ZblgCByNVlXgPoI02XOwoZ4kY33FjA=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-64-apurvjha",
-    "authorName": "Apurv Jha",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#4285F4",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjUFc5s5fvWmejWpQtm8cYoajtO7Fe_rTLSb0UomCje-b-1zzKbGVQ=s1920-c-rp-mo-ba12-br100",
-    "isLocalGuide": true,
-    "guideReviewsCount": 16,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "Great product!",
-    "categoryTag": "Verified Google Review",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLdGcPAkxiRfIDujWHse9pcr7ylf4CIz14kw_cg5qqu3fOydXWaP9XJYjiK2CJ4hk6Quvidw12jQ3WcWW9O-7SIjoH948pnoo_oqRhBZQDUVLx2GDo23QNamFWOdH2NceT1op0lXkxdTGY1Q=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-65-sarthakjadhav",
-    "authorName": "Sarthak Jadhav",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#EA4335",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocJtodsqhfy1-fSevSlq6kd17jIIiOPQ2Rk1wpFtM3Hg8lZvQNKd=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 11,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "Had great selling experience",
-    "categoryTag": "Console Buyback & Trade-In",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLfFnMrU_crBmWTZxiJ2AupUcFEk29ZYtxBqPKaYP7hHatvqW7sn6jytpPnWcniO4MfTLqSr510vg59KDNuhdKwJaQlWFqVJkJJ9HOyOWjqrPrFet0j2lCRbDKPd-vofhbJ0pNu2MVVE0ZE=k-no",
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLclkaZybXUrRXGs0sJkNqFQU8pnwl5LGbL8P0jOjz2RmUo3CLKJMCuKDIBE89Gdq1OxUufI8bGPD-koPebLwkKjwurnSEwnzlpgtxiq8YNewxOgmlELUPcY41qwizJxjXKydISqVZHAUc4=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-66-owaiskhan",
-    "authorName": "Owais Khan",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#FBBC05",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocIUIbgyuSM9PQd9v_LISXu__EkwNwNJgfk2L_aTu8QePYw-Rw=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 1,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "Best deal",
-    "categoryTag": "Verified Google Review",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLenn-KCCAa9dY2SPBEQhhZhWvGqPtdOMaPhFwqZoQIcwsfm6eSYOMpMRDWz8eufYmdMUVZlVJk9KHo_U52CztqJiFmTHzwY7Jiqi8c39Oe4VrVLsbZmeblu17LgyB-aOErq2QHR4HnNOMXP=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-67-yugmehta",
-    "authorName": "Yug Mehta",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#34A853",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjUAB3v-FiTsMM3VZ5J2ZEodDK6yhYXSshRMxMe2gjKT2136SIdJ=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 2,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "Very nice guy loved having done deal with him.Sold ps4 pro to him at good price you guys can sell it to.",
-    "categoryTag": "Console Buyback & Trade-In",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLcnqASYIn2EedUMDEvxBA-XROo86L22XxgGYMc5Ap_4ogkbrDuZnKcCPZGIMdLaEwuBtNIwx-t5BVQLntqyMtrB-wTv_kxuDO9PF1hQpkt7Y5EOVeXkLtVRg6bKZ19FUBHLUrPdo6dHjT_a=k-no",
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLeOPpcLn2jVNMRB6Ux1amTYRrbs0g4GjmXElmi1QutbSSIgS2rQ-P6mSdjvekTbTifhx1c-yDX8RnNmPctYEROh6pri3OvUraNlZ65gDC5myI_5nQvx7keR6HKPjkMAAXmCwdhCC9aj5pqk=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-68-prajapatisangam",
-    "authorName": "Prajapati Sangam",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#1E40AF",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocIorZx1sQzXB6_7B1tRM8qcdzVDRHZs6cRNBQjRsO0gLdgPHQ=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 2,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "Thanks a lot for buying from us! Hope you love the product.",
-    "categoryTag": "Verified Google Review",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLdnvTtJZ-gGd6sExEsJJu-Td7d_AgBqkE_oNGDFXIDr0cRhopJ17_brzXu6SYjG2fuXbh_FMMzU8ODs8Wpqj_KtUv3Qn2o_crZucXZghwb07yvHy-IzuLCs4v7g-lNOzV70nf9GoyydT1Lo=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-69-samsondsouza",
-    "authorName": "Samson Dsouza",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#7C3AED",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocJfV3mrJ1ytx8Nlk9sOeSTgdx1h2fYb6F-xYHAc6HIHdKKm0w=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 2,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "Sold my playstation 4 at a really good price and a really nice and sweet guy loved to do business with him.",
-    "categoryTag": "Console Buyback & Trade-In",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLfzsEGnPOfMCrn4vEzq2ePQnjEW0HCKW84BquphlH7Vl9RuWvSETDtEsHR3xSIFYeUzkj8T6kvaY1AFiStOB_RE06qKF4zIIsq2Q92LCIOKNjxCUExa5v5mgCeg10K8k9NGvJVMETwlF-8k=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-70-muzammilshaikh",
-    "authorName": "Muzammil Shaikh",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#0F9D58",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjXJTkxRzUiFVrAcQfzXMTlb4uWZtD6aQKvDeQYlwkN8HNhADLItgA=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 4,
-    "rating": 5,
-    "relativeTime": "7 months ago",
-    "text": "I recently sold my PS4 to DJN Tech and the whole experience was completely hassle-free. He trusted me and purchased the PS4 directly after a video call without any unnecessary complications. The payment was made on time exactly as promised.",
-    "categoryTag": "Console Buyback & Trade-In",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLfLg45FoCtumQ24wMTZ4-xhG9rWrja-owN2Pp8haMScNwusZsiYmVhPQFkfwqAymP9V6Mzl2BOBYkgKTgGhKnOmqGrW84pNVeJsSTNpMuj5qLMgbpOq8xMi4ekwsvb15mS9Vkz-9EuVbtg6=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "7 months ago"
-    }
-  },
-  {
-    "id": "g-rev-72-sarthakbhatia",
-    "authorName": "Sarthak Bhatia",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#D97706",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocJGjEwK6KPtKHKwe9-Xw6l2TQgKSb_q_vqro-E-VdgAeZFGJg=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 1,
-    "rating": 5,
-    "relativeTime": "8 months ago",
-    "text": "Original working disks about to buy few more",
-    "categoryTag": "Verified Google Review",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLe4uJgQJDxBRiOK7dhjusTCdYbqm7aXSE8R90JlwwElW8FIOu3LLqIncLN8gjSesU036UnekEA8lgd1sCq0BTFLWepanFolVPIhhaiTgDqLk1mUVodcmO9VngqE7uYpZFDEDwzrXf0BHS8i=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏...",
-      "relativeTime": "8 months ago"
-    }
-  },
-  {
-    "id": "g-rev-77-prudhvirajsampathirao",
-    "authorName": "PRUDHVIRAJ SAMPATHIRAO",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#1E40AF",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjVGa8InVfNZk0GQy-NmiG7sE0JCYnjNKSh1dxH-C968P8VFXMqLsA=s1920-c-rp-mo-ba12-br100",
-    "isLocalGuide": true,
-    "guideReviewsCount": 17,
-    "rating": 5,
-    "relativeTime": "10 months ago",
-    "text": "Brilliant. Go for it. You will get the best Console for the best price. Very cool guy. Thank you for the best deal brother.",
-    "categoryTag": "Console Buyback & Trade-In",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLfw5zS_vDNX3lSDv0V344l9HgxYDt7S7JP3w8USWmihOWZc1rNJJCOD3UETMExpV-8bqZVGqFVt2eI9rX-lOCUFNmx4EKUK1aXQF_LevuerSPgw0ISDLLErAaI6RygcfzQPypJQwCEzGC9_=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "10 months ago"
-    }
-  },
-  {
-    "id": "g-rev-78-adityashinde",
-    "authorName": "Aditya Shinde",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#7C3AED",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjVvuRETqb-CxvYgUjmFopHROPM_Ffj4FRcQkTS7NPfE6G6cl4sB=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 5,
-    "rating": 5,
-    "relativeTime": "10 months ago",
-    "text": "Best service ever and perfect customer satisfaction djn tech rocks",
-    "categoryTag": "Verified Google Review",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLc32P1viW21fPK9krTobDxLiHxmBfXD3QjhMorHG20wTr5OcnwtTo5XOqiAbU_MOgGBXcdJhMB5lbLXQAapEdCT0x4RoBs_LDGt00zqpSGBMM2U0cw-veTNh-UL-RdgtSlvI4kgFHgNYro2=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "10 months ago"
-    }
-  },
-  {
-    "id": "g-rev-79-gulamtahashildar",
-    "authorName": "Gulam Tahashildar",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#0F9D58",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjWYNnVtg0BlZkUdubDlMZmoc7oGvg2XYWvuO-eqzwnvA6whmxoJ=s1920-c-rp-mo-ba12-br100",
-    "isLocalGuide": true,
-    "guideReviewsCount": 10,
-    "rating": 5,
-    "relativeTime": "11 months ago",
-    "text": "Bhai awesome bhnda he yaar , aaj ke date me koi bi aisa guard nai krta yeh bhai sab aap ko full support and your amount satisfied wali feeling denge , trust me best banda he bhai ❤️ muje bohot support kiya and me every each games se leke new playstation ine se leta hu and mast conditions me milta he yaar aur jo inki delivered packageing he wo dekh ke hi pata chalega ❤️ best he 10 out of 20% bhai fully satisfied thnqu so much bhai ❤️",
-    "categoryTag": "Pre-Owned Games & Discs",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLcpiHCq9xFI3Qw72SJ7AUAvFLAPiJx8kE5gJIrAUZ7FL5hdl6u1kyD7xzHxarkbO6eYyWywzLZZzWnIg3qiEYsFDP9dHNvto2A8uf7cyo7AzMwlduAYd-hkSZYMVVKjuFjTOEXf7-CfG7zm=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "11 months ago"
-    }
-  },
-  {
-    "id": "g-rev-80-shivaarun",
-    "authorName": "Shiva Arun",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#0891B2",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjX1Ynlg0az3sMRl-yU5QgbxWwe9yZkQUc1hQ3zTVZquX5ejzfCG=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 1,
-    "rating": 5,
-    "relativeTime": "11 months ago",
-    "text": "My sweet brother good product give me ❤️❤️im really happy..",
-    "categoryTag": "Verified Google Review",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLd9gmptjU6Mj8zWjHIanMaypfDMW5JBUe5XtT5Tyz0TIYr88yKtJ8zVPtyikQzYitRhiXxJDwH93wziWHAFmcKsA4at5yioYyieosbW5mnk_1rKfkeyB1MBQe2y9JcHlhA0LLCHK9hU9ZAI=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏....",
-      "relativeTime": "11 months ago"
-    }
-  },
-  {
-    "id": "g-rev-82-parthkavi",
-    "authorName": "Parth Kavi",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#4285F4",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjXgibQmukoYcvlw-uVJidLu_pxr7xaXN4bdUYghTDh359PoAT9viw=s1920-c-rp-mo-ba12-br100",
-    "isLocalGuide": true,
-    "guideReviewsCount": 343,
-    "rating": 5,
-    "relativeTime": "a year ago",
-    "text": "Got Spiderman Miles and morals CD for PS4 from Danny bhai.\nCD working completely fine and Delivered on the 2nd day.\nVery fast delivery, very humble attitude of danny bhai.\nOverall best dealer for you Playstation needs.",
-    "categoryTag": "Pre-Owned Games & Discs",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLfB43coM6BRgZiEK9tfWtP3uYJJ1TfJJwJJlkrKTULrY8UUbbEvHVD5LuJZZ59C4gKjQyfyhypEQdPi_I0ADIu0Cmp1AhsXlFxSM5d46DdRTSGw4L2kfSW8VCHF5StptX05q-t4d0AzxzbG=w408-h306-k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother",
-      "relativeTime": "a year ago"
-    }
-  },
-  {
-    "id": "g-rev-84-kalim",
-    "authorName": "Kalim",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#FBBC05",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocLO8N7hK1gVtzwSyq7Vp9oMjPiSUS1e4ZrS7OpVgAKjSlQabQ=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 1,
-    "rating": 5,
-    "relativeTime": "a year ago",
-    "text": "Sold my ps2 in good price to this guy buy products from him",
-    "categoryTag": "Console Buyback & Trade-In",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLduHvzNkjSLufHvdGxe_3r0n-8cntGBfsv0DpOKYjF-IWJd-nAWT3zihtsWz6IzFhgbIVUXlGq_UNbr9Oo8uYPmrcoZB4YCI4oc5VlR6620JVnpuI7vsrjS6AwBjmfglisPkM0dA1dUL52l=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "a year ago"
-    }
-  },
-  {
-    "id": "g-rev-86-maroofkazi",
-    "authorName": "Maroof Kazi",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#1E40AF",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocI-jwlPaqH9fwQzGnjlZr9fnLDt6hKIDTyCq4bqLzyMsS1KTLc=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 2,
-    "rating": 5,
-    "relativeTime": "a year ago",
-    "text": "Genuine person with good product in excellent condition seems to be new, hassle free contact with full customer support",
-    "categoryTag": "Verified Google Review",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLc8f_xVGpVohg7j9g4bkHW7Br4PSusG5wzi6WVVasbmiL_MIXe4vMPpflDZk65OHdujgI8L3MfANW4Z24UFjtQF4GPu53LF9QmFtFtaWrfL_eeX13V_RY1Pc4wPCf_pDZFs7QZVy6wtioD0=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother 🙏",
-      "relativeTime": "a year ago"
-    }
-  },
-  {
-    "id": "g-rev-91-ashishmishra",
-    "authorName": "Ashish Mishra",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#4285F4",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocJ6Nfxlba0dWxljY3MPA88t9Yd85wgiikBrFPsZaeOLag-tBA=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 2,
-    "rating": 5,
-    "relativeTime": "a year ago",
-    "text": "Absolutely Worth It – 6 Months of Smooth Gaming! Review for Game Controller Purchase from DJN Tech: I bought a game controller from DJN Tech 6 months ago, and it’s been excellent. The build is solid, buttons responsive, and there's no drift at all. It works perfectly with both my PC and console. Even after long gaming sessions, it still feels brand new. DJN Tech provided fast delivery and great customer service — totally worth it!",
-    "categoryTag": "Controllers & Accessories",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLeF5l27pDvPv_ITEEurzkB6G_e0RMZAmkPUpK1gv3-4bbsDJCTHjBDXNqTveVkuOXyDn_gbAsR7KaO1Xcg1wOmenHFsGhhIU4vTEEIphw1rfoq1GmoukokK-yeXWD3XLXg_pGA4Sb4KJuXe=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother...",
-      "relativeTime": "a year ago"
-    }
-  },
-  {
-    "id": "g-rev-92-shadabpathan",
-    "authorName": "Shadab Pathan",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#EA4335",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocLVdsKjJTAzFSoZbw_8eZheoykNeF6Gu7VAB-8G4cDmW3x07w=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 1,
-    "rating": 5,
-    "relativeTime": "a year ago",
-    "text": "I liked the ps3 super slim as I got the best delivery experience. I am is in very concern for the delivery but no I got the best transparent delivery. Thankyou DJN tech.",
-    "categoryTag": "Express Delivery & Service",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLc4_3TxulF2RFNCmdCrVl4KnprT7QQOd1wgkFAgz_b5WX6RQtyTKkQQTyR1N7jc3x3KEPSkYThgR1F8f7BkxTvOkvRQiFVPvcnAYU7VpwhDymoML5NLK3SEywdKMFtS_V-lglCSdhSLEGdB=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother...",
-      "relativeTime": "a year ago"
-    }
-  },
-  {
-    "id": "g-rev-95-kunalchavan",
-    "authorName": "Kunal Chavan",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#1E40AF",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjXT-O0UVkfni_706XkHKJbVz1zRV18TMPybhjp25puvGkfESPnM=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 7,
-    "rating": 5,
-    "relativeTime": "a year ago",
-    "text": "Just bought a ps5 and controller from djn tech really the service is fast and the condition of console is A1.",
-    "categoryTag": "Controllers & Accessories",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLcXBYUwbodsH9OQN7w9w4VIgHj0za92Vtsvf-dCmR_iEoJxWTv8l2CeF0b7-kP52pIC3Eq4nVFhlNQQLG2Yx5uyqm66SJXQgmX8pg5o8UPVwguisdFX2ogOpABLqVHILKsR0M1tuA=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother for supporting....",
-      "relativeTime": "a year ago"
-    }
-  },
-  {
-    "id": "g-rev-102-bireswarbasak",
-    "authorName": "Bireswar Basak",
-    "authorLocation": "Mumbai",
-    "authorAvatarColor": "#FBBC05",
-    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocIwQo0YbwabCtn6awaW2QkN177p7QCeQUTnh-nS9aZYhmxiPxI=s1920-c-rp-mo-br100",
-    "isLocalGuide": false,
-    "guideReviewsCount": 10,
-    "rating": 5,
-    "relativeTime": "a year ago",
-    "text": "Owner is very supportive, gives quick response.",
-    "categoryTag": "Verified Google Review",
-    "photos": [
-      "https://lh3.googleusercontent.com/grass-cs/AABkmLcolV1rPvKcQT4Z0xAhVHJt2PgP7c2fSVyJSElHFVSY158hvZXen0JW58hGeyHdtuWOCP7kegj8C3a4p-1l28YklYMvPLsdU6SrarCpnmhD32eiXb7OXCgHTa6wXfr9vE3BN-Vc=k-no"
-    ],
-    "ownerReply": {
-      "author": "DJN TECH (Owner)",
-      "text": "Thanks brother...",
-      "relativeTime": "a year ago"
-    }
-  },
-  {
     "id": "g-rev-1-pulsewavelighting",
     "authorName": "Pulse Wave Lighting",
     "authorLocation": "Mumbai",
@@ -1000,6 +106,24 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     }
   },
   {
+    "id": "g-rev-5-sahilshaikh",
+    "authorName": "Sahil Shaikh",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#1E40AF",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjUfI9b9fbM-ao5ckvxJFDZIkCAwdj2BOrrXqLZnaEWBZCaOOG5D=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 2,
+    "rating": 5,
+    "relativeTime": "2 weeks ago",
+    "text": "Best Seller ❤️",
+    "categoryTag": "Console Buyback & Trade-In",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "2 weeks ago"
+    }
+  },
+  {
     "id": "g-rev-6-rampandey",
     "authorName": "Ram Pandey",
     "authorLocation": "Mumbai",
@@ -1051,6 +175,24 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
       "relativeTime": "3 weeks ago"
+    }
+  },
+  {
+    "id": "g-rev-9-kishanbhandari",
+    "authorName": "Kishan Bhandari",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#D97706",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjVbBo__DRG5nBH4pTaQiMtfxDXGnma6RrxxK7fdBn2oVB-qnVzY=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 8,
+    "rating": 5,
+    "relativeTime": "a month ago",
+    "text": "Had a great experience selling my PS4 here. The entire process was smooth and hassle-free. They tested the console in front of me, everything was transparent, and I received the payment upfront without any issues. Friendly and professional service. Definitely recommend!",
+    "categoryTag": "Console Buyback & Trade-In",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "a month ago"
     }
   },
   {
@@ -1234,6 +376,24 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     }
   },
   {
+    "id": "g-rev-20-rameezmulla",
+    "authorName": "Rameez Mulla",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#EA4335",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocKPpIVbXk1Uu06iu8u86aiyoWBscwg4hnGL915DCmpKPMeXEA=s1920-c-rp-mo-ba12-br100",
+    "isLocalGuide": true,
+    "guideReviewsCount": 20,
+    "rating": 5,
+    "relativeTime": "3 months ago",
+    "text": "I recently sold my nintendo switch to DGN tech ...The process was very smooth and quick without any issues. He immediately paid the money as soon as he got the console. Had a very good deal with him.",
+    "categoryTag": "Console Buyback & Trade-In",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother for a wonderful review 🙏",
+      "relativeTime": "3 months ago"
+    }
+  },
+  {
     "id": "g-rev-21-lakshyashah",
     "authorName": "Lakshya Shah",
     "authorLocation": "Mumbai",
@@ -1324,6 +484,24 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     }
   },
   {
+    "id": "g-rev-26-ojasvaidya",
+    "authorName": "Ojas Vaidya",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#0891B2",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocJIx3Zii0XhVquizVnrDNI_U3HClnSj8XPWFyLlG42xNfgUQQ=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 1,
+    "rating": 5,
+    "relativeTime": "3 months ago",
+    "text": "Sold my ps4 along with 4 games for 16.5k.",
+    "categoryTag": "Pre-Owned Games & Discs",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "3 months ago"
+    }
+  },
+  {
     "id": "g-rev-27-shounakkambli",
     "authorName": "Shounak Kambli",
     "authorLocation": "Mumbai",
@@ -1335,6 +513,24 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "3 months ago",
     "text": "Had a smooth n stress free experience with djn tech for my ps4 repair .Dinesh Bhai is an absolute honest person backed with amazing knowledge n quick solutions. He explained everything in such detail n always gives time to the customer. He not only fixed the original issue but also helped fix problems caused by the repair guy whom I had given the console earlier...would recommend djn for all console related issues",
     "categoryTag": "Console Repair & Service",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "3 months ago"
+    }
+  },
+  {
+    "id": "g-rev-28-kingrider",
+    "authorName": "King Rider",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#4285F4",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocK0eU8zVgTDGbUc68ixFPoE5oGkjh7RvmOE-bhOcsCL4TR6jQ=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 1,
+    "rating": 5,
+    "relativeTime": "3 months ago",
+    "text": "I had a great experience dealing with DJN Tech. I sold my PS4 through a simple video call verification, and after everything was checked, I received the payment instantly. The entire process was fast, smooth, and hassle-free. I also got a great price for my console. The owner is genuine, friendly, and professional. Highly recommended for anyone looking to sell their gaming console safely and easily!",
+    "categoryTag": "Console Buyback & Trade-In",
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
@@ -1392,6 +588,24 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
+      "relativeTime": "4 months ago"
+    }
+  },
+  {
+    "id": "g-rev-32-aqdasak",
+    "authorName": "AQDAS AK",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#1E40AF",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjVC-MotIcsHgAmohn2P-TFTJ2NXav8_ZdLz_MTozeHZrHsCLPLq=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 2,
+    "rating": 5,
+    "relativeTime": "4 months ago",
+    "text": "Excellent service by DJN TECH! The owner is incredibly genuine, professional, and helpful. They explain everything clearly and deliver top-notch work. If you are looking for reliable and high-quality tech services, this is the absolute best place to go. Completely satisfied with their service!",
+    "categoryTag": "Verified Google Review",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother awsome review 👌",
       "relativeTime": "4 months ago"
     }
   },
@@ -1504,6 +718,24 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     }
   },
   {
+    "id": "g-rev-39-tejjaspersonal",
+    "authorName": "Tejjas Personal",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#FBBC05",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjUwye1V2YUJo89EDTPoDNhz-cCY23ABCA9KVEAhWb1cSjUvSrQ=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 3,
+    "rating": 5,
+    "relativeTime": "6 months ago",
+    "text": "Good exchange of ps4 and games for ps5 controller and money. very good condition second hand ps5 controller with warranty",
+    "categoryTag": "Controllers & Accessories",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "6 months ago"
+    }
+  },
+  {
     "id": "g-rev-40-gauvas",
     "authorName": "GauVas",
     "authorLocation": "Mumbai",
@@ -1519,6 +751,78 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
       "relativeTime": "6 months ago"
+    }
+  },
+  {
+    "id": "g-rev-41-tusharbhoir",
+    "authorName": "Tushar Bhoir",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#1E40AF",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocL4HpogMPn6DJkgmdtxTAMLS81PGPBq9GWOtpLWV1lUH0k_FA=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 3,
+    "rating": 5,
+    "relativeTime": "6 months ago",
+    "text": "Nice People Sold My Nintendo Switch Lite To Them Real Nice Guys There Everyone Should Visit them",
+    "categoryTag": "Console Buyback & Trade-In",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "6 months ago"
+    }
+  },
+  {
+    "id": "g-rev-42-drashtashelawala",
+    "authorName": "Drashta Shelawala",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#7C3AED",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjUefQFXktg3UbjcYHw1YGeXq_VjF--Em4QrYVLW16ZWFmBHsl8IxQ=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 8,
+    "rating": 5,
+    "relativeTime": "6 months ago",
+    "text": "A completely seamless and truth worthy process",
+    "categoryTag": "Verified Google Review",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "6 months ago"
+    }
+  },
+  {
+    "id": "g-rev-43-kritikgupta",
+    "authorName": "Kritik Gupta",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#0F9D58",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjWRsQ76qondWfx2O5Sk0w8pRfMvtIE_w7ImmMDh59_a8tcJ42pN=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 7,
+    "rating": 5,
+    "relativeTime": "6 months ago",
+    "text": "Good service by Danny, extremely sweet guy! Highly recommend 👍🏻",
+    "categoryTag": "Verified Google Review",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "6 months ago"
+    }
+  },
+  {
+    "id": "g-rev-44-rishabhpittalia",
+    "authorName": "Rishabh Pittalia",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#0891B2",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocJrfILdnWvbeIW5kmpRlseseMbOrLxBqqbudL4lTLH3eH_OJw=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 2,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "I had a great experience selling my PS4 Pro 1TB to DJN Tech. I found them through OLX, and from the very first conversation, they were extremely polite, professional, and easy to communicate with. The whole process was smooth and hassle-free.\nThey offered me a very good and fair price for my console, and everything was handled honestly and quickly. I really appreciate their transparency and friendly behavior throughout the deal.\nHighly recommended if anyone is looking to sell or want to buy their gaming console — trustworthy service and a great overall experience. Thank you, DJN Tech!",
+    "categoryTag": "Console Buyback & Trade-In",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
     }
   },
   {
@@ -1540,6 +844,24 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     }
   },
   {
+    "id": "g-rev-46-harshmeshram",
+    "authorName": "Harsh Meshram",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#4285F4",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocIln4VtK3fc_LTbodbggPV2H12vcetUQC1nsK0H_rhNLvE4yJk=s1920-c-rp-mo-ba12-br100",
+    "isLocalGuide": true,
+    "guideReviewsCount": 16,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "Sold my console to Danny Bhai. Great and smooth experience. And the deal Danny bhai will give will not be given by anyone in market.",
+    "categoryTag": "Console Buyback & Trade-In",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
+    }
+  },
+  {
     "id": "g-rev-47-vyomsolanki",
     "authorName": "Vyom Solanki",
     "authorLocation": "Mumbai",
@@ -1551,6 +873,42 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "Got an amazing deal for PS-5",
     "categoryTag": "Verified Google Review",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
+    }
+  },
+  {
+    "id": "g-rev-48-abdullahshaikh",
+    "authorName": "Abdullah Shaikh",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#FBBC05",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocIDFVCoEZ8XVgSuA-QEA-eyZbfPXCs07ZI5wshy2JxhBKHRDNDN=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 8,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "Best reliable buyer and seller",
+    "categoryTag": "Console Buyback & Trade-In",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
+    }
+  },
+  {
+    "id": "g-rev-49-sheetaljogadiya",
+    "authorName": "Sheetal Jogadiya",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#34A853",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocJYairOnyTIs3Cw-zkmFfu1FtKrFfNLxA4gBFYNC44QyNCjpQ=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 1,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "Just brought a ps5 and some games from them got it in fabulous condition and their service are at reasonable prices you should definitely checkout",
+    "categoryTag": "PlayStation 5 & Gear",
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
@@ -1594,6 +952,42 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     }
   },
   {
+    "id": "g-rev-52-neilpagariya",
+    "authorName": "NEIL PAGARIYA",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#0F9D58",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjWr_IDssGEMUp2LzKAJ9LrNjymljBB5FNS-YJNuMdN9NaWrnvOS=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 4,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "I sold my ps5 for a very good rate .. trustable shop.",
+    "categoryTag": "PlayStation 5 & Gear",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
+    }
+  },
+  {
+    "id": "g-rev-53-damtil",
+    "authorName": "DAM TIL",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#0891B2",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjXp_etnEIqRJ2EjxJHyszaNXnGtE7dRDipJ9ngENDJBIZleYwAn=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 2,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "Just purchased my first product from djn tech! The guy is really great talking to! I have had a nice conversation with danny bhai and he guided me with everything i need to know! Also very active on WhatsApp and polite behaviour! I just bought a ps4 v2 controller it's pre owned but man i feel like i got a brand new controller so thanks a lot danny bhai again and looking forward to buying more gadgets from you buddy👍🏼",
+    "categoryTag": "Controllers & Accessories",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
+    }
+  },
+  {
     "id": "g-rev-54-mandar",
     "authorName": "Mandar",
     "authorLocation": "Mumbai",
@@ -1605,6 +999,96 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "7 months ago",
     "text": "I have sold and purchased multiple games. The process was smooth, and it is a trusted source for quality games.",
     "categoryTag": "Pre-Owned Games & Discs",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
+    }
+  },
+  {
+    "id": "g-rev-55-utkarshkrishna",
+    "authorName": "Utkarsh Krishna",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#4285F4",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjWtLJwdlHVYgUPx99DkCLUpbxDovCisOZyrdIWMl5I7hdBbRaM=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 6,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "Danny bhai gave me a good deal for my ps4 pro 👍",
+    "categoryTag": "Console Buyback & Trade-In",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
+    }
+  },
+  {
+    "id": "g-rev-56-amaanfarrukh",
+    "authorName": "Amaan Farrukh",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#EA4335",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocLcflv7iuga0lBMX64jYKACeBHE2zLvkHrvLEi8JSoSTwCwYg=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 1,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "Amazing service. Genuine products. Totally worth it. Got Nintendo 3ds XL and Nintendo switch oled all in good condition. Products were delivered to Kashmir with ease.",
+    "categoryTag": "Console Buyback & Trade-In",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
+    }
+  },
+  {
+    "id": "g-rev-57-shahilshah",
+    "authorName": "Shahil Shah",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#FBBC05",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocIDjyrbBytS8jkkZ0zGW-ut1MmeV6LkxV3JeWmPmNTsRgUUjQ=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 8,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "Amazing service , Trusted and reliable.",
+    "categoryTag": "Verified Google Review",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
+    }
+  },
+  {
+    "id": "g-rev-58-dhruvthakker",
+    "authorName": "Dhruv Thakker",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#34A853",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocKb5iuReD0KBlZJ6xr5enWu5_yim5dsTstral0NIwDehU562GM=s1920-c-rp-mo-ba12-br100",
+    "isLocalGuide": true,
+    "guideReviewsCount": 5,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "Good place to buy consoles. Very reliable",
+    "categoryTag": "Verified Google Review",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
+    }
+  },
+  {
+    "id": "g-rev-59-pranavnar",
+    "authorName": "Pranav Nar",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#1E40AF",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjXfbNoAXMx08GQtrhUaHLeh_EFtRvHwwm3eST49ZM3s9MPz3k3PXQ=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 5,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "I sold my PS5 to DJN Tech. It was so transparent deal from the start to the payment. Everything was flawless.Thanks Danny bhai",
+    "categoryTag": "PlayStation 5 & Gear",
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
@@ -1648,6 +1132,168 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     }
   },
   {
+    "id": "g-rev-62-sonupawar",
+    "authorName": "Sonu Pawar",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#0891B2",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjVJduMJWvsbz6BPUo4dP61Gl6XeLb_jh5safDIZwSMbm9iW3oV_=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 2,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "It is nice service",
+    "categoryTag": "Verified Google Review",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
+    }
+  },
+  {
+    "id": "g-rev-63-tanishqpadhi",
+    "authorName": "Tanishq Padhi",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#D97706",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjWQ4cDeoEhc3bTxq-tcZndtEg_ISsKDfjmCvYS83Ll7vSMaQHE=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 2,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "Sold my console at a reasonable price 👍🏼 worth it 💯",
+    "categoryTag": "Console Buyback & Trade-In",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
+    }
+  },
+  {
+    "id": "g-rev-64-apurvjha",
+    "authorName": "Apurv Jha",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#4285F4",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjUFc5s5fvWmejWpQtm8cYoajtO7Fe_rTLSb0UomCje-b-1zzKbGVQ=s1920-c-rp-mo-ba12-br100",
+    "isLocalGuide": true,
+    "guideReviewsCount": 16,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "Great product!",
+    "categoryTag": "Verified Google Review",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
+    }
+  },
+  {
+    "id": "g-rev-65-sarthakjadhav",
+    "authorName": "Sarthak Jadhav",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#EA4335",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocJtodsqhfy1-fSevSlq6kd17jIIiOPQ2Rk1wpFtM3Hg8lZvQNKd=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 11,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "Had great selling experience",
+    "categoryTag": "Console Buyback & Trade-In",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
+    }
+  },
+  {
+    "id": "g-rev-66-owaiskhan",
+    "authorName": "Owais Khan",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#FBBC05",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocIUIbgyuSM9PQd9v_LISXu__EkwNwNJgfk2L_aTu8QePYw-Rw=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 1,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "Best deal",
+    "categoryTag": "Verified Google Review",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
+    }
+  },
+  {
+    "id": "g-rev-67-yugmehta",
+    "authorName": "Yug Mehta",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#34A853",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjUAB3v-FiTsMM3VZ5J2ZEodDK6yhYXSshRMxMe2gjKT2136SIdJ=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 2,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "Very nice guy loved having done deal with him.Sold ps4 pro to him at good price you guys can sell it to.",
+    "categoryTag": "Console Buyback & Trade-In",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
+    }
+  },
+  {
+    "id": "g-rev-68-prajapatisangam",
+    "authorName": "Prajapati Sangam",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#1E40AF",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocIorZx1sQzXB6_7B1tRM8qcdzVDRHZs6cRNBQjRsO0gLdgPHQ=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 2,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "Thanks a lot for buying from us! Hope you love the product.",
+    "categoryTag": "Verified Google Review",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
+    }
+  },
+  {
+    "id": "g-rev-69-samsondsouza",
+    "authorName": "Samson Dsouza",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#7C3AED",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocJfV3mrJ1ytx8Nlk9sOeSTgdx1h2fYb6F-xYHAc6HIHdKKm0w=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 2,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "Sold my playstation 4 at a really good price and a really nice and sweet guy loved to do business with him.",
+    "categoryTag": "Console Buyback & Trade-In",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
+    }
+  },
+  {
+    "id": "g-rev-70-muzammilshaikh",
+    "authorName": "Muzammil Shaikh",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#0F9D58",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjXJTkxRzUiFVrAcQfzXMTlb4uWZtD6aQKvDeQYlwkN8HNhADLItgA=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 4,
+    "rating": 5,
+    "relativeTime": "7 months ago",
+    "text": "I recently sold my PS4 to DJN Tech and the whole experience was completely hassle-free. He trusted me and purchased the PS4 directly after a video call without any unnecessary complications. The payment was made on time exactly as promised.",
+    "categoryTag": "Console Buyback & Trade-In",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "7 months ago"
+    }
+  },
+  {
     "id": "g-rev-71-saifmbubere",
     "authorName": "Saif M bubere",
     "authorLocation": "Mumbai",
@@ -1658,6 +1304,24 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "rating": 5,
     "relativeTime": "8 months ago",
     "text": "Nice quality",
+    "categoryTag": "Verified Google Review",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏...",
+      "relativeTime": "8 months ago"
+    }
+  },
+  {
+    "id": "g-rev-72-sarthakbhatia",
+    "authorName": "Sarthak Bhatia",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#D97706",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocJGjEwK6KPtKHKwe9-Xw6l2TQgKSb_q_vqro-E-VdgAeZFGJg=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 1,
+    "rating": 5,
+    "relativeTime": "8 months ago",
+    "text": "Original working disks about to buy few more",
     "categoryTag": "Verified Google Review",
     "ownerReply": {
       "author": "DJN TECH (Owner)",
@@ -1738,6 +1402,78 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     }
   },
   {
+    "id": "g-rev-77-prudhvirajsampathirao",
+    "authorName": "PRUDHVIRAJ SAMPATHIRAO",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#1E40AF",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjVGa8InVfNZk0GQy-NmiG7sE0JCYnjNKSh1dxH-C968P8VFXMqLsA=s1920-c-rp-mo-ba12-br100",
+    "isLocalGuide": true,
+    "guideReviewsCount": 17,
+    "rating": 5,
+    "relativeTime": "10 months ago",
+    "text": "Brilliant. Go for it. You will get the best Console for the best price. Very cool guy. Thank you for the best deal brother.",
+    "categoryTag": "Console Buyback & Trade-In",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "10 months ago"
+    }
+  },
+  {
+    "id": "g-rev-78-adityashinde",
+    "authorName": "Aditya Shinde",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#7C3AED",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjVvuRETqb-CxvYgUjmFopHROPM_Ffj4FRcQkTS7NPfE6G6cl4sB=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 5,
+    "rating": 5,
+    "relativeTime": "10 months ago",
+    "text": "Best service ever and perfect customer satisfaction djn tech rocks",
+    "categoryTag": "Verified Google Review",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "10 months ago"
+    }
+  },
+  {
+    "id": "g-rev-79-gulamtahashildar",
+    "authorName": "Gulam Tahashildar",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#0F9D58",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjWYNnVtg0BlZkUdubDlMZmoc7oGvg2XYWvuO-eqzwnvA6whmxoJ=s1920-c-rp-mo-ba12-br100",
+    "isLocalGuide": true,
+    "guideReviewsCount": 10,
+    "rating": 5,
+    "relativeTime": "11 months ago",
+    "text": "Bhai awesome bhnda he yaar , aaj ke date me koi bi aisa guard nai krta yeh bhai sab aap ko full support and your amount satisfied wali feeling denge , trust me best banda he bhai ❤️ muje bohot support kiya and me every each games se leke new playstation ine se leta hu and mast conditions me milta he yaar aur jo inki delivered packageing he wo dekh ke hi pata chalega ❤️ best he 10 out of 20% bhai fully satisfied thnqu so much bhai ❤️",
+    "categoryTag": "Pre-Owned Games & Discs",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "11 months ago"
+    }
+  },
+  {
+    "id": "g-rev-80-shivaarun",
+    "authorName": "Shiva Arun",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#0891B2",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjX1Ynlg0az3sMRl-yU5QgbxWwe9yZkQUc1hQ3zTVZquX5ejzfCG=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 1,
+    "rating": 5,
+    "relativeTime": "11 months ago",
+    "text": "My sweet brother good product give me ❤️❤️im really happy..",
+    "categoryTag": "Verified Google Review",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏....",
+      "relativeTime": "11 months ago"
+    }
+  },
+  {
     "id": "g-rev-81-amitsingh",
     "authorName": "Amit Singh",
     "authorLocation": "Mumbai",
@@ -1753,6 +1489,24 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
       "relativeTime": "11 months ago"
+    }
+  },
+  {
+    "id": "g-rev-82-parthkavi",
+    "authorName": "Parth Kavi",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#4285F4",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjXgibQmukoYcvlw-uVJidLu_pxr7xaXN4bdUYghTDh359PoAT9viw=s1920-c-rp-mo-ba12-br100",
+    "isLocalGuide": true,
+    "guideReviewsCount": 343,
+    "rating": 5,
+    "relativeTime": "a year ago",
+    "text": "Got Spiderman Miles and morals CD for PS4 from Danny bhai.\nCD working completely fine and Delivered on the 2nd day.\nVery fast delivery, very humble attitude of danny bhai.\nOverall best dealer for you Playstation needs.",
+    "categoryTag": "Pre-Owned Games & Discs",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother",
+      "relativeTime": "a year ago"
     }
   },
   {
@@ -1774,6 +1528,24 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     }
   },
   {
+    "id": "g-rev-84-kalim",
+    "authorName": "Kalim",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#FBBC05",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocLO8N7hK1gVtzwSyq7Vp9oMjPiSUS1e4ZrS7OpVgAKjSlQabQ=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 1,
+    "rating": 5,
+    "relativeTime": "a year ago",
+    "text": "Sold my ps2 in good price to this guy buy products from him",
+    "categoryTag": "Console Buyback & Trade-In",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "a year ago"
+    }
+  },
+  {
     "id": "g-rev-85-jigarshah",
     "authorName": "Jigar Shah",
     "authorLocation": "Mumbai",
@@ -1785,6 +1557,24 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Great Service! I wanted to repair my PS5 Controller on a Sunday and Danny did it within 4 hr.",
     "categoryTag": "Console Repair & Service",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother 🙏",
+      "relativeTime": "a year ago"
+    }
+  },
+  {
+    "id": "g-rev-86-maroofkazi",
+    "authorName": "Maroof Kazi",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#1E40AF",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocI-jwlPaqH9fwQzGnjlZr9fnLDt6hKIDTyCq4bqLzyMsS1KTLc=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 2,
+    "rating": 5,
+    "relativeTime": "a year ago",
+    "text": "Genuine person with good product in excellent condition seems to be new, hassle free contact with full customer support",
+    "categoryTag": "Verified Google Review",
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother 🙏",
@@ -1864,6 +1654,42 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     }
   },
   {
+    "id": "g-rev-91-ashishmishra",
+    "authorName": "Ashish Mishra",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#4285F4",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocJ6Nfxlba0dWxljY3MPA88t9Yd85wgiikBrFPsZaeOLag-tBA=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 2,
+    "rating": 5,
+    "relativeTime": "a year ago",
+    "text": "Absolutely Worth It – 6 Months of Smooth Gaming! Review for Game Controller Purchase from DJN Tech: I bought a game controller from DJN Tech 6 months ago, and it’s been excellent. The build is solid, buttons responsive, and there's no drift at all. It works perfectly with both my PC and console. Even after long gaming sessions, it still feels brand new. DJN Tech provided fast delivery and great customer service — totally worth it!",
+    "categoryTag": "Controllers & Accessories",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother...",
+      "relativeTime": "a year ago"
+    }
+  },
+  {
+    "id": "g-rev-92-shadabpathan",
+    "authorName": "Shadab Pathan",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#EA4335",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocLVdsKjJTAzFSoZbw_8eZheoykNeF6Gu7VAB-8G4cDmW3x07w=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 1,
+    "rating": 5,
+    "relativeTime": "a year ago",
+    "text": "I liked the ps3 super slim as I got the best delivery experience. I am is in very concern for the delivery but no I got the best transparent delivery. Thankyou DJN tech.",
+    "categoryTag": "Express Delivery & Service",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother...",
+      "relativeTime": "a year ago"
+    }
+  },
+  {
     "id": "g-rev-93-rahulyadav",
     "authorName": "Rahul Yadav",
     "authorLocation": "Mumbai",
@@ -1896,6 +1722,24 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother. ..",
+      "relativeTime": "a year ago"
+    }
+  },
+  {
+    "id": "g-rev-95-kunalchavan",
+    "authorName": "Kunal Chavan",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#1E40AF",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a-/ALV-UjXT-O0UVkfni_706XkHKJbVz1zRV18TMPybhjp25puvGkfESPnM=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 7,
+    "rating": 5,
+    "relativeTime": "a year ago",
+    "text": "Just bought a ps5 and controller from djn tech really the service is fast and the condition of console is A1.",
+    "categoryTag": "Controllers & Accessories",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother for supporting....",
       "relativeTime": "a year ago"
     }
   },
@@ -2001,6 +1845,24 @@ export const REAL_GOOGLE_REVIEWS: GoogleReview[] = [
     "relativeTime": "a year ago",
     "text": "Bought a PS5 from Danny bhai, must say he is the go to guy if anyone is looking for any gaming console in Mumbai.\n\nHe explained everything about the gaming console and how to use it as I was a first time user.\n\nEven the after sale support was great, Highly recommend ✌🏻",
     "categoryTag": "PlayStation 5 & Gear",
+    "ownerReply": {
+      "author": "DJN TECH (Owner)",
+      "text": "Thanks brother...",
+      "relativeTime": "a year ago"
+    }
+  },
+  {
+    "id": "g-rev-102-bireswarbasak",
+    "authorName": "Bireswar Basak",
+    "authorLocation": "Mumbai",
+    "authorAvatarColor": "#FBBC05",
+    "authorAvatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocIwQo0YbwabCtn6awaW2QkN177p7QCeQUTnh-nS9aZYhmxiPxI=s1920-c-rp-mo-br100",
+    "isLocalGuide": false,
+    "guideReviewsCount": 10,
+    "rating": 5,
+    "relativeTime": "a year ago",
+    "text": "Owner is very supportive, gives quick response.",
+    "categoryTag": "Verified Google Review",
     "ownerReply": {
       "author": "DJN TECH (Owner)",
       "text": "Thanks brother...",

@@ -31,6 +31,10 @@ const formatted = raw.map((item, idx) => {
   const categoryTag = getCategory(item.text);
   const color = colors[idx % colors.length];
 
+  const validPhotos = Array.isArray(item.reviewImageUrls) && item.reviewImageUrls.length > 0
+    ? item.reviewImageUrls.filter((u) => !u.includes('googleusercontent.com/grass-cs/'))
+    : [];
+
   return {
     id: `g-rev-${idx + 1}-${(item.name || 'user').toLowerCase().replace(/[^a-z0-9]/g, '')}`,
     authorName: item.name || 'Verified Customer',
@@ -43,7 +47,7 @@ const formatted = raw.map((item, idx) => {
     relativeTime: item.publishAt || 'Recently',
     text: item.text || 'Great experience with DJN Tech!',
     categoryTag,
-    photos: Array.isArray(item.reviewImageUrls) && item.reviewImageUrls.length > 0 ? item.reviewImageUrls : undefined,
+    photos: validPhotos.length > 0 ? validPhotos : undefined,
     ownerReply: item.responseFromOwnerText ? {
       author: 'DJN TECH (Owner)',
       text: item.responseFromOwnerText.trim(),
